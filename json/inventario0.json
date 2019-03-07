@@ -1,0 +1,143 @@
+{
+ "results":[{
+     "columns": ["user", "entity"],
+           "data": [{
+               "graph": {
+                   "nodes":                           [
+    {
+        "id": "1",
+        "labels": "Firewall",
+        "properties": {
+            "etiqueta": "FW-ARSAT",
+            "descripcion": "Firewall NG corporativo",
+            "marca": "Checkpoint",
+            "modelo": "4800",
+            "serial": "11111",
+            "interfaces": "8",
+            "ip_address": "10.0.0.3",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "2",
+        "labels": "ISP",
+        "properties": {
+            "etiqueta": "TASA",
+            "descripcion": "Servicio de internet TASA",
+            "marca": null,
+            "modelo": null,
+            "serial": null,
+            "interfaces": null,
+            "ip_address": null,
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "3",
+        "labels": "Router",
+        "properties": {
+            "etiqueta": "GW-Router",
+            "descripcion": "Router Core",
+            "marca": "Cisco",
+            "modelo": "3750",
+            "serial": "2222",
+            "interfaces": "24",
+            "ip_address": "10.0.0.1",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "4",
+        "labels": "Workstation",
+        "properties": {
+            "etiqueta": "PC-MGMT-SI",
+            "descripcion": "PC de administraci\u00f3n SI",
+            "marca": "Lenovo",
+            "modelo": "T40",
+            "serial": "3333",
+            "interfaces": "1",
+            "ip_address": "192.168.6.104",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "5",
+        "labels": "Firewall",
+        "properties": {
+            "etiqueta": "FW-MGMT",
+            "descripcion": "Firewall NG red gestion",
+            "marca": "Checkpoint",
+            "modelo": "5200",
+            "serial": "1212",
+            "interfaces": "8",
+            "ip_address": "10.0.0.4",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    }
+],
+              "relationships": [
+    {
+        "id": "1",
+        "type": "V1",
+        "startNode": "1",
+        "endNode": "2",
+        "properties": {
+            "descripcion": null,
+            "vlans": "111",
+            "velocidad": "10",
+            "segurizado": "1",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "2",
+        "type": "V2",
+        "startNode": "1",
+        "endNode": "3",
+        "properties": {
+            "descripcion": null,
+            "vlans": "222",
+            "velocidad": "1000",
+            "segurizado": "1",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "3",
+        "type": "V3",
+        "startNode": "3",
+        "endNode": "4",
+        "properties": {
+            "descripcion": null,
+            "vlans": "333",
+            "velocidad": "100",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "4",
+        "type": "V4",
+        "startNode": "3",
+        "endNode": "5",
+        "properties": {
+            "descripcion": null,
+            "vlans": "444",
+            "velocidad": "1000",
+            "segurizado": "1",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    }
+]}
+}]
+}],
+ "errors": []
+}

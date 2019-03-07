@@ -1,0 +1,1078 @@
+{
+ "results":[{
+     "columns": ["user", "entity"],
+           "data": [{
+               "graph": {
+                   "nodes":                           [
+    {
+        "id": "9",
+        "labels": "Firewall",
+        "properties": {
+            "etiqueta": "ARSAT-SI-FW-CORP-CLUSTER",
+            "descripcion": "Cluster Firewall Corporativo 4800",
+            "marca": "Checkpoint",
+            "modelo": "4800",
+            "serial": "",
+            "interfaces": "10",
+            "ip_address": "10.0.0.3",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "10",
+        "labels": "Router",
+        "properties": {
+            "etiqueta": "SW-Core",
+            "descripcion": "Switch Core Arsat",
+            "marca": "CIsco",
+            "modelo": "4500",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "10.0.0.2",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "11",
+        "labels": "Firewall",
+        "properties": {
+            "etiqueta": "ARBEN-FW-CLUSTER",
+            "descripcion": "Cluster FW Tecnico Viejo",
+            "marca": "Checkpoint",
+            "modelo": "2200",
+            "serial": "",
+            "interfaces": "5",
+            "ip_address": "10.0.0.99",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "12",
+        "labels": "Switch",
+        "properties": {
+            "etiqueta": "SW-Core-V1",
+            "descripcion": "Vlan 1 - 10.0.0.0\/24",
+            "marca": "CIsco",
+            "modelo": "4500",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "10.0.0.2",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "13",
+        "labels": "Switch",
+        "properties": {
+            "etiqueta": "SW-Core-v15",
+            "descripcion": "Vlan DMZ corp Arsat",
+            "marca": "CIsco",
+            "modelo": "4500",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "14",
+        "labels": "Switch",
+        "properties": {
+            "etiqueta": "SW-Core-v72",
+            "descripcion": "Vlan de laboratorio 192.168.72.0\/24",
+            "marca": "CIsco",
+            "modelo": "4500",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "15",
+        "labels": "Switch",
+        "properties": {
+            "etiqueta": "SW-DC-Fex",
+            "descripcion": "Fex nexus DC",
+            "marca": "CIsco",
+            "modelo": "nexus 2000",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "16",
+        "labels": "Switch",
+        "properties": {
+            "etiqueta": "SW-Core-v170",
+            "descripcion": "Vlan 170 red de gestion Arsat\r\n172.18.23.0\/24",
+            "marca": "CIsco",
+            "modelo": "4500",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "17",
+        "labels": "Switch",
+        "properties": {
+            "etiqueta": "SW-Core-v173",
+            "descripcion": "vlan 173 red de gestion\r\n172.18.20.0\/23",
+            "marca": "CIsco",
+            "modelo": "4500",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "18",
+        "labels": "Switch",
+        "properties": {
+            "etiqueta": "SW-Core-v359",
+            "descripcion": "Red Sala contingencia",
+            "marca": "CIsco",
+            "modelo": "4500",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "19",
+        "labels": "Servidor",
+        "properties": {
+            "etiqueta": "Vmware-Lab",
+            "descripcion": "ESXi de laboratorio",
+            "marca": "HP",
+            "modelo": "Prolian 380dl G6",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "192.168.72.2",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "20",
+        "labels": "Switch",
+        "properties": {
+            "etiqueta": "SW-DC-N5k-01",
+            "descripcion": "Nexus 5K",
+            "marca": "CIsco",
+            "modelo": "Nexus 5000",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "21",
+        "labels": "Router",
+        "properties": {
+            "etiqueta": "Sw-DC-N7k-01",
+            "descripcion": "Nexus 7k",
+            "marca": "CIsco",
+            "modelo": "Nexus 7000",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "22",
+        "labels": "Router",
+        "properties": {
+            "etiqueta": "Router-DC-6k-01",
+            "descripcion": "Router de borde DC",
+            "marca": "CIsco",
+            "modelo": "Cisco Catalyst 6000",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "23",
+        "labels": "Router",
+        "properties": {
+            "etiqueta": "Router-DC-6k-02",
+            "descripcion": "Router Dc borde ",
+            "marca": "CIsco",
+            "modelo": "Cisco Catalyst 6000",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "24",
+        "labels": "Router",
+        "properties": {
+            "etiqueta": "Router-REFEFO-PE13",
+            "descripcion": "Router perimetral REFEFO",
+            "marca": "Nokia",
+            "modelo": "alcatel-lucent 7750",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "25",
+        "labels": "Router",
+        "properties": {
+            "etiqueta": "Router-REFEFO-PE14",
+            "descripcion": "Router Perimetral REFEFO",
+            "marca": "Nokia",
+            "modelo": "alcatel-lucent 7750",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "26",
+        "labels": "Router",
+        "properties": {
+            "etiqueta": "Router-REFEFO-PE12",
+            "descripcion": "Router de borde REFEFO",
+            "marca": "Nokia",
+            "modelo": "alcatel-lucent 7750",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "27",
+        "labels": "Router",
+        "properties": {
+            "etiqueta": "Router-REFEFO-IG11",
+            "descripcion": "Router de Borde REFEFO",
+            "marca": "Nokia",
+            "modelo": "alcatel-lucent 7950",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "28",
+        "labels": "ISP",
+        "properties": {
+            "etiqueta": "Level 3",
+            "descripcion": "ISP Level 3",
+            "marca": "CIsco",
+            "modelo": "sr",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "29",
+        "labels": "ISP",
+        "properties": {
+            "etiqueta": "TASA",
+            "descripcion": "ISP telefonica",
+            "marca": "CIsco",
+            "modelo": "sr",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "30",
+        "labels": "Anti-DDoS",
+        "properties": {
+            "etiqueta": "DDOS-Arbor-SP",
+            "descripcion": "TRA arbor",
+            "marca": "Arbor",
+            "modelo": "SP600",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "172.18.22.3",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "31",
+        "labels": "Anti-DDoS",
+        "properties": {
+            "etiqueta": "DDOS-Arbor-TMS",
+            "descripcion": "TMS arbor",
+            "marca": "Arbor",
+            "modelo": "TMS2300",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "172.18.22.2",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "32",
+        "labels": "Internet",
+        "properties": {
+            "etiqueta": "Internet",
+            "descripcion": "Internet",
+            "marca": "CIsco",
+            "modelo": "sr",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "33",
+        "labels": "Switch",
+        "properties": {
+            "etiqueta": "SW-Gestion-v171",
+            "descripcion": "Red de gestion Arbor",
+            "marca": "CIsco",
+            "modelo": "3750",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "34",
+        "labels": "Switch",
+        "properties": {
+            "etiqueta": "SW-Core-V16",
+            "descripcion": "vlan 16 192.168.16.0\/24",
+            "marca": "CIsco",
+            "modelo": "4500",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "35",
+        "labels": "Servidor",
+        "properties": {
+            "etiqueta": "ARSAT-SI-MGMT-R80",
+            "descripcion": "Smartconsole arsat",
+            "marca": "Checkpoint",
+            "modelo": "open server",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "192.168.16.101",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "36",
+        "labels": "Servidor",
+        "properties": {
+            "etiqueta": "ARSAT-SI-SMEV-CORP",
+            "descripcion": "Smartevent r80.10",
+            "marca": "Checkpoint",
+            "modelo": "open server",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "192.168.16.83",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "37",
+        "labels": "Switch",
+        "properties": {
+            "etiqueta": "SW-DC-N5k-02",
+            "descripcion": "Nexus 5k",
+            "marca": "CIsco",
+            "modelo": "Nexus 5000",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    },
+    {
+        "id": "38",
+        "labels": "Router",
+        "properties": {
+            "etiqueta": "Sw-DC-N7k-02",
+            "descripcion": "nexus 7k",
+            "marca": "CIsco",
+            "modelo": "Nexus 7000",
+            "serial": "",
+            "interfaces": "0",
+            "ip_address": "",
+            "ubicacion": "CND Benavidez Sala 1"
+        }
+    }
+],
+              "relationships": [
+    {
+        "id": "8",
+        "type": "v1",
+        "startNode": "9",
+        "endNode": "12",
+        "properties": {
+            "descripcion": "Conexion checkpoint 4800 sw-core\r",
+            "vlans": "1",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "9",
+        "type": "v1",
+        "startNode": "11",
+        "endNode": "12",
+        "properties": {
+            "descripcion": "Checkpoint- ARBEN-F",
+            "vlans": "1",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "10",
+        "type": "v1",
+        "startNode": "10",
+        "endNode": "12",
+        "properties": {
+            "descripcion": "Vilan interface 1\r\n",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "11",
+        "type": "v15",
+        "startNode": "9",
+        "endNode": "13",
+        "properties": {
+            "descripcion": "Conecxion dmz",
+            "vlans": "15",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "12",
+        "type": "v72",
+        "startNode": "9",
+        "endNode": "14",
+        "properties": {
+            "descripcion": "conexi\u00f3n al fw corp",
+            "vlans": "72",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "13",
+        "type": "External",
+        "startNode": "9",
+        "endNode": "15",
+        "properties": {
+            "descripcion": "Vlan Outside 186.33.234.0\/24",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "14",
+        "type": "v170",
+        "startNode": "9",
+        "endNode": "16",
+        "properties": {
+            "descripcion": "Conexion red de gestion WW",
+            "vlans": "170",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "15",
+        "type": "v173",
+        "startNode": "9",
+        "endNode": "17",
+        "properties": {
+            "descripcion": "conexion red de gestion GTI",
+            "vlans": "173",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "16",
+        "type": "v359",
+        "startNode": "9",
+        "endNode": "18",
+        "properties": {
+            "descripcion": "Conexi\u00f3n sala contingencia",
+            "vlans": "359",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "17",
+        "type": "v72",
+        "startNode": "14",
+        "endNode": "19",
+        "properties": {
+            "descripcion": "Conexion vlan 72 vmware laboratorio",
+            "vlans": "72",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "18",
+        "type": "External",
+        "startNode": "15",
+        "endNode": "20",
+        "properties": {
+            "descripcion": "Conexi\u00f3n fex",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "19",
+        "type": "External",
+        "startNode": "20",
+        "endNode": "21",
+        "properties": {
+            "descripcion": "Conexion nexus",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "20",
+        "type": "External",
+        "startNode": "21",
+        "endNode": "22",
+        "properties": {
+            "descripcion": "Conexion a router 6k",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "21",
+        "type": "External",
+        "startNode": "21",
+        "endNode": "23",
+        "properties": {
+            "descripcion": "Conexion Router de borde",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "22",
+        "type": "External",
+        "startNode": "22",
+        "endNode": "23",
+        "properties": {
+            "descripcion": "Interconexion Router 6k",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "23",
+        "type": "External",
+        "startNode": "24",
+        "endNode": "25",
+        "properties": {
+            "descripcion": "Interconexion PE",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "24",
+        "type": "External",
+        "startNode": "22",
+        "endNode": "24",
+        "properties": {
+            "descripcion": "Interconexion REFEFO - DC",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "25",
+        "type": "External",
+        "startNode": "23",
+        "endNode": "25",
+        "properties": {
+            "descripcion": "Interconexion REFEFO - DC",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "26",
+        "type": "External",
+        "startNode": "25",
+        "endNode": "26",
+        "properties": {
+            "descripcion": "Interconexion refefo",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "27",
+        "type": "External",
+        "startNode": "24",
+        "endNode": "27",
+        "properties": {
+            "descripcion": "Interconexion refefo",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "28",
+        "type": "External",
+        "startNode": "27",
+        "endNode": "28",
+        "properties": {
+            "descripcion": "Interconexion 1",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "1",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "30",
+        "type": "External",
+        "startNode": "26",
+        "endNode": "29",
+        "properties": {
+            "descripcion": "Inerconexion 2",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "1",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "31",
+        "type": "BGP",
+        "startNode": "27",
+        "endNode": "30",
+        "properties": {
+            "descripcion": "Interconexion para BGP",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "32",
+        "type": "BGP",
+        "startNode": "26",
+        "endNode": "30",
+        "properties": {
+            "descripcion": "Interconexion para BGP",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "33",
+        "type": "Trafico Sucio",
+        "startNode": "27",
+        "endNode": "31",
+        "properties": {
+            "descripcion": "Interconexion trafico sucio",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "34",
+        "type": "Trafico Sucio",
+        "startNode": "26",
+        "endNode": "31",
+        "properties": {
+            "descripcion": "Interconexion trafico sucio",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "35",
+        "type": "Trafico Limpio",
+        "startNode": "31",
+        "endNode": "24",
+        "properties": {
+            "descripcion": "Interconexion trafico limpio",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "36",
+        "type": "Trafico Limpio",
+        "startNode": "31",
+        "endNode": "25",
+        "properties": {
+            "descripcion": "Interconexion trafico limpio",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "37",
+        "type": "External",
+        "startNode": "28",
+        "endNode": "32",
+        "properties": {
+            "descripcion": "Conexion a internet",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "1",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "38",
+        "type": "External",
+        "startNode": "29",
+        "endNode": "32",
+        "properties": {
+            "descripcion": "Conexion a internet",
+            "vlans": "",
+            "velocidad": "10000",
+            "segurizado": "0",
+            "portchannel": "1",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "39",
+        "type": "v171",
+        "startNode": "31",
+        "endNode": "33",
+        "properties": {
+            "descripcion": "conexion arbor",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "40",
+        "type": "v171",
+        "startNode": "30",
+        "endNode": "33",
+        "properties": {
+            "descripcion": "conexion arbor",
+            "vlans": "171",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "41",
+        "type": "v16",
+        "startNode": "10",
+        "endNode": "34",
+        "properties": {
+            "descripcion": "vlna 16",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "42",
+        "type": "v16",
+        "startNode": "34",
+        "endNode": "35",
+        "properties": {
+            "descripcion": "vlan 16",
+            "vlans": "16",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "43",
+        "type": "v16",
+        "startNode": "34",
+        "endNode": "36",
+        "properties": {
+            "descripcion": "vlan 16",
+            "vlans": "16",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "44",
+        "type": "External",
+        "startNode": "37",
+        "endNode": "15",
+        "properties": {
+            "descripcion": "interconexion nexus",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "45",
+        "type": "External",
+        "startNode": "21",
+        "endNode": "37",
+        "properties": {
+            "descripcion": "interconexion nexus",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "46",
+        "type": "External",
+        "startNode": "20",
+        "endNode": "37",
+        "properties": {
+            "descripcion": "interconexion nexus",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "47",
+        "type": "External",
+        "startNode": "38",
+        "endNode": "37",
+        "properties": {
+            "descripcion": "interconexion nexus",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "48",
+        "type": "External",
+        "startNode": "38",
+        "endNode": "20",
+        "properties": {
+            "descripcion": "interconexion nexus",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "49",
+        "type": "External",
+        "startNode": "21",
+        "endNode": "38",
+        "properties": {
+            "descripcion": "interconexion nexus",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "1",
+            "fibra": "0"
+        }
+    },
+    {
+        "id": "50",
+        "type": "External",
+        "startNode": "23",
+        "endNode": "38",
+        "properties": {
+            "descripcion": "Interconexion nexus",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    },
+    {
+        "id": "51",
+        "type": "External",
+        "startNode": "22",
+        "endNode": "38",
+        "properties": {
+            "descripcion": "interconexion nexus",
+            "vlans": "",
+            "velocidad": "1000",
+            "segurizado": "0",
+            "portchannel": "0",
+            "cobre": "0",
+            "fibra": "1"
+        }
+    }
+]}
+}]
+}],
+ "errors": []
+}

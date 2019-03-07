@@ -1,0 +1,92 @@
+{
+    "results": [{
+        "columns": ["user", "entity"],
+        "data": [{
+            "graph": {
+                "nodes": [{
+                    "id": "1",
+                    "labels": ["User"],
+                    "properties": {
+                        "userId": "Alfred"
+                    }
+                }, {
+                    "id": "2",
+                    "labels": ["Phone"],
+                    "properties": {
+                        "value": "555-555-5555"
+                    }
+                }, {
+                    "id": "3",
+                    "labels": ["Address"],
+                    "properties": {
+                        "zipCode": "90210",
+                        "country": "US",
+                        "city": "Beverly Hills",
+                        "state": "CA"
+                    }
+                }, {
+                    "id": "4",
+                    "labels": ["CreditCard"],
+                    "properties": {
+                        "value": 1326322800000
+                    }
+                }, {
+                    "id": "5",
+                    "labels": ["Password"],
+                    "properties": {
+                        "value": "123456"
+                    }
+                }, {
+                    "id": "6",
+                    "labels": ["Device"],
+                    "properties": {
+                        "value": "eisman"
+                    }
+
+                }],
+                "relationships": [{
+                    "id": "1",
+                    "type": "HAS_PHONE_NUMBER",
+                    "startNode": "1",
+                    "endNode": "2",
+                    "properties": {
+                        "from": 1473581532586
+                    }
+                }, {
+                    "id": "2",
+                    "type": "HAS_ADDRESS",
+                    "startNode": "1",
+                    "endNode": "3",
+                    "properties": {
+                        "from": 1473581532586
+                    }
+                }, {
+                    "id": "3",
+                    "type": "HAS_BIRTH_DATE",
+                    "startNode": "1",
+                    "endNode": "4",
+                    "properties": {
+                        "from": 1473581532586
+                    }
+                }, {
+                    "id": "4",
+                    "type": "HAS_PASSWORD",
+                    "startNode": "6",
+                    "endNode": "5",
+                    "properties": {
+                        "from": 1473581532586
+                    }
+                }, {
+                    "id": "5",
+                    "type": "USED_DEVICE",
+                    "startNode": "1",
+                    "endNode": "6",
+                    "properties": {
+                        "from": 1473581532586
+                    }
+                }]
+            }
+        }]
+    }],
+    "errors": []
+}
