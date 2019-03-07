@@ -58,13 +58,13 @@ $iso_exc = mysqli_num_rows($qiso_exc);
 $qiso_perf = mysqli_query($con, "SELECT 1 as total FROM controls.item_iso27k WHERE madurez='3'");
 $iso_perf = mysqli_num_rows($qiso_perf);
 
-$qv = mysqli_query($con, "SELECT 1 as qv FROM riesgo WHERE n_resid<=3 && borrado=0");
+$qv = mysqli_query($con, "SELECT 1 as qv FROM riesgo WHERE n_resid<=3 AND borrado=0 AND estado='0'");
 $rqv = mysqli_num_rows($qv);
 
-$qa = mysqli_query($con,"SELECT 1 as qa FROM riesgo WHERE n_resid=4 OR n_resid=6 && borrado=0");
+$qa = mysqli_query($con,"SELECT 1 as qa FROM riesgo WHERE (n_resid=4 OR n_resid=6) AND borrado=0 AND estado='0'");
 $rqa = mysqli_num_rows($qa);
 
-$qr = mysqli_query($con,"SELECT 1 as qr FROM riesgo WHERE n_resid>6 && borrado=0");
+$qr = mysqli_query($con,"SELECT 1 as qr FROM riesgo WHERE n_resid>6 AND borrado=0 AND estado='0'");
 $rqr = mysqli_num_rows($qr);
 
 $qcc = mysqli_query($con,"SELECT 1 as total 
