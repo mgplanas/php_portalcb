@@ -376,12 +376,13 @@ desired effect
 				$contenido = mysqli_real_escape_string($con,(strip_tags($_POST["contenido"],ENT_QUOTES)));//Escanpando caracteres
 				$responsable = mysqli_real_escape_string($con,(strip_tags($_POST["responsable"],ENT_QUOTES)));//Escanpando caracteres 
 				$periodo = mysqli_real_escape_string($con,(strip_tags($_POST["periodo"],ENT_QUOTES)));//Escanpando caracteres 
-                $tipo = mysqli_real_escape_string($con,(strip_tags($_POST["tipo"],ENT_QUOTES)));//Escanpando caracteres 
+				$mesInicio = mysqli_real_escape_string($con,(strip_tags($_POST["mesinicio"],ENT_QUOTES)));//Escanpando caracteres 
+        $tipo = mysqli_real_escape_string($con,(strip_tags($_POST["tipo"],ENT_QUOTES)));//Escanpando caracteres 
 								
 				$ano = date("Y");
 
 				//Inserto Control
-				$insert_control = mysqli_query($con, "INSERT INTO controles (titulo, contenido, creado, ano, responsable, usuario, periodo, status, tipo) VALUES('$titulo','$contenido', NOW(), '$ano','$responsable', '$user','$periodo', '3', '$tipo')") or die(mysqli_error());	
+				$insert_control = mysqli_query($con, "INSERT INTO controles (titulo, contenido, creado, ano, responsable, usuario, periodo, status, tipo, mesinicio) VALUES('$titulo','$contenido', NOW(), '$ano','$responsable', '$user','$periodo', '3', '$tipo', '$mesInicio')") or die(mysqli_error());	
 
 				    //Ultimo Insert
 					$last = $con->insert_id;
@@ -389,7 +390,7 @@ desired effect
 					$nro_referencia = 1;
 					// Mes Actual
 					// $mes = date("m");
-					$mes = 1;
+					$mes = (int)$mesInicio;
 					$ano = date("Y");
 					while ($mes <= 12) {
 						$insert_ref = mysqli_query($con, "INSERT INTO referencias (id_control, mes, ano, nro_referencia)
@@ -439,6 +440,25 @@ desired effect
                   </select>
                 </div>
 				<div class="form-group">
+          <div class="row">
+          <div class="col-sm-6">
+            <label>Mes de Inicio</label>
+						<select name="mesinicio" class="form-control">
+							<option value='1'>Enero</option>
+							<option value='2'>Febrero</option>
+							<option value='3'>Marzo</option>
+							<option value='4'>Abril</option>
+							<option value='5'>Mayo</option>
+							<option value='6'>Junio</option>
+							<option value='7'>Julio</option>
+							<option value='8'>Agosto</option>
+							<option value='9'>Septiembre</option>
+							<option value='10'>Octubre</option>
+							<option value='11'>Noviembre</option>
+							<option value='12'>Diciembre</option>
+						</select>
+          </div>
+          <div class="col-sm-6">  
 						<label>Periodo</label>
 						<select name="periodo" class="form-control">
 							<option value='1'>Mensual</option>
@@ -446,7 +466,10 @@ desired effect
 							<option value='6'>Semestral</option>
                             <option value='12'>Anual</option>
 						</select>
-				</div>
+          </div>
+
+          </div>
+        </div>
 				
 				<div class="form-group">
 					<div class="col-sm-3">

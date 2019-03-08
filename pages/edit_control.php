@@ -361,21 +361,41 @@ desired effect
                   </select>
                 </div>
                 <div class="form-group">
+                <div class="row">
+                <div class="col-sm-6">
+                  <label for="mesinicio">Mes de Inicio</label>
+                    <?php if($row['mesinicio'] == '1'){ echo '<input type="text" class="form-control" name="mesinicio" value="Enero" readonly>';}
+                      else if($row['mesinicio'] =='2'){ echo '<input type="text" class="form-control" name="mesinicio" value="Febrero" readonly>';}
+                      else if($row['mesinicio'] =='3'){ echo '<input type="text" class="form-control" name="mesinicio" value="Marzo" readonly>';}
+                      else if($row['mesinicio'] =='4'){ echo '<input type="text" class="form-control" name="mesinicio" value="Abril" readonly>';}
+                      else if($row['mesinicio'] =='5'){ echo '<input type="text" class="form-control" name="mesinicio" value="Mayo" readonly>';}
+                      else if($row['mesinicio'] =='6'){ echo '<input type="text" class="form-control" name="mesinicio" value="Junio" readonly>';}
+                      else if($row['mesinicio'] =='7'){ echo '<input type="text" class="form-control" name="mesinicio" value="Julio" readonly>';}
+                      else if($row['mesinicio'] =='8'){ echo '<input type="text" class="form-control" name="mesinicio" value="Agosto" readonly>';}
+                      else if($row['mesinicio'] =='9'){ echo '<input type="text" class="form-control" name="mesinicio" value="Septiembre" readonly>';}
+                      else if($row['mesinicio'] =='10'){ echo '<input type="text" class="form-control" name="mesinicio" value="Octubre" readonly>';}
+                      else if($row['mesinicio'] =='11'){ echo '<input type="text" class="form-control" name="mesinicio" value="Noviembre" readonly>';}
+                      else if($row['mesinicio'] =='12'){ echo '<input type="text" class="form-control" name="mesinicio" value="Diciembre" readonly>';}
+                    ?>
+                  </div>
+                  <div class="col-sm-6">
                   <label for="periodo">Periodo</label>
                     <?php if($row['periodo'] == '1'){
-								echo '<input type="text" class="form-control" name="periodo" value="Mensual" readonly>';
-							}
-							else if ($row['periodo'] == '3' ){
-								echo '<input type="text" class="form-control" name="periodo" value="Trimestral" readonly>';
-							}
-							else if ($row['periodo'] == '6' ){
-								echo '<input type="text" class="form-control" name="periodo" value="Semestral" readonly>';
-							}
-                            else if ($row['periodo'] == '12' ){
-								echo '<input type="text" class="form-control" name="periodo" value="Anual" readonly>';
-							}
+                        echo '<input type="text" class="form-control" name="periodo" value="Mensual" readonly>';
+                      }
+                      else if ($row['periodo'] == '3' ){
+                        echo '<input type="text" class="form-control" name="periodo" value="Trimestral" readonly>';
+                      }
+                      else if ($row['periodo'] == '6' ){
+                        echo '<input type="text" class="form-control" name="periodo" value="Semestral" readonly>';
+                      }
+                                    else if ($row['periodo'] == '12' ){
+                        echo '<input type="text" class="form-control" name="periodo" value="Anual" readonly>';
+                      }
                     ?>
-                 </div>
+                  </div>
+                </div>
+                </div>
 				 <div class="form-group">
 					<div class="col-sm-2">
 						<input type="submit" name="save" class="btn  btn-raised btn-success" value="Guardar datos">
