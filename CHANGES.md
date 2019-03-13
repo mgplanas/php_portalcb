@@ -1,3 +1,12 @@
+## FEAT-PER-ABM
+### Agregar la posibilidad de actualizar y borrar una persona.
+Hoy en día solo existe la funcionalidad de ALTA.
+*Fecha:* 2019-03-13
+*Cambios:*
+- Se agrega el campo borrado TINYINT [0 | 1] para baja lógica de personas [DB]
+- Se agrega solapa en administración para el ABM de personas . [admin.php]
+
+
 ## FEAT-CTR-MESINICIO
 ### Agregar mes de inicio para la generación de los controles del año.
 Se debe agregar un selector del mes de inicicio de los controles para que los mismos se generen desde ese mes en base a la periodicidad definida.
