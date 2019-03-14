@@ -3,8 +3,24 @@
 Hoy en día solo existe la funcionalidad de ALTA.
 *Fecha:* 2019-03-13
 *Cambios:*
-- Se agrega el campo borrado TINYINT [0 | 1] para baja lógica de personas [DB]
-- Se agrega solapa en administración para el ABM de personas . [admin.php]
+- Se agrega el campo borrado TINYINT [0 | 1] para baja lógica de personas M[DB]
+- Se agrega solapa en administración para el ABM de personas . M[admin.php]
+    - Alta de persona en popup
+    - Baja lógica
+    - Se agrega paginado
+- Edición de persona. N[edit_persona.php]
+- Se corrige los queries donde se asumia que el campo borrado de persona no existía. M[riesgos.php]
+
+#### TODO
+- Faltan campos de Grupo y contacto en los formularios
+- Quitar agregar persona de las demás páginas
+    - Activos
+    - Controles
+    - iso
+    - mejora
+    - riesgos
+    - proyecto-proyectos
+- Botón ver
 
 
 ## FEAT-CTR-MESINICIO

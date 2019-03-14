@@ -39,17 +39,17 @@ if(isset($_GET['aksi']) == 'filter'){
     if($t == 0){
 		$query = "SELECT i.*, p.nombre, p.apellido, c.tipo FROM riesgo as i 
 		          LEFT JOIN categoria as c on i.categoria = c.id_categoria 
-                  LEFT JOIN persona as p on i.responsable = p.id_persona WHERE `borrado`='0' AND probabilidad=$p AND i_result=$i ";
+                  LEFT JOIN persona as p on i.responsable = p.id_persona WHERE i.borrado='0' AND probabilidad=$p AND i_result=$i ";
 	}else if($t == 1){
 		$query = "SELECT i.*, p.nombre, p.apellido, c.tipo FROM riesgo as i 
 		          LEFT JOIN categoria as c on i.categoria = c.id_categoria 
-                  LEFT JOIN persona as p on i.responsable = p.id_persona WHERE `borrado`='0' AND p_resid=$p AND i_resid=$i ";
+                  LEFT JOIN persona as p on i.responsable = p.id_persona WHERE i.borrado='0' AND p_resid=$p AND i_resid=$i ";
 		}
 	
 }else{
     $query = "SELECT i.*, p.nombre, p.apellido, c.tipo FROM riesgo as i 
                 LEFT JOIN categoria as c on i.categoria = c.id_categoria 
-				LEFT JOIN persona as p on i.responsable = p.id_persona WHERE `borrado`='0' ";
+				LEFT JOIN persona as p on i.responsable = p.id_persona WHERE i.borrado='0' ";
 }
 
 //Alert icons data on top bar

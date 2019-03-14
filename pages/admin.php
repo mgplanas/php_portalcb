@@ -35,6 +35,21 @@ if(isset($_GET['aksi']) == 'delete'){
 	}
 }
 
+if(isset($_GET['aksip']) == 'delete'){
+	// escaping, additionally removing everything that could be (html/javascript-) code
+	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+    
+		
+    $delete_persona = mysqli_query($con, "UPDATE persona SET borrado=1 WHERE id_persona='$nik'");
+    
+    $delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+                                            VALUES ('3', '2', '$nik', now(), '$user', '$email')") or die(mysqli_error());
+    if(!$delete_persona){
+        $_SESSION['formSubmitted'] = 9;
+        header("Location: admin.php");
+    }
+}
+
 //Get user query
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
 $rowp = mysqli_fetch_assoc($persona);
@@ -544,7 +559,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </div>
                                     <thead>
                                         <tr>
-                                            <th width="1">Nro1</th>
+                                            <th width="1">Nro</th>
                                             <th width="1">Legajo</th>
                                             <th width="1">Nombre</th>
                                             <th width="1">email</th>
@@ -576,7 +591,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             echo '<td>'.$row['gerencia'].'</td>'; 
                                             echo '<td align="center">
                                                     <a href="edit_persona.php?nik='.$row['id_persona'].'" title="Editar persona" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-                                                    <a href="admin.php?aksi=delete&nik='.$row['id_persona'].'" title="Borrar persona" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['apellido']. ' ' .$row['nombre'].'?\')" class="btn btn-danger btn-sm ';
+                                                    <a href="admin.php?aksip=delete&nik='.$row['id_persona'].'" title="Borrar persona" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['apellido']. ' ' .$row['nombre'].'?\')" class="btn btn-danger btn-sm ';
                                             echo '"><i class="glyphicon glyphicon-trash"></i></a></td>';
                                             echo '</tr>';
                                           }
@@ -842,6 +857,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
             'autoWidth': false,
         })
     })
+    </script>
+    <script>
+        $(function () {
+            $('#personas').DataTable({
+            'paging'      : true,
+            'lengthChange': false,
+            'searching'   : false,
+            'ordering'    : true,
+            'info'        : true,
+            'autoWidth'   : true
+            })
+        })
     </script>
     <script>
     $(function() {
