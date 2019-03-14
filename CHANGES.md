@@ -1,3 +1,11 @@
+## FEAT-CTR-GERENCIA
+### Agregar el campo Gerencia en controles y Riesgo.
+*Fecha:* 2019-03-14
+*Cambios:*
+- Se arregla el identado del código M[riesgos.php]
+- Se agrega la gerencia del referente/responsable a la lista de riesgos con el find de poder filtrar M[riesgos.php]
+
+
 ## FEAT-PER-ABM
 ### Agregar la posibilidad de actualizar y borrar una persona.
 Hoy en día solo existe la funcionalidad de ALTA.
