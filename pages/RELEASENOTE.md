@@ -1,6 +1,7 @@
 ## RELEASE NOTE FOR
 ### Features
 - FEAT-PER-ABM
+- FEAT-CTR-GERENCIA
 
 ### Pasos
 - BackUp DB
@@ -10,4 +11,5 @@
 - Cambios en SRC
     - Actualizar pages/admin.php
     - Actualizar pages/riesgos.php
+    - Actualizar pages/controles.php
     - Agregar pages/edit_persona.php
