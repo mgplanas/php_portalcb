@@ -4,6 +4,8 @@
 *Cambios:*
 - Se arregla el identado del código M[riesgos.php]
 - Se agrega la gerencia del referente/responsable a la lista de riesgos con el find de poder filtrar M[riesgos.php]
+- Se arregla el identado del código M[controles.php]
+- Se agrega la gerencia del referente/responsable a la lista de riesgos con el find de poder filtrar M[controles.php]
 
 
 ## FEAT-PER-ABM
