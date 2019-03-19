@@ -30,19 +30,29 @@ if(isset($_GET['aksi']) == 'delete'){
          header('Location: riesgos.php');
     }
 }
+
+//Alert icons data on top bar
+//Get user query
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' AND borrado = 0");
+$rowp = mysqli_fetch_assoc($persona);
+$id_rowp = $rowp['id_persona'];
+$per_id_gerencia = $rowp['gerencia'];
+// GERENCIA DE CIBER SEGURIDAD = 1 
+// PUEDE VER TODO
+
+
 if(isset($_GET['aksi']) == 'filter'){
-	// escaping, additionally removing everything that could be (html/javascript-) code
-	$p=$_GET["p"];     //probabilidad
-    $i=$_GET["i"];      //impacto
-    $t=$_GET["t"];      //0=inherente;1=residual
-    
-    if($t == 0){
-		$query = "SELECT i.*, p.nombre, p.apellido, c.tipo, g.nombre as gerencia 
-              FROM riesgo as i 
-		          LEFT JOIN categoria as c on i.categoria = c.id_categoria 
-              LEFT JOIN persona as p on i.responsable = p.id_persona
-              LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia 
-              WHERE i.borrado='0' AND probabilidad=$p AND i_result=$i ";
+  $p=$_GET["p"];     //probabilidad
+  $i=$_GET["i"];      //impacto
+  $t=$_GET["t"];      //0=inherente;1=residual
+  
+  if($t == 0){
+  $query = "SELECT i.*, p.nombre, p.apellido, c.tipo, g.nombre as gerencia 
+            FROM riesgo as i 
+            LEFT JOIN categoria as c on i.categoria = c.id_categoria 
+            LEFT JOIN persona as p on i.responsable = p.id_persona
+            LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia 
+            WHERE i.borrado='0' AND probabilidad=$p AND i_result=$i ";
 	}else if($t == 1){
 		$query = "SELECT i.*, p.nombre, p.apellido, c.tipo, g.nombre as gerencia
               FROM riesgo as i 
@@ -61,11 +71,11 @@ if(isset($_GET['aksi']) == 'filter'){
               WHERE i.borrado='0' ";
 }
 
-//Alert icons data on top bar
-//Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
-$rowp = mysqli_fetch_assoc($persona);
-$id_rowp = $rowp['id_persona'];
+// AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
+if ( $per_id_gerencia != 1) {
+  $query = $query . " AND p.gerencia = $per_id_gerencia ";
+}
+
 
 //Count riesgos
 $riesgos = "SELECT 1 as total FROM riesgo WHERE riesgo.responsable='$id_rowp' AND riesgo.borrado='0'";
@@ -416,8 +426,8 @@ desired effect
             <!-- Main content -->
             <section class="content container-fluid">
                 <!--------------------------
-     | Your Page Content Here |
-     -------------------------->
+                | Your Page Content Here |
+                -------------------------->
                 <section class="content">
                     <div class="row">
                         <div class="col-xs-12">
@@ -1812,9 +1822,9 @@ desired effect
                                                   $days2ven = $dayofdue - $dayofy;
                                                   
                                                   if ($row['estado'] == '0' ){
-                                                      if ($due_y >= $year){
+                                                      //if ($due_y >= $year){
                                                           echo '<td>'.$days2ven.' días</td>';
-                                                      }else echo '<td><span class="label label-danger">Vencido</span></td>';
+                                                      //}else echo '<td><span class="label label-danger">Vencido</span></td>';
                                                   }else echo '<td><span class="label label-info">No Aplica</span></td>';
                                                                 
                                                   echo '<td align="center">

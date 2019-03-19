@@ -9,6 +9,29 @@ if (!isset($_SESSION['usuario'])){
 }
 $user=$_SESSION['usuario'];
 
+
+// BORRADO AVANCE
+if(isset($_GET['akav']) == 'delete'){
+	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+	$cek = mysqli_query($con, "SELECT * FROM avance_riesgo WHERE id_avance_riesgo='$nik'");
+	$cekd = mysqli_fetch_assoc($cek);
+  $titulo = $cekd['detalle'];
+ 
+    //Elimino el avance
+    $delete_riesgo = mysqli_query($con, "UPDATE avance_riesgo SET borrado=1 WHERE id_avance_riesgo='$nik'");
+    $delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+                                           VALUES ('3', '4', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
+
+    if(!$delete_riesgo){
+        $_SESSION['formSubmitted'] = 19;
+        header('Location: edit_riesgo.php?nik=' . $_GET["nir"]  );
+    }else{
+         $_SESSION['formSubmitted'] = 11;
+         header('Location: edit_riesgo.php?nik=' . $_GET["nir"] );
+    }
+}
+
+
 $nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
 $sql = mysqli_query($con, "SELECT i.*, p.nombre, p.apellido, c.tipo FROM riesgo as i 
 								LEFT JOIN categoria as c on i.categoria = c.id_categoria 
@@ -354,6 +377,17 @@ desired effect
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+    <?php
+      //Alerts -> 0=no modification, 1=Edicion, 2=Nuevo activo, 3=Nueva persona, 9=Error
+      if ($_SESSION['formSubmitted']=='11'){
+        echo '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> Datos editados correctamente.</div>';
+        $_SESSION['formSubmitted'] = 0;
+      }
+      else if ($_SESSION['formSubmitted']=='19'){
+        echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> Error al ejecutar el vuelco a la base de datos.</div>';
+        $_SESSION['formSubmitted'] = 0;
+      }
+    ?>
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
@@ -733,6 +767,7 @@ desired effect
                       <th style="width: 10px">#</th>
                       <th>Detalle</th>
                       <th style="width: 150px">Fecha</th>
+                      <th>Acción</th>
                     </tr>
                     <?php
                         $query = "SELECT * FROM avance_riesgo
@@ -768,6 +803,13 @@ desired effect
                                 <td>'.$row['detalle'].'</td>';
                                 echo '
                                 <td>'.$row['fecha'].'</td>';
+                                echo '<td align="center">
+                                    <a href="edit_riesgo.php?akav=delete&nik='.$row['id_avance_riesgo'].'&nir=' . $nik .'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de ['.$row['detalle'].']?\')" class="btn btn-danger btn-sm ';
+                                    if ($rq_sec['edicion']=='0'){
+                                            echo 'disabled';
+                                    }
+                                echo '"><i class="glyphicon glyphicon-trash"></i></a></td>';
+                                echo '</tr>';
                             }
                         }
                         ?>  
