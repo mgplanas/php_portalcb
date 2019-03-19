@@ -12,22 +12,22 @@ $user=$_SESSION['usuario'];
 
 // BORRADO AVANCE
 if(isset($_GET['akav']) == 'delete'){
-	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
-	$cek = mysqli_query($con, "SELECT * FROM avance_riesgo WHERE id_avance_riesgo='$nik'");
+	$niav = mysqli_real_escape_string($con,(strip_tags($_GET["niav"],ENT_QUOTES)));
+	$cek = mysqli_query($con, "SELECT * FROM avance_riesgo WHERE id_avance_riesgo='$niav'");
 	$cekd = mysqli_fetch_assoc($cek);
   $titulo = $cekd['detalle'];
  
     //Elimino el avance
-    $delete_riesgo = mysqli_query($con, "UPDATE avance_riesgo SET borrado=1 WHERE id_avance_riesgo='$nik'");
+    $delete_riesgo = mysqli_query($con, "UPDATE avance_riesgo SET borrado=1 WHERE id_avance_riesgo='$niav'");
     $delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
-                                           VALUES ('3', '4', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
+                                           VALUES ('3', '4', '$niav', now(), '$user', '$titulo')") or die(mysqli_error());
 
     if(!$delete_riesgo){
         $_SESSION['formSubmitted'] = 19;
-        header('Location: edit_riesgo.php?nik=' . $_GET["nir"]  );
+        header('Location: edit_riesgo.php?nik=' . $_GET["nik"]  );
     }else{
          $_SESSION['formSubmitted'] = 11;
-         header('Location: edit_riesgo.php?nik=' . $_GET["nir"] );
+         header('Location: edit_riesgo.php?nik=' . $_GET["nik"] );
     }
 }
 
@@ -781,30 +781,25 @@ desired effect
                         }else{
                             while($row = mysqli_fetch_assoc($sql)){
 
-                                echo '
-                                <tr>
-                                <td>
-                                <a data-id="'.$row['id_avance_riesgo'].'" 
-                                    data-detail="'.$row['detalle'].'"
-                                    data-fecha="'.$row['fecha'].'"
-                                    data-usuario="'.$row['user'].'"
-                                    title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                </td>';
-                                echo '
-
-
-                                <td align="center">'.$row['id_avance_riesgo'].'</td>';
-
-
-                                echo '
-
-                                </td>								
-
-                                <td>'.$row['detalle'].'</td>';
-                                echo '
-                                <td>'.$row['fecha'].'</td>';
+                                echo '<tr>
+                                  <td><a data-id="'.$row['id_avance_riesgo'].'" 
+                                      data-detail="'.$row['detalle'].'"
+                                      data-fecha="'.$row['fecha'].'"
+                                      data-usuario="'.$row['user'].'"
+                                      title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                  </td>';
+                                echo '<td align="center">'.$row['id_avance_riesgo'].'</td>';
+                                echo '<td>'.$row['detalle'].'</td>';
+                                echo '<td>'.$row['fecha'].'</td>';
                                 echo '<td align="center">
-                                    <a href="edit_riesgo.php?akav=delete&nik='.$row['id_avance_riesgo'].'&nir=' . $nik .'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de ['.$row['detalle'].']?\')" class="btn btn-danger btn-sm ';
+                                      <a data-id="'.$row['id_avance_riesgo'].'" 
+                                        data-detail="'.$row['detalle'].'"
+                                        data-fecha="'.$row['fecha'].'"
+                                        data-usuario="'.$row['user'].'"
+                                        data-riesgo="'. $nik .'"
+                                        title="Editar datos" class="editar-itemDialog btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>    
+                                
+                                    <a href="edit_riesgo.php?akav=delete&niav='.$row['id_avance_riesgo'].'&nik=' . $nik .'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de ['.$row['detalle'].']?\')" class="btn btn-danger btn-sm ';
                                     if ($rq_sec['edicion']=='0'){
                                             echo 'disabled';
                                     }
@@ -817,14 +812,17 @@ desired effect
                 </div>
             <!-- /.box-body -->
           </div>
-		<div class="modal-footer">	
+		    <div class="modal-footer">	
             <div class="col-sm-6">
                 <input type="submit" name="save" class="btn btn-raised btn-success" value="Guardar datos">
             </div>
             <div class="col-sm-6">
                 <a href="riesgos.php" class="btn btn-default pull-left">Cancelar</a>
             </div>
-		</div>
+		    </div>
+
+
+    <!-- MODAL ADD AVANCE -->
     <div class="modal fade" id="modal-avance">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -900,6 +898,92 @@ desired effect
       </div>
       <!-- /.modal-dialog -->
     </div>
+    <!-- END MODAL ADD AVANCE -->
+    
+    <!-- MODAL EDIT AVANCE -->
+    <div class="modal fade" id="modal-avance-edit">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h2 class="modal-title">Editar Avance de gestión de riesgo</h2>
+            <?php
+               $meta_riesgo = mysqli_query($con, "SELECT * FROM riesgo WHERE id_riesgo='$nik'");
+               $rowmp = mysqli_fetch_array($meta_riesgo);
+              
+                if(isset($_POST['EditAvance'])){
+                    $detalle = mysqli_real_escape_string($con,(strip_tags($_POST["detalle"],ENT_QUOTES)));//Escanpando caracteres
+                    $estado = mysqli_real_escape_string($con,(strip_tags($_POST["estado"],ENT_QUOTES)));//Escanpando caracteres
+                    $avance = mysqli_real_escape_string($con,(strip_tags($_POST["avance"],ENT_QUOTES)));//Escanpando caracteres
+                    $id_avance = mysqli_real_escape_string($con,(strip_tags($_POST["id_avance"],ENT_QUOTES)));//Escanpando caracteres
+
+                    $insert_avance = mysqli_query($con, "UPDATE avance_riesgo SET detalle='$detalle', fecha=now(), user='$user' WHERE id_avance_riesgo=$id_avance") or die(mysqli_error());
+                    
+                    $upsSQL = "UPDATE riesgo SET estado=$estado, avance=$avance, modificado=NOW() WHERE id_riesgo=$nik";
+                    $update_riesgo = mysqli_query($con, $upsSQL) or die(mysqli_error());	
+                    
+                    
+                    $lastInsert = mysqli_insert_id($con);
+                    $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
+                                               VALUES ('1', '4', '$lastInsert', now(), '$user')") or die(mysqli_error());
+	                if($insert_avance){
+                    echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
+                  }
+                }				
+            ?>
+          </div>
+          <div class="modal-body">
+            <!-- form start -->
+        <form method="post" role="form" action="">
+          <div class="box-body">
+          <div class="form-group">
+            <label class="label-custom label-custom-info">Avance #</label>
+            <input type="text" name="id_avance" id="id_avance" value="" class="form-control" readonly>
+          </div>          
+            <div class="form-group">
+              <label for="detalle">Detalle del avance</label>
+              <textarea class="form-control" rows="5" name="detalle" id="edit-detalle" value=""></textarea>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                  <div class="form-group">
+                      <label>Estado</label>
+                      <select name="estado" class="form-control">
+                          <option value='0'<?php if($rowmp['estado'] == '0'){ echo 'selected'; } ?>>Abierto</option>
+                          <option value='1'<?php if($rowmp['estado'] == '1'){ echo 'selected'; } ?>>Cerrado</option>
+                      </select>
+                  </div>
+                </div>
+              <div class="col-sm-6">
+                    <div class="form-group">
+                    <label for="porcentaje">Porcentaje de avance</label>
+                    <input type="text" class="form-control" name="avance" value="<?php echo $rowmp['avance']; ?>">
+                  </div>
+              </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <input type="submit" name="EditAvance" class="btn  btn-raised btn-success" value="Guardar datos">
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+          </div>
+
+        </form>
+
+          </div>
+
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>    
+    <!-- FIN MODAL EDIT AVANCE -->
+
+    <!-- MODAL VER AVANCE -->
     <div id="ver-itemDialog" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -931,6 +1015,7 @@ desired effect
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
+    <!-- FIN MODAL AVANCE -->
 		</form>	
           </div> 
     <!-- /.content -->
@@ -967,24 +1052,32 @@ desired effect
     //Initialize Select2 Elements
     $('.select2').select2()
     //Colorpicker
-    $('.my-colorpicker1').colorpicker()
-    //color picker with addon
-    $('.my-colorpicker2').colorpicker()
+    // $('.my-colorpicker1').colorpicker()
+    // //color picker with addon
+    // $('.my-colorpicker2').colorpicker()
   })
 </script>
 <script>
 $(function(){
   $(".ver-itemDialog").click(function(){
     $('#itemId').val($(this).data('id'));
-	$('#detail').val($(this).data('detail'));
-	$('#fecha').val($(this).data('fecha'));
-	$('#usuario').val($(this).data('usuario'));
-
+    $('#detail').val($(this).data('detail'));
+    $('#fecha').val($(this).data('fecha'));
+    $('#usuario').val($(this).data('usuario'));
     $("#ver-itemDialog").modal("show");
-	
   });
 });
 </script>
+<script>
+$(function(){
+  $(".editar-itemDialog").click(function(){
+    $('#id_avance').val($(this).data('id'));
+    $('#edit-detalle').val($(this).data('detail'));
+    $("#modal-avance-edit").modal("show");
+  });
+});
+</script>
+
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->

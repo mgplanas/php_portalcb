@@ -5,6 +5,8 @@
 - Se filtra la lista de riesgos en base a la gerencia en la que aparece el responsable salvo la gerencia de Ciberseguridad M[riesgos.php]
 - Se corrige la visualización de los días de vencio / a vencer. Si el riesgo se encuentra abierto se muestran los días. de vecido / a vencer. M[riesgos.php]
 - Se agrega la capacidad de borrar un avance. M[edit_riesgo.php]
+- Edicion de Avance por medio de Popup. M[edit_riesgo.php]
+
 
 ## FEAT-CTR-GERENCIA
 ### Agregar el campo Gerencia en controles y Riesgo.
