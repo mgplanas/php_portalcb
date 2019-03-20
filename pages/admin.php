@@ -622,6 +622,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                           <h2 class="modal-title">Nueva Persona</h2>
                                           <?php
                                             $gerencias = mysqli_query($con, "SELECT * FROM gerencia ORDER BY nombre ASC");
+                                            $grupos = mysqli_query($con, "SELECT * FROM grupo ORDER BY nombre ASC");
                                             if(isset($_POST['AddPersona'])){
                                               
                                               $legajo = mysqli_real_escape_string($con,(strip_tags($_POST["legajo"],ENT_QUOTES)));//Escanpando caracteres
@@ -630,8 +631,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                               $cargo = mysqli_real_escape_string($con,(strip_tags($_POST["cargo"],ENT_QUOTES)));//Escanpando caracteres 
                                               $gerencia = mysqli_real_escape_string($con,(strip_tags($_POST["gerencia"],ENT_QUOTES)));//Escanpando caracteres 
                                               $email = mysqli_real_escape_string($con,(strip_tags($_POST["email"],ENT_QUOTES)));//Escanpando caracteres 
+                                              $grupo = mysqli_real_escape_string($con,(strip_tags($_POST["grupo"],ENT_QUOTES)));//Escanpando caracteres 
+                                              $contacto = mysqli_real_escape_string($con,(strip_tags($_POST["contacto"],ENT_QUOTES)));//Escanpando caracteres 
+                                              
+                                              // Si la gerencia no es ciberseguridad limpio el valor del grupo
+                                              if ($gerencia != 1) {
+                                                  $grupo = 0;
+                                              }
                                               //Inserto Control
-                                              $insert_persona = mysqli_query($con, "INSERT INTO persona(legajo, nombre, apellido, cargo, gerencia, email, borrado) VALUES ('$legajo','$nombre','$apellido', '$cargo', '$gerencia', '$email', 0)") or die(mysqli_error());	
+                                              $insert_persona = mysqli_query($con, "INSERT INTO persona(legajo, nombre, apellido, cargo, gerencia, email, grupo, contacto, borrado) 
+                                                                                    VALUES ('$legajo','$nombre','$apellido', '$cargo', '$gerencia', '$email', '$grupo', '$contacto', 0)") or die(mysqli_error());	
                                               $lastInsert = mysqli_insert_id($con);
                                               $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                             VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
@@ -671,16 +680,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                           placeholder="E-mail corporativo">
                                                   </div>
                                                   <div class="form-group">
+                                                      <label for="contacto">Contacto</label>
+                                                      <input type="text" class="form-control" name="contacto"
+                                                          placeholder="Nro de contacto">
+                                                  </div>
+                                                  <div class="form-group">
                                                       <label for="cargo">Cargo</label>
                                                       <input type="text" class="form-control" name="cargo"
                                                           placeholder="Cargo">
                                                   </div>
                                                   <div class="form-group">
                                                       <label>Gerencia</label>
-                                                      <select name="gerencia" class="form-control">
+                                                      <select name="gerencia" class="form-control" id="gerenciaselector">
                                                           <?php
                                                             while($rowg = mysqli_fetch_array($gerencias)){
                                                                 echo "<option value=". $rowg['id_gerencia'] . ">" .$rowg['nombre'] . "</option>";
+                                                                }
+                                                          ?>
+                                                      </select>
+                                                  </div>
+                                                  <div class="form-group" id="grupodiv">
+                                                      <label>Grupo</label>
+                                                      <select name="grupo" class="form-control" id="gruposelector">
+                                                          <?php
+                                                            while($rowg = mysqli_fetch_array($grupos)){
+                                                                echo "<option value=". $rowg['id_grupo'] . ">" .$rowg['nombre'] . "</option>";
                                                                 }
                                                           ?>
                                                       </select>
@@ -880,6 +904,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
             'info': true,
             'autoWidth': false
         })
+    })
+    </script>
+    <script>
+    $(function() {
+        $('#gerenciaselector').on('change', function() {
+            if (this.value !=1 ) {    // Gerencia de CiberSeguridad
+                $('#grupodiv').hide();
+            } else {
+                $('#grupodiv').show();
+            }
+        });
     })
     </script>
     <script>

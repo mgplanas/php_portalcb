@@ -1,3 +1,11 @@
+## FEAT-PER-TODOS
+### Correcciones en la administracion de personas.
+*Fecha:* 2019-03-20
+*Cambios:*
+- Se agrega el campo "Grupo" en el ABM de personas solo para la gerencia de Ciberseguridad. M[admin.php]
+- Se agrega el campo "contacto" en el ABM de personas. M[admin.php]
+
+
 ## FEAT-RGO-VARIOS
 ### Correscciones varias en la página de Riesgo.
 *Fecha:* 2019-03-15
