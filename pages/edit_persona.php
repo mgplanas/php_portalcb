@@ -25,8 +25,22 @@ if(isset($_POST['save'])){
     $cargo = mysqli_real_escape_string($con,(strip_tags($_POST["cargo"],ENT_QUOTES)));//Escanpando caracteres 
     $gerencia = mysqli_real_escape_string($con,(strip_tags($_POST["gerencia"],ENT_QUOTES)));//Escanpando caracteres 
     $email = mysqli_real_escape_string($con,(strip_tags($_POST["email"],ENT_QUOTES)));//Escanpando caracteres 
-
-	$update_persona = mysqli_query($con, "UPDATE persona SET legajo='$legajo', nombre='$nombre', apellido='$apellido', cargo='$cargo', gerencia='$gerencia', email='$email' 
+    $grupo = mysqli_real_escape_string($con,(strip_tags($_POST["grupo"],ENT_QUOTES)));//Escanpando caracteres 
+    $contacto = mysqli_real_escape_string($con,(strip_tags($_POST["contacto"],ENT_QUOTES)));//Escanpando caracteres 
+    
+    // Si la gerencia no es ciberseguridad limpio el valor del grupo
+    if ($gerencia != 1) {
+      $grupo = 0;
+    }
+	  $update_persona = mysqli_query($con, "UPDATE persona 
+                                            SET legajo='$legajo', 
+                                            nombre='$nombre', 
+                                            apellido='$apellido', 
+                                            cargo='$cargo', 
+                                            gerencia='$gerencia', 
+                                            email='$email' ,
+                                            contacto='$contacto',
+                                            grupo= '$grupo'
                                         WHERE id_persona='$nik'") or die(mysqli_error());	
     $nombre_completo = $apellido . ' ' . $nombre;
     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
@@ -351,25 +365,47 @@ desired effect
                     <input type="text" class="form-control" name="email" value="<?php echo $row['email']; ?>">
                 </div>
                 <div class="form-group">
+                    <label for="contacto">Contacto</label>
+                    <input type="text" class="form-control" name="contacto" value="<?php echo $row['contacto']; ?>">
+                </div>                
+                <div class="form-group">
                     <label for="cargo">Cargo</label>
                     <input type="text" class="form-control" name="cargo" value="<?php echo $row['cargo']; ?>">
                 </div>
                 <div class="form-group">
                     <label>Gerencia</label>
-                    <select name="gerencia" class="form-control">
+                    <select name="gerencia" class="form-control" id="gerenciaselector">
                         <?php
-								$gerencias = mysqli_query($con, "SELECT * FROM gerencia ORDER BY nombre ASC");
-								while($rowps = mysqli_fetch_array($gerencias)){
-									if($rowps['id_gerencia']==$row['gerencia']) {
-										echo "<option value='". $rowps['id_gerencia'] . "' selected='selected'>" .$rowps['nombre'] . "</option>";
-									}
-									else {
-                                        echo "<option value='". $rowps['id_gerencia'] . "'>" .$rowps['nombre'] . "</option>";
-									}
-								}
-						?>                    
+                          $gerencias = mysqli_query($con, "SELECT * FROM gerencia ORDER BY nombre ASC");
+                          while($rowps = mysqli_fetch_array($gerencias)){
+                            if($rowps['id_gerencia']==$row['gerencia']) {
+                              echo "<option value='". $rowps['id_gerencia'] . "' selected='selected'>" .$rowps['nombre'] . "</option>";
+                            }
+                            else {
+                              echo "<option value='". $rowps['id_gerencia'] . "'>" .$rowps['nombre'] . "</option>";
+                            }
+                          }
+                      ?>                    
                     </select>
                 </div>
+
+                <div class="form-group" id="grupodiv">
+                    <label>Grupo</label>
+                    <select name="grupo" class="form-control" id="gruposelector">
+                        <?php
+                          $grupos = mysqli_query($con, "SELECT * FROM grupo ORDER BY nombre ASC");
+                          while($rowps = mysqli_fetch_array($grupos)){
+                            if($rowps['id_grupo']==$row['grupo']) {
+                              echo "<option value='". $rowps['id_grupo'] . "' selected='selected'>" .$rowps['nombre'] . "</option>";
+                            }
+                            else {
+                              echo "<option value='". $rowps['id_grupo'] . "'>" .$rowps['nombre'] . "</option>";
+                            }
+                          }
+                      ?>                    
+                    </select>
+                </div>
+
                 <div class="form-group">
 					<div class="col-sm-2">
 						<input type="submit" name="save" class="btn  btn-raised btn-success" value="Guardar datos">
@@ -410,7 +446,22 @@ desired effect
 <script src="../bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
+<script>
+    $(function() {
 
+      if ($('#gerenciaselector').val() != 1) {
+        $('#grupodiv').hide();
+      }
+
+      $('#gerenciaselector').on('change', function() {
+          if (this.value !=1 ) {    // Gerencia de CiberSeguridad
+              $('#grupodiv').hide();
+          } else {
+              $('#grupodiv').show();
+          }
+      });
+    })
+    </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
