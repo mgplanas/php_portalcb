@@ -7,6 +7,7 @@
 - Se agrega la capacidad de borrar un avance. M[edit_riesgo.php]
 - Edicion de Avance por medio de Popup. M[edit_riesgo.php]
 - Filtro por incidente en la lista de riegos. M[riesgos.php]
+- Campo de justificacion obligatorio al cerrar un riesgo. M[edit_riesgo.php]
 
 
 ## FEAT-CTR-GERENCIA

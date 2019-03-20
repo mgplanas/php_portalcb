@@ -779,24 +779,26 @@ desired effect
                         if(mysqli_num_rows($sql) == 0){
                             echo '<tr><td colspan="8">No hay datos.</td></tr>';
                         }else{
-                            while($row = mysqli_fetch_assoc($sql)){
+                            while($rowavance = mysqli_fetch_assoc($sql)){
 
                                 echo '<tr>
-                                  <td><a data-id="'.$row['id_avance_riesgo'].'" 
-                                      data-detail="'.$row['detalle'].'"
-                                      data-fecha="'.$row['fecha'].'"
-                                      data-usuario="'.$row['user'].'"
+                                  <td><a data-id="'.$rowavance['id_avance_riesgo'].'" 
+                                      data-detail="'.$rowavance['detalle'].'"
+                                      data-fecha="'.$rowavance['fecha'].'"
+                                      data-usuario="'.$rowavance['user'].'"
                                       title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                                   </td>';
-                                echo '<td align="center">'.$row['id_avance_riesgo'].'</td>';
-                                echo '<td>'.$row['detalle'].'</td>';
-                                echo '<td>'.$row['fecha'].'</td>';
+                                echo '<td align="center">'.$rowavance['id_avance_riesgo'].'</td>';
+                                echo '<td>'.$rowavance['detalle'].'</td>';
+                                echo '<td>'.$rowavance['fecha'].'</td>';
                                 echo '<td align="center">
-                                      <a data-id="'.$row['id_avance_riesgo'].'" 
-                                        data-detail="'.$row['detalle'].'"
-                                        data-fecha="'.$row['fecha'].'"
-                                        data-usuario="'.$row['user'].'"
+                                      <a data-id="'.$rowavance['id_avance_riesgo'].'" 
+                                        data-detail="'.$rowavance['detalle'].'"
+                                        data-fecha="'.$rowavance['fecha'].'"
+                                        data-usuario="'.$rowavance['user'].'"
                                         data-riesgo="'. $nik .'"
+                                        data-estado="'.$row['estado'].'"
+                                        data-justificacion="'.$row['justificacion_cierre'].'"
                                         title="Editar datos" class="editar-itemDialog btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>    
                                 
                                     <a href="edit_riesgo.php?akav=delete&niav='.$row['id_avance_riesgo'].'&nik=' . $nik .'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de ['.$row['detalle'].']?\')" class="btn btn-danger btn-sm ';
@@ -838,12 +840,22 @@ desired effect
                     $detalle = mysqli_real_escape_string($con,(strip_tags($_POST["detalle"],ENT_QUOTES)));//Escanpando caracteres
                     $estado = mysqli_real_escape_string($con,(strip_tags($_POST["estado"],ENT_QUOTES)));//Escanpando caracteres
                     $avance = mysqli_real_escape_string($con,(strip_tags($_POST["avance"],ENT_QUOTES)));//Escanpando caracteres
+                    $justificacion = mysqli_real_escape_string($con,(strip_tags($_POST["justificacion"],ENT_QUOTES)));//Escanpando caracteres
+                    
 
                     $insert_avance = mysqli_query($con, "INSERT INTO avance_riesgo (id_riesgo, detalle, fecha, user) 
                                                          VALUES ('$nik', '$detalle', now(), '$user')") or die(mysqli_error());
                     
-                    $update_riesgo = mysqli_query($con, "UPDATE riesgo SET estado='$estado', avance='$avance', modificado=NOW() 
-										 WHERE id_riesgo='$nik'") or die(mysqli_error());	
+                    // Si el estado es abierto limpio la justificacion
+                    if ($estado=="0") {
+                      $justificacion = "";
+                    }
+                    $update_riesgo = mysqli_query($con, "UPDATE riesgo 
+                                                         SET estado='$estado', 
+                                                             avance='$avance', 
+                                                             modificado=NOW() ,
+                                                             justificacion_cierre = '$justificacion' 
+										                                     WHERE id_riesgo='$nik'") or die(mysqli_error());	
                     
                     
                     $lastInsert = mysqli_insert_id($con);
@@ -856,7 +868,7 @@ desired effect
           </div>
           <div class="modal-body">
             <!-- form start -->
-        <form method="post" role="form" action="">
+        <form method="post" role="form" action="" onsubmit="return validateAddAvance()">
           <div class="box-body">
             <div class="form-group">
               <label for="detalle">Detalle del avance</label>
@@ -866,7 +878,7 @@ desired effect
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Estado</label>
-                                <select name="estado" class="form-control">
+                                <select name="estado" class="form-control" id="estadoaddcierre">
                                     <option value='0'<?php if($rowmp['estado'] == '0'){ echo 'selected'; } ?>>Abierto</option>
                                     <option value='1'<?php if($rowmp['estado'] == '1'){ echo 'selected'; } ?>>Cerrado</option>
                                 </select>
@@ -879,6 +891,11 @@ desired effect
                             </div>
                         </div>
                 </div>
+
+            <div class="form-group" id="justificacioncierre">
+              <label for="detalle">Justificación</label>
+              <textarea class="form-control" rows="5" name="justificacion" id="txtjustificacionadd" value=""></textarea>
+            </div>
             <div class="form-group">
                 <div class="col-sm-3">
                     <input type="submit" name="Adda" class="btn  btn-raised btn-success" value="Guardar datos">
@@ -917,10 +934,15 @@ desired effect
                     $estado = mysqli_real_escape_string($con,(strip_tags($_POST["estado"],ENT_QUOTES)));//Escanpando caracteres
                     $avance = mysqli_real_escape_string($con,(strip_tags($_POST["avance"],ENT_QUOTES)));//Escanpando caracteres
                     $id_avance = mysqli_real_escape_string($con,(strip_tags($_POST["id_avance"],ENT_QUOTES)));//Escanpando caracteres
+                    $justificacion = mysqli_real_escape_string($con,(strip_tags($_POST["justificacion"],ENT_QUOTES)));//Escanpando caracteres
 
                     $insert_avance = mysqli_query($con, "UPDATE avance_riesgo SET detalle='$detalle', fecha=now(), user='$user' WHERE id_avance_riesgo=$id_avance") or die(mysqli_error());
                     
-                    $upsSQL = "UPDATE riesgo SET estado=$estado, avance=$avance, modificado=NOW() WHERE id_riesgo=$nik";
+                    // Si el estado es abierto limpio la justificacion
+                    if ($estado=="0") {
+                      $justificacion = "";
+                    }
+                    $upsSQL = "UPDATE riesgo SET estado=$estado, avance=$avance, modificado=NOW(), justificacion_cierre = '$justificacion'  WHERE id_riesgo=$nik";
                     $update_riesgo = mysqli_query($con, $upsSQL) or die(mysqli_error());	
                     
                     
@@ -949,7 +971,7 @@ desired effect
               <div class="col-sm-6">
                   <div class="form-group">
                       <label>Estado</label>
-                      <select name="estado" class="form-control">
+                      <select name="estado" class="form-control" id="estadoeditcierre">
                           <option value='0'<?php if($rowmp['estado'] == '0'){ echo 'selected'; } ?>>Abierto</option>
                           <option value='1'<?php if($rowmp['estado'] == '1'){ echo 'selected'; } ?>>Cerrado</option>
                       </select>
@@ -962,9 +984,13 @@ desired effect
                   </div>
               </div>
             </div>
+            <div class="form-group" id="justificacioneditcierre">
+              <label for="detalle">Justificación</label>
+              <textarea class="form-control" rows="5" name="justificacion" id="txtjustificacionedit" value=""></textarea>
+            </div>
             <div class="form-group">
                 <div class="col-sm-3">
-                    <input type="submit" name="EditAvance" class="btn  btn-raised btn-success" value="Guardar datos">
+                    <input type="submit" name="EditAvance" class="btn  btn-raised btn-success validar-edicion" value="Guardar datos">
                 </div>
                 <div class="col-sm-3">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
@@ -1073,11 +1099,63 @@ $(function(){
   $(".editar-itemDialog").click(function(){
     $('#id_avance').val($(this).data('id'));
     $('#edit-detalle').val($(this).data('detail'));
+    $('#txtjustificacionedit').val($(this).data('justificacion'));
+    if ($(this).data('estado')=="0") {
+      $('#justificacioneditcierre').hide();
+    } else {
+      $('#justificacioneditcierre').show();
+      $('#txtjustificacionedit').attr('required', true);
+    }    
     $("#modal-avance-edit").modal("show");
   });
 });
 </script>
-
+<script>
+$(function(){
+  //Por default está oculto
+  $('#justificacioncierre').hide();
+  $('#justificacioneditcierre').hide();
+  
+  // Defino el behavior
+  $('#estadoaddcierre').on('change', function() {
+    if (this.value==0) {
+      $('#justificacioncierre').hide();
+      $('#txtjustificacionadd').attr('required', false);
+    } else {
+      $('#justificacioncierre').show();
+      $('#txtjustificacionadd').attr('required', true);
+    }
+  });
+  $('#estadoeditcierre').on('change', function() {
+     if (this.value==0) {
+       $('#justificacioneditcierre').hide();
+       $('#txtjustificacionedit').attr('required', false);
+     } else {
+       $('#justificacioneditcierre').show();
+       $('#txtjustificacionedit').attr('required', true);
+     }
+  });
+  // $('.validar-edicion').click(function(){
+  //   if ($('#estadoEditcierre').val() == "1" ) {
+  //     if ($('#txtjustificacionedit').val() == "") {
+  //       alert("Debe escribir una justificación al cerrar el riesgo.");
+  //       return false;
+  //     }
+  //   }    
+  // });
+});
+</script>
+<script>
+function validateEditAvance() {
+  alert('paso');
+  if ($('#estadoEditcierre').val() == "1" ) {
+    if ($('#txtjustificacionedit').val() == "") {
+      alert("Debe escribir una justificación al cerrar el riesgo.");
+      return false;
+    }
+  }
+}
+</script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->

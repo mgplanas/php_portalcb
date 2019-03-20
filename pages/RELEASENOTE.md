@@ -8,6 +8,7 @@
 - Backup /pages
 - Cambios en DB
     - Agregar columna "borrado" a tabla persona TINYINT NOT NULL DEFAULT 0
+    - Agregar columna "justificacion_cierre" a riesgos VARCHAR(255) NULL 
 - Cambios en SRC
     - Actualizar pages/admin.php
     - Actualizar pages/riesgos.php
