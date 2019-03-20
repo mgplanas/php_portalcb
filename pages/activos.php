@@ -363,7 +363,6 @@ desired effect
 				</div>
  				<div class="col-sm-6" style="text-align:right;">
 					<button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-archive"></i> Nuevo Activo</button>
-					<button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-persona"><i class="glyphicon glyphicon-user"></i> Nueva Persona</button>
 				</div>
             </div>
 		<div class="modal fade" id="modal-activo">
@@ -501,93 +500,6 @@ desired effect
           <!-- /.modal-dialog -->
         </div>
         <!-- /.modal Activo-->
-		<div class="modal fade" id="modal-persona">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h2 class="modal-title">Nueva Persona</h2>
-				<?php
-				$gerencias = mysqli_query($con, "SELECT * FROM gerencia ORDER BY nombre ASC");
-				if(isset($_POST['Addp'])){
-					$legajo = mysqli_real_escape_string($con,(strip_tags($_POST["legajo"],ENT_QUOTES)));//Escanpando caracteres
-					$nombre = mysqli_real_escape_string($con,(strip_tags($_POST["nombre"],ENT_QUOTES)));//Escanpando caracteres
-					$apellido = mysqli_real_escape_string($con,(strip_tags($_POST["apellido"],ENT_QUOTES)));//Escanpando caracteres 
-					$cargo = mysqli_real_escape_string($con,(strip_tags($_POST["cargo"],ENT_QUOTES)));//Escanpando caracteres 
-					$gerencia = mysqli_real_escape_string($con,(strip_tags($_POST["gerencia"],ENT_QUOTES)));//Escanpando caracteres 
-					$email = mysqli_real_escape_string($con,(strip_tags($_POST["email"],ENT_QUOTES)));//Escanpando caracteres 
-					//Inserto Control
-					$insert_persona = mysqli_query($con, "INSERT INTO persona(legajo, nombre, apellido, cargo, gerencia, email) VALUES ('$legajo','$nombre','$apellido', '$cargo', '$gerencia', '$email')") or die(mysqli_error());	
-					$lastInsert = mysqli_insert_id($con);
-					$insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-											   VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
-					unset($_POST);
-					if($insert_persona){
-						$_SESSION['formSubmitted'] = 3;
-						echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-					}else{
-						$_SESSION['formSubmitted'] = 9;
-						echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-					}				
-				}				
-				?>
-              </div>
-              <div class="modal-body">
-				<!-- form start -->
-            <form method="post" role="form" action="">
-              <div class="box-body">
-                <div class="form-group">
-                  <label for="legajo">Legajo</label>
-                  <input type="text" class="form-control" name="legajo" placeholder="Legajo">
-                </div>
-                <div class="form-group">
-                  <label for="nombre">Nombre</label>
-                  <input type="text" class="form-control" name="nombre" placeholder="Nombre">
-                </div>
-				<div class="form-group">
-                  <label for="apellido">Apellido</label>
-                  <input type="text" class="form-control" name="apellido" placeholder="Apellido">
-                </div>
-				<div class="form-group">
-                  <label for="email">Dirección E-mail</label>
-                  <input type="text" class="form-control" name="email" placeholder="E-mail corporativo">
-                </div>
-				<div class="form-group">
-                  <label for="cargo">Cargo</label>
-                  <input type="text" class="form-control" name="cargo" placeholder="Cargo">
-                </div>
-				
-				<div class="form-group">
-                  <label>Gerencia</label>
-                  <select name="gerencia" class="form-control">
-						<?php
-							while($rowg = mysqli_fetch_array($gerencias)){
-									echo "<option value=". $rowg['id_gerencia'] . ">" .$rowg['nombre'] . "</option>";
-									}
-						?>
-                  </select>
-                </div>
-				<div class="form-group">
-					<div class="col-sm-3">
-						<input type="submit" name="Addp" class="btn  btn-raised btn-success" value="Guardar datos">
-					</div>
-					<div class="col-sm-3">
-						<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-					</div>
-				</div>
-			  </div>
-              
-            </form>
-
-              </div>
-              
-            </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal Persona -->
             <!-- /.box-header -->
 		<div id="ver-itemDialog" class="modal fade">
 			<div class="modal-dialog">

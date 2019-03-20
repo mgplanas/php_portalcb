@@ -359,7 +359,6 @@ desired effect
 					<h2 class="box-title">Listado de ítems</h2>
 				</div>
  				<div class="col-sm-6" style="text-align:right;">
-					<button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-persona"><i class="glyphicon glyphicon-user"></i> Nueva Persona</button>
 				</div>
             </div>
         <!-- /.modal Activo-->

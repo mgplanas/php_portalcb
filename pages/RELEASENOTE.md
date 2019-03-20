@@ -3,6 +3,7 @@
 - FEAT-PER-ABM
 - FEAT-CTR-GERENCIA
 - FEAT-RGO-VARIOS
+- FEAT-PER-TODOS
 
 ### Pasos
 - BackUp DB
@@ -16,3 +17,6 @@
     - Actualizar pages/edit_riesgo.php
     - Actualizar pages/controles.php
     - Agregar pages/edit_persona.php
+    - Actualizar pages/activos.php
+    - Actualizar pages/mejoras.php
+    - Actualizar pages/iso27k.php

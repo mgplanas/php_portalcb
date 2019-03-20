@@ -472,9 +472,7 @@ desired effect
                                         <button type="button" class="btn-sm btn-primary" data-toggle="modal"
                                             data-target="#modal-riesgo"><i class="glyphicon glyphicon-flash"></i> Nuevo
                                             Riesgo</button>
-                                        <button type="button" class="btn-sm btn-primary" data-toggle="modal"
-                                            data-target="#modal-persona"><i class="glyphicon glyphicon-user"></i> Nueva
-                                            Persona</button>
+
                                     </div>
                                 </div>
                                 <!-- MODAL RIESGO -->

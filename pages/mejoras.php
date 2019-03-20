@@ -377,7 +377,6 @@ desired effect
 				</div>
  				<div class="col-sm-6" style="text-align:right;">
 					<button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-mejora"><i class="fa fa-refresh"></i> Nueva Mejora</button>
-					<button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-persona"><i class="glyphicon glyphicon-user"></i> Nueva Persona</button>
 				</div>
             </div>
 		<div class="modal fade" id="modal-mejora">

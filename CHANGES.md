@@ -5,6 +5,12 @@
 - Se agrega el campo "Grupo" en el Alta de personas solo para la gerencia de Ciberseguridad. M[admin.php]
 - Se agrega el campo "Grupo" y "contacto" en la Edicion de personas solo para la gerencia de Ciberseguridad. M[edit_persona.php]
 - Se agrega el campo "contacto" en el ABM de personas. M[admin.php]
+- Se quita el botón de "agregar persona" en todos las páginas menos adminsitración. 
+    M[activos.php]
+    M[controles.php]
+    M[iso27k.php]
+    M[mejoras.php]
+    M[riesgos.php]
 
 
 ## FEAT-RGO-VARIOS
