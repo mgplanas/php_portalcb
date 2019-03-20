@@ -559,7 +559,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </div>
                                     <thead>
                                         <tr>
-                                            <th width="1">Nro</th>
+                                            <th width="1"></th>
                                             <th width="1">Legajo</th>
                                             <th width="1">Nombre</th>
                                             <th width="1">email</th>
@@ -570,9 +570,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </thead>
                                     <tbody>
                                       <?php
-                                        $query = "SELECT p.id_persona, p.nombre, p.apellido, p.legajo, p.email, p.cargo, g.nombre as gerencia 
+                                        $query = "SELECT p.id_persona, p.nombre, p.apellido, p.legajo, p.email, p.cargo, g.id_gerencia, g.nombre as gerencia, u.nombre as grupo 
                                         FROM persona as p 
                                         LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia
+                                        LEFT JOIN grupo as u on p.grupo = u.id_grupo
                                         WHERE p.borrado = 0
                                         ORDER BY p.apellido ASC";
                                         
@@ -583,7 +584,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         else
                                         {
                                           while($row = mysqli_fetch_assoc($sql)){
-                                            echo '<td align="center">'.$row['id_persona'].'</td>';
+                                            echo '<td><a data-id="'.$row['id_persona'].'" 
+                                            data-legajo="'.$row['legajo'].'"
+                                            data-nombre="'.$row['nombre'].'"
+                                            data-apellido="'.$row['apellido'].'"
+                                            data-email="'.$row['email'].'"
+                                            data-contacto="'.$row['contacto'].'"
+                                            data-cargo="'.$row['cargo'].'"
+                                            data-gerencia="'.$row['gerencia'].'"
+                                            data-idgerencia="'.$row['id_gerencia'].'"
+                                            data-grupo="'.$row['grupo'].'"
+                                            title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                            </td>';
+
                                             echo '<td>'.$row['legajo'].'</td>';
                                             echo '<td>'.$row['apellido']. ' ' .$row['nombre']. '</td>';
                                             echo '<td>'.$row['email'].'</td>';
@@ -600,7 +613,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th width="1">Nro</th>
+                                            <th width="1"></th>
                                             <th width="1">Legajo</th>
                                             <th width="1">Nombre</th>
                                             <th width="1">email</th>
@@ -612,6 +625,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                   </table>
                                 </div>
 
+                                <!-- MODAL ADD PERSONA -->
                                 <div class="modal fade" id="modal-persona">
                                   <div class="modal-dialog">
                                     <div class="modal-content">
@@ -729,6 +743,70 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                   </div>
                                     <!-- /.modal-dialog -->
                                 </div>
+                                <!-- FIN MODAL PERSONA -->
+                                
+                                <!-- MODAL VER PERSONA -->
+                                <div class="modal fade" id="modal-ver-persona">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal"
+                                              aria-label="Close">
+                                              <span aria-hidden="true">&times;</span></button>
+                                          <h2 class="modal-title">Ver Persona</h2>
+                                      </div>
+                                      <div class="modal-body">
+                                          <!-- form start -->
+                                          <form method="post" role="form" action="">
+                                              <div class="box-body">
+                                                  <div class="form-group">
+                                                      <label for="id_persona">#</label>
+                                                      <input type="text" class="form-control" name="id_persona" id="txtid" value="" readonly>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="legajo">Legajo</label>
+                                                      <input type="text" class="form-control" name="legajo" id="txtlegajo" value="" readonly>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="nombre">Nombre</label>
+                                                      <input type="text" class="form-control" name="nombre" id="txtnombre" value="" readonly>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="apellido">Apellido</label>
+                                                      <input type="text" class="form-control" name="apellido" id="txtapellido" value="" readonly>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="email">Dirección E-mail</label>
+                                                      <input type="text" class="form-control" name="email" id="txtemail" value="" readonly>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="contacto">Contacto</label>
+                                                      <input type="text" class="form-control" name="contacto" id="txtcontacto" value="" readonly>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="cargo">Cargo</label>
+                                                      <input type="text" class="form-control" name="cargo" id="txtcargo" value="" readonly>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label>Gerencia</label>
+                                                      <input type="text" class="form-control" name="gerencia" id="txtgerencia" value="" readonly>
+                                                  </div>
+                                                  <div class="form-group" id="grupoverdiv">
+                                                      <label>Grupo</label>
+                                                      <input type="text" class="form-control" name="grupo" id="txtgrupo" value="" readonly>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
+                                                  </div>	
+                                              </div>
+                                          </form>
+                                      </div>
+                                    </div>
+                                      <!-- /.modal-content -->
+                                  </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <!-- FIN MODAL PERSONA -->
                                 <!-- FIN TAB PERSONA -->
 
                                 <!-- TAB LOG -->
@@ -759,46 +837,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                               }else{
                                                 while($row = mysqli_fetch_assoc($sql)){
                                                                               
-                                                                echo '
-                                                  
-                                                  
-                                                  <td align="center">'.$row['id_auditoria'].'</td>';
-
-
-                                                  echo '
-                                                  
-                                                  </td>								
-                                                
-                                                  <td>'.$row['fecha'].'</td>
-                                                  
-                                                  ';
-                                                                echo '
-                                                  
-                                                  </td>								
-                                                
-                                                  <td>'.$row['tipo'].'</td>
-                                                  ';
-                                                  
-                                                  echo '
-                                                  </td>
-                                                  <td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
-                                                  
-                                                  echo '
-                                                  
-                                                  </td>								
-                                                
-                                                  <td>'.$row['titulo'].'</td>
-                                                  ';
-                                                  
-                                                                echo '
-                                                  
-                                                  </td>								
-                                                
-                                                  <td>'.$row['i_titulo'].'</td>
-                                                  </td></tr>';
-                                                  
-                                                  
-                                                  
+                                                    echo '<td align="center">'.$row['id_auditoria'].'</td>';
+                                                    echo '<td>'.$row['fecha'].'</td>';
+                                                    echo '<td>'.$row['tipo'].'</td>';
+                                                    echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
+                                                    echo '<td>'.$row['titulo'].'</td>';
+                                                    echo '<td>'.$row['i_titulo'].'</td></tr>';
                                                   
                                                 }
                                               }
@@ -917,6 +961,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
     })
     </script>
+    <script>
+        $(function(){
+        $(".ver-itemDialog").click(function(){
+            $('#txtid').val($(this).data('id'));
+            $('#txtlegajo').val($(this).data('legajo'));
+            $('#txtnombre').val($(this).data('nombre'));
+            $('#txtapellido').val($(this).data('apellido'));
+            $('#txtemail').val($(this).data('email'));
+            $('#txtcontacto').val($(this).data('contacto'));
+            $('#txtcargo').val($(this).data('cargo'));
+            $('#txtgerencia').val($(this).data('gerencia'));
+            if ($(this).data('idgerencia')==1) {
+                $('#grupoverdiv').show();
+                $('#txtgrupo').val($(this).data('grupo'));
+            } else {
+                $('#grupoverdiv').hide();
+            }
+            $("#modal-ver-persona").modal("show");
+        });
+        });
+</script>
     <script>
     function updatePerm(perm, id_permiso) {
 
