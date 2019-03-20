@@ -40,6 +40,8 @@ $per_id_gerencia = $rowp['gerencia'];
 // GERENCIA DE CIBER SEGURIDAD = 1 
 // PUEDE VER TODO
 
+//filtro de incidente
+$filter = (isset($_GET['filter']) ? strtolower($_GET['filter']) : NULL);
 
 if(isset($_GET['aksi']) == 'filter'){
   $p=$_GET["p"];     //probabilidad
@@ -74,6 +76,11 @@ if(isset($_GET['aksi']) == 'filter'){
 // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
 if ( $per_id_gerencia != 1) {
   $query = $query . " AND p.gerencia = $per_id_gerencia ";
+}
+
+//Filtro por incidente
+if ($filter == "0" || $filter == "1") {
+    $query = $query . " AND i.incidente = $filter ";
 }
 
 
@@ -433,8 +440,24 @@ desired effect
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <div class="col-sm-6" style="text-align:left">
+                                    <div class="col-sm-3" style="text-align:left">
                                         <h2 class="box-title">Listado de Riesgos</h2>
+                                    </div>
+                                    <div class="col-sm-3" style="text-align:left">
+                                        <div class="btn-group">
+                                            <button type="button"  id="ex1" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Filtro por incidente
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                            <li><a href="?filter=-1">Todos</a></li>
+                                            <li><a href="?filter=1">Con Incidentes</a></li>
+                                            <li><a href="?filter=0">Sin Incidentes</a></li>
+                                            </ul>
+                                            <?php echo "<input type='hidden' id='nik' name='nik' value='".strip_tags($_GET["nik"],ENT_QUOTES)."'/>" ?>
+                                        </div>
+
+
+
                                     </div>
                                     <div class="col-sm-6" style="text-align:right;">
                                         <button type="button" class="btn-sm" data-toggle="modal"

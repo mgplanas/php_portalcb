@@ -6,6 +6,7 @@
 - Se corrige la visualización de los días de vencio / a vencer. Si el riesgo se encuentra abierto se muestran los días. de vecido / a vencer. M[riesgos.php]
 - Se agrega la capacidad de borrar un avance. M[edit_riesgo.php]
 - Edicion de Avance por medio de Popup. M[edit_riesgo.php]
+- Filtro por incidente en la lista de riegos. M[riesgos.php]
 
 
 ## FEAT-CTR-GERENCIA
