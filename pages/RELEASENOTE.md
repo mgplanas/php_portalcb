@@ -2,6 +2,7 @@
 ### Features
 - FEAT-PER-ABM
 - FEAT-CTR-GERENCIA
+- FEAT-RGO-VARIOS
 
 ### Pasos
 - BackUp DB
