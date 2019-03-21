@@ -2104,9 +2104,9 @@ desired effect
         </script>
 <script>
 $(function(){
-    $('#txtgerenciaresponsable').val($('option:selected', this).attr('gerencia'));    
-    $('#txtgerenciaidentificado').val($('option:selected', this).attr('gerencia'));    
-    $('#txtgerenciareferente').val($('option:selected', this).attr('gerencia'));    
+    $('#txtgerenciaresponsable').val($('#ddlresponsable option:selected', this).attr('gerencia'));    
+    $('#txtgerenciaidentificado').val($('#ddlidentificado option:selected', this).attr('gerencia'));    
+    $('#txtgerenciareferente').val($('#ddlreferente option:selected', this).attr('gerencia'));    
     $('#ddlresponsable').on('change', function() {
         $('#txtgerenciaresponsable').val($('option:selected', this).attr('gerencia'));    
     });    
@@ -2116,8 +2116,6 @@ $(function(){
     $('#ddlreferente').on('change', function() {
         $('#txtgerenciareferente').val($('option:selected', this).attr('gerencia'));    
     });
-
-
 });
 </script>
 </body>

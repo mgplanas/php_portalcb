@@ -446,54 +446,87 @@ desired effect
 								?>
 							</select>
 						</div>
-                        <div class="form-group">
+            <div class="col-md-6">
+              <div class="form-group">
 						  <label>Responsable</label>
-						  <select name="responsable" class="form-control">
+						  <select name="responsable" class="form-control" id="ddlresponsable">
 								<?php
-									$personasn = mysqli_query($con, "SELECT * FROM persona");
+                  $personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia 
+                  FROM persona as p 
+                  LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
+                  WHERE p.borrado=0 ");
 									while($rowps = mysqli_fetch_array($personasn)){
 										if($rowps['id_persona']==$row['responsable']) {
-											echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
+											echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
 										}
 										else {
-											echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+											echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
 										}
 									}
 								?>
 						  </select>
 						</div>
-                        <div class="form-group">
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="label-custom label-custom-info">Gerencia</label>
+                    <input id="txtgerenciaresponsable" type="text" name="gerencia_responsable" value="" readonly class="form-control">
+                </div>
+            </div>
+            <div class="col-md-6">
+            <div class="form-group">
 						  <label>Identificado por</label>
-						  <select name="identificado" class="form-control">
+						  <select name="identificado" class="form-control" id="ddlidentificado">
 								<?php
-									$personasn = mysqli_query($con, "SELECT * FROM persona");
+									$personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia 
+                  FROM persona as p 
+                  LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
+                  WHERE p.borrado=0 ");
 									while($rowps = mysqli_fetch_array($personasn)){
 										if($rowps['id_persona']==$row['identificado']) {
-											echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
+											echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
 										}
 										else {
-											echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+											echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
 										}
 									}
 								?>
 						  </select>
 						</div>
-                        <div class="form-group">
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="label-custom label-custom-info">Gerencia</label>
+                    <input id="txtgerenciaidentificado" type="text" name="gerencia_identificado" value="" readonly class="form-control">
+                </div>
+            </div>  
+            <div class="col-md-6">
+            <div class="form-group">
 						  <label>Referente</label>
-						  <select name="referente" class="form-control">
+						  <select name="referente" class="form-control" id="ddlreferente">
 								<?php
-									$personasn = mysqli_query($con, "SELECT * FROM persona");
+									$personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia 
+                  FROM persona as p 
+                  LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
+                  WHERE p.borrado=0 ");
 									while($rowps = mysqli_fetch_array($personasn)){
 										if($rowps['id_persona']==$row['referente']) {
-											echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
+											echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
 										}
 										else {
-											echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+											echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
 										}
 									}
 								?>
 						  </select>
 						</div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="label-custom label-custom-info">Gerencia</label>
+                    <input id="txtgerenciareferente" type="text" name="gerencia_responsable" value="" readonly class="form-control">
+                </div>
+            </div>      
 					</div>
 				</div>
 			<div class="col-md-6">
@@ -1144,6 +1177,22 @@ $(function(){
   //     }
   //   }    
   // });
+});
+</script>
+<script>
+$(function(){
+    $('#txtgerenciaresponsable').val($('#ddlresponsable option:selected', this).attr('gerencia'));    
+    $('#txtgerenciaidentificado').val($('#ddlidentificado option:selected', this).attr('gerencia'));    
+    $('#txtgerenciareferente').val($('#ddlreferente option:selected', this).attr('gerencia'));    
+    $('#ddlresponsable').on('change', function() {
+        $('#txtgerenciaresponsable').val($('option:selected', this).attr('gerencia'));    
+    });    
+    $('#ddlidentificado').on('change', function() {
+        $('#txtgerenciaidentificado').val($('option:selected', this).attr('gerencia'));    
+    });
+    $('#ddlreferente').on('change', function() {
+        $('#txtgerenciareferente').val($('option:selected', this).attr('gerencia'));    
+    });
 });
 </script>
 <script>
