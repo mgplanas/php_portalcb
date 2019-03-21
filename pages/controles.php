@@ -36,9 +36,12 @@ if(isset($_GET['aksi']) == 'delete'){
 //Alert icons data on top bar
 
 //Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' AND borrado = 0");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
+$per_id_gerencia = $rowp['gerencia'];
+// GERENCIA DE CIBER SEGURIDAD = 1 
+// PUEDE VER TODO
 
 //Count riesgos
 $riesgos = "SELECT 1 as total FROM riesgo WHERE riesgo.responsable='$id_rowp' AND riesgo.borrado='0'";
@@ -609,6 +612,7 @@ desired effect
                                                 <th>Período</th>
                                                 <th>Título</th>
                                                 <th>Contenido</th>
+                                                <th>Criticidad</th>
                                                 <th>Responsable</th>
                                                 <th>Gerencia</th>
                                                 <th width="110px">Acciones</th>
@@ -616,21 +620,23 @@ desired effect
                                         </thead>
                                         <tbody>
                                             <?php
-                                              $query = "SELECT i.*, p.nombre, p.apellido, g.nombre as gerencia FROM controles as i 
+                                                $query = "SELECT i.*, p.nombre, p.apellido, g.nombre as gerencia FROM controles as i 
                                                         LEFT JOIN persona as p on responsable = p.id_persona
                                                         LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia
                                                     WHERE i.borrado='0'";
-                                              
-                                              $sql = mysqli_query($con, $query.' ORDER BY id_control ASC');
+                                                // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
+                                                if ( $per_id_gerencia != 1) {
+                                                    $query = $query . " AND p.gerencia = $per_id_gerencia ";
+                                                }
+                                                $sql = mysqli_query($con, $query.' ORDER BY id_control ASC');
 
-                                              if(mysqli_num_rows($sql) == 0){
-                                                echo '<tr><td colspan="8">No hay datos.</td></tr>';
-                                              }else{
-                                                $no = 1;
+                                                if(mysqli_num_rows($sql) == 0){
+                                                    echo '<tr><td colspan="8">No hay datos.</td></tr>';
+                                                }else{
+                                                    $no = 1;
                                                 while($row = mysqli_fetch_assoc($sql)){
                                                   
-                                                  echo '<tr>
-                                                          <td><a href="control.php?nik='.$row['id_control'].'"><span class="fa fa-retweet" aria-hidden="true"></span></a></td>';
+                                                  echo '<tr><td><a href="control.php?nik='.$row['id_control'].'"><span class="fa fa-retweet" aria-hidden="true"></span></a></td>';
                                                   echo '<td align="center">'.$no.'</td>';
 
                                                   if($row['periodo'] == '1'){
@@ -642,11 +648,20 @@ desired effect
                                                   else if ($row['periodo'] == '6' ){
                                                     echo '<td>Semestral</td>';
                                                   }
-                                                                else if ($row['periodo'] == '12' ){
+                                                  else if ($row['periodo'] == '12' ){
                                                     echo '<td>Anual</td>';
                                                   }
                                                   echo '<td>'.$row['titulo'].'</td>';
                                                   echo '<td>'.$row['contenido'].'</td>'; 
+                                                  
+                                                  if ($row['criticidad'] == '0') {
+                                                      echo '<td><span class="label label-danger">Crítico</span></td>'; 
+                                                  } else if ($row['criticidad'] == '1') {
+                                                      echo '<td><span class="label label-warning">Semi crítico</span></td>'; 
+                                                  } else {
+                                                      echo '<td>No crítico</td>'; 
+                                                  }
+
                                                   echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
                                                   echo '<td>'.$row['gerencia'].'</td>'; 
                                                   echo '<td align="center">
@@ -669,6 +684,7 @@ desired effect
                                                 <th>Período</th>
                                                 <th>Título</th>
                                                 <th>Contenido</th>
+                                                <th>Criticidad</th>
                                                 <th>Responsable</th>
                                                 <th>Gerencia</th>
                                                 <th width="110px">Acciones</th>

@@ -4,6 +4,7 @@
 - FEAT-CTR-GERENCIA
 - FEAT-RGO-VARIOS
 - FEAT-PER-TODOS
+- FEAT-CTR-CRITICIDAD
 
 ### Pasos
 - BackUp DB
@@ -11,11 +12,13 @@
 - Cambios en DB
     - Agregar columna "borrado" a tabla persona TINYINT NOT NULL DEFAULT 0
     - Agregar columna "justificacion_cierre" a riesgos VARCHAR(255) NULL 
+    - Agregar columna "criticidad" a controles INT(11) DEFAULT 2
 - Cambios en SRC
     - Actualizar pages/admin.php
     - Actualizar pages/riesgos.php
     - Actualizar pages/edit_riesgo.php
     - Actualizar pages/controles.php
+    - Actualizar pages/edit_control.php
     - Agregar pages/edit_persona.php
     - Actualizar pages/activos.php
     - Actualizar pages/mejoras.php

@@ -1,3 +1,11 @@
+## FEAT-CTR-CRITICIDAD
+### Agregado de criticidad en controles.
+*Fecha:* 2019-03-21
+*Cambios:*
+- Se agrega el campo gerencia en la lista de controles. M[controles.php]
+- Se filtra la lista de controles en base a la gerencia en la que aparece el responsable salvo la gerencia de Ciberseguridad M[controles.php]
+- Se agrega campo criticidad. M[contoles.php] M[edit_control.php]
+
 ## FEAT-PER-TODOS
 ### Correcciones en la administracion de personas.
 *Fecha:* 2019-03-20
