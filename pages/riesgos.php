@@ -1066,7 +1066,7 @@ desired effect
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span></button>
-                                                <h2 class="modal-title">Matriz de riesgo inherente</h2>
+                                                <h2 class="modal-title">Cantidad según Matriz de riesgo inherente</h2>
                                                 <?php
                                                   //querys de datos matriz inherente
                                                   //Riesgos Inherentes
@@ -1301,7 +1301,7 @@ desired effect
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span></button>
-                                                <h2 class="modal-title">Matriz de riesgo residual</h2>
+                                                <h2 class="modal-title">Cantidad según Matriz de riesgo residual</h2>
                                                 <?php
                                                   //querys de datos matriz RESIDUAL
                                                   $q14r = "SELECT count(*) as q14r FROM riesgo WHERE p_resid=1 && i_resid=4 && borrado=0 && estado=0";
