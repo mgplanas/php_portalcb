@@ -739,6 +739,16 @@ desired effect
         <script src="../bower_components/fastclick/lib/fastclick.js"></script>
         <!-- AdminLTE App -->
         <script src="../dist/js/adminlte.min.js"></script>
+        <!-- export -->
+        <script src="../bower_components/datatables.net/js/dataTables.buttons.min.js"></script>
+        <script src="../bower_components/datatables.net/js/buttons.flash.min.js"></script>
+        <script src="../bower_components/datatables.net/js/jszip.min.js"></script>
+        <script src="../bower_components/datatables.net/js/buttons.html5.min.js"></script>
+        <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
+        <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
+        <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
+
+
         <script>
         $(function() {
             $('#controles').DataTable({
@@ -747,7 +757,19 @@ desired effect
                 'searching': false,
                 'ordering': true,
                 'info': true,
-                'autoWidth': true
+                'autoWidth': true,
+                'dom': 'frtipB',
+                'buttons': [{
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+
+                    },
+                    {
+                        extend: 'excel',
+                        text: 'Excel',
+                    }
+                ]
             })
         })
         </script>
