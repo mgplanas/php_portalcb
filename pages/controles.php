@@ -386,11 +386,12 @@ desired effect
                                                       $periodo = mysqli_real_escape_string($con,(strip_tags($_POST["periodo"],ENT_QUOTES)));//Escanpando caracteres 
                                                       $mesInicio = mysqli_real_escape_string($con,(strip_tags($_POST["mesinicio"],ENT_QUOTES)));//Escanpando caracteres 
                                                       $tipo = mysqli_real_escape_string($con,(strip_tags($_POST["tipo"],ENT_QUOTES)));//Escanpando caracteres 
+                                                      $criticidad = mysqli_real_escape_string($con,(strip_tags($_POST["criticidad"],ENT_QUOTES)));//Escanpando caracteres 
                                                               
                                                       $ano = date("Y");
 
                                                       //Inserto Control
-                                                      $insert_control = mysqli_query($con, "INSERT INTO controles (titulo, contenido, creado, ano, responsable, usuario, periodo, status, tipo, mesinicio) VALUES('$titulo','$contenido', NOW(), '$ano','$responsable', '$user','$periodo', '3', '$tipo', '$mesInicio')") or die(mysqli_error());	
+                                                      $insert_control = mysqli_query($con, "INSERT INTO controles (titulo, contenido, creado, ano, responsable, usuario, periodo, status, tipo, mesinicio, criticidad) VALUES('$titulo','$contenido', NOW(), '$ano','$responsable', '$user','$periodo', '3', '$tipo', '$mesInicio', '$criticidad')") or die(mysqli_error());	
 
                                                           //Ultimo Insert
                                                         $last = $con->insert_id;
@@ -431,6 +432,14 @@ desired effect
                                                                 <textarea class="form-control" rows="3" name="contenido"
                                                                     placeholder="Contenido del control ..."
                                                                     required></textarea>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Criticidad</label>
+                                                                <select name="criticidad" class="form-control">
+                                                                    <option value='2'>No Crítico</option>										
+                                                                    <option value='1'>Semi Crítico</option>										
+                                                                    <option value='0'>Crítico</option>										
+                                                                </select>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Responsable</label>
@@ -657,9 +666,9 @@ desired effect
                                                   if ($row['criticidad'] == '0') {
                                                       echo '<td><span class="label label-danger">Crítico</span></td>'; 
                                                   } else if ($row['criticidad'] == '1') {
-                                                      echo '<td><span class="label label-warning">Semi crítico</span></td>'; 
+                                                      echo '<td><span class="label label-warning">Semi Crítico</span></td>'; 
                                                   } else {
-                                                      echo '<td>No crítico</td>'; 
+                                                      echo '<td>No Crítico</td>'; 
                                                   }
 
                                                   echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
