@@ -56,17 +56,6 @@ Hoy en día solo existe la funcionalidad de ALTA.
 - Edición de persona. N[edit_persona.php]
 - Se corrige los queries donde se asumia que el campo borrado de persona no existía. M[riesgos.php]
 
-#### TODO
-- Faltan campos de Grupo y contacto en los formularios
-- Quitar agregar persona de las demás páginas
-    - Activos
-    - Controles
-    - iso
-    - mejora
-    - riesgos
-    - proyecto-proyectos
-- Botón ver
-
 
 ## FEAT-CTR-MESINICIO
 ### Agregar mes de inicio para la generación de los controles del año.
