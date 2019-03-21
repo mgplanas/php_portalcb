@@ -6,6 +6,8 @@
 - Se pone como requerido el campo "vencimiento". M[riesgo.php]
 - Se cambio el orden de los campos vulnerabilidad x amenaza. M[riesgo.php] M[edit_riesgo.php]
 - Se agrega el campo gerencia RO en el alta y la edicion de riesgo.M[riesgo.php] M[edit_riesgo.php]
+- Cambio de calculo de tratamiento a >= 4
+- Cambio de calculo de valoracion inicial y actual a BAJO=[1,2,3] MEDIO=[4,5,6,7,8,9,10] ALTO=[11,...]
 
 ## FEAT-CTR-CRITICIDAD
 ### Agregado de criticidad en controles.
