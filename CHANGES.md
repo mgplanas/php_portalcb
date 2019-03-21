@@ -4,7 +4,8 @@
 *Cambios:*
 - Se cambia el label de las matrices para que se lea cantidad de .... M[riesgo.php]
 - Se pone como requerido el campo "vencimiento". M[riesgo.php]
-
+- Se cambio el orden de los campos vulnerabilidad x amenaza. M[riesgo.php] M[edit_riesgo.php]
+- Se agrega el campo gerencia RO en el alta y la edicion de riesgo.M[riesgo.php] M[edit_riesgo.php]
 
 ## FEAT-CTR-CRITICIDAD
 ### Agregado de criticidad en controles.
