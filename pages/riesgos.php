@@ -555,7 +555,6 @@ desired effect
                                                         <div class="box box-primary">
 
                                                             <div class="box-body">
-                                                                <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label
                                                                             class="label-custom label-custom-info">Identificador</label>
@@ -563,8 +562,6 @@ desired effect
                                                                             value="<?php echo $next_id; ?>" readonly
                                                                             class="form-control">
                                                                     </div>
-                                                                </div>
-                                                                <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label>Fecha de alta</label>
                                                                         <div class="input-group date"
@@ -578,13 +575,7 @@ desired effect
                                                                                 placeholder="dd/mm/yyyy">
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="amenaza"> Amenaza</label>
-                                                                    <textarea class="form-control" rows="2"
-                                                                        name="amenaza" placeholder="Amenaza ..."
-                                                                        required></textarea>
-                                                                </div>
+                                                                
                                                                 <div class="form-group">
                                                                     <label for="vulnerabilidad"> Vulnerabilidad</label>
                                                                     <textarea class="form-control" rows="2"
@@ -592,6 +583,12 @@ desired effect
                                                                         placeholder="Vulnerabilidad ..."
                                                                         required></textarea>
                                                                 </div>
+                                                                <div class="form-group">
+                                                                    <label for="amenaza"> Amenaza</label>
+                                                                    <textarea class="form-control" rows="2"
+                                                                        name="amenaza" placeholder="Amenaza ..."
+                                                                        required></textarea>
+                                                                </div>                                                                
                                                                 <div class="form-group">
                                                                     <label>Activos afectados</label>
                                                                     <select class="form-control select2"
@@ -1738,8 +1735,8 @@ desired effect
                                             <tr>
                                                 <!--<th width="1">Ver</th> -->
                                                 <th width="2">ID</th>
-                                                <th>Amenaza</th>
                                                 <th>Vulnerabilidad</th>
+                                                <th>Amenaza</th>
                                                 <th>Responsable</th>
                                                 <th>Gerencia</th>
                                                 <!--<th>Activos</th> -->
@@ -1779,8 +1776,8 @@ desired effect
                                                   $character = implode($rowconcat);
                                                   
                                                   echo '<td align="center">'.$row['id_riesgo'].'</td>';
-                                                  echo '<td>'.$row['amenaza'].'</td>';
                                                   echo '<td>'.$row['vulnerabilidad'].'</td>';
+                                                  echo '<td>'.$row['amenaza'].'</td>';
                                                   echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
                                                   echo '<td>'.$row['gerencia'].'</td>'; 
                                                   echo '<td>'.$row['tipo'].'</td>';
@@ -1866,8 +1863,8 @@ desired effect
                                             <tr>
                                                 <!--<th width="1">Ver</th>-->
                                                 <th width="2">ID</th>
-                                                <th>Amenaza</th>
                                                 <th>Vulnerabilidad</th>
+                                                <th>Amenaza</th>
                                                 <th>Responsable</th>
                                                 <th>Gerencia</th>
                                                 <!--<th>Activos</th>-->

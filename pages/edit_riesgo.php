@@ -417,14 +417,15 @@ desired effect
                               <input type="text" class="form-control pull-right" name="alta" value="<?php echo $row ['alta']; ?>" id="datepicker1" placeholder="dd/mm/yyyy">
                             </div>
                       </div>
+                      <div class="form-group">
+						  <label for="vulnerabilidad"> Vulnerabilidad</label>
+						  <?php echo "<textarea class=form-control name=vulnerabilidad>{$row['vulnerabilidad']}</textarea>"; ?>
+						</div>
+
                         <div class="form-group">
 							<label for="amenaza"> Amenaza</label>
 							<?php echo "<textarea class=form-control name=amenaza>{$row['amenaza']}</textarea>"; ?>
 							</div>
-						<div class="form-group">
-						  <label for="vulnerabilidad"> Vulnerabilidad</label>
-						  <?php echo "<textarea class=form-control name=vulnerabilidad>{$row['vulnerabilidad']}</textarea>"; ?>
-						</div>
 						<div class="form-group">
 							<label>Activos afectados</label>
 							<select class="form-control select2" name="activos[]" multiple="multiple" data-placeholder="Activos" style="width: 100%;">
