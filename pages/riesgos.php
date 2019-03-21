@@ -822,7 +822,8 @@ desired effect
                                                                                         class="form-control pull-right"
                                                                                         name="vencimiento"
                                                                                         id="datepicker2"
-                                                                                        placeholder="dd/mm/yyyy">
+                                                                                        placeholder="dd/mm/yyyy"
+                                                                                        required>
                                                                                 </div>
                                                                             </div>
                                                                         </div>

@@ -1,3 +1,11 @@
+## FEAT-FIX-VARIOS
+### Varios pre release.
+*Fecha:* 2019-03-21
+*Cambios:*
+- Se cambia el label de las matrices para que se lea cantidad de .... M[riesgo.php]
+- Se pone como requerido el campo "vencimiento". M[riesgo.php]
+
+
 ## FEAT-CTR-CRITICIDAD
 ### Agregado de criticidad en controles.
 *Fecha:* 2019-03-21
