@@ -24,8 +24,9 @@ if(isset($_POST['save'])){
     $contenido = mysqli_real_escape_string($con,(strip_tags($_POST["contenido"],ENT_QUOTES)));//Escanpando caracteres
     $responsable = mysqli_real_escape_string($con,(strip_tags($_POST["responsable"],ENT_QUOTES)));//Escanpando caracteres 
     $tipo = mysqli_real_escape_string($con,(strip_tags($_POST["tipo"],ENT_QUOTES)));//Escanpando caracteres 
+    $criticidad = mysqli_real_escape_string($con,(strip_tags($_POST["criticidad"],ENT_QUOTES)));//Escanpando caracteres 
 	
-	$update_controles = mysqli_query($con, "UPDATE controles SET responsable='$responsable', contenido='$contenido', titulo='$titulo', tipo='$tipo', modificado=NOW(), usuario='$user' WHERE id_control='$nik'") or die(mysqli_error());
+	$update_controles = mysqli_query($con, "UPDATE controles SET responsable='$responsable', contenido='$contenido', titulo='$titulo', tipo='$tipo', modificado=NOW(), usuario='$user', criticidad='$criticidad' WHERE id_control='$nik'") or die(mysqli_error());
     
 	$insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
 											   VALUES ('2', '5','$nik', now(), '$user', '$titulo')") or die(mysqli_error());
@@ -338,19 +339,32 @@ desired effect
                   <?php echo "<textarea class=form-control name=contenido>{$row['contenido']}</textarea>"; ?>
                </div>
                <div class="form-group">
+                  <label>Criticidad</label>
+                  <select name="criticidad" class="form-control">
+                  <?php
+                    if($row['criticidad']=='0') { echo "<option value='0' selected='selected'>Crítico</option>"; } 
+                    else { echo "<option value='0'>Crítico</option>"; }
+                    if($row['criticidad']=='1') { echo "<option value='1' selected='selected'>Semi Crítico</option>"; } 
+                    else { echo "<option value='1'>Semi Crítico</option>"; }
+                    if($row['criticidad']=='2') { echo "<option value='2' selected='selected'>No Crítico</option>"; } 
+                    else { echo "<option value='2'>No Crítico</option>"; }
+                  ?>  
+                  </select>
+                </div>
+               <div class="form-group">
                   <label>Responsable</label>
                   <select name="responsable" class="form-control">
-						<?php
-								$personasn = mysqli_query($con, "SELECT * FROM persona");
-								while($rowps = mysqli_fetch_array($personasn)){
-									if($rowps['id_persona']==$row['responsable']) {
-										echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
-									}
-									else {
-										echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
-									}
-								}
-						?>
+                  <?php
+                      $personasn = mysqli_query($con, "SELECT * FROM persona");
+                      while($rowps = mysqli_fetch_array($personasn)){
+                        if($rowps['id_persona']==$row['responsable']) {
+                          echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
+                        }
+                        else {
+                          echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+                        }
+                      }
+                  ?>
                   </select>
                 </div>
  				<div class="form-group">
