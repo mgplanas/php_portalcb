@@ -835,7 +835,7 @@ desired effect
                                         data-justificacion="'.$row['justificacion_cierre'].'"
                                         title="Editar datos" class="editar-itemDialog btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>    
                                 
-                                    <a href="edit_riesgo.php?akav=delete&niav='.$row['id_avance_riesgo'].'&nik=' . $nik .'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de ['.$row['detalle'].']?\')" class="btn btn-danger btn-sm ';
+                                    <a href="edit_riesgo.php?akav=delete&niav='.$rowavance['id_avance_riesgo'].'&nik=' . $nik .'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de ['.$rowavance['detalle'].']?\')" class="btn btn-danger btn-sm ';
                                     if ($rq_sec['edicion']=='0'){
                                             echo 'disabled';
                                     }

@@ -3,7 +3,8 @@
 *Fecha:* 2019-03-25
 *Cambios:*
 - Se posicionan los botones de exportación arriba de la tabla. M[riesgo.php]
-
+- Se corrige la imposibilidad de eliminar un avance. M[edit_riesgo.php]
+- Se corrige el detalle de la confirmación al eliminar un riesgo. M[edit_riesgo.php]
 
 ## FEAT-FIX-VARIOS
 ### Varios pre release.
