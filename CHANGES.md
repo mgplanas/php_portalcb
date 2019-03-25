@@ -1,3 +1,10 @@
+## FEAT-REL-REORGANIZ
+### Varios post release.
+*Fecha:* 2019-03-25
+*Cambios:*
+- Se posicionan los botones de exportación arriba de la tabla. M[riesgo.php]
+
+
 ## FEAT-FIX-VARIOS
 ### Varios pre release.
 *Fecha:* 2019-03-21

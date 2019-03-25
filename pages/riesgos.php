@@ -1988,7 +1988,7 @@ desired effect
                 'ordering': true,
                 'info': true,
                 'autoWidth': true,
-                'dom': 'frtipB',
+                'dom': 'Bfrtip',
                 'buttons': [{
                         extend: 'pdfHtml5',
                         orientation: 'landscape',
