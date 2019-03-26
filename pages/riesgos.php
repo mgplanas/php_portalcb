@@ -40,9 +40,6 @@ $per_id_gerencia = $rowp['gerencia'];
 // GERENCIA DE CIBER SEGURIDAD = 1 
 // PUEDE VER TODO
 
-//filtro de incidente
-$filter = (isset($_GET['filter']) ? strtolower($_GET['filter']) : NULL);
-
 if(isset($_GET['aksi']) == 'filter'){
   $p=$_GET["p"];     //probabilidad
   $i=$_GET["i"];      //impacto
@@ -77,12 +74,6 @@ if(isset($_GET['aksi']) == 'filter'){
 if ( $per_id_gerencia != 1) {
   $query = $query . " AND p.gerencia = $per_id_gerencia ";
 }
-
-//Filtro por incidente
-if ($filter == "0" || $filter == "1") {
-    $query = $query . " AND i.incidente = $filter ";
-}
-
 
 //Count riesgos
 $riesgos = "SELECT 1 as total FROM riesgo WHERE riesgo.responsable='$id_rowp' AND riesgo.borrado='0'";
@@ -443,22 +434,7 @@ desired effect
                                     <div class="col-sm-3" style="text-align:left">
                                         <h2 class="box-title">Listado de Riesgos</h2>
                                     </div>
-                                    <div class="col-sm-3" style="text-align:left">
-                                        <div class="btn-group">
-                                            <button type="button"  id="ex1" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Filtro por incidente
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                            <li><a href="?filter=-1">Todos</a></li>
-                                            <li><a href="?filter=1">Con Incidentes</a></li>
-                                            <li><a href="?filter=0">Sin Incidentes</a></li>
-                                            </ul>
-                                            <?php echo "<input type='hidden' id='nik' name='nik' value='".strip_tags($_GET["nik"],ENT_QUOTES)."'/>" ?>
-                                        </div>
 
-
-
-                                    </div>
                                     <div class="col-sm-6" style="text-align:right;">
                                         <button type="button" class="btn-sm" data-toggle="modal"
                                             data-target="#modal-ciclo"><i class="glyphicon glyphicon-repeat"></i>
@@ -1949,7 +1925,7 @@ desired effect
         <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <!-- DataTables -->
         <script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-        <script src="../bower_components/datatables.net/js/dataTables.fixedHeader.min.js"></script>
+        <!-- <script src="../bower_components/datatables.net/js/dataTables.fixedHeader.min.js"></script> -->
         <script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
         <!-- SlimScroll -->
         <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>

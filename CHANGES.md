@@ -6,6 +6,7 @@
 - Se corrige la imposibilidad de eliminar un avance. M[edit_riesgo.php]
 - Se corrige el detalle de la confirmación al eliminar un riesgo. M[edit_riesgo.php]
 - Se agregan los filtros acumulativos en el encabezado de la tabla. M[riesgo.php]
+- Se elimina el filtro de incidente. M[riesgo.php]
 
 ## FEAT-FIX-VARIOS
 ### Varios pre release.
