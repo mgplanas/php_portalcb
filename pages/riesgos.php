@@ -431,7 +431,7 @@ desired effect
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <div class="col-sm-3" style="text-align:left">
+                                    <div class="col-sm-6" style="text-align:left">
                                         <h2 class="box-title">Listado de Riesgos</h2>
                                     </div>
 
