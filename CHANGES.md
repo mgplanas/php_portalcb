@@ -7,6 +7,7 @@
 - Se corrige el detalle de la confirmación al eliminar un riesgo. M[edit_riesgo.php]
 - Se agregan los filtros acumulativos en el encabezado de la tabla. M[riesgo.php]
 - Se elimina el filtro de incidente. M[riesgo.php]
+- Se corrige un error en los indicadores de Proyectos. M[getProyResp.php] M[getProyRespStat.php] YA SOLUCIONADO EN PROD
 
 ## FEAT-FIX-VARIOS
 ### Varios pre release.

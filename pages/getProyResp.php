@@ -5,7 +5,7 @@
       $proy_resp = "SELECT r.apellido as persona, COUNT(*) as total FROM controls.proyecto as p
       
                     INNER JOIN persona as r ON p.responsable=r.id_persona
-                    WHERE borrado='0' AND estado!='4'
+                    WHERE p.borrado='0' AND estado!='4'
                     group by responsable;";
     $query = mysqli_query($con, $proy_resp) or die('Query failed: ' . mysql_error());
 

@@ -9,7 +9,7 @@
                     COUNT(IF(estado='1',1,null)) as no_iniciado
                     FROM controls.proyecto as p
                     INNER JOIN persona as r ON p.responsable=r.id_persona
-                    WHERE borrado='0'
+                    WHERE p.borrado='0'
                     group by responsable";
     $query = mysqli_query($con, $proy_resp) or die('Query failed: ' . mysql_error());
 
