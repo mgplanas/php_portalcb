@@ -1949,6 +1949,7 @@ desired effect
         <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <!-- DataTables -->
         <script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="../bower_components/datatables.net/js/dataTables.fixedHeader.min.js"></script>
         <script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
         <!-- SlimScroll -->
         <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
@@ -1982,12 +1983,13 @@ desired effect
         <script>
         $(function() {
             $('#riesgos').DataTable({
+                'ordering': true,
                 'paging': false,
                 'lengthChange': false,
                 'searching': true,
-                'ordering': true,
+                
                 'info': true,
-                'autoWidth': true,
+                'autoWidth': false,
                 'dom': 'Bfrtip',
                 'buttons': [{
                         extend: 'pdfHtml5',
@@ -2000,7 +2002,41 @@ desired effect
                         text: 'Excel',
                     }
                 ]
-            })
+            });
+            
+            $('#riesgos thead tr').clone(true).appendTo( '#riesgos thead' );
+            $('#riesgos thead tr:eq(1) th').each( function (colIdx) {
+                $(this).removeClass('sorting');
+                if (colIdx == 4 || colIdx == 9 || colIdx == 10) {
+                    var table = $('#riesgos').DataTable();
+                    var select = $('<select style="width: 100%;"><option value=""></option></select>')
+                    .on( 'change', function () {
+                        table
+                            .column( colIdx )
+                            .search( $(this).val() )
+                            .draw();
+                    } )
+                    .on( 'click' , function(){return false;} )
+                    // .wrap( "<div></div>" );             // VER
+                    // Get the search data for the first column and add to the select list
+                    table
+                        .column( colIdx )
+                        .cache( 'search' )
+                        .sort()
+                        .unique()
+                        .each( function ( d ) {
+                            select.append( $('<option value="'+d+'">'+d+'</option>') );
+                        });
+                    
+                    var filterhtml = select.parent().prop('outerHTML');
+                    $(this).html(select);
+                    // $(this).html(filterhtml);
+
+                }
+                else {
+                    $(this).html("");
+                }
+            } );            
         })
         </script>
         <script>
