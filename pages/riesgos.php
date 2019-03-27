@@ -1979,12 +1979,14 @@ desired effect
                     }
                 ]
             });
-            
+            var table = $('#riesgos').DataTable();
             $('#riesgos thead tr').clone(true).appendTo( '#riesgos thead' );
             $('#riesgos thead tr:eq(1) th').each( function (colIdx) {
                 $(this).removeClass('sorting');
+                var table = $('#riesgos').DataTable();
+
+                // Si son las columnas de filtro creo el ddl
                 if (colIdx == 4 || colIdx == 9 || colIdx == 10) {
-                    var table = $('#riesgos').DataTable();
                     var select = $('<select style="width: 100%;"><option value=""></option></select>')
                     .on( 'change', function () {
                         table
@@ -2012,6 +2014,7 @@ desired effect
                 else {
                     $(this).html("");
                 }
+
             } );            
         })
         </script>
