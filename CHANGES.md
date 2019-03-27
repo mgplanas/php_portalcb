@@ -9,6 +9,7 @@
 - Se elimina el filtro de incidente. M[riesgo.php]
 - Se corrige un error en los indicadores de Proyectos. M[getProyResp.php] M[getProyRespStat.php] YA SOLUCIONADO EN PROD
 - Se pasan las grillas de Matrices de risesgos al dashboard principal. M[site.php]
+- Poder visualizar la gente que ha leído las novedades M[novedades.php]
 
 ## FEAT-FIX-VARIOS
 ### Varios pre release.
