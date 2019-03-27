@@ -65,9 +65,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
-<!-- fullCalendar -->
-  <link rel="stylesheet" href="../bower_components/fullcalendar/dist/fullcalendar.css">
-  <link rel="stylesheet" href="../bower_components/fullcalendar/dist/fullcalendar.print.css" media="print">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -352,7 +349,7 @@ desired effect
                     while($rown = mysqli_fetch_assoc($sql_novedad)){
                         if ($rown['dia'] != $dia_ref){
                             $id_nove=$rown['id_novedad'];
-                            $query_array_leidos = "SELECT group_concat(p.apellido) as leidos FROM controls.leido_novedad as l
+                            $query_array_leidos = "SELECT group_concat(p.apellido) as leidos FROM leido_novedad as l
                                                     LEFT JOIN persona as p ON p.id_persona=l.persona
                                                     WHERE l.novedad='$id_nove'";
                             $sql_array_leidos = mysqli_query($con, $query_array_leidos);
@@ -398,11 +395,9 @@ desired effect
                                 if(mysqli_num_rows($sql_leido) == 0){
 						              echo '<button type="button" class="btn btn-default btn-xs" onclick="updateleido('.$rown['id_novedad'].', \''.$id_rowp.'\');"><i class="fa fa-thumbs-o-up"></i> Leido</button>';
                                 }else{
-                                 
-                                echo'
-                                <button type="button" class="btn btn-default btn-xs disabled"><i class="fa fa-thumbs-o-up"></i> Leido</button>
-                                <span class="text-muted pull-right">' .$rowal['leidos'].'</span>';
-                                };
+                                  echo'<button type="button" class="btn btn-default btn-xs disabled"><i class="fa fa-thumbs-o-up"></i> Leido</button>';
+                                }
+                                echo'<span class="text-muted pull-right">' .$rowal['leidos'].'</span>';
                                 echo'
                                 </div>
                                 <!-- /.box-body -->
@@ -670,8 +665,6 @@ desired effect
 <script src="../bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
-<!-- custom scripts --> 
-<script type="text/javascript" src="../js/script.js"></script> 
 
 <script>
     window.onload = function() {
