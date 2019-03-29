@@ -823,7 +823,11 @@ desired effect
                                       title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                                   </td>';
                                 echo '<td align="center">'.$rowavance['id_avance_riesgo'].'</td>';
-                                echo '<td>'.$rowavance['detalle'].'</td>';
+                                $detalleAvance = $rowavance['detalle'];
+                                if ($detalleAvance == '') {
+                                  $detalleAvance = '<b>Justificación del cierre: </b> ' . $row['justificacion_cierre'];
+                                }
+                                echo '<td>'.$detalleAvance.'</td>';
                                 echo '<td>'.$rowavance['fecha'].'</td>';
                                 echo '<td align="center">
                                       <a data-id="'.$rowavance['id_avance_riesgo'].'" 
