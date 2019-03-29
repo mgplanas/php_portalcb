@@ -1150,6 +1150,13 @@ $(function(){
   $('#justificacioncierre').hide();
   $('#justificacioneditcierre').hide();
   
+  if (this.value==0) {
+      $('#justificacioncierre').hide();
+      $('#txtjustificacionadd').attr('required', false);
+    } else {
+      $('#justificacioncierre').show();
+      $('#txtjustificacionadd').attr('required', true);
+    }
   // Defino el behavior
   $('#estadoaddcierre').on('change', function() {
     if (this.value==0) {
@@ -1197,7 +1204,6 @@ $(function(){
 </script>
 <script>
 function validateEditAvance() {
-  alert('paso');
   if ($('#estadoEditcierre').val() == "1" ) {
     if ($('#txtjustificacionedit').val() == "") {
       alert("Debe escribir una justificación al cerrar el riesgo.");
