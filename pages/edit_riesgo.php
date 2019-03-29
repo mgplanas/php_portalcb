@@ -801,7 +801,7 @@ desired effect
                       <th style="width: 10px">#</th>
                       <th>Detalle</th>
                       <th style="width: 150px">Fecha</th>
-                      <th>Acción</th>
+                      <th style="text-align:center;width: 10%;">Acción</th>
                     </tr>
                     <?php
                         $query = "SELECT * FROM avance_riesgo
@@ -833,13 +833,18 @@ desired effect
                                         data-riesgo="'. $nik .'"
                                         data-estado="'.$row['estado'].'"
                                         data-justificacion="'.$row['justificacion_cierre'].'"
-                                        title="Editar datos" class="editar-itemDialog btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>    
-                                
-                                    <a href="edit_riesgo.php?akav=delete&niav='.$rowavance['id_avance_riesgo'].'&nik=' . $nik .'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de ['.$rowavance['detalle'].']?\')" class="btn btn-danger btn-sm ';
-                                    if ($rq_sec['edicion']=='0'){
-                                            echo 'disabled';
-                                    }
-                                echo '"><i class="glyphicon glyphicon-trash"></i></a></td>';
+                                        title="Editar datos" class="editar-itemDialog btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';    
+                                    
+                                // Si el riesgo esta cerrado no dejo eliminar avance.
+                                if ($row['estado']==0) {
+                                  echo '<a href="edit_riesgo.php?akav=delete&niav='.$rowavance['id_avance_riesgo'].'&nik=' . $nik .'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de ['.$rowavance['detalle'].']?\')" class="btn btn-danger btn-sm ';
+                                      
+                                  if ($rq_sec['edicion']=='0'){
+                                          echo 'disabled';
+                                  }
+                                  echo '"><i class="glyphicon glyphicon-trash"></i></a>';
+                                }
+                                echo '</td>';
                                 echo '</tr>';
                             }
                         }
