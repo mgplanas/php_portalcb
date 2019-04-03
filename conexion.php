@@ -3,8 +3,8 @@
 $db_host = "localhost";
 $db_user = "root";
 $db_pass = "";
-// $db_name = "controls";
-$db_name = "controlstest";
+$db_name = "controls";
+// $db_name = "controlstest";
 
 $con = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 

@@ -17,6 +17,7 @@
     - M[proyectos.php]
     - M[inventario.php]
     - M[topologia.php]
+    - M[admin.php]
 - Nuevo Menú Métricas
     - N[met_activos.php]
     - N[met_iso27k.php]

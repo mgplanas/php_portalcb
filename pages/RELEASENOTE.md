@@ -28,3 +28,4 @@
     - N[met_iso27k.php]
     - N[met_riesgos.php]
     - N[met_controles.php]
+    - M[admin.php]
