@@ -1,3 +1,31 @@
+## FEAT-SITE-MENU
+### Varios post release.
+*Fecha:* 2019-04-03
+*Cambios:*
+- Saco la definicion del sidebar y el header en archivos php separados para que sean reutilizables y ordenar el código y mejorar la manutención del mismo.  
+    - N[site_sidebar.php]
+    - N[site_header.php]
+- Actualizacion del sidebar en las páginas. En el site.php hay que actualizarlo manualmente
+    - M[site.php]
+    - M[activos.php]
+    - M[controles.php]
+    - M[iso27k.php]
+    - M[mejoras.php]
+    - M[riesgos.php]
+    - M[calendario.php]
+    - M[novedades.php]
+    - M[proyectos.php]
+    - M[inventario.php]
+    - M[topologia.php]
+- Nuevo Menú Métricas
+    - N[met_activos.php]
+    - N[met_iso27k.php]
+    - N[met_riesgos.php]
+    - N[met_controles.php]
+- TODO - SAcar el header
+
+
+
 ## FEAT-REL-REORGANIZ
 ### Varios post release.
 *Fecha:* 2019-03-25

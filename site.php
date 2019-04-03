@@ -292,27 +292,41 @@ desired effect
         <!-- Optionally, you can add icons to the links -->
         <li class="active"><a href="#"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
         <li><a href="./pages/activos.php"><i class="fa fa-archive"></i> <span>Activos</span></a></li>
-		<li><a href="./pages/controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
-		<li><a href="./pages/iso27k.php"><i class="fa fa-crosshairs"></i> <span>Ítems ISO 27001</span></a></li>
-        <li><a href="./pages/mejoras.php"><i class="fa fa-refresh"></i> <span>Mejora Continua</span></a></li>
-		<li><a href="./pages/riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
-		<?php if ($rq_sec['admin']=='1' OR $rq_sec['soc']=='1'){
-        echo '<li><a href="./pages/calendario.php"><i class="fa fa-calendar"></i> <span>Calendario</span></a></li>';
-        echo '<li><a href="./pages/novedades.php"><i class="fa fa-envelope"></i> <span>Novedades</span></a></li>';
-        echo '<li><a href="./pages/proyectos.php"><i class="fa fa-list"></i> <span>Proyectos</span></a></li>';
-        echo '<li class="treeview">
-          <a href="#">
-            <i class="fa fa-book"></i><span>Inventario</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="./pages/inventario.php"><i class="fa fa-list"></i>Listado</a></li>
-            <li><a href="./pages/topologia.php"><i class="fa fa-map-o"></i> <span>Topología</span></a></li>
-          </ul>
-        </li>';
-        }?>
+        <li><a href="./pages/controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
+        <li><a href="./pages/iso27k.php"><i class="fa fa-crosshairs"></i> <span>Ítems ISO 27001</span></a></li>
+            <li><a href="./pages/mejoras.php"><i class="fa fa-refresh"></i> <span>Mejora Continua</span></a></li>
+        <li><a href="./pages/riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
+        <?php if ($rq_sec['admin']=='1' OR $rq_sec['soc']=='1'){
+            echo '<li><a href="./pages/calendario.php"><i class="fa fa-calendar"></i> <span>Calendario</span></a></li>';
+            echo '<li><a href="./pages/novedades.php"><i class="fa fa-envelope"></i> <span>Novedades</span></a></li>';
+            echo '<li><a href="./pages/proyectos.php"><i class="fa fa-list"></i> <span>Proyectos</span></a></li>';
+            echo '<li class="treeview">
+              <a href="#">
+                <i class="fa fa-book"></i><span>Inventario</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="./pages/inventario.php"><i class="fa fa-list"></i>Listado</a></li>
+                <li><a href="./pages/topologia.php"><i class="fa fa-map-o"></i> <span>Topología</span></a></li>
+              </ul>
+            </li>';
+            echo '<li class="treeview">
+            <a href="#">
+              <i class="fa fa-pie-chart"></i><span>Métricas</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="./pages/met_activos.php"><i class="fa fa-archive"></i>Activos</a></li>
+              <li><a href="./pages/met_iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
+              <li><a href="./pages/met_riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
+              <li><a href="./pages/met_controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
+            </ul>
+          </li>';
+            }?>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -353,7 +367,10 @@ desired effect
             <div class="icon">
               <i class="fa fa-archive"></i>
             </div>
-            <a href="./pages/activos.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+            <div style="position: relative; padding: 3px; color: #fff; color: rgba(255,255,255,0.8); display: block; z-index: 10; background: rgba(0,0,0,0.1); text-decoration: none;">
+              <a style="color: white;" href="./pages/activos.php" >  <i class="fa fa-list"></i></a>
+              <a style="color: white;" href="./pages/met_activos.php" >  <i class="fa fa-pie-chart"></i></a>
+            </div>
           </div>
         </div>
         <!-- ./col -->
@@ -377,7 +394,10 @@ desired effect
             <div class="icon">
               <i class="ion ion-speedometer"></i>
             </div>
-            <a href="./pages/iso27k.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+            <div style="position: relative; padding: 3px; color: #fff; color: rgba(255,255,255,0.8); display: block; z-index: 10; background: rgba(0,0,0,0.1); text-decoration: none;">
+              <a style="color: white;" href="./pages/iso27k.php" >  <i class="fa fa-list"></i></a>
+              <a style="color: white;" href="./pages/met_iso27k.php" >  <i class="fa fa-pie-chart"></i></a>
+            </div>            
           </div>
         </div>
         <!-- ./col -->
@@ -397,7 +417,10 @@ desired effect
             <div class="icon">
               <i class="ion ion-flash"></i>
             </div>
-            <a href="./pages/riesgos.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+            <div style="position: relative; padding: 3px; color: #fff; color: rgba(255,255,255,0.8); display: block; z-index: 10; background: rgba(0,0,0,0.1); text-decoration: none;">
+              <a style="color: white;" href="./pages/riesgos.php" >  <i class="fa fa-list"></i></a>
+              <a style="color: white;" href="./pages/met_riesgos.php" >  <i class="fa fa-pie-chart"></i></a>
+            </div>               
           </div>
         </div>
         <!-- ./col -->
@@ -418,7 +441,10 @@ desired effect
             <div class="icon">
               <i class="fa fa-retweet"></i>
             </div>
-            <a href="./pages/controles.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+            <div style="position: relative; padding: 3px; color: #fff; color: rgba(255,255,255,0.8); display: block; z-index: 10; background: rgba(0,0,0,0.1); text-decoration: none;">
+              <a style="color: white;" href="./pages/controles.php" >  <i class="fa fa-list"></i></a>
+              <a style="color: white;" href="./pages/met_controles.php" >  <i class="fa fa-pie-chart"></i></a>
+            </div>                    
           </div>
         </div>
         <!-- ./col -->
@@ -496,408 +522,6 @@ desired effect
             <!-- /.box-body -->
           </div>
 		</div>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-3 col-xs-6"></div>
-    <div class="col-lg-3 col-xs-6"></div>
-    <div class="col-lg-6 col-xs-6">
-      <?php
-        //querys de datos matriz inherente
-        //Riesgos Inherentes
-        $q14 = "SELECT count(*) as q14 FROM riesgo WHERE probabilidad=1 && i_result=4 && borrado=0 && estado=0";
-        $result14 = mysqli_query($con, $q14);
-        $row14 = mysqli_fetch_assoc($result14);
-        $q13 = "SELECT count(*) as q13 FROM riesgo WHERE probabilidad=1 && i_result=3 && borrado=0 && estado=0";
-        $result13 = mysqli_query($con, $q13);
-        $row13 = mysqli_fetch_assoc($result13);
-        $q12 = "SELECT count(*) as q12 FROM riesgo WHERE probabilidad=1 && i_result=2 && borrado=0 && estado=0";
-        $result12 = mysqli_query($con, $q12);
-        $row12 = mysqli_fetch_assoc($result12);
-        $q11 = "SELECT count(*) as q11 FROM riesgo WHERE probabilidad=1 && i_result=1 && borrado=0 && estado=0";
-        $result11 = mysqli_query($con, $q11);
-        $row11 = mysqli_fetch_assoc($result11);
-        $q24 = "SELECT count(*) as q24 FROM riesgo WHERE probabilidad=2 && i_result=4 && borrado=0 && estado=0";
-        $result24 = mysqli_query($con, $q24);
-        $row24 = mysqli_fetch_assoc($result24);
-        $q23 = "SELECT count(*) as q23 FROM riesgo WHERE probabilidad=2 && i_result=3 && borrado=0 && estado=0";
-        $result23 = mysqli_query($con, $q23);
-        $row23 = mysqli_fetch_assoc($result23);
-        $q22 = "SELECT count(*) as q22 FROM riesgo WHERE probabilidad=2 && i_result=2 && borrado=0 && estado=0";
-        $result22 = mysqli_query($con, $q22);
-        $row22 = mysqli_fetch_assoc($result22);
-        $q21 = "SELECT count(*) as q21 FROM riesgo WHERE probabilidad=2 && i_result=1 && borrado=0 && estado=0";
-        $result21 = mysqli_query($con, $q21);
-        $row21 = mysqli_fetch_assoc($result21);
-        $q34 = "SELECT count(*) as q34 FROM riesgo WHERE probabilidad=3 && i_result=4 && borrado=0 && estado=0";
-        $result34 = mysqli_query($con, $q34);
-        $row34 = mysqli_fetch_assoc($result34);
-        $q33 = "SELECT count(*) as q33 FROM riesgo WHERE probabilidad=3 && i_result=3 && borrado=0 && estado=0";
-        $result33 = mysqli_query($con, $q33);
-        $row33 = mysqli_fetch_assoc($result33);
-        $q32 = "SELECT count(*) as q32 FROM riesgo WHERE probabilidad=3 && i_result=2 && borrado=0 && estado=0";
-        $result32 = mysqli_query($con, $q32);
-        $row32 = mysqli_fetch_assoc($result32);
-        $q31 = "SELECT count(*) as q31 FROM riesgo WHERE probabilidad=3 && i_result=1 && borrado=0 && estado=0";
-        $result31 = mysqli_query($con, $q31);
-        $row31 = mysqli_fetch_assoc($result31);
-        $q44 = "SELECT count(*) as q44 FROM riesgo WHERE probabilidad=4 && i_result=4 && borrado=0 && estado=0";
-        $result44 = mysqli_query($con, $q44);
-        $row44 = mysqli_fetch_assoc($result44);
-        $q43 = "SELECT count(*) as q43 FROM riesgo WHERE probabilidad=4 && i_result=3 && borrado=0 && estado=0";
-        $result43 = mysqli_query($con, $q43);
-        $row43 = mysqli_fetch_assoc($result43);
-        $q42 = "SELECT count(*) as q42 FROM riesgo WHERE probabilidad=4 && i_result=2 && borrado=0 && estado=0";
-        $result42 = mysqli_query($con, $q42);
-        $row42 = mysqli_fetch_assoc($result42);
-        $q41 = "SELECT count(*) as q41 FROM riesgo WHERE probabilidad=4 && i_result=1 && borrado=0 && estado=0";
-        $result41 = mysqli_query($con, $q41);
-        $row41 = mysqli_fetch_assoc($result41);	
-      ?>
-    <div class="box box-warning collapsed-box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Cantidad según Matriz de riesgo inherente</h3>
-
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-            </button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-          </div>
-        </div>
-        <div class="box-body">
-          <table border=1 cellspacing=0 cellpadding=0
-              style='border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>
-              <tr>
-                  <td width=30 valign=top
-                      style='width:16.6pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>
-                          <o:p>&nbsp;</o:p>
-                      </p>
-                  </td>
-                  <td width=114
-                      style='width:85.7pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>
-                          <o:p>&nbsp;</o:p>
-                      </p>
-                  </td>
-                  <td width=387 colspan=4
-                      style='width:289.95pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>PROBABILIDAD DE OCURRENCIA<o:p></o:p></span></p>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>
-                          <o:p>&nbsp;</o:p>
-                      </p>
-                  </td>
-              </tr>
-              <tr style='mso-yfti-irow:1'>
-                  <td width=30 valign=top
-                      style='width:16.6pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>
-                          <o:p>&nbsp;</o:p>
-                      </p>
-                  </td>
-                  <td width=114
-                      style='width:85.7pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>
-                          <o:p>&nbsp;</o:p>
-                      </p>
-                  </td>
-                  <td width=98 style='width:73.3pt;border:none;border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>IMPROBABLE</p>
-                  </td>
-                  <td width=99 style='width:74.3pt;border:none;border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>MODERADA</p>
-                  </td>
-                  <td width=96 style='width:72.3pt;border:none;border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>PROBABLE</p>
-                  </td>
-                  <td width=93 style='width:70.05pt;border:none;border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>CERTEZA</p>
-                  </td>
-              </tr>
-              <tr style='mso-yfti-irow:2;height:63.3pt'>
-                  <td width=30 rowspan=4 style='width:16.6pt;border:none;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>I<o:p></o:p></span></p>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>M<o:p></o:p></span></p>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>P<o:p></o:p></span></p>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>A<o:p></o:p></span></p>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>C<o:p></o:p></span></p>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>T<o:p></o:p></span></p>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>O</span></p>
-                  </td>
-                  <td width=114 style='width:85.7pt;border:none;border-right:solid windowtext 1.0pt;mso-border-right-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>CATASTRÓFICO</p>
-                  </td>
-                  <td width=98 style='text-align:center; width:73.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:yellow;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                          <div class="box_a" style="color:black">
-                              <?php echo $row14['q14']; ?></div>
-                  </td>
-                  <td width=99 style='text-align:center; width:74.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                          <div class="box_a" style="color:black">
-                              <?php echo $row24['q24']; ?></div>
-                  </td>
-                  <td width=96 style='width:72.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row34['q34']; ?></p>
-                  </td>
-                  <td width=93 style='width:70.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row44['q44']; ?></p>
-                  </td>
-              </tr>
-              <tr style='mso-yfti-irow:3;height:63.4pt'>
-                  <td width=114 style='width:85.7pt;border:none;border-right:solid windowtext 1.0pt;mso-border-right-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>MAYOR</p>
-                  </td>
-                  <td width=98 style='width:73.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row13['q13']; ?></p>
-                  </td>
-                  <td width=99 style='width:74.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:yellow;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row23['q23']; ?></p>
-                  </td>
-                  <td width=96 style='width:72.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row33['q33']; ?></p>
-                  </td>
-                  <td width=93 style='width:70.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row43['q43']; ?></p>
-                  </td>
-              </tr>
-              <tr style='mso-yfti-irow:4;height:70.8pt'>
-                  <td width=114 style='width:85.7pt;border:none;border-right:solid windowtext 1.0pt;mso-border-right-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>MODERADO</p>
-                  </td>
-                  <td width=98 style='width:73.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row12['q12']; ?></p>
-                  </td>
-                  <td width=99 style='width:74.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row22['q22']; ?></p>
-                  </td>
-                  <td width=96 style='width:72.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:yellow;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row32['q32']; ?></p>
-                  </td>
-                  <td width=93 style='width:70.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row42['q42']; ?></p>
-                  </td>
-              </tr>
-              <tr
-                  style='mso-yfti-irow:5;mso-yfti-lastrow:yes;height:62.4pt'>
-                  <td width=114 style='width:85.7pt;border:none;border-right:solid windowtext 1.0pt;mso-border-right-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>MENOR</p>
-                  </td>
-                  <td width=98 style='width:73.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row11['q11']; ?></p>
-                  </td>
-                  <td width=99 style='width:74.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row21['q21']; ?></p>
-                  </td>
-                  <td width=96 style='width:72.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row31['q31']; ?></p>
-                  </td>
-                  <td width=93 style='width:70.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:yellow;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                      <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row41['q41']; ?></p>
-                  </td>
-              </tr>
-          </table>
-        </div>
-        <!-- /.box-body -->
-      </div>      
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-3 col-xs-6"></div>
-    <div class="col-lg-3 col-xs-6"></div>
-    <div class="col-lg-6 col-xs-6">
-      <?php
-        //querys de datos matriz RESIDUAL
-        $q14r = "SELECT count(*) as q14r FROM riesgo WHERE p_resid=1 && i_resid=4 && borrado=0 && estado=0";
-        $result14r = mysqli_query($con, $q14r);
-        $row14r = mysqli_fetch_assoc($result14r);
-        $q13r = "SELECT count(*) as q13r FROM riesgo WHERE p_resid=1 && i_resid=3 && borrado=0 && estado=0";
-        $result13r = mysqli_query($con, $q13r);
-        $row13r = mysqli_fetch_assoc($result13r);
-        $q12r = "SELECT count(*) as q12r FROM riesgo WHERE p_resid=1 && i_resid=2 && borrado=0 && estado=0";
-        $result12r = mysqli_query($con, $q12r);
-        $row12r = mysqli_fetch_assoc($result12r);
-        $q11r = "SELECT count(*) as q11r FROM riesgo WHERE p_resid=1 && i_resid=1 && borrado=0 && estado=0";
-        $result11r = mysqli_query($con, $q11r);
-        $row11r = mysqli_fetch_assoc($result11r);
-        $q24r = "SELECT count(*) as q24r FROM riesgo WHERE p_resid=2 && i_resid=4 && borrado=0 && estado=0";
-        $result24r = mysqli_query($con, $q24r);
-        $row24r = mysqli_fetch_assoc($result24r);
-        $q23r = "SELECT count(*) as q23r FROM riesgo WHERE p_resid=2 && i_resid=3 && borrado=0 && estado=0";
-        $result23r = mysqli_query($con, $q23r);
-        $row23r = mysqli_fetch_assoc($result23r);
-        $q22r = "SELECT count(*) as q22r FROM riesgo WHERE p_resid=2 && i_resid=2 && borrado=0 && estado=0";
-        $result22r = mysqli_query($con, $q22r);
-        $row22r = mysqli_fetch_assoc($result22r);
-        $q21r = "SELECT count(*) as q21r FROM riesgo WHERE p_resid=2 && i_resid=1 && borrado=0 && estado=0";
-        $result21r = mysqli_query($con, $q21r);
-        $row21r = mysqli_fetch_assoc($result21r);
-        $q34r = "SELECT count(*) as q34r FROM riesgo WHERE p_resid=3 && i_resid=4 && borrado=0 && estado=0";
-        $result34r = mysqli_query($con, $q34r);
-        $row34r = mysqli_fetch_assoc($result34r);
-        $q33r = "SELECT count(*) as q33r FROM riesgo WHERE p_resid=3 && i_resid=3 && borrado=0 && estado=0";
-        $result33r = mysqli_query($con, $q33r);
-        $row33r = mysqli_fetch_assoc($result33r);
-        $q32r = "SELECT count(*) as q32r FROM riesgo WHERE p_resid=3 && i_resid=2 && borrado=0 && estado=0";
-        $result32r = mysqli_query($con, $q32r);
-        $row32r = mysqli_fetch_assoc($result32r);
-        $q31r = "SELECT count(*) as q31r FROM riesgo WHERE p_resid=3 && i_resid=1 && borrado=0 && estado=0";
-        $result31r = mysqli_query($con, $q31r);
-        $row31r = mysqli_fetch_assoc($result31r);
-        $q44r = "SELECT count(*) as q44r FROM riesgo WHERE p_resid=4 && i_resid=4 && borrado=0 && estado=0";
-        $result44r = mysqli_query($con, $q44r);
-        $row44r = mysqli_fetch_assoc($result44r);
-        $q43r = "SELECT count(*) as q43r FROM riesgo WHERE p_resid=4 && i_resid=3 && borrado=0 && estado=0";
-        $result43r = mysqli_query($con, $q43r);
-        $row43r = mysqli_fetch_assoc($result43r);
-        $q42r = "SELECT count(*) as q42r FROM riesgo WHERE p_resid=4 && i_resid=2 && borrado=0 && estado=0";
-        $result42r = mysqli_query($con, $q42r);
-        $row42r = mysqli_fetch_assoc($result42r);
-        $q41r = "SELECT count(*) as q41r FROM riesgo WHERE p_resid=4 && i_resid=1 && borrado=0 && estado=0";
-        $result41r = mysqli_query($con, $q41r);
-        $row41r = mysqli_fetch_assoc($result41r);	
-      ?>
-      <div class="box box-warning collapsed-box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Cantidad según Matriz de riesgo residual</h3>
-
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-            </button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-          </div>
-        </div>
-        <div class="box-body">
-          <table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
-            style='border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>
-            <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
-                <td width=30 valign=top
-                    style='width:16.6pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>
-                        <o:p>&nbsp;</o:p>
-                    </p>
-                </td>
-                <td width=114
-                    style='width:85.7pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>
-                        <o:p>&nbsp;</o:p>
-                    </p>
-                </td>
-                <td width=387 colspan=4
-                    style='width:289.95pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>PROBABILIDAD DE OCURRENCIA<o:p></o:p></span></p>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>
-                        <o:p>&nbsp;</o:p>
-                    </p>
-                </td>
-            </tr>
-            <tr style='mso-yfti-irow:1'>
-                <td width=30 valign=top
-                    style='width:16.6pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>
-                        <o:p>&nbsp;</o:p>
-                    </p>
-                </td>
-                <td width=114
-                    style='width:85.7pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>
-                        <o:p>&nbsp;</o:p>
-                    </p>
-                </td>
-                <td width=98 style='width:73.3pt;border:none;border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>IMPROBABLE</p>
-                </td>
-                <td width=99 style='width:74.3pt;border:none;border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>MODERADA</p>
-                </td>
-                <td width=96 style='width:72.3pt;border:none;border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>PROBABLE</p>
-                </td>
-                <td width=93 style='width:70.05pt;border:none;border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>CERTEZA</p>
-                </td>
-            </tr>
-            <tr style='mso-yfti-irow:2;height:63.3pt'>
-                <td width=30 rowspan=4 style='width:16.6pt;border:none;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>I<o:p></o:p></span></p>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>M<o:p></o:p></span></p>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>P<o:p></o:p></span></p>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>A<o:p></o:p></span></p>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>C<o:p></o:p></span></p>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>T<o:p></o:p></span></p>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><span style='font-size:14.0pt;mso-bidi-font-size:11.0pt'>O</span></p>
-                </td>
-                <td width=114 style='width:85.7pt;border:none;border-right:solid windowtext 1.0pt;mso-border-right-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>CATASTRÓFICO</p>
-                </td>
-                <td width=98 style='width:73.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:yellow;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row14r['q14r']; ?></p>
-                </td>
-                <td width=99 style='width:74.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row24r['q24r']; ?></p>
-                </td>
-                <td width=96 style='width:72.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row34r['q34r']; ?></p>
-                </td>
-                <td width=93 style='width:70.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row44r['q44r']; ?></p>
-                </td>
-            </tr>
-            <tr style='mso-yfti-irow:3;height:63.4pt'>
-                <td width=114 style='width:85.7pt;border:none;border-right:solid windowtext 1.0pt;mso-border-right-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>MAYOR</p>
-                </td>
-                <td width=98 style='width:73.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row13r['q13r']; ?></p>
-                </td>
-                <td width=99 style='width:74.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:yellow;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row23r['q23r']; ?></p>
-                </td>
-                <td width=96 style='width:72.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row33r['q33r']; ?></p>
-                </td>
-                <td width=93 style='width:70.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row43r['q43r']; ?></p>
-                </td>
-            </tr>
-            <tr style='mso-yfti-irow:4;height:70.8pt'>
-                <td width=114 style='width:85.7pt;border:none;border-right:solid windowtext 1.0pt;mso-border-right-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>MODERADO</p>
-                </td>
-                <td width=98 style='width:73.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row12r['q12r']; ?></p>
-                </td>
-                <td width=99 style='width:74.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row22r['q22r']; ?></p>
-                </td>
-                <td width=96 style='width:72.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:yellow;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row32r['q32r']; ?></p>
-                </td>
-                <td width=93 style='width:70.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row42r['q42r']; ?></p>
-                </td>
-            </tr>
-            <tr
-                style='mso-yfti-irow:5;mso-yfti-lastrow:yes;height:62.4pt'>
-                <td width=114 style='width:85.7pt;border:none;border-right:solid windowtext 1.0pt;mso-border-right-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>MENOR</p>
-                </td>
-                <td width=98 style='width:73.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row11r['q11r']; ?></p>
-                </td>
-                <td width=99 style='width:74.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row21r['q21r']; ?></p>
-                </td>
-                <td width=96 style='width:72.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row31r['q31r']; ?></p>
-                </td>
-                <td width=93 style='width:70.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:yellow;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                    <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row41r['q41r']; ?></p>
-                </td>
-            </tr>
-          </table>
-        </div>
-        <!-- /.box-body -->
-      </div>      
-    </div>
   </div>
   </section>
     <!-- /.content -->

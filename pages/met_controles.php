@@ -8,19 +8,35 @@ if (!isset($_SESSION['usuario'])){
 	header('Location: ../index.html');
 }
 
-//Alert icons data on top bar
 $user=$_SESSION['usuario'];
 
 //Get user query
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
-$q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
-$rq_sec = mysqli_fetch_assoc($q_sec);
 
-if ($rq_sec['soc']=='0'){
-	header('Location: ../site.php');
-}
+
+//Querys para charts
+$qcc = mysqli_query($con,"SELECT 1 as total 
+FROM controles INNER JOIN referencias
+ON controles.id_control = referencias.id_control
+WHERE referencias.mes <= MONTH(CURRENT_DATE()) AND referencias.ano =  YEAR(CURRENT_DATE()) 
+and controles.borrado = 0
+and referencias.borrado = 0
+AND referencias.status='1'");
+$cc = mysqli_num_rows($qcc);
+
+$qcp = mysqli_query($con,"SELECT 1 as total 
+FROM controles INNER JOIN referencias
+ON controles.id_control = referencias.id_control
+WHERE referencias.mes <= MONTH(CURRENT_DATE()) AND referencias.ano =  YEAR(CURRENT_DATE()) 
+and controles.borrado = 0
+and referencias.borrado = 0
+AND referencias.status='2'");
+$cp = mysqli_num_rows($qcp);
+
+
+
 //Count riesgos
 $riesgos = "SELECT 1 as total FROM riesgo WHERE riesgo.responsable='$id_rowp' AND riesgo.borrado='0'";
 $count_riesgos = mysqli_query($con, $riesgos );
@@ -32,21 +48,28 @@ $count_activos = mysqli_query($con, $query_count_activos);
 $rowa = mysqli_num_rows($count_activos);
 
 //Count Controles
-$query_controles = "SELECT 1 as total FROM controles WHERE controles.responsable='$id_rowp' AND controles.borrado='0'";
+$query_controles = "SELECT 1 as total FROM controles WHERE controles.responsable='$id_rowp'";
 $count_controles = mysqli_query($con, $query_controles); 
 $rowc = mysqli_num_rows($count_controles);
 
 //Count Proyectos
-$query_proyectos = "SELECT 1 as total FROM proyecto WHERE proyecto.responsable='$id_rowp' AND proyecto.borrado='0'";
+$query_proyectos = "SELECT 1 as total FROM proyecto WHERE proyecto.responsable='$id_rowp'";
 $count_proyectos = mysqli_query($con, $query_proyectos); 
 $rowcp = mysqli_num_rows($count_proyectos);
 
 //Get Personas
 $personas = mysqli_query($con, "SELECT * FROM persona");
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
-$rq_sec = mysqli_fetch_assoc($q_sec);
+$rq_sec = mysqli_fetch_assoc($q_sec);				
 		
 ?>
+<style>
+.dataTables_filter {
+   width: 50%;
+   float: right;
+   text-align: right;
+}
+</style>
 <!--
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
@@ -58,7 +81,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <title>SI-ARSAT</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
@@ -69,7 +92,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
-  <link rel="stylesheet" href="../css/neo4jd3.css">
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -81,11 +104,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
-    .neo4jd3 {
-        height: 100%;
-        overflow: hidden;
+    .example-modal .modal {
+      position: relative;
+      top: auto;
+      bottom: auto;
+      right: auto;
+      left: auto;
+      display: block;
+      z-index: 1;
     }
- </style>
+
+    .example-modal .modal {
+      background: transparent !important;
+    }
+  </style>
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -238,27 +270,10 @@ desired effect
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <?php
-	if ($_SESSION['formSubmitted']=='1'){
-		echo '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> Datos editados correctamente.</div>';
-		$_SESSION['formSubmitted'] = 0;
-	}
-	else if ($_SESSION['formSubmitted']=='2'){
-		echo '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> Nuevo Activo guardado correctamente.</div>';
-		$_SESSION['formSubmitted'] = 0;
-	}	
-	else if ($_SESSION['formSubmitted']=='3'){
-		echo '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> Nueva persona guardada correctamente.</div>';
-		$_SESSION['formSubmitted'] = 0;
-	}
-	else if ($_SESSION['formSubmitted']=='9'){
-		echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> Error al ejecutar el vuelco a la base de datos.</div>';
-		$_SESSION['formSubmitted'] = 0;
-	}?>	
 	<section class="content-header">
       <h1>
-        Topología de red
-        <small>General</small>
+        Métricas 
+        <small>Controles</small>
       </h1>
     </section>
     <!-- Main content -->
@@ -266,91 +281,50 @@ desired effect
 	<!--------------------------
      | Your Page Content Here |
      -------------------------->
-     <div id="neo4jd3"></div>
-        <!-- Scripts -->
+	    <section class="content">
+            <div class="row">
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3><?php
+                                $query_count_controles = "SELECT 1 as total FROM controles where borrado=0;";
+                                $count_controles = mysqli_query($con, $query_count_controles);
+                                echo '
+                                <td> ' . mysqli_num_rows($count_controles) . ' </td>
+                                <td>';
+                                ?></h3>
 
-        <script src="../js/d3.min.js"></script>
-        <script src="../js/neo4jd3.js?v=0.0.1"></script>
-        <script>
-            
-            function init() {
-                var neo4jd3 = new Neo4jd3('#neo4jd3', {
-                   /*highlight: [
-                        {
-                            class: 'Firewall'
-                        }, {
-                            class: 'Anti-DDoS'
-                         }
-                       , {
-                            class: 'ISP'
-                         }
-                    ],*/
-                    icons: {
-                        'Address': 'home',
-                        'Api': 'gear',
-                        'Cookie': 'paw',
-                        'Device': 'laptop',
-                        'Email': 'at',
-                        'Google': 'google',
-                        'icons': 'font-awesome',
-                        'Ip': 'map-marker',
-                        'Issues': 'exclamation-circle',
-                        'Language': 'language',
-                        'Options': 'sliders',
-                        'Password': 'lock',
-                        'Phone': 'phone',
-                        'Project': 'folder-open',
-                        'SecurityChallengeAnswer': 'commenting',
-                        'User': 'user',
-                        'zoomFit': 'arrows-alt',
-                        'zoomIn': 'search-plus',
-                        'zoomOut': 'search-minus'
-                    },
-                    images: {
-                        'Firewall': '../img/custom/firewall.svg',
-                        'Router': '../img/custom/router.svg',
-                        'Workstation': '../img/twemoji/1f4bb.svg',
-                        'ISP': '../img/custom/isp.svg',
-                        'Switch': '../img/custom/switch.svg',
-                        'Servidor': '../img/custom/server.svg',
-                        'Red': '../img/custom/red.svg',
-                        'Anti-DDoS': '../img/custom/ddos.svg',
-                        'WAF': '../img/custom/waf.svg',
-                        'Internet': '../img/custom/isp3.svg',
-                        'Device': '../img/twemoji/1f4bb.svg',
-                        'Email': '../img/twemoji/2709.svg',
-                        'icons': '../img/twemoji/1f38f.svg',
-                        'Ip': '../img/twemoji/1f4cd.svg',
-                        'Options': '../img/twemoji/2699.svg',
-                        'Password': '../img/twemoji/1f511.svg',
-                        'User': '../img/twemoji/1f600.svg'
-                    },
-                    minCollision: 60,
-                    neo4jDataUrl: '../json/inventario.json',
-                    
-                    nodeRadius: 25,
-                    /*onNodeDoubleClick: function(node) {
-                        switch(node.id) {
-                            case '25':
-                                // Google
-                                window.open(node.properties.url, '_blank');
-                                break;
-                            default:
-                                var maxNodes = 5,
-                                    data = neo4jd3.randomD3Data(node, maxNodes);
-                                neo4jd3.updateWithD3Data(data);
-                                break;
-                        }
-                    },*/
-                    onRelationshipDoubleClick: function(relationship) {
-                        console.log('double click on relationship: ' + JSON.stringify(relationship));
-                    },
-                    zoomFit: true
-                });
-            }
-            window.onload = init;
-        </script>
-     </section>
+                        <p>Controles programados</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-retweet"></i>
+                    </div>
+                    <a href="./pages/controles.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>         
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-xs-6">
+                    <!-- /.content Controles-->
+                    <div class="box box-danger">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Estado de controles</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <canvas id="pieChartC" style="height:250px"></canvas>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>          
+            </div>    
+        </section>
     <!-- /.content -->
   </div>
   <!-- Main Footer -->
@@ -367,16 +341,73 @@ desired effect
 
 <!-- jQuery 3 -->
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="../bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
+<!-- ChartJS -->
+<script src="../bower_components/chart.js/Chart.js"></script>
+<!-- FastClick -->
+<script src="../bower_components/fastclick/lib/fastclick.js"></script>
 
+<script>
+  $(function () {
+    /* ChartJS
+     * -------
+     * Here we will create a few charts using ChartJS
+     */
+
+    //-------------
+    //- PIE CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+	var pieChartCanvas4 = $('#pieChartC').get(0).getContext('2d')
+    var pieChartC       = new Chart(pieChartCanvas4)
+    var PieData4        = [
+      {
+        value    :  <?php echo $cp; ?>,
+        color    : '#f56954',
+        highlight: '#f56954',
+        label    : 'Pendiente'
+      },
+      {
+        value    : <?php echo $cc; ?>,
+        color    : '#00a65a',
+        highlight: '#00a65a',
+        label    : 'Controlado'
+      }
+	]
+
+    var pieOptions     = {
+      //Boolean - Whether we should show a stroke on each segment
+      segmentShowStroke    : true,
+      //String - The colour of each segment stroke
+      segmentStrokeColor   : '#fff',
+      //Number - The width of each segment stroke
+      segmentStrokeWidth   : 2,
+      //Number - The percentage of the chart that we cut out of the middle
+      percentageInnerCutout: 50, // This is 0 for Pie charts
+      //Number - Amount of animation steps
+      animationSteps       : 100,
+      //String - Animation easing effect
+      animationEasing      : 'easeOutBounce',
+      //Boolean - Whether we animate the rotation of the Doughnut
+      animateRotate        : true,
+      //Boolean - Whether we animate scaling the Doughnut from the centre
+      animateScale         : false,
+      //Boolean - whether to make the chart responsive to window resizing
+      responsive           : true,
+      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+      maintainAspectRatio  : true,
+      //String - A legend template
+      legendTemplate       : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<segments.length; i++){%><li><span style="background-color:<%=segments[i].fillColor%>"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>'
+    }
+	
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    pieChartC.Doughnut(PieData4, pieOptions)
+  })
+</script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
