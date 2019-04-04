@@ -316,7 +316,8 @@ desired effect
                 <li><a href="./pages/topologia.php"><i class="fa fa-map-o"></i> <span>Topología</span></a></li>
               </ul>
             </li>';
-            echo '<li class="treeview">
+            }?>
+            <li class="treeview">
             <a href="#">
               <i class="fa fa-pie-chart"></i><span>Métricas</span>
               <span class="pull-right-container">
@@ -329,8 +330,7 @@ desired effect
               <li><a href="./pages/met_riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
               <li><a href="./pages/met_controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
             </ul>
-          </li>';
-            }?>
+          </li>;
       </ul>
       <!-- /.sidebar-menu -->
     </section>

@@ -20,6 +20,13 @@
     - N[met_iso27k.php]
     - N[met_riesgos.php]
     - N[met_controles.php]
+- Corrijo colores de indicadores
+    - M[site.php]
+- Corrijo el acceso al menu de métricas para que se accible para todos.
+    - M[site.php]
+    - M[site_sidebar.php]
+
+
 - TODO - Filtro gerencia en el dashboard salvo Ciberseguridad
 - TODO - Ver controles.php por diferencia en indicador de contrloes
 
