@@ -20,6 +20,10 @@ if(mysqli_num_rows($persona) == 0){
 
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
+$per_id_gerencia = $rowp['gerencia'];
+// GERENCIA DE CIBER SEGURIDAD = 1 
+// PUEDE VER TODO
+
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);
 

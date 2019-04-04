@@ -1,3 +1,29 @@
+## FEAT-FIL-GERENCIA
+### Varios post release.
+*Fecha:* 2019-04-04
+*Cambios:*
+- Saco la definicion del header en archivos php separados para que sean reutilizables y ordenar el código y mejorar la manutención del mismo.  
+    - M[site_header.php]
+- Actualizacion del sidebar en las páginas. En el site.php hay que actualizarlo manualmente
+    - M[activos.php]
+    - M[controles.php]
+    - M[iso27k.php]
+    - M[mejoras.php]
+    - M[riesgos.php]
+    - M[calendario.php]
+    - M[novedades.php]
+    - M[proyectos.php]
+    - M[inventario.php]
+    - M[topologia.php]
+    - M[admin.php]
+    - N[met_activos.php]
+    - N[met_iso27k.php]
+    - N[met_riesgos.php]
+    - N[met_controles.php]
+- TODO - Filtro gerencia en el dashboard salvo Ciberseguridad
+- TODO - Ver controles.php por diferencia en indicador de contrloes
+
+
 ## FEAT-SITE-MENU
 ### Varios post release.
 *Fecha:* 2019-04-03
