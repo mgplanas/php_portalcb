@@ -11,7 +11,7 @@ if (!isset($_SESSION['usuario'])){
 $user=$_SESSION['usuario'];
 
 //Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' AND borrado = '0'");
 
 if(mysqli_num_rows($persona) == 0){
     session_destroy();
@@ -48,45 +48,71 @@ $count_proyectos = mysqli_query($con, $query_proyectos);
 $rowcp = mysqli_num_rows($count_proyectos);
 
 //Querys para charts
-$qa_info = mysqli_query($con, "SELECT 1 as total FROM controls.activo WHERE activo.tipo='1' AND activo.borrado='0'");
+// ACTIVOS
+$sqlTmpActivos = "SELECT 1 as total 
+                  FROM controls.activo 
+                  INNER JOIN persona as p ON activo.responsable = p.id_persona
+                  WHERE activo.tipo=':tipoActivo' AND activo.borrado='0'
+                  AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
+//$sqlTemp = strtr($sqlTmpActivos, $sqlTmpActivosTipo1);
+$qa_info = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '1', ':per_id_gerencia' => $per_id_gerencia)));
 $a_info = mysqli_num_rows($qa_info);
-$qa_infra = mysqli_query($con, "SELECT 1 as total FROM controls.activo WHERE activo.tipo='2' AND activo.borrado='0'");
+$qa_infra = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '2', ':per_id_gerencia' => $per_id_gerencia)));
 $a_infra = mysqli_num_rows($qa_infra);
-$qa_serv = mysqli_query($con, "SELECT 1 as total FROM controls.activo WHERE activo.tipo='3' AND activo.borrado='0'");
+$qa_serv = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '3', ':per_id_gerencia' => $per_id_gerencia)));
 $a_serv = mysqli_num_rows($qa_serv);
 
-$qiso_def = mysqli_query($con, "SELECT 1 as total FROM controls.item_iso27k WHERE madurez='1'");
+
+// ISO 270001
+$sqlTmpISO27k = "SELECT 1 as total 
+                FROM controls.item_iso27k 
+                INNER JOIN persona as p ON item_iso27k.responsable = p.id_persona
+                WHERE item_iso27k.madurez=:madurez
+                AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
+$qiso_def = mysqli_query($con, strtr($sqlTmpISO27k, array(':madurez' => '1', ':per_id_gerencia' => $per_id_gerencia)));
 $iso_def = mysqli_num_rows($qiso_def);
-$qiso_exc = mysqli_query($con, "SELECT 1 as total FROM controls.item_iso27k WHERE madurez='2'");
+$qiso_exc = mysqli_query($con, strtr($sqlTmpISO27k, array(':madurez' => '2', ':per_id_gerencia' => $per_id_gerencia)));
 $iso_exc = mysqli_num_rows($qiso_exc);
-$qiso_perf = mysqli_query($con, "SELECT 1 as total FROM controls.item_iso27k WHERE madurez='3'");
+$qiso_perf = mysqli_query($con, strtr($sqlTmpISO27k, array(':madurez' => '3', ':per_id_gerencia' => $per_id_gerencia)));
 $iso_perf = mysqli_num_rows($qiso_perf);
 
-$qv = mysqli_query($con, "SELECT 1 as qv FROM riesgo WHERE n_resid<=3 AND borrado=0 AND estado='0'");
+
+
+// RIESGO
+$sqlTmpRiesgos = "SELECT 1 as qv 
+                  FROM riesgo 
+                  INNER JOIN persona as p ON riesgo.responsable = p.id_persona
+                  WHERE riesgo.n_resid:comparacion AND riesgo.borrado=0 AND riesgo.estado='0'
+                  AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
+$qv = mysqli_query($con, strtr($sqlTmpRiesgos, array(':comparacion' => '<=3', ':per_id_gerencia' => $per_id_gerencia)));
 $rqv = mysqli_num_rows($qv);
-
-$qa = mysqli_query($con,"SELECT 1 as qa FROM riesgo WHERE (n_resid=4 OR n_resid=6) AND borrado=0 AND estado='0'");
+$qa = mysqli_query($con,strtr($sqlTmpRiesgos, array(':comparacion' => '=4', ':per_id_gerencia' => $per_id_gerencia)));
 $rqa = mysqli_num_rows($qa);
-
-$qr = mysqli_query($con,"SELECT 1 as qr FROM riesgo WHERE n_resid>6 AND borrado=0 AND estado='0'");
+$qr = mysqli_query($con,strtr($sqlTmpRiesgos, array(':comparacion' => '>6', ':per_id_gerencia' => $per_id_gerencia)));
 $rqr = mysqli_num_rows($qr);
 
+
+// CONTROLES
 $qcc = mysqli_query($con,"SELECT 1 as total 
-FROM controles INNER JOIN referencias
-ON controles.id_control = referencias.id_control
+FROM controles 
+INNER JOIN persona as p ON controles.responsable = p.id_persona
+INNER JOIN referencias ON controles.id_control = referencias.id_control
 WHERE referencias.mes <= MONTH(CURRENT_DATE()) AND referencias.ano =  YEAR(CURRENT_DATE()) 
 and controles.borrado = 0
 and referencias.borrado = 0
-AND referencias.status='1'");
+AND referencias.status='1'
+AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )");
 $cc = mysqli_num_rows($qcc);
 
 $qcp = mysqli_query($con,"SELECT 1 as total 
-FROM controles INNER JOIN referencias
-ON controles.id_control = referencias.id_control
+FROM controles 
+INNER JOIN persona as p ON controles.responsable = p.id_persona
+INNER JOIN referencias ON controles.id_control = referencias.id_control
 WHERE referencias.mes <= MONTH(CURRENT_DATE()) AND referencias.ano =  YEAR(CURRENT_DATE()) 
 and controles.borrado = 0
 and referencias.borrado = 0
-AND referencias.status='2'");
+AND referencias.status='2'
+AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )");
 $cp = mysqli_num_rows($qcp);
 
 ?>
@@ -359,7 +385,11 @@ desired effect
           <div class="small-box bg-aqua">
             <div class="inner">
               <h3><?php
-						$query_count_activos = "SELECT 1 as total FROM activo WHERE borrado='0';";
+						$query_count_activos = "SELECT 1 as total 
+                                    FROM activo 
+                                    INNER JOIN persona as p ON activo.responsable = p.id_persona
+                                    WHERE activo.borrado='0'
+                                    AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia );";
 						$count_activos = mysqli_query($con, $query_count_activos);
 						echo '
 						<td> ' . mysqli_num_rows($count_activos) . ' </td>
@@ -383,14 +413,25 @@ desired effect
           <div class="small-box bg-green">
             <div class="inner">
               <h3><?php
-						$query_count_iso = "SELECT 1 as total FROM item_iso27k WHERE madurez='1'";
+						$query_count_iso = "SELECT 1 as total 
+                                FROM item_iso27k 
+                                INNER JOIN persona as p ON item_iso27k.responsable = p.id_persona
+                                WHERE madurez='1'
+                                AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
 						$count_iso = mysqli_query($con, $query_count_iso);
-						$query_count_iso_total = "SELECT 1 as total FROM item_iso27k";
+						$query_count_iso_total = "SELECT 1 as total 
+                                      FROM item_iso27k
+                                      INNER JOIN persona as p ON item_iso27k.responsable = p.id_persona
+                                      WHERE ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
 						$count_iso_total = mysqli_query($con, $query_count_iso_total);
+            
+            if (mysqli_num_rows($count_iso_total) > 0) {
+              $mad = round(((mysqli_num_rows($count_iso)) * 100) / (mysqli_num_rows($count_iso_total)), PHP_ROUND_HALF_UP);
+              echo $mad . " %";
+            } else {
+              echo "Sin datos";
+            }
 						
-						$mad = round(((mysqli_num_rows($count_iso)) * 100) / (mysqli_num_rows($count_iso_total)), PHP_ROUND_HALF_UP);
-						
-						echo $mad . " %";
 						?></h3>
 
               <p>Madurez ISO 27001</p>
@@ -410,7 +451,12 @@ desired effect
           <div class="small-box bg-yellow">
             <div class="inner">
               <h3><?php
-						$query_count_riesgos = "SELECT 1 as total FROM riesgo WHERE borrado='0' and estado='0';";
+						$query_count_riesgos = "SELECT 1 as total 
+                                    FROM riesgo 
+                                    INNER JOIN persona as p ON riesgo.responsable = p.id_persona
+                                    WHERE riesgo.borrado='0' 
+                                    and riesgo.estado='0'
+                                    AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
 						$count_riesgos = mysqli_query($con, $query_count_riesgos);
 						echo '
 						<td> ' . mysqli_num_rows($count_riesgos) . ' </td>
@@ -433,7 +479,11 @@ desired effect
           <div class="small-box bg-red">
             <div class="inner">
               <h3><?php
-						$query_count_controles = "SELECT 1 as total FROM controles where borrado=0;";
+						$query_count_controles = "SELECT 1 as total 
+                                      FROM controles 
+                                      INNER JOIN persona as p ON controles.responsable = p.id_persona
+                                      where controles.borrado=0
+                                      AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
 						$count_controles = mysqli_query($con, $query_count_controles);
 						echo '
 						<td> ' . mysqli_num_rows($count_controles) . ' </td>
