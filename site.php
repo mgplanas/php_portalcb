@@ -172,7 +172,7 @@ desired effect
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bolt"></i>
-              <span class="label label-success"><?php echo $rowr; ?></span>
+              <span class="label label-warning"><?php echo $rowr; ?></span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">Tienes <?php echo $rowr; ?> riesgos asignados</li>
@@ -191,7 +191,7 @@ desired effect
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-archive"></i>
-              <span class="label label-warning"><?php echo $rowa; ?></span>
+              <span class="label label-info"><?php echo $rowa; ?></span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">Eres responsable de <?php echo $rowa; ?> activos</li>
@@ -218,7 +218,7 @@ desired effect
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-list"></i>
-              <span class="label label-info"><?php echo $rowcp; ?></span>
+              <span class="label label-success"><?php echo $rowcp; ?></span>
             </a>
             <ul class="dropdown-menu">
               <li class="header">Tienes <?php echo $rowcp; ?> proyectos asignados</li>

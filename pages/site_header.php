@@ -2,7 +2,7 @@
 //Count riesgos
 $riesgos = "SELECT 1 as total FROM riesgo WHERE riesgo.responsable='$id_rowp' AND riesgo.borrado='0'";
 $count_riesgos = mysqli_query($con, $riesgos );
-$rowr = 11;//mysqli_num_rows($count_riesgos);
+$rowr = mysqli_num_rows($count_riesgos);
 
 //Count activos
 $query_count_activos = "SELECT 1 as total FROM activo WHERE activo.responsable='$id_rowp' AND activo.borrado='0'";
@@ -36,7 +36,7 @@ $rowcp = mysqli_num_rows($count_proyectos);
                 <!-- Menu toggle button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-bolt"></i>
-                    <span class="label label-success"><?php echo $rowr; ?></span>
+                    <span class="label label-warning"><?php echo $rowr; ?></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li class="header">Tienes <?php echo $rowr; ?> riesgos asignados</li>
@@ -54,7 +54,7 @@ $rowcp = mysqli_num_rows($count_proyectos);
                 <!-- Menu toggle button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-archive"></i>
-                    <span class="label label-warning"><?php echo $rowa; ?></span>
+                    <span class="label label-info"><?php echo $rowa; ?></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li class="header">Eres responsable de <?php echo $rowa; ?> activos</li>
@@ -84,7 +84,7 @@ $rowcp = mysqli_num_rows($count_proyectos);
                 <!-- Menu Toggle Button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-list"></i>
-                    <span class="label label-info"><?php echo $rowcp; ?></span>
+                    <span class="label label-success"><?php echo $rowcp; ?></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li class="header">Tienes <?php echo $rowcp; ?> proyectos asignados</li>
