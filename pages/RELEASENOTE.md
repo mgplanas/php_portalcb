@@ -2,8 +2,14 @@
 ### Features
 - FEAT-REL-REORGANIZ
 - FEAT-SITE-MENU
+- FEAT-FIL-GERENCIA
 
 ### Pasos
+- Entorno
+    - Backup /etc/httpd/conf/httpd.conf
+    - editar httpd.conf
+        Agregar a lo último: SetEnv PRODUCTION_SERVER 3
+    - reiniciar httpd -->  sudo systemctl restart httpd
 - BackUp DB     
 - Backup /pages 
 - Cambios en DB

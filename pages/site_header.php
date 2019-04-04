@@ -26,7 +26,14 @@ $rowcp = mysqli_num_rows($count_proyectos);
     <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">Toggle navigation</span>
     </a>
-
+    <?php 
+    if ($_ENV['PRODUCTION_SERVER'] == 0) {
+        echo '<span class="label label-success">DESARROLLO</span>';
+    }
+    if ($_ENV['PRODUCTION_SERVER'] == 1) {
+        echo '<span class="label label-warning">ENTORNO DE TEST</span>';
+    }
+    ?>
     <!-- Navbar Right Menu -->
     <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">

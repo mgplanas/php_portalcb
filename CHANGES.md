@@ -25,7 +25,9 @@
 - Corrijo el acceso al menu de métricas para que se accible para todos.
     - M[site.php]
     - M[site_sidebar.php]
-
+- INDICADOR DE ENTORNO
+    - M[site_header.php]
+    - M[site.php]
 
 - TODO - Filtro gerencia en el dashboard salvo Ciberseguridad
 - TODO - Ver controles.php por diferencia en indicador de contrloes
