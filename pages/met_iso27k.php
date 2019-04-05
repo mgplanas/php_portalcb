@@ -14,15 +14,23 @@ $user=$_SESSION['usuario'];
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
+$per_id_gerencia = $rowp['gerencia'];
+// GERENCIA DE CIBER SEGURIDAD = 1 
+// PUEDE VER TODO
 
-
-//Querys para charts
-$qiso_def = mysqli_query($con, "SELECT 1 as total FROM controls.item_iso27k WHERE madurez='1'");
+// ISO 270001
+$sqlTmpISO27k = "SELECT 1 as total 
+                FROM controls.item_iso27k 
+                INNER JOIN persona as p ON item_iso27k.responsable = p.id_persona
+                WHERE item_iso27k.madurez=:madurez
+                AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
+$qiso_def = mysqli_query($con, strtr($sqlTmpISO27k, array(':madurez' => '1', ':per_id_gerencia' => $per_id_gerencia)));
 $iso_def = mysqli_num_rows($qiso_def);
-$qiso_exc = mysqli_query($con, "SELECT 1 as total FROM controls.item_iso27k WHERE madurez='2'");
+$qiso_exc = mysqli_query($con, strtr($sqlTmpISO27k, array(':madurez' => '2', ':per_id_gerencia' => $per_id_gerencia)));
 $iso_exc = mysqli_num_rows($qiso_exc);
-$qiso_perf = mysqli_query($con, "SELECT 1 as total FROM controls.item_iso27k WHERE madurez='3'");
+$qiso_perf = mysqli_query($con, strtr($sqlTmpISO27k, array(':madurez' => '3', ':per_id_gerencia' => $per_id_gerencia)));
 $iso_perf = mysqli_num_rows($qiso_perf);
+
 
 
 //Get Personas
@@ -148,14 +156,24 @@ desired effect
                     <div class="small-box bg-green">
                         <div class="inner">
                         <h3><?php
-                                    $query_count_iso = "SELECT 1 as total FROM item_iso27k WHERE madurez='1'";
-                                    $count_iso = mysqli_query($con, $query_count_iso);
-                                    $query_count_iso_total = "SELECT 1 as total FROM item_iso27k";
-                                    $count_iso_total = mysqli_query($con, $query_count_iso_total);
-                                    
-                                    $mad = round(((mysqli_num_rows($count_iso)) * 100) / (mysqli_num_rows($count_iso_total)), PHP_ROUND_HALF_UP);
-                                    
-                                    echo $mad . " %";
+                              $query_count_iso = "SELECT 1 as total 
+                              FROM item_iso27k 
+                              INNER JOIN persona as p ON item_iso27k.responsable = p.id_persona
+                              WHERE madurez='1'
+                              AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
+                              $count_iso = mysqli_query($con, $query_count_iso);
+                              $query_count_iso_total = "SELECT 1 as total 
+                                                FROM item_iso27k
+                                                INNER JOIN persona as p ON item_iso27k.responsable = p.id_persona
+                                                WHERE ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
+                              $count_iso_total = mysqli_query($con, $query_count_iso_total);
+
+                              if (mysqli_num_rows($count_iso_total) > 0) {
+                              $mad = round(((mysqli_num_rows($count_iso)) * 100) / (mysqli_num_rows($count_iso_total)), PHP_ROUND_HALF_UP);
+                              echo $mad . " %";
+                              } else {
+                              echo "Sin datos";
+                              }
                                     ?></h3>
 
                         <p>Madurez ISO 27001</p>

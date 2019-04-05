@@ -14,14 +14,23 @@ $user=$_SESSION['usuario'];
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
-
+$per_id_gerencia = $rowp['gerencia'];
+// GERENCIA DE CIBER SEGURIDAD = 1 
+// PUEDE VER TODO
 
 //Querys para charts
-$qa_info = mysqli_query($con, "SELECT 1 as total FROM controls.activo WHERE activo.tipo='1' AND activo.borrado='0'");
+// ACTIVOS
+$sqlTmpActivos = "SELECT 1 as total 
+                  FROM controls.activo 
+                  INNER JOIN persona as p ON activo.responsable = p.id_persona
+                  WHERE activo.tipo=':tipoActivo' AND activo.borrado='0'
+                  AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
+//$sqlTemp = strtr($sqlTmpActivos, $sqlTmpActivosTipo1);
+$qa_info = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '1', ':per_id_gerencia' => $per_id_gerencia)));
 $a_info = mysqli_num_rows($qa_info);
-$qa_infra = mysqli_query($con, "SELECT 1 as total FROM controls.activo WHERE activo.tipo='2' AND activo.borrado='0'");
+$qa_infra = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '2', ':per_id_gerencia' => $per_id_gerencia)));
 $a_infra = mysqli_num_rows($qa_infra);
-$qa_serv = mysqli_query($con, "SELECT 1 as total FROM controls.activo WHERE activo.tipo='3' AND activo.borrado='0'");
+$qa_serv = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '3', ':per_id_gerencia' => $per_id_gerencia)));
 $a_serv = mysqli_num_rows($qa_serv);
 
 
@@ -148,13 +157,19 @@ desired effect
                     <!-- small box -->
                     <div class="small-box bg-aqua">
                         <div class="inner">
-                        <h3><?php
-                                    $query_count_activos = "SELECT 1 as total FROM activo WHERE borrado='0';";
-                                    $count_activos = mysqli_query($con, $query_count_activos);
-                                    echo '
-                                    <td> ' . mysqli_num_rows($count_activos) . ' </td>
-                                    <td>';
-                                    ?></h3>
+                        <h3>
+                          <?php
+                              $query_count_activos = "SELECT 1 as total 
+                                          FROM activo 
+                                          INNER JOIN persona as p ON activo.responsable = p.id_persona
+                                          WHERE activo.borrado='0'
+                                          AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia );";
+                              $count_activos = mysqli_query($con, $query_count_activos);
+                              echo '
+                              <td> ' . mysqli_num_rows($count_activos) . ' </td>
+                              <td>';
+                            ?>
+                        </h3>
 
                         <p>Total de Activos</p>
                         </div>

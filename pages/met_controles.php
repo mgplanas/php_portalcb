@@ -14,25 +14,32 @@ $user=$_SESSION['usuario'];
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
-
+$per_id_gerencia = $rowp['gerencia'];
+// GERENCIA DE CIBER SEGURIDAD = 1 
+// PUEDE VER TODO
 
 //Querys para charts
+// CONTROLES
 $qcc = mysqli_query($con,"SELECT 1 as total 
-FROM controles INNER JOIN referencias
-ON controles.id_control = referencias.id_control
+FROM controles 
+INNER JOIN persona as p ON controles.responsable = p.id_persona
+INNER JOIN referencias ON controles.id_control = referencias.id_control
 WHERE referencias.mes <= MONTH(CURRENT_DATE()) AND referencias.ano =  YEAR(CURRENT_DATE()) 
 and controles.borrado = 0
 and referencias.borrado = 0
-AND referencias.status='1'");
+AND referencias.status='1'
+AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )");
 $cc = mysqli_num_rows($qcc);
 
 $qcp = mysqli_query($con,"SELECT 1 as total 
-FROM controles INNER JOIN referencias
-ON controles.id_control = referencias.id_control
+FROM controles 
+INNER JOIN persona as p ON controles.responsable = p.id_persona
+INNER JOIN referencias ON controles.id_control = referencias.id_control
 WHERE referencias.mes <= MONTH(CURRENT_DATE()) AND referencias.ano =  YEAR(CURRENT_DATE()) 
 and controles.borrado = 0
 and referencias.borrado = 0
-AND referencias.status='2'");
+AND referencias.status='2'
+AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )");
 $cp = mysqli_num_rows($qcp);
 
 
@@ -161,7 +168,11 @@ desired effect
                     <div class="small-box bg-red">
                     <div class="inner">
                         <h3><?php
-                                $query_count_controles = "SELECT 1 as total FROM controles where borrado=0;";
+                                $query_count_controles = "SELECT 1 as total 
+                                FROM controles 
+                                INNER JOIN persona as p ON controles.responsable = p.id_persona
+                                where controles.borrado=0
+                                AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                 $count_controles = mysqli_query($con, $query_count_controles);
                                 echo '
                                 <td> ' . mysqli_num_rows($count_controles) . ' </td>

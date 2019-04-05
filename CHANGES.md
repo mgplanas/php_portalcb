@@ -28,8 +28,13 @@
 - INDICADOR DE ENTORNO
     - M[site_header.php]
     - M[site.php]
-
-- TODO - Filtro gerencia en el dashboard salvo Ciberseguridad
+- Filtro gerencia en el dashboard salvo Ciberseguridad
+    - M[met_activos.php]
+    - M[met_iso27k.php]
+    - M[met_riesgos.php]
+    - M[met_controles.php]
+- Filtro gerencia en el métricas
+    
 - TODO - Ver controles.php por diferencia en indicador de contrloes
 
 

@@ -14,16 +14,21 @@ $user=$_SESSION['usuario'];
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
+$per_id_gerencia = $rowp['gerencia'];
+// GERENCIA DE CIBER SEGURIDAD = 1 
+// PUEDE VER TODO
 
-
-//Querys para charts
-$qv = mysqli_query($con, "SELECT 1 as qv FROM riesgo WHERE n_resid<=3 AND borrado=0 AND estado='0'");
+// RIESGO
+$sqlTmpRiesgos = "SELECT 1 as qv 
+                  FROM riesgo 
+                  INNER JOIN persona as p ON riesgo.responsable = p.id_persona
+                  WHERE riesgo.n_resid:comparacion AND riesgo.borrado=0 AND riesgo.estado='0'
+                  AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
+$qv = mysqli_query($con, strtr($sqlTmpRiesgos, array(':comparacion' => '<=3', ':per_id_gerencia' => $per_id_gerencia)));
 $rqv = mysqli_num_rows($qv);
-
-$qa = mysqli_query($con,"SELECT 1 as qa FROM riesgo WHERE (n_resid=4 OR n_resid=6) AND borrado=0 AND estado='0'");
+$qa = mysqli_query($con,strtr($sqlTmpRiesgos, array(':comparacion' => '=4', ':per_id_gerencia' => $per_id_gerencia)));
 $rqa = mysqli_num_rows($qa);
-
-$qr = mysqli_query($con,"SELECT 1 as qr FROM riesgo WHERE n_resid>6 AND borrado=0 AND estado='0'");
+$qr = mysqli_query($con,strtr($sqlTmpRiesgos, array(':comparacion' => '>6', ':per_id_gerencia' => $per_id_gerencia)));
 $rqr = mysqli_num_rows($qr);
 
 
@@ -150,12 +155,17 @@ desired effect
                     <div class="small-box bg-yellow">
                         <div class="inner">
                         <h3><?php
-                                    $query_count_riesgos = "SELECT 1 as total FROM riesgo WHERE borrado='0' and estado='0';";
-                                    $count_riesgos = mysqli_query($con, $query_count_riesgos);
-                                    echo '
-                                    <td> ' . mysqli_num_rows($count_riesgos) . ' </td>
-                                    <td>';
-                                    ?></h3>
+                            $query_count_riesgos = "SELECT 1 as total 
+                            FROM riesgo 
+                            INNER JOIN persona as p ON riesgo.responsable = p.id_persona
+                            WHERE riesgo.borrado='0' 
+                            and riesgo.estado='0'
+                            AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
+                            $count_riesgos = mysqli_query($con, $query_count_riesgos);
+                            echo '
+                            <td> ' . mysqli_num_rows($count_riesgos) . ' </td>
+                            <td>';
+                            ?></h3>
                         <p>Total de Riesgos abiertos</p>
                         </div>
                         <div class="icon">
