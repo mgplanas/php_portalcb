@@ -201,7 +201,6 @@ desired effect
                                                             INNER JOIN persona as p ON riesgo.responsable = p.id_persona
                                                             WHERE probabilidad=:prob && i_result=:res && riesgo.borrado=0 && estado=0
                                                             AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
-                                $foo = strtr($sqlTmpMatrizInherente, array(':prob' => '1', ':res' => '4', ':per_id_gerencia' => $per_id_gerencia));
                                 $result14 = mysqli_query($con, strtr($sqlTmpMatrizInherente, array(':prob' => '1', ':res' => '4', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row14 = mysqli_fetch_assoc($result14);
                                 $result13 = mysqli_query($con, strtr($sqlTmpMatrizInherente, array(':prob' => '1', ':res' => '3', ':per_id_gerencia' => $per_id_gerencia)));
@@ -384,53 +383,42 @@ desired effect
                         <div class="col-lg-6 col-xs-6">
                             <?php
                                 //querys de datos matriz RESIDUAL
-                                $q14r = "SELECT count(*) as q14r FROM riesgo WHERE p_resid=1 && i_resid=4 && borrado=0 && estado=0";
-                                $result14r = mysqli_query($con, $q14r);
+                                $sqlTmpMatrizResidual = "SELECT count(*) as cuenta 
+                                                            FROM riesgo 
+                                                            INNER JOIN persona as p ON riesgo.responsable = p.id_persona
+                                                            WHERE p_resid=:prob && i_resid=:res && riesgo.borrado=0 && estado=0
+                                                            AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";                                
+                                $result14r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '1', ':res' => '4', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row14r = mysqli_fetch_assoc($result14r);
-                                $q13r = "SELECT count(*) as q13r FROM riesgo WHERE p_resid=1 && i_resid=3 && borrado=0 && estado=0";
-                                $result13r = mysqli_query($con, $q13r);
+                                $result13r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '1', ':res' => '3', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row13r = mysqli_fetch_assoc($result13r);
-                                $q12r = "SELECT count(*) as q12r FROM riesgo WHERE p_resid=1 && i_resid=2 && borrado=0 && estado=0";
-                                $result12r = mysqli_query($con, $q12r);
+                                $result12r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '1', ':res' => '2', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row12r = mysqli_fetch_assoc($result12r);
-                                $q11r = "SELECT count(*) as q11r FROM riesgo WHERE p_resid=1 && i_resid=1 && borrado=0 && estado=0";
-                                $result11r = mysqli_query($con, $q11r);
+                                $result11r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '1', ':res' => '1', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row11r = mysqli_fetch_assoc($result11r);
-                                $q24r = "SELECT count(*) as q24r FROM riesgo WHERE p_resid=2 && i_resid=4 && borrado=0 && estado=0";
-                                $result24r = mysqli_query($con, $q24r);
+                                $result24r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '2', ':res' => '4', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row24r = mysqli_fetch_assoc($result24r);
-                                $q23r = "SELECT count(*) as q23r FROM riesgo WHERE p_resid=2 && i_resid=3 && borrado=0 && estado=0";
-                                $result23r = mysqli_query($con, $q23r);
+                                $result23r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '2', ':res' => '3', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row23r = mysqli_fetch_assoc($result23r);
-                                $q22r = "SELECT count(*) as q22r FROM riesgo WHERE p_resid=2 && i_resid=2 && borrado=0 && estado=0";
-                                $result22r = mysqli_query($con, $q22r);
+                                $result22r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '2', ':res' => '2', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row22r = mysqli_fetch_assoc($result22r);
-                                $q21r = "SELECT count(*) as q21r FROM riesgo WHERE p_resid=2 && i_resid=1 && borrado=0 && estado=0";
-                                $result21r = mysqli_query($con, $q21r);
+                                $result21r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '2', ':res' => '1', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row21r = mysqli_fetch_assoc($result21r);
-                                $q34r = "SELECT count(*) as q34r FROM riesgo WHERE p_resid=3 && i_resid=4 && borrado=0 && estado=0";
-                                $result34r = mysqli_query($con, $q34r);
+                                $result34r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '3', ':res' => '4', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row34r = mysqli_fetch_assoc($result34r);
-                                $q33r = "SELECT count(*) as q33r FROM riesgo WHERE p_resid=3 && i_resid=3 && borrado=0 && estado=0";
-                                $result33r = mysqli_query($con, $q33r);
+                                $result33r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '3', ':res' => '3', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row33r = mysqli_fetch_assoc($result33r);
-                                $q32r = "SELECT count(*) as q32r FROM riesgo WHERE p_resid=3 && i_resid=2 && borrado=0 && estado=0";
-                                $result32r = mysqli_query($con, $q32r);
+                                $result32r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '3', ':res' => '2', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row32r = mysqli_fetch_assoc($result32r);
-                                $q31r = "SELECT count(*) as q31r FROM riesgo WHERE p_resid=3 && i_resid=1 && borrado=0 && estado=0";
-                                $result31r = mysqli_query($con, $q31r);
+                                $result31r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '3', ':res' => '1', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row31r = mysqli_fetch_assoc($result31r);
-                                $q44r = "SELECT count(*) as q44r FROM riesgo WHERE p_resid=4 && i_resid=4 && borrado=0 && estado=0";
-                                $result44r = mysqli_query($con, $q44r);
+                                $result44r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '4', ':res' => '4', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row44r = mysqli_fetch_assoc($result44r);
-                                $q43r = "SELECT count(*) as q43r FROM riesgo WHERE p_resid=4 && i_resid=3 && borrado=0 && estado=0";
-                                $result43r = mysqli_query($con, $q43r);
+                                $result43r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '4', ':res' => '3', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row43r = mysqli_fetch_assoc($result43r);
-                                $q42r = "SELECT count(*) as q42r FROM riesgo WHERE p_resid=4 && i_resid=2 && borrado=0 && estado=0";
-                                $result42r = mysqli_query($con, $q42r);
+                                $result42r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '4', ':res' => '2', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row42r = mysqli_fetch_assoc($result42r);
-                                $q41r = "SELECT count(*) as q41r FROM riesgo WHERE p_resid=4 && i_resid=1 && borrado=0 && estado=0";
-                                $result41r = mysqli_query($con, $q41r);
+                                $result41r = mysqli_query($con, strtr($sqlTmpMatrizResidual, array(':prob' => '4', ':res' => '1', ':per_id_gerencia' => $per_id_gerencia)));
                                 $row41r = mysqli_fetch_assoc($result41r);	
                             ?>
                             <div class="box box-warning">
@@ -507,16 +495,16 @@ desired effect
                                             <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>CATASTRÓFICO</p>
                                         </td>
                                         <td width=98 style='width:73.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:yellow;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row14r['q14r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row14r['cuenta']; ?></p>
                                         </td>
                                         <td width=99 style='width:74.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row24r['q24r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row24r['cuenta']; ?></p>
                                         </td>
                                         <td width=96 style='width:72.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row34r['q34r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row34r['cuenta']; ?></p>
                                         </td>
                                         <td width=93 style='width:70.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.3pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row44r['q44r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row44r['cuenta']; ?></p>
                                         </td>
                                     </tr>
                                     <tr style='mso-yfti-irow:3;height:63.4pt'>
@@ -524,16 +512,16 @@ desired effect
                                             <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>MAYOR</p>
                                         </td>
                                         <td width=98 style='width:73.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row13r['q13r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row13r['cuenta']; ?></p>
                                         </td>
                                         <td width=99 style='width:74.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:yellow;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row23r['q23r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row23r['cuenta']; ?></p>
                                         </td>
                                         <td width=96 style='width:72.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row33r['q33r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row33r['cuenta']; ?></p>
                                         </td>
                                         <td width=93 style='width:70.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:63.4pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row43r['q43r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row43r['cuenta']; ?></p>
                                         </td>
                                     </tr>
                                     <tr style='mso-yfti-irow:4;height:70.8pt'>
@@ -541,16 +529,16 @@ desired effect
                                             <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>MODERADO</p>
                                         </td>
                                         <td width=98 style='width:73.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row12r['q12r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row12r['cuenta']; ?></p>
                                         </td>
                                         <td width=99 style='width:74.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row22r['q22r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row22r['cuenta']; ?></p>
                                         </td>
                                         <td width=96 style='width:72.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:yellow;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row32r['q32r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row32r['cuenta']; ?></p>
                                         </td>
                                         <td width=93 style='width:70.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:red;padding:0cm 5.4pt 0cm 5.4pt;height:70.8pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row42r['q42r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row42r['cuenta']; ?></p>
                                         </td>
                                     </tr>
                                     <tr
@@ -559,16 +547,16 @@ desired effect
                                             <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'>MENOR</p>
                                         </td>
                                         <td width=98 style='width:73.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row11r['q11r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row11r['cuenta']; ?></p>
                                         </td>
                                         <td width=99 style='width:74.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row21r['q21r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row21r['cuenta']; ?></p>
                                         </td>
                                         <td width=96 style='width:72.3pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:#00B050;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row31r['q31r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row31r['cuenta']; ?></p>
                                         </td>
                                         <td width=93 style='width:70.05pt;border-top:none;border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;background:yellow;padding:0cm 5.4pt 0cm 5.4pt;height:62.4pt'>
-                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row41r['q41r']; ?></p>
+                                            <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:center;line-height:normal'><?php echo $row41r['cuenta']; ?></p>
                                         </td>
                                     </tr>
                                 </table>
