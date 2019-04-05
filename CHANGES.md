@@ -29,11 +29,14 @@
     - M[site_header.php]
     - M[site.php]
 - Filtro gerencia en el dashboard salvo Ciberseguridad
+- Filtro gerencia en el métricas
     - M[met_activos.php]
     - M[met_iso27k.php]
     - M[met_riesgos.php]
     - M[met_controles.php]
-- Filtro gerencia en el métricas
+- Filtro gerencia en matrices de riesgo
+    - M[met_riesgos.php]
+
     
 - TODO - Ver controles.php por diferencia en indicador de contrloes
 
