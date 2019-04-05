@@ -104,7 +104,7 @@ if(isset($_POST['save'])){
 
 //Alert icons data on top bar
 //Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' and borrado=0");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
 
@@ -930,7 +930,7 @@ desired effect
                         <div class="col-sm-6">
                              <div class="form-group">
                               <label for="porcentaje">Porcentaje de avance</label>
-                              <input type="text" class="form-control" name="avance" value="<?php echo $rowmp['avance']; ?>">
+                              <input id="txtavanceadd" type="number" class="form-control" name="avance" min="0" max="100" value="<?php echo $rowmp['avance']; ?>">
                             </div>
                         </div>
                 </div>
@@ -1023,7 +1023,7 @@ desired effect
               <div class="col-sm-6">
                     <div class="form-group">
                     <label for="porcentaje">Porcentaje de avance</label>
-                    <input type="text" class="form-control" name="avance" value="<?php echo $rowmp['avance']; ?>">
+                    <input id="txtavanceedit" type="number" class="form-control" name="avance" min="0" max="100" value="<?php echo $rowmp['avance']; ?>">
                   </div>
               </div>
             </div>
@@ -1159,40 +1159,52 @@ $(function(){
   $('#justificacioncierre').hide();
   $('#justificacioneditcierre').hide();
   
-  if (this.value==0) {
-      $('#justificacioncierre').hide();
-      $('#txtjustificacionadd').attr('required', false);
-    } else {
-      $('#justificacioncierre').show();
-      $('#txtjustificacionadd').attr('required', true);
-    }
+  if ($('#estadoaddcierre').val()==0) {
+    $('#justificacioncierre').hide();
+    $('#txtjustificacionadd').attr('required', false);
+    $('#txtavanceadd').attr('readonly', false);
+  } else {
+    $('#justificacioncierre').show();
+    $('#txtjustificacionadd').attr('required', true);
+    $('#txtavanceadd').val(100);
+    $('#txtavanceadd').attr('readonly', true);
+  }
+  if ($('#estadoeditcierre').val()==0) {
+    $('#justificacioneditcierre').hide();
+    $('#txtjustificacionedit').attr('required', false);
+    $('#txtavanceedit').attr('readonly', false);
+  } else {
+    $('#justificacioneditcierre').show();
+    $('#txtjustificacionedit').attr('required', true);
+    $('#txtavanceedit').val(100);
+    $('#txtavanceedit').attr('readonly', true);
+  }
+
   // Defino el behavior
   $('#estadoaddcierre').on('change', function() {
     if (this.value==0) {
       $('#justificacioncierre').hide();
       $('#txtjustificacionadd').attr('required', false);
+      $('#txtavanceadd').attr('readonly', false);
     } else {
       $('#justificacioncierre').show();
       $('#txtjustificacionadd').attr('required', true);
+      $('#txtavanceadd').val(100);
+      $('#txtavanceadd').attr('readonly', true);
     }
   });
   $('#estadoeditcierre').on('change', function() {
      if (this.value==0) {
        $('#justificacioneditcierre').hide();
        $('#txtjustificacionedit').attr('required', false);
+       $('#txtavanceedit').attr('readonly', false);
      } else {
        $('#justificacioneditcierre').show();
        $('#txtjustificacionedit').attr('required', true);
+       $('#txtavanceedit').val(100);
+       $('#txtavanceedit').attr('readonly', true);       
      }
   });
-  // $('.validar-edicion').click(function(){
-  //   if ($('#estadoEditcierre').val() == "1" ) {
-  //     if ($('#txtjustificacionedit').val() == "") {
-  //       alert("Debe escribir una justificación al cerrar el riesgo.");
-  //       return false;
-  //     }
-  //   }    
-  // });
 });
 </script>
 <script>
