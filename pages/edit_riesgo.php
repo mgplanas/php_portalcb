@@ -1155,9 +1155,27 @@ $(function(){
 </script>
 <script>
 $(function(){
+  
+  // BEHABIOUR ADD AVANCE
   //Por default está oculto
   $('#justificacioncierre').hide();
+  $('#txtjustificacionadd').attr('required', false);
+
+  if ($('#estadoaddcierre').val()==0) {
+    $('#justificacioncierre').hide();
+    $('#txtjustificacionadd').attr('required', false);
+    $('#txtavanceadd').attr('readonly', false);
+  } else {
+    $('#justificacioncierre').show();
+    $('#txtjustificacionadd').attr('required', true);
+    $('#txtavanceadd').val(100);
+    $('#txtavanceadd').attr('readonly', true);
+  }
+
+
+
   $('#justificacioneditcierre').hide();
+  $('#txtjustificacionedit').attr('required', false);
   
   if ($('#estadoaddcierre').val()==0) {
     $('#justificacioncierre').hide();
@@ -1185,6 +1203,7 @@ $(function(){
     if (this.value==0) {
       $('#justificacioncierre').hide();
       $('#txtjustificacionadd').attr('required', false);
+      //$('#txtavanceadd').val(0);
       $('#txtavanceadd').attr('readonly', false);
     } else {
       $('#justificacioncierre').show();
@@ -1193,6 +1212,16 @@ $(function(){
       $('#txtavanceadd').attr('readonly', true);
     }
   });
+
+  //% AVANCE
+  // $('#txtavanceadd').on('input', function() {
+  //   if (this.value < 100) {
+  //     $('#estadoaddcierre option[value="0"]').attr("selected", '').change();
+  //   } else {
+  //     $('#estadoaddcierre option[value="1"]').attr("selected", '').change();
+  //   }
+  // });
+
   $('#estadoeditcierre').on('change', function() {
      if (this.value==0) {
        $('#justificacioneditcierre').hide();
@@ -1205,6 +1234,22 @@ $(function(){
        $('#txtavanceedit').attr('readonly', true);       
      }
   });
+
+  //% AVANCE
+  // $('#txtavanceedit').on('input', function() {
+  //   if (this.value < 100) {
+  //     $('#estadoeditcierre option[value="0"]').attr("selected", '').change();
+  //   } else {
+  //     $('#estadoeditcierre option[value="1"]').attr("selected", '').change();
+  //   }
+  // });
+
+  $('#modal-avance').on('shown.bs.modal', function (e) {
+    $('#estadoaddcierre').val(0);
+    $('txtavanceadd').val(0);
+    $('#estadoaddcierre').change();
+  });
+
 });
 </script>
 <script>

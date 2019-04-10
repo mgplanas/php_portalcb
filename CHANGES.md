@@ -2,6 +2,7 @@
 ### FIXES a los avances de riesgos.
 *Fecha:* 2019-04-05
 *Cambios:*
+- Corrección de % de proyectos completados M[proyecto.php] --> YA ESTA CORREGIDO EN PROD
 - Valido % de avance 0-100 M[edit_riesgo.php]
 - Correccion de cuando se agrega un nuevo avance y el estado es Abierto pide justificacion M[edit_riesgo.php]
 - Si se cierra el riesgo se pone como 100% M[edit_riesgo.php]

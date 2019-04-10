@@ -49,7 +49,7 @@ if ($rq_sec['soc']=='0'){
 }
 
 //Count Total de Proyectos
-$query_total_proyectos = "SELECT 1 as total FROM proyecto WHERE proyecto.borrado='0' AND proyecto.estado!='4'";
+$query_total_proyectos = "SELECT 1 as total FROM proyecto WHERE proyecto.borrado='0'";// AND proyecto.estado!='4'";
 $count_total_proyectos = mysqli_query($con, $query_total_proyectos); 
 $rowtp = mysqli_num_rows($count_total_proyectos);
 
