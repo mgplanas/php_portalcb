@@ -714,7 +714,7 @@ desired effect
                           <div class="row">
 								<div class="col-lg-4">
 									<label class="label-custom label-custom-info" style="text-align:center;">Estado</label>
-									<select name="estado" class="form-control" readonly disabled>	
+									<select id="txtriesgo_estado" name="estado" class="form-control" readonly disabled>	
 										<option value='0'<?php if($row['estado'] == '0'){ echo 'selected'; } ?>>Abierto</option>
 										<option value='1'<?php if($row['estado'] == '1'){ echo 'selected'; } ?>>Cerrado</option>
 										
@@ -745,7 +745,7 @@ desired effect
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label class="label-custom label-custom-info">% Avance</label>
-                                            <input type="text" name="avance" value="<?php echo $row ['avance']; ?>" class="form-control" readonly>
+                                            <input id="txt_riesgo_avance" type="text" name="avance" value="<?php echo $row ['avance']; ?>" class="form-control" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -787,7 +787,7 @@ desired effect
 			</div>	
             </div>
 			 <div class="form-group">
-                <button type="button" class="btn-block btn-flat btn-primary" data-toggle="modal" data-target="#modal-avance"><i class="fa fa-plus"></i> Agregar Avance</button>
+                <button type="button" class="modal-avance btn-block btn-flat btn-primary " ><i class="fa fa-plus"></i> Agregar Avance</button>
             </div>
             <div class="box">
                 <div class="box-header">
@@ -1285,15 +1285,26 @@ desired effect
       $("#modal-avance-edit").modal("show");
     });
 
-
-    $('#modal-avance').on('shown.bs.modal', function (e) {
-      if ($(this).data('estado')=="0") {
+    $(".modal-avance").click(function(){
+      console.log('estado ', $('#txtriesgo_estado').val());
+      console.log('anavce ', $('#txt_riesgo_avance').val());
+      if ($('#txtriesgo_estado').val()==0) {
         cambiarEstadoAdd(false);
       } else {
         cambiarEstadoAdd(true);
-      }  
-      $('txtavanceadd').val($(this).data('avance'));
+      }    
+      $('#txtavanceadd').val($('#txt_riesgo_avance').val() );
+      $("#modal-avance").modal("show");
     });
+
+    // $('#modal-avance').on('shown.bs.modal', function (e) {
+    //   if ($(this).data('estado')=="0") {
+    //     cambiarEstadoAdd(false);
+    //   } else {
+    //     cambiarEstadoAdd(true);
+    //   }  
+    //   $('txtavanceadd').val($(this).data('avance'));
+    // });
 
   });
 </script>
