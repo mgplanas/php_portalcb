@@ -836,6 +836,7 @@ desired effect
                                         data-usuario="'.$rowavance['user'].'"
                                         data-riesgo="'. $nik .'"
                                         data-estado="'.$row['estado'].'"
+                                        data-avance="'.$row['avance'].'"
                                         data-justificacion="'.$row['justificacion_cierre'].'"
                                         title="Editar datos" class="editar-itemDialog btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';    
                                     
@@ -1127,130 +1128,174 @@ desired effect
   })
 </script>
 <script>
-$(function(){
-  $(".ver-itemDialog").click(function(){
-    $('#itemId').val($(this).data('id'));
-    $('#detail').val($(this).data('detail'));
-    $('#fecha').val($(this).data('fecha'));
-    $('#usuario').val($(this).data('usuario'));
-    $("#ver-itemDialog").modal("show");
+  $(function(){
+    $(".ver-itemDialog").click(function(){
+      $('#itemId').val($(this).data('id'));
+      $('#detail').val($(this).data('detail'));
+      $('#fecha').val($(this).data('fecha'));
+      $('#usuario').val($(this).data('usuario'));
+      $("#ver-itemDialog").modal("show");
+    });
   });
-});
 </script>
 <script>
-$(function(){
-  $(".editar-itemDialog").click(function(){
-    $('#id_avance').val($(this).data('id'));
-    $('#edit-detalle').val($(this).data('detail'));
-    $('#txtjustificacionedit').val($(this).data('justificacion'));
-    if ($(this).data('estado')=="0") {
-      $('#justificacioneditcierre').hide();
+  $(function(){
+
+  });
+</script>
+<script>
+  $(function(){
+    
+    var changedFlag = false;
+
+    // -------------------------------------------------------
+    // ADD
+    // Defino el behavior el combo de estado ADD
+    function cambiarEstadoAdd(cerrado) {
+      console.log('pasa');
+      if (changedFlag == true) {
+        changedFlag = false;
+        return;
+      }
+      changedFlag = true;
+      if (cerrado) {
+        $('#estadoaddcierre').val(1);
+        $('#txtavanceadd').val(100);
+        $('#justificacioncierre').show();
+        $('#txtjustificacionadd').attr('required', true);
+        $('#txtavanceadd').attr('readonly', true);
+      } else {
+        $('#estadoaddcierre').val(0);
+        if ($('#txtavanceadd').val()==100) {
+          $('#txtavanceadd').val(0);
+        }
+        $('#justificacioncierre').hide();
+        $('#txtjustificacionadd').attr('required', false);
+        $('#txtavanceadd').attr('readonly', false);
+      }
+      changedFlag = false;
+    }
+    
+    // Defino el behavior el combo de estado EDIT
+    $('#estadoaddcierre').on('change', function() {
+      if (this.value == 0) {
+        cambiarEstadoAdd(false);
+      }
+      else {
+        cambiarEstadoAdd(true);
+      }
+    }); 
+
+    //% AVANCE
+    $('#txtavanceadd').on('input', function() {
+      if (this.value < 100) {
+        cambiarEstadoAdd(false);
+      }
+      else {
+        cambiarEstadoAdd(true);
+      }
+    }); 
+
+    // BEHABIOUR ADD AVANCE
+    //Por default está oculto
+    $('#justificacioncierre').hide();
+    $('#txtjustificacionadd').attr('required', false);
+    
+    changedFlag = true;
+    if ($('#estadoaddcierre').val()==0) {
+      cambiarEstadoAdd(false);
     } else {
-      $('#justificacioneditcierre').show();
-      $('#txtjustificacionedit').attr('required', true);
-    }    
-    $("#modal-avance-edit").modal("show");
-  });
-});
-</script>
-<script>
-$(function(){
-  
-  // BEHABIOUR ADD AVANCE
-  //Por default está oculto
-  $('#justificacioncierre').hide();
-  $('#txtjustificacionadd').attr('required', false);
+      cambiarEstadoAdd(true);
+    }
+    changedFlag = false;
+    // -------------------------------------------------------
+    
+    // -------------------------------------------------------
+    // EDIT
+    // -------------------------------------------------------
+    function cambiarEstado(cerrado) {
+      console.log('pasa');
+      if (changedFlag == true) {
+        changedFlag = false;
+        return;
+      }
+      changedFlag = true;
+      if (cerrado) {
+        $('#estadoeditcierre').val(1);
+        $('#txtavanceedit').val(100);
+        $('#justificacioneditcierre').show();
+        $('#txtjustificacionedit').attr('required', true);
+        $('#txtavanceedit').attr('readonly', true);
+      } else {
+        $('#estadoeditcierre').val(0);
+        if ($('#txtavanceedit').val()==100) {
+          $('#txtavanceedit').val(0);
+        }
+        $('#justificacioneditcierre').hide();
+        $('#txtjustificacionedit').attr('required', false);
+        $('#txtavanceedit').attr('readonly', false);
+      }
+      changedFlag = false;
+    }
+    
+    // Defino el behavior el combo de estado EDIT
+    $('#estadoeditcierre').on('change', function() {
+      if (this.value == 0) {
+        cambiarEstado(false);
+      }
+      else {
+        cambiarEstado(true);
+      }
+    }); 
 
-  if ($('#estadoaddcierre').val()==0) {
-    $('#justificacioncierre').hide();
-    $('#txtjustificacionadd').attr('required', false);
-    $('#txtavanceadd').attr('readonly', false);
-  } else {
-    $('#justificacioncierre').show();
-    $('#txtjustificacionadd').attr('required', true);
-    $('#txtavanceadd').val(100);
-    $('#txtavanceadd').attr('readonly', true);
-  }
+    //% AVANCE
+    $('#txtavanceedit').on('input', function() {
+      if (this.value < 100) {
+        cambiarEstado(false);
+      }
+      else {
+        cambiarEstado(true);
+      }
+    }); 
 
-
-
-  $('#justificacioneditcierre').hide();
-  $('#txtjustificacionedit').attr('required', false);
-  
-  if ($('#estadoaddcierre').val()==0) {
-    $('#justificacioncierre').hide();
-    $('#txtjustificacionadd').attr('required', false);
-    $('#txtavanceadd').attr('readonly', false);
-  } else {
-    $('#justificacioncierre').show();
-    $('#txtjustificacionadd').attr('required', true);
-    $('#txtavanceadd').val(100);
-    $('#txtavanceadd').attr('readonly', true);
-  }
-  if ($('#estadoeditcierre').val()==0) {
+    // BEHABIOUR EDIT AVANCE
+    //Por default está oculto
     $('#justificacioneditcierre').hide();
     $('#txtjustificacionedit').attr('required', false);
-    $('#txtavanceedit').attr('readonly', false);
-  } else {
-    $('#justificacioneditcierre').show();
-    $('#txtjustificacionedit').attr('required', true);
-    $('#txtavanceedit').val(100);
-    $('#txtavanceedit').attr('readonly', true);
-  }
-
-  // Defino el behavior
-  $('#estadoaddcierre').on('change', function() {
-    if (this.value==0) {
-      $('#justificacioncierre').hide();
-      $('#txtjustificacionadd').attr('required', false);
-      //$('#txtavanceadd').val(0);
-      $('#txtavanceadd').attr('readonly', false);
+    
+    changedFlag = true;
+    if ($('#estadoeditcierre').val()==0) {
+      cambiarEstado(false);
     } else {
-      $('#justificacioncierre').show();
-      $('#txtjustificacionadd').attr('required', true);
-      $('#txtavanceadd').val(100);
-      $('#txtavanceadd').attr('readonly', true);
+      cambiarEstado(true);
     }
+    changedFlag = false;
+    // -------------------------------------------------------
+
+    $(".editar-itemDialog").click(function(){
+      $('#id_avance').val($(this).data('id'));
+      $('#edit-detalle').val($(this).data('detail'));
+      $('#txtjustificacionedit').val($(this).data('justificacion'));
+      if ($(this).data('estado')=="0") {
+        cambiarEstado(false);
+      } else {
+        cambiarEstado(true);
+      }    
+      $('#txtavanceedit').val($(this).data('avance'));
+      $("#modal-avance-edit").modal("show");
+    });
+
+
+    $('#modal-avance').on('shown.bs.modal', function (e) {
+      if ($(this).data('estado')=="0") {
+        cambiarEstadoAdd(false);
+      } else {
+        cambiarEstadoAdd(true);
+      }  
+      $('txtavanceadd').val($(this).data('avance'));
+    });
+
   });
-
-  //% AVANCE
-  // $('#txtavanceadd').on('input', function() {
-  //   if (this.value < 100) {
-  //     $('#estadoaddcierre option[value="0"]').attr("selected", '').change();
-  //   } else {
-  //     $('#estadoaddcierre option[value="1"]').attr("selected", '').change();
-  //   }
-  // });
-
-  $('#estadoeditcierre').on('change', function() {
-     if (this.value==0) {
-       $('#justificacioneditcierre').hide();
-       $('#txtjustificacionedit').attr('required', false);
-       $('#txtavanceedit').attr('readonly', false);
-     } else {
-       $('#justificacioneditcierre').show();
-       $('#txtjustificacionedit').attr('required', true);
-       $('#txtavanceedit').val(100);
-       $('#txtavanceedit').attr('readonly', true);       
-     }
-  });
-
-  //% AVANCE
-  // $('#txtavanceedit').on('input', function() {
-  //   if (this.value < 100) {
-  //     $('#estadoeditcierre option[value="0"]').attr("selected", '').change();
-  //   } else {
-  //     $('#estadoeditcierre option[value="1"]').attr("selected", '').change();
-  //   }
-  // });
-
-  $('#modal-avance').on('shown.bs.modal', function (e) {
-    $('#estadoaddcierre').val(0);
-    $('txtavanceadd').val(0);
-    $('#estadoaddcierre').change();
-  });
-
-});
 </script>
 <script>
 $(function(){
