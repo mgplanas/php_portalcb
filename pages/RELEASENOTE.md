@@ -12,7 +12,22 @@
     - reiniciar httpd -->  sudo systemctl restart httpd
 - BackUp DB     
 - Backup /pages 
+- Backup site.php
 - Cambios en DB
+    - Agregar campos en tabla avance_riesgo:
+        - justificacion VARCHAR(155) NULL
+        - avance INT NULL
+
+UPDATE avance_riesgo
+INNER JOIN
+(
+SELECT id_riesgo, MAX(avance) as maxavance
+FROM riesgo
+GROUP BY id_riesgo
+) AS ra ON avance_riesgo.id_riesgo = ra.id_riesgo
+SET avance_riesgo.avance = ra.maxavance
+
+
 - Cambios en src
     - Actualizar pages/riesgo.php
     - Actualizar pages/edit_riesgo.php
@@ -35,3 +50,4 @@
     - N[met_riesgos.php]
     - N[met_controles.php]
     - M[admin.php]
+    - M[edit_riesgo.php]

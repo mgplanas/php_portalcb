@@ -7,7 +7,7 @@
 - Correccion de cuando se agrega un nuevo avance y el estado es Abierto pide justificacion M[edit_riesgo.php]
 - Si se cierra el riesgo se pone como 100% M[edit_riesgo.php]
 - Si se ingresa 100% como avance si cierra el riesgo M[edit_riesgo.php]
-
+- Agrego campo % avance en los avances de los riesgos M[edit_riesgo.php]
 
 ## FEAT-FIL-GERENCIA
 ### Varios post release.

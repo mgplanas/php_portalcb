@@ -801,6 +801,7 @@ desired effect
                       <th style="width: 10px">#</th>
                       <th>Detalle</th>
                       <th style="width: 150px">Fecha</th>
+                      <th style="width: 150px">Avance</th>
                       <th style="text-align:center;width: 10%;">Acción</th>
                     </tr>
                     <?php
@@ -829,11 +830,13 @@ desired effect
                                 }
                                 echo '<td>'.$detalleAvance.'</td>';
                                 echo '<td>'.$rowavance['fecha'].'</td>';
+                                echo '<td>'.$rowavance['avance'].'</td>';
                                 echo '<td align="center">
                                       <a data-id="'.$rowavance['id_avance_riesgo'].'" 
                                         data-detail="'.$rowavance['detalle'].'"
                                         data-fecha="'.$rowavance['fecha'].'"
                                         data-usuario="'.$rowavance['user'].'"
+                                        data-porcentaje= "'.$rowavance['avance'].'"
                                         data-riesgo="'. $nik .'"
                                         data-estado="'.$row['estado'].'"
                                         data-avance="'.$row['avance'].'"
@@ -886,9 +889,8 @@ desired effect
                     $avance = mysqli_real_escape_string($con,(strip_tags($_POST["avance"],ENT_QUOTES)));//Escanpando caracteres
                     $justificacion = mysqli_real_escape_string($con,(strip_tags($_POST["justificacion"],ENT_QUOTES)));//Escanpando caracteres
                     
-
-                    $insert_avance = mysqli_query($con, "INSERT INTO avance_riesgo (id_riesgo, detalle, fecha, user) 
-                                                         VALUES ('$nik', '$detalle', now(), '$user')") or die(mysqli_error());
+                    $sqlInsert_avance = "INSERT INTO avance_riesgo (id_riesgo, detalle, fecha, user, avance) VALUES ('$nik', '$detalle', now(), '$user', $avance)";
+                    $insert_avance = mysqli_query($con, $sqlInsert_avance) or die(mysqli_error());
                     
                     // Si el estado es abierto limpio la justificacion
                     if ($estado=="0") {
@@ -980,7 +982,7 @@ desired effect
                     $id_avance = mysqli_real_escape_string($con,(strip_tags($_POST["id_avance"],ENT_QUOTES)));//Escanpando caracteres
                     $justificacion = mysqli_real_escape_string($con,(strip_tags($_POST["justificacion"],ENT_QUOTES)));//Escanpando caracteres
 
-                    $insert_avance = mysqli_query($con, "UPDATE avance_riesgo SET detalle='$detalle', fecha=now(), user='$user' WHERE id_avance_riesgo=$id_avance") or die(mysqli_error());
+                    $insert_avance = mysqli_query($con, "UPDATE avance_riesgo SET detalle='$detalle', fecha=now(), user='$user', avance=$avance WHERE id_avance_riesgo=$id_avance") or die(mysqli_error());
                     
                     // Si el estado es abierto limpio la justificacion
                     if ($estado=="0") {
@@ -1076,7 +1078,10 @@ desired effect
                             <label for="usuario">Usuario</label>
                             <input type="text" class="form-control" name="usuario" id="usuario" value="" readonly>
                         </div>
-
+                        <!-- <div class="form-group">
+                            <label for="per_avance">Porcentaje de avance</label>
+                            <input type="text" class="form-control" name="per_avance" id="per_avance" value="" readonly>
+                        </div> -->
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1134,6 +1139,7 @@ desired effect
       $('#detail').val($(this).data('detail'));
       $('#fecha').val($(this).data('fecha'));
       $('#usuario').val($(this).data('usuario'));
+      // $('#per_avance').val($(this).data('peravance'));
       $("#ver-itemDialog").modal("show");
     });
   });
