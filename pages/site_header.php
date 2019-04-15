@@ -27,10 +27,10 @@ $rowcp = mysqli_num_rows($count_proyectos);
         <span class="sr-only">Toggle navigation</span>
     </a>
     <?php 
-    if ($_ENV['PRODUCTION_SERVER'] == 0) {
+    if ($_SERVER['PRODUCTION_SERVER'] == 0) {
         echo '<span class="label label-success">DESARROLLO</span>';
     }
-    if ($_ENV['PRODUCTION_SERVER'] == 1) {
+    if ($_SERVER['PRODUCTION_SERVER'] == 1) {
         echo '<span class="label label-warning">ENTORNO DE TEST</span>';
     }
     ?>
