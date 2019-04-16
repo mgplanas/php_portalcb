@@ -471,7 +471,8 @@ desired effect
 <script>
   $(function () {
     $('#iso27k').DataTable({
-      'paging'      : false,
+      'paging'      : true,
+      'pageLength': 20,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : true,

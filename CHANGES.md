@@ -4,6 +4,12 @@
 *Cambios:*
     - Mostrar campo justificación en los avances de 100% M[edit_riesgo.php]
     - Agregar Filtro en Grilla de Riesgos M[riesgos.php]
+    - Cambiar paginación de grillas a 20 elementos:
+        - M[controles.php]
+        - M[activos.php]
+        - M[iso27k.php]
+        - M[mejoras.php]
+        - M[riesgos.php]
 
 ### FIXES a los avances de riesgos.
 *Fecha:* 2019-04-05

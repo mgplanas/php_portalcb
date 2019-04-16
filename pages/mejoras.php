@@ -883,6 +883,7 @@ desired effect
   $(function () {
     $('#mejoras').DataTable({
       'paging'      : true,
+      'pageLength': 20,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : false,

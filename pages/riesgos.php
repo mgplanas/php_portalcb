@@ -1781,7 +1781,8 @@ desired effect
         $(function() {
             $('#riesgos').DataTable({
                 'ordering': true,
-                'paging': false,
+                'paging': true,
+                'pageLength': 20,
                 'lengthChange': false,
                 'searching': true,
                 

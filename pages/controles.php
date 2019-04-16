@@ -573,6 +573,7 @@ desired effect
         $(function() {
             $('#controles').DataTable({
                 'paging': true,
+                'pageLength': 20,
                 'lengthChange': false,
                 'searching': false,
                 'ordering': true,
