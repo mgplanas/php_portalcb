@@ -1,4 +1,9 @@
-## FEAT-AVA-FIXES
+## REQ-20190416
+### Cambios menores.
+*Fecha:* 2019-04-16
+*Cambios:*
+    - Mostrar campo justificación en los avances de 100% M[edit_riesgo.php]
+
 ### FIXES a los avances de riesgos.
 *Fecha:* 2019-04-05
 *Cambios:*

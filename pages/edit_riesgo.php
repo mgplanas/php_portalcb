@@ -825,8 +825,9 @@ desired effect
                                   </td>';
                                 echo '<td align="center">'.$rowavance['id_avance_riesgo'].'</td>';
                                 $detalleAvance = $rowavance['detalle'];
-                                if ($detalleAvance == '') {
-                                  $detalleAvance = '<b>Justificación del cierre: </b> ' . $row['justificacion_cierre'];
+                                $porcentajeAvance = $rowavance['avance'];
+                                if ($porcentajeAvance == 100) {
+                                  $detalleAvance = $detalleAvance . ' <b>Justificación del cierre: </b> ' . $row['justificacion_cierre'];
                                 }
                                 echo '<td>'.$detalleAvance.'</td>';
                                 echo '<td>'.$rowavance['fecha'].'</td>';
