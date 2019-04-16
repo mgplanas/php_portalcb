@@ -1807,7 +1807,7 @@ desired effect
                 var table = $('#riesgos').DataTable();
 
                 // Si son las columnas de filtro creo el ddl
-                if (colIdx == 4 || colIdx == 9 || colIdx == 10) {
+                if (colIdx == 4 || colIdx == 6 || colIdx == 9 || colIdx == 10) {
                     var select = $('<select style="width: 100%;"><option value=""></option></select>')
                     .on( 'change', function () {
                         table

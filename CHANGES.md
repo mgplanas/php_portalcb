@@ -3,6 +3,7 @@
 *Fecha:* 2019-04-16
 *Cambios:*
     - Mostrar campo justificación en los avances de 100% M[edit_riesgo.php]
+    - Agregar Filtro en Grilla de Riesgos M[riesgos.php]
 
 ### FIXES a los avances de riesgos.
 *Fecha:* 2019-04-05
