@@ -10,6 +10,7 @@
         - M[iso27k.php]
         - M[mejoras.php]
         - M[riesgos.php]
+    - Controles: Agregar columna pendiente en base a si tiene controles pendientes del mes actual o anteriores.
 
 ### FIXES a los avances de riesgos.
 *Fecha:* 2019-04-05

@@ -441,6 +441,7 @@ desired effect
                                                 <th>Período</th>
                                                 <th>Título</th>
                                                 <th>Contenido</th>
+                                                <th>Pendiente</th>
                                                 <th>Criticidad</th>
                                                 <th>Responsable</th>
                                                 <th>Gerencia</th>
@@ -449,7 +450,18 @@ desired effect
                                         </thead>
                                         <tbody>
                                             <?php
-                                                $query = "SELECT i.*, p.nombre, p.apellido, g.nombre as gerencia FROM controles as i 
+                                                $query = "SELECT i.*, p.nombre, p.apellido, g.nombre as gerencia ,
+                                                        (
+                                                            SELECT count(*) as total
+                                                            FROM controles cp
+                                                            INNER JOIN referencias ON cp.id_control = referencias.id_control
+                                                            WHERE cp.id_control = i.id_control 
+                                                            and referencias.mes <= MONTH(CURRENT_DATE()) AND referencias.ano =  YEAR(CURRENT_DATE()) 
+                                                            and cp.borrado = 0
+                                                            and referencias.borrado = 0
+                                                            AND referencias.status='2'
+                                                            ) as qpendientes
+                                                        FROM controles as i 
                                                         LEFT JOIN persona as p on responsable = p.id_persona
                                                         LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia
                                                     WHERE i.borrado='0'";
@@ -483,6 +495,12 @@ desired effect
                                                   echo '<td>'.$row['titulo'].'</td>';
                                                   echo '<td>'.$row['contenido'].'</td>'; 
                                                   
+                                                  if ($row['qpendientes'] > 0) {
+                                                      echo '<td><span class="label label-danger">Pendiente</span></td>'; 
+                                                  } else {
+                                                      echo '<td></td>'; 
+                                                  }
+
                                                   if ($row['criticidad'] == '0') {
                                                       echo '<td><span class="label label-danger">Crítico</span></td>'; 
                                                   } else if ($row['criticidad'] == '1') {
@@ -514,6 +532,7 @@ desired effect
                                                 <th>Título</th>
                                                 <th>Contenido</th>
                                                 <th>Criticidad</th>
+                                                <th>Pendiente</th>
                                                 <th>Responsable</th>
                                                 <th>Gerencia</th>
                                                 <th width="110px">Acciones</th>
