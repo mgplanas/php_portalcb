@@ -819,6 +819,7 @@ desired effect
                                 echo '<tr>
                                   <td><a data-id="'.$rowavance['id_avance_riesgo'].'" 
                                       data-detail="'.$rowavance['detalle'].'"
+                                      data-justif="'.$rowavance['justificacion'].'"
                                       data-fecha="'.$rowavance['fecha'].'"
                                       data-usuario="'.$rowavance['user'].'"
                                       title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
@@ -827,7 +828,11 @@ desired effect
                                 $detalleAvance = $rowavance['detalle'];
                                 $porcentajeAvance = $rowavance['avance'];
                                 if ($porcentajeAvance == 100) {
-                                  $detalleAvance = $detalleAvance . ' <b>Justificación del cierre: </b> ' . $row['justificacion_cierre'];
+                                  if ($rowavance['justificacion'] != '') {
+                                    $detalleAvance = $detalleAvance . ' <b>Justificación del cierre: </b> ' . $rowavance['justificacion'];
+                                  } else {
+                                    $detalleAvance = $detalleAvance . ' <b>Justificación del cierre: </b> ' . $row['justificacion_cierre'];
+                                  }
                                 }
                                 echo '<td>'.$detalleAvance.'</td>';
                                 echo '<td>'.$rowavance['fecha'].'</td>';
@@ -835,6 +840,7 @@ desired effect
                                 echo '<td align="center">
                                       <a data-id="'.$rowavance['id_avance_riesgo'].'" 
                                         data-detail="'.$rowavance['detalle'].'"
+                                        data-justif="'.$rowavance['justificacion'].'"
                                         data-fecha="'.$rowavance['fecha'].'"
                                         data-usuario="'.$rowavance['user'].'"
                                         data-porcentaje= "'.$rowavance['avance'].'"
@@ -890,7 +896,7 @@ desired effect
                     $avance = mysqli_real_escape_string($con,(strip_tags($_POST["avance"],ENT_QUOTES)));//Escanpando caracteres
                     $justificacion = mysqli_real_escape_string($con,(strip_tags($_POST["justificacion"],ENT_QUOTES)));//Escanpando caracteres
                     
-                    $sqlInsert_avance = "INSERT INTO avance_riesgo (id_riesgo, detalle, fecha, user, avance) VALUES ('$nik', '$detalle', now(), '$user', $avance)";
+                    $sqlInsert_avance = "INSERT INTO avance_riesgo (id_riesgo, detalle, fecha, user, avance, justificacion) VALUES ('$nik', '$detalle', now(), '$user', $avance, '$justificacion')";
                     $insert_avance = mysqli_query($con, $sqlInsert_avance) or die(mysqli_error());
                     
                     // Si el estado es abierto limpio la justificacion
@@ -983,7 +989,7 @@ desired effect
                     $id_avance = mysqli_real_escape_string($con,(strip_tags($_POST["id_avance"],ENT_QUOTES)));//Escanpando caracteres
                     $justificacion = mysqli_real_escape_string($con,(strip_tags($_POST["justificacion"],ENT_QUOTES)));//Escanpando caracteres
 
-                    $insert_avance = mysqli_query($con, "UPDATE avance_riesgo SET detalle='$detalle', fecha=now(), user='$user', avance=$avance WHERE id_avance_riesgo=$id_avance") or die(mysqli_error());
+                    $insert_avance = mysqli_query($con, "UPDATE avance_riesgo SET detalle='$detalle', fecha=now(), user='$user', avance=$avance, justificacion = '$justificacion' WHERE id_avance_riesgo=$id_avance") or die(mysqli_error());
                     
                     // Si el estado es abierto limpio la justificacion
                     if ($estado=="0") {
@@ -1220,8 +1226,8 @@ desired effect
     // -------------------------------------------------------
     // EDIT
     // -------------------------------------------------------
+    let justificacionCierre = "";
     function cambiarEstado(cerrado) {
-      console.log('pasa');
       if (changedFlag == true) {
         changedFlag = false;
         return;
@@ -1232,6 +1238,7 @@ desired effect
         $('#txtavanceedit').val(100);
         $('#justificacioneditcierre').show();
         $('#txtjustificacionedit').attr('required', true);
+        $('#txtjustificacionedit').val(justificacionCierre);
         $('#txtavanceedit').attr('readonly', true);
       } else {
         $('#estadoeditcierre').val(0);
@@ -1282,7 +1289,9 @@ desired effect
     $(".editar-itemDialog").click(function(){
       $('#id_avance').val($(this).data('id'));
       $('#edit-detalle').val($(this).data('detail'));
-      $('#txtjustificacionedit').val($(this).data('justificacion'));
+      // $('#txtjustificacionedit').val($(this).data('justif'));
+      justificacionCierre = $(this).data('justif') != '' ? $(this).data('justif') : $(this).data('justificacion');
+      console.log('data-justif: click' ,$(this).data('justif'));
       if ($(this).data('estado')=="0") {
         cambiarEstado(false);
       } else {

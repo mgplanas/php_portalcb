@@ -1,3 +1,6 @@
+## REL-0002
+    - Se corrige descripcion justificacion avance.
+
 ## REQ-20190416
 ### Cambios menores.
 *Fecha:* 2019-04-16
