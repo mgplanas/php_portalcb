@@ -149,6 +149,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+  <style>
+    .bg-semino {
+      background-color: #6495ED !important;
+      color: #fff !important; 
+    }
+  </style>
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -476,7 +483,7 @@ desired effect
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <div class="small-box bg-red">
+          <div class="small-box bg-semino">
             <div class="inner">
               <h3><?php
 						$query_count_controles = "SELECT 1 as total 
