@@ -189,7 +189,7 @@ desired effect
                     <div class="icon">
                         <i class="fa fa-retweet"></i>
                     </div>
-                    <a href="./pages/controles.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="./controles.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>         
             </div>

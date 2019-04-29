@@ -171,7 +171,7 @@ desired effect
                         <div class="icon">
                         <i class="ion ion-flash"></i>
                         </div>
-                        <a href="./pages/riesgos.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="./riesgos.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                     <div class="box box-warning">
                         <div class="box-header with-border">

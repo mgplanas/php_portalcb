@@ -181,7 +181,7 @@ desired effect
                         <div class="icon">
                         <i class="ion ion-speedometer"></i>
                         </div>
-                        <a href="./pages/iso27k.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="./iso27k.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>         
             </div>

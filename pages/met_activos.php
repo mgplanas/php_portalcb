@@ -176,7 +176,7 @@ desired effect
                         <div class="icon">
                         <i class="fa fa-archive"></i>
                         </div>
-                        <a href="./pages/activos.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="./activos.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>            
             </div>
