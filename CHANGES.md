@@ -1,5 +1,10 @@
+## FIX-PROD
+- Se corrige rango de valores de riesgo en gráfico del dashboard y metricas de riesgo
+    M[pages/met_riesgos.php]
+    M[site.php]
+
 ## REL-0002
-    - Se corrige descripcion justificacion avance.
+- Se corrige descripcion justificacion avance.
 
 ## REQ-20190416
 ### Cambios menores.
