@@ -2,6 +2,8 @@
 - Se corrige rango de valores de riesgo en gráfico del dashboard y metricas de riesgo
     M[pages/met_riesgos.php]
     M[site.php]
+- Se corrige los colores de las matrices
+    M[pages/met_riesgos.php]
 
 ## REL-0002
 - Se corrige descripcion justificacion avance.
