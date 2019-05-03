@@ -26,9 +26,9 @@ $sqlTmpRiesgos = "SELECT 1 as qv
                   AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
 $qv = mysqli_query($con, strtr($sqlTmpRiesgos, array(':comparacion' => '<=3', ':per_id_gerencia' => $per_id_gerencia)));
 $rqv = mysqli_num_rows($qv);
-$qa = mysqli_query($con,strtr($sqlTmpRiesgos, array(':comparacion' => ' IN (4,5,6)', ':per_id_gerencia' => $per_id_gerencia)));
+$qa = mysqli_query($con,strtr($sqlTmpRiesgos, array(':comparacion' => ' IN (4,5,6,7,8,9,10,11)', ':per_id_gerencia' => $per_id_gerencia)));
 $rqa = mysqli_num_rows($qa);
-$qr = mysqli_query($con,strtr($sqlTmpRiesgos, array(':comparacion' => '>6', ':per_id_gerencia' => $per_id_gerencia)));
+$qr = mysqli_query($con,strtr($sqlTmpRiesgos, array(':comparacion' => '>11', ':per_id_gerencia' => $per_id_gerencia)));
 $rqr = mysqli_num_rows($qr);
 
 
