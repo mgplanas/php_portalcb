@@ -176,19 +176,23 @@ desired effect
                                                     <div class="box box-primary">
                                                         <div class="box-body">
                                                             <div class="form-group">
-                                                                <label for="titulo"> Título</label>
-                                                                <input type="text" class="form-control" name="titulo" id="titulo" value="" readonly>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="periodicidad"> Periodicidad</label>
-                                                                <input type="text" class="form-control" name="periodicidad" id="periodicidad" value="" readonly>
+                                                                <div class="row">
+                                                                <div class="col-md-9">
+                                                                    <label for="titulo"> Título</label>
+                                                                    <input type="text" class="form-control" name="titulo" id="titulo" value="" readonly>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label for="periodicidad"> Periodicidad</label>
+                                                                    <input type="text" class="form-control" name="periodicidad" id="periodicidad" value="" readonly>
+                                                                </div>
+                                                                </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="contenido"> Contenido</label>
                                                                 <textarea class="form-control" rows="2" id="contenido" value="" readonly></textarea>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="responsable"> Responsable</label>
+                                                                <label for="responsable"><i class="glyphicon glyphicon-user"></i> Responsable</label>
                                                                 <input type="text" class="form-control" name="responsable" id="responsable" value="" readonly>
                                                             </div>
                                                             <div class="form-group">
@@ -203,15 +207,29 @@ desired effect
                                                     <div class="box box-primary">
                                                         <div class="box-body">
                                                             <div class="form-group">
+                                                                <div class="row">
                                                                 <div class="col-md-6">
                                                                     <label for="estatus"> Estado</label>
                                                                     <input type="text" class="form-control" name="estatus" id="estatus" value="" readonly>
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <label for="controlador"> Controlador</label>
+                                                                    <label for="controlador"><i class="glyphicon glyphicon-user"></i>Controlador</label>
                                                                     <input type="text" class="form-control" name="controlador" id="controlador" value="" readonly>
                                                                 </div>
-                                                            </div>                                                        
+                                                                </div>
+                                                            </div>  
+                                                            <div class="form-group" id="divaccion">
+                                                                <label for="accion"><i class="glyphicon glyphicon-flash"></i> Acción</label>
+                                                                <textarea class="form-control" rows="2" id="accion" value="" readonly></textarea>
+                                                            </div>
+                                                            <div class="form-group" id="divobservacion">
+                                                                <label for="observacion"><i class="glyphicon glyphicon-eye-open"></i> Observación</label>
+                                                                <textarea class="form-control" rows="2" id="observacion" value="" readonly></textarea>
+                                                            </div>
+                                                            <div class="form-group" id="divevidencia">
+                                                                <label for="evidencia"><i class="glyphicon glyphicon-list-alt"></i> Evidencia</label>
+                                                                <textarea class="form-control" rows="2" id="evidencia" value="" readonly></textarea>
+                                                            </div>                                                                                                                  
                                                         </div>
                                                     </div>
                                                 </div>
@@ -336,6 +354,9 @@ desired effect
                                                                     data-gerencia="'.$row['responsableNombre'].'" 
                                                                     data-estatus="'.$row['estadoControl'].'" 
                                                                     data-controlador="'.$row['controladorNombre'].'" 
+                                                                    data-accion="'.$row['accion'].'" 
+                                                                    data-observacion="'.$row['observacion'].'" 
+                                                                    data-evidencia="'.$row['evidencia'].'" 
                                                                     data-mes="'.$row['mes'].'" 
                                                                     title="Controlado - [' . $row['controladorNombre'] . ']" class="ver-itemDialog btn"><i class="glyphicon glyphicon-ok-sign" style="color:green; font-size: 20px;"></i></a>';
                                                                 } else {
@@ -510,8 +531,18 @@ desired effect
                 }
                 let d = new Date();
                 let mesActual = d.getMonth();
+                $('#divaccion').hide();
+                $('#divobservacion').hide();
+                $('#divevidencia').hide();
                 if ($(this).data('estatus') == 1) {
                     $('#estatus').val('Completado');
+                    $('#controlador').val($(this).data('controlador'));
+                    $('#divaccion').show();
+                    $('#divobservacion').show();
+                    $('#divevidencia').show();                    
+                    $('#accion').val($(this).data('accion'));
+                    $('#observacion').val($(this).data('observacion'));
+                    $('#evidencia').val($(this).data('evidencia'));
                 } else {
                     if (mesActual > $(this).data('mes')) {
                         $('#estatus').val('Vencido');
@@ -519,13 +550,6 @@ desired effect
                         $('#estatus').val('Pendiente');
                     }
                 }
-                $('#controlador').val($(this).data('controlador'));
-
-                // if ($(this).data('c_prev') == '1') {
-                //     $('#t_control').val('PREVENTIVO')
-                // } else {
-                //     $('#t_control').val('DETECTIVO')
-                // };
 
 
                 $("#ver-itemDialog").modal("show");
