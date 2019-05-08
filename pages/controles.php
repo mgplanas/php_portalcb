@@ -180,6 +180,7 @@ desired effect
                                         <h2 class="box-title">Listado de Controles</h2>
                                     </div>
                                     <div class="col-sm-6" style="text-align:right;">
+                                        <a href="cal_controles.php" class="btn btn-primary"><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i> Calendario</a>
                                         <button type="button" class="btn-sm btn-primary" data-toggle="modal"
                                             data-target="#modal-control"><i class="fa fa-retweet"></i> Nuevo
                                             Control</button>

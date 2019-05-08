@@ -1,6 +1,8 @@
 ## FIX-PROD
 - Se crea página para mostrar el calendario anual de los cntroles
     N[cal_controles.php]
+- Agrego el link en controles.php
+    M[controles.php]
 
 ## FIX-PROD
 - Se corrige rango de valores de riesgo en gráfico del dashboard y metricas de riesgo
