@@ -195,10 +195,6 @@ desired effect
                                                                 <label for="responsable"><i class="glyphicon glyphicon-user"></i> Responsable</label>
                                                                 <input type="text" class="form-control" name="responsable" id="responsable" value="" readonly>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label for="gerencia"> Gerencia</label>
-                                                                <input type="text" class="form-control" name="gerencia" id="gerencia" value="" readonly>
-                                                            </div>
                                                         </div>
 
                                                     </div>
@@ -289,10 +285,12 @@ desired effect
                                                                 REF.nro_referencia, 
                                                                 REF.status as estadoControl, 
                                                                 REF.controlador,
+                                                                GER.nombre as gerencia,
                                                                 CONCAT(CLD.apellido , ', ' , CLD.nombre) as controladorNombre
                                                         FROM referencias as REF
                                                         INNER JOIN controles as CON ON REF.id_control = CON.id_control
                                                         LEFT JOIN persona AS RES ON CON.responsable = RES.id_persona
+                                                        LEFT JOIN gerencia AS GER ON RES.gerencia = GER.id_gerencia
                                                         LEFT JOIN persona AS CLD ON REF.controlador = CLD.id_persona
                                                         WHERE CON.ano = YEAR(NOW())
                                                         AND REF.borrado = 0
@@ -351,7 +349,7 @@ desired effect
                                                                     data-periodicidad="'.$row['periodo'].'" 
                                                                     data-contenido="'.$row['contenido'].'" 
                                                                     data-responsable="'.$row['responsableNombre'].'" 
-                                                                    data-gerencia="'.$row['responsableNombre'].'" 
+                                                                    data-gerencia="'.$row['gerencia'].'" 
                                                                     data-estatus="'.$row['estadoControl'].'" 
                                                                     data-controlador="'.$row['controladorNombre'].'" 
                                                                     data-accion="'.$row['accion'].'" 
@@ -369,7 +367,7 @@ desired effect
                                                                     data-periodicidad="'.$row['periodo'].'" 
                                                                     data-contenido="'.$row['contenido'].'" 
                                                                     data-responsable="'.$row['responsableNombre'].'" 
-                                                                    data-gerencia="'.$row['responsableNombre'].'" 
+                                                                    data-gerencia="'.$row['gerencia'].'" 
                                                                     data-estatus="'.$row['estadoControl'].'"  
                                                                     data-mes="'.$row['mes'].'" 
                                                                     title="Vencido" class="ver-itemDialog btn"><i class="glyphicon glyphicon-remove-sign" style="color:red; font-size: 20px;"></i></a>';
@@ -381,7 +379,7 @@ desired effect
                                                                         data-periodicidad="'.$row['periodo'].'" 
                                                                         data-contenido="'.$row['contenido'].'" 
                                                                         data-responsable="'.$row['responsableNombre'].'" 
-                                                                        data-gerencia="'.$row['responsableNombre'].'" 
+                                                                        data-gerencia="'.$row['gerencia'].'" 
                                                                         data-estatus="'.$row['estadoControl'].'" 
                                                                         data-mes="'.$row['mes'].'" 
                                                                         title="Pendiente" class="ver-itemDialog btn"><i class="glyphicon glyphicon-record" style="font-size: 20px;"></i></a>';
@@ -509,8 +507,8 @@ desired effect
 
                 $('#titulo').val($(this).data('titulo'));
                 $('#contenido').val($(this).data('contenido'));
-                $('#responsable').val($(this).data('responsable'));
-                $('#gerencia').val($(this).data('gerencia'));
+                $('#responsable').val($(this).data('responsable') + ' - ' + $(this).data('gerencia'));
+                // $('#gerencia').val($(this).data('gerencia'));
                 
                 switch ($(this).data('periodicidad')) {
                     case 1:
