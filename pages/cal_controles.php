@@ -75,7 +75,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     .example-modal .modal {
         background: transparent !important;
     }
-
+    .mesactual {
+        background-color: lightgrey;
+    }
+    .mesactualHeader {
+        background-color: grey;
+        color: white;
+    }
     .rotateheader {
         /* Safari */
         -webkit-transform: rotate(-90deg);
@@ -308,21 +314,24 @@ desired effect
                                     <table id="controles" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th width="1">Ver</th>
-                                                <th>Control</th>
-                                                <th>Enero</th>
-                                                <th>Febrero</th>
-                                                <th>Marzo</th>
-                                                <th>Abril</th>
-                                                <th>Mayo</th>
-                                                <th>Junio</th>
-                                                <th>Julio</th>
-                                                <th>Agosto</th>
-                                                <th>Septiembre</th>
-                                                <th>Octubre</th>
-                                                <th>Novimebre</th>
-                                                <th>Diciembre</th>
-                                                <th>Total</th>
+                                            <?php
+                                            $mActual = date('m');
+                                                echo '<th width="1">Ver</th>';
+                                                echo '<th>Control</th>';
+                                                echo '<th ' . (1==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Enero</th>';
+                                                echo '<th ' . (2==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Febrero</th>';
+                                                echo '<th ' . (3==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Marzo</th>';
+                                                echo '<th ' . (4==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Abril</th>';
+                                                echo '<th ' . (5==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Mayo</th>';
+                                                echo '<th ' . (6==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Junio</th>';
+                                                echo '<th ' . (7==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Julio</th>';
+                                                echo '<th ' . (8==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Agosto</th>';
+                                                echo '<th ' . (9==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Septiembre</th>';
+                                                echo '<th ' . (10==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Octubre</th>';
+                                                echo '<th ' . (11==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Novimebre</th>';
+                                                echo '<th ' . (12==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Diciembre</th>';
+                                                echo '<th>Total</th>';
+                                            ?>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -384,11 +393,13 @@ desired effect
                                                             // Formo el calendario mes a mes creado las celdas vacias hasat el mes del control
                                                             // de 1-12 y marcando las que vienen por DB
                                                             for ($i = $mesControl; $i < $row['mes']; $i++) {
-                                                                echo '<td></td>';
+                                                                echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
                                                             }
-
+                                                            
+                                                            //----------------------------
                                                             //En esta celda hay un control
-                                                            echo '<td>';
+                                                            //----------------------------
+                                                            echo '<td ' . ($row['mes']==$mesActual ? 'class="mesactual"' : ''  ) . '>';
                                                             // Cambio el ícono si está pendiente o no
                                                             if ($row['estadoControl']==1) {
                                                                 echo '<a  data-idref="'.$row['id_referencia'].'"title="Controlado - [' . $row['controladorNombre'] . ']" class="ver-itemDialog btn"><i class="glyphicon glyphicon-ok-sign" style="color:green; font-size: 20px;"></i></a>';
@@ -401,6 +412,7 @@ desired effect
                                                                 }
                                                             }
                                                             echo '</td>';
+                                                            //----------------------------
 
                                                             //Incremento el mes para generar celdas hasta el próximo mes 
                                                             $mesControl = $row['mes'] + 1;
@@ -493,8 +505,8 @@ desired effect
                         text: 'Excel',
                     }
                 ]
-            })
-        })
+            });
+        });
         </script>
         <script>
         window.onload = function() {
