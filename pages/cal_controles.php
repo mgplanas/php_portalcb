@@ -161,152 +161,66 @@ desired effect
                                     </div>
                                 </div>
                                 <!-- MODAL CONTROL -->
-                                <div class="modal fade" id="modal-control">
-                                    <div class="modal-dialog">
+                                <div id="ver-itemDialog" class="modal fade">
+                                    <div class="modal-dialog" style="width:900px;">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span></button>
-                                                <h2 class="modal-title">Controles >> Nuevo Control</h2>
+                                                    <button type="button" id="criticidad" class="btn"></button>
+                                                
                                             </div>
                                             <div class="modal-body">
-                                                <div class="box box-primary">
-                                                    <!-- /.box-header -->
-                                                    <?php
-                                                    if(isset($_POST['add'])){
-                                                      $titulo = mysqli_real_escape_string($con,(strip_tags($_POST["titulo"],ENT_QUOTES)));//Escanpando caracteres
-                                                      $contenido = mysqli_real_escape_string($con,(strip_tags($_POST["contenido"],ENT_QUOTES)));//Escanpando caracteres
-                                                      $responsable = mysqli_real_escape_string($con,(strip_tags($_POST["responsable"],ENT_QUOTES)));//Escanpando caracteres 
-                                                      $periodo = mysqli_real_escape_string($con,(strip_tags($_POST["periodo"],ENT_QUOTES)));//Escanpando caracteres 
-                                                      $mesInicio = mysqli_real_escape_string($con,(strip_tags($_POST["mesinicio"],ENT_QUOTES)));//Escanpando caracteres 
-                                                      $tipo = mysqli_real_escape_string($con,(strip_tags($_POST["tipo"],ENT_QUOTES)));//Escanpando caracteres 
-                                                      $criticidad = mysqli_real_escape_string($con,(strip_tags($_POST["criticidad"],ENT_QUOTES)));//Escanpando caracteres 
-                                                              
-                                                      $ano = date("Y");
-
-                                                      //Inserto Control
-                                                      $insert_control = mysqli_query($con, "INSERT INTO controles (titulo, contenido, creado, ano, responsable, usuario, periodo, status, tipo, mesinicio, criticidad) VALUES('$titulo','$contenido', NOW(), '$ano','$responsable', '$user','$periodo', '3', '$tipo', '$mesInicio', '$criticidad')") or die(mysqli_error());	
-
-                                                          //Ultimo Insert
-                                                        $last = $con->insert_id;
-                                                        //For Inserto Referencias
-                                                        $nro_referencia = 1;
-                                                        // Mes Actual
-                                                        // $mes = date("m");
-                                                        $mes = (int)$mesInicio;
-                                                        $ano = date("Y");
-                                                        while ($mes <= 12) {
-                                                          $insert_ref = mysqli_query($con, "INSERT INTO referencias (id_control, mes, ano, nro_referencia)
-                                                            VALUES('$last', '$mes', '$ano','$nro_referencia')") or die (mysqli_error());	
-                                                          $nro_referencia++;
-                                                          $mes = $mes + $periodo;
-                                                                  }
-                                                                  $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
-                                                                                    VALUES ('1', '5', '$last', now(), '$user', '$titulo')") or die(mysqli_error());
-                                                                  unset($_POST);
-                                                                  if($insert_control){
-                                                                      $_SESSION['formSubmitted'] = 2;
-                                                                      echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-                                                                  }else{
-                                                                      $_SESSION['formSubmitted'] = 9;
-                                                                      echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-                                                                  }    
-                                                              }       
-                                                    ?>
-                                                    <!-- form start -->
-                                                    <form method="post" role="form" action="">
+                                                <div class="row">
+                                                    <div class="box box-primary">
                                                         <div class="box-body">
                                                             <div class="form-group">
-                                                                <label for="titulo">Título</label>
-                                                                <input type="text" class="form-control" name="titulo"
-                                                                    placeholder="Título del control" required>
+                                                                <label for="titulo"> Título</label>
+                                                                <input type="text" class="form-control" name="titulo" id="titulo" value="" readonly>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="descripcion">Contenido</label>
-                                                                <textarea class="form-control" rows="3" name="contenido"
-                                                                    placeholder="Contenido del control ..."
-                                                                    required></textarea>
+                                                                <label for="periodicidad"> Periodicidad</label>
+                                                                <input type="text" class="form-control" name="periodicidad" id="periodicidad" value="" readonly>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label>Criticidad</label>
-                                                                <select name="criticidad" class="form-control">
-                                                                    <option value='2'>No Crítico</option>										
-                                                                    <option value='1'>Semi Crítico</option>										
-                                                                    <option value='0'>Crítico</option>										
-                                                                </select>
+                                                                <label for="contenido"> Contenido</label>
+                                                                <textarea class="form-control" rows="2" id="contenido" value="" readonly></textarea>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label>Responsable</label>
-                                                                <select name="responsable" class="form-control">
-                                                                    <?php
-                                                                        $personasn = mysqli_query($con, "SELECT * FROM persona");
-                                                                        while($rowps = mysqli_fetch_array($personasn)){
-                                                                          echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
-                                                                          }
-                                                                    ?>
-                                                                </select>
+                                                                <label for="responsable"> Responsable</label>
+                                                                <input type="text" class="form-control" name="responsable" id="responsable" value="" readonly>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label>Tipo</label>
-                                                                <select name="tipo" class="form-control">
-                                                                    <option value='1'>Preventivo y/o disuasivo</option>
-                                                                    <option value='2'>Detectivo y/o correctivo</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div class="row">
-                                                                    <div class="col-sm-6">
-                                                                        <label>Mes de Inicio</label>
-                                                                        <select name="mesinicio" class="form-control">
-                                                                            <option value='1'>Enero</option>
-                                                                            <option value='2'>Febrero</option>
-                                                                            <option value='3'>Marzo</option>
-                                                                            <option value='4'>Abril</option>
-                                                                            <option value='5'>Mayo</option>
-                                                                            <option value='6'>Junio</option>
-                                                                            <option value='7'>Julio</option>
-                                                                            <option value='8'>Agosto</option>
-                                                                            <option value='9'>Septiembre</option>
-                                                                            <option value='10'>Octubre</option>
-                                                                            <option value='11'>Noviembre</option>
-                                                                            <option value='12'>Diciembre</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="col-sm-6">
-                                                                        <label>Periodo</label>
-                                                                        <select name="periodo" class="form-control">
-                                                                            <option value='1'>Mensual</option>
-                                                                            <option value='3'>Trimestral</option>
-                                                                            <option value='6'>Semestral</option>
-                                                                            <option value='12'>Anual</option>
-                                                                        </select>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <div class="col-sm-3">
-                                                                    <input type="submit" name="add"
-                                                                        class="btn  btn-raised btn-success"
-                                                                        value="Guardar datos">
-                                                                </div>
-                                                                <div class="col-sm-3">
-                                                                    <button type="button"
-                                                                        class="btn btn-default pull-left"
-                                                                        data-dismiss="modal">Cancelar</button>
-                                                                </div>
+                                                                <label for="gerencia"> Gerencia</label>
+                                                                <input type="text" class="form-control" name="gerencia" id="gerencia" value="" readonly>
                                                             </div>
                                                         </div>
-                                                    </form>
-                                                </div>
 
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="box box-primary">
+                                                        <div class="box-body">
+                                                            <div class="form-group">
+                                                                <div class="col-md-6">
+                                                                    <label for="estatus"> Estado</label>
+                                                                    <input type="text" class="form-control" name="estatus" id="estatus" value="" readonly>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label for="controlador"> Controlador</label>
+                                                                    <input type="text" class="form-control" name="controlador" id="controlador" value="" readonly>
+                                                                </div>
+                                                            </div>                                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <!-- /.modal-content -->
-                                    </div>
-                                    <!-- /.modal-dialog -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
                                 </div>
                                 <!-- FIN MODAL CONTROL -->
                                 <!-- /.box-header -->
@@ -316,7 +230,7 @@ desired effect
                                             <tr>
                                             <?php
                                             $mActual = date('m');
-                                                echo '<th width="1">Ver</th>';
+                                                echo '<th width="1">C</th>';
                                                 echo '<th>Control</th>';
                                                 echo '<th ' . (1==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Enero</th>';
                                                 echo '<th ' . (2==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Febrero</th>';
@@ -378,12 +292,23 @@ desired effect
                                                     $mesActual = date('m');
 
                                                     $idControlActual = -1;
-                                                    while($row = mysqli_fetch_assoc($sql)) {
+                                                    $row = mysqli_fetch_assoc($sql);
+                                                    while($nRow <= $allRows) {
 
                                                         $idControlActual = $row['id_control'];
                                                         echo '<tr>';
+                                                        $criticidadColor = '';
+                                                        $criticidadTitulo = 'title="No crítico"';
+                                                        if ($row['criticidad'] == 0) {
+                                                            $criticidadColor = 'color: red;';
+                                                            $criticidadTitulo = 'title="Crítico"';
+                                                        }
+                                                        if ($row['criticidad'] == 1) {
+                                                            $criticidadColor = 'color: #f0ad4e;';
+                                                            $criticidadTitulo = 'title="Semi Crítico"';
+                                                        }
                                                         // Celda de ver control
-                                                        echo '<td><a  data-id="'.$row['id_control'].'"title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a></td>';                                                        
+                                                        echo '<td><a ' . $criticidadTitulo . ' <i class="glyphicon glyphicon-tag" style="' . $criticidadColor. ' font-size: 20px;"></i></a></td>';                                                        
                                                         echo '<td>' . $row['titulo'] . '</td>';
                                                         
                                                         $mesControl = 1;
@@ -402,13 +327,43 @@ desired effect
                                                             echo '<td ' . ($row['mes']==$mesActual ? 'class="mesactual"' : ''  ) . '>';
                                                             // Cambio el ícono si está pendiente o no
                                                             if ($row['estadoControl']==1) {
-                                                                echo '<a  data-idref="'.$row['id_referencia'].'"title="Controlado - [' . $row['controladorNombre'] . ']" class="ver-itemDialog btn"><i class="glyphicon glyphicon-ok-sign" style="color:green; font-size: 20px;"></i></a>';
-                                                            } else {
-                                                                // Si está pendiente me fijo si está atrazado con respecto al mes en curso
-                                                                if ($mesActual > $row['mes']) {
-                                                                    echo '<a  data-idref="'.$row['id_referencia'].'"title="Vencido" class="ver-itemDialog btn"><i class="glyphicon glyphicon-remove-sign" style="color:red; font-size: 20px;"></i></a>';
+                                                                echo '<a  data-idref="'.$row['id_referencia'].'"
+                                                                    data-criticidad="'.$row['criticidad'].'" 
+                                                                    data-titulo="'.$row['titulo'].'" 
+                                                                    data-periodicidad="'.$row['periodo'].'" 
+                                                                    data-contenido="'.$row['contenido'].'" 
+                                                                    data-responsable="'.$row['responsableNombre'].'" 
+                                                                    data-gerencia="'.$row['responsableNombre'].'" 
+                                                                    data-estatus="'.$row['estadoControl'].'" 
+                                                                    data-controlador="'.$row['controladorNombre'].'" 
+                                                                    data-mes="'.$row['mes'].'" 
+                                                                    title="Controlado - [' . $row['controladorNombre'] . ']" class="ver-itemDialog btn"><i class="glyphicon glyphicon-ok-sign" style="color:green; font-size: 20px;"></i></a>';
                                                                 } else {
-                                                                    echo '<a  data-idref="'.$row['id_referencia'].'"title="Pendiente" class="ver-itemDialog btn"><i class="glyphicon glyphicon-record" style="font-size: 20px;"></i></a>';
+                                                                    // Si está pendiente me fijo si está atrazado con respecto al mes en curso
+                                                                if ($mesActual > $row['mes']) {
+                                                                    echo '<a 
+                                                                    data-idref="'.$row['id_referencia'].'"
+                                                                    data-criticidad="'.$row['criticidad'].'" 
+                                                                    data-titulo="'.$row['titulo'].'"
+                                                                    data-periodicidad="'.$row['periodo'].'" 
+                                                                    data-contenido="'.$row['contenido'].'" 
+                                                                    data-responsable="'.$row['responsableNombre'].'" 
+                                                                    data-gerencia="'.$row['responsableNombre'].'" 
+                                                                    data-estatus="'.$row['estadoControl'].'"  
+                                                                    data-mes="'.$row['mes'].'" 
+                                                                    title="Vencido" class="ver-itemDialog btn"><i class="glyphicon glyphicon-remove-sign" style="color:red; font-size: 20px;"></i></a>';
+                                                                } else {
+                                                                    echo '<a  
+                                                                        data-idref="'.$row['id_referencia'].'"
+                                                                        data-criticidad="'.$row['criticidad'].'" 
+                                                                        data-titulo="'.$row['titulo'].'" 
+                                                                        data-periodicidad="'.$row['periodo'].'" 
+                                                                        data-contenido="'.$row['contenido'].'" 
+                                                                        data-responsable="'.$row['responsableNombre'].'" 
+                                                                        data-gerencia="'.$row['responsableNombre'].'" 
+                                                                        data-estatus="'.$row['estadoControl'].'" 
+                                                                        data-mes="'.$row['mes'].'" 
+                                                                        title="Pendiente" class="ver-itemDialog btn"><i class="glyphicon glyphicon-record" style="font-size: 20px;"></i></a>';
                                                                 }
                                                             }
                                                             echo '</td>';
@@ -424,7 +379,7 @@ desired effect
                                                         
                                                         // relleno los meses que faltan
                                                         for ($i = $mesControl; $i <= 12; $i++) {
-                                                            echo '<td></td>';
+                                                            echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
                                                         }
                                                         // Celda total (cuenta de controles)
                                                         echo '<td>' . $totalControles . '</td>';
@@ -486,32 +441,97 @@ desired effect
         <script>
         $(function() {
             $('#controles').DataTable({
-                'paging': true,
-                'pageLength': 20,
+                'paging': false,
+                // 'pageLength': 20,
                 'lengthChange': false,
                 'searching': false,
                 'ordering': true,
                 'info': true,
                 'autoWidth': true,
-                'dom': 'frtipB',
-                'buttons': [{
-                        extend: 'pdfHtml5',
-                        orientation: 'landscape',
-                        pageSize: 'A4',
+                'dom': 'frtip',
+                // 'buttons': [{
+                //         extend: 'pdfHtml5',
+                //         orientation: 'landscape',
+                //         pageSize: 'A4',
 
-                    },
-                    {
-                        extend: 'excel',
-                        text: 'Excel',
-                    }
-                ]
+                //     },
+                //     {
+                //         extend: 'excel',
+                //         text: 'Excel',
+                //     }
+                // ]
             });
         });
         </script>
         <script>
         window.onload = function() {
-            history.replaceState("", "", "controles.php");
+            history.replaceState("", "", "cal_controles.php");
         }
+        </script>
+        <script>
+        $(function() {
+            $(".ver-itemDialog").click(function() {
+                let crit = $(this).data('criticidad');
+                $('#criticidad').removeClass();
+                $('#criticidad').addClass('btn');
+                if (crit == 0) {
+                    $('#criticidad').html('Crítico');
+                    $('#criticidad').addClass('btn-danger'); 
+                } else if (crit == 1) {
+                    $('#criticidad').html('Semicrítico');
+                    $('#criticidad').addClass('btn-warning'); 
+                } else {
+                    $('#criticidad').html('No Crítico');
+                    $('#criticidad').addClass('btn-success'); 
+                }
+                $('#criticidad').addClass('pull-left'); 
+
+                $('#titulo').val($(this).data('titulo'));
+                $('#contenido').val($(this).data('contenido'));
+                $('#responsable').val($(this).data('responsable'));
+                $('#gerencia').val($(this).data('gerencia'));
+                
+                switch ($(this).data('periodicidad')) {
+                    case 1:
+                        $('#periodicidad').val('Mensual');
+                        break;
+                    case 3:
+                        $('#periodicidad').val('Trimestral');
+                        break;
+                    case 1:
+                        $('#periodicidad').val('Semestral');
+                        break;
+                    case 1:
+                        $('#periodicidad').val('Anual');
+                        break;
+                
+                    default:
+                        break;
+                }
+                let d = new Date();
+                let mesActual = d.getMonth();
+                if ($(this).data('estatus') == 1) {
+                    $('#estatus').val('Completado');
+                } else {
+                    if (mesActual > $(this).data('mes')) {
+                        $('#estatus').val('Vencido');
+                    } else {
+                        $('#estatus').val('Pendiente');
+                    }
+                }
+                $('#controlador').val($(this).data('controlador'));
+
+                // if ($(this).data('c_prev') == '1') {
+                //     $('#t_control').val('PREVENTIVO')
+                // } else {
+                //     $('#t_control').val('DETECTIVO')
+                // };
+
+
+                $("#ver-itemDialog").modal("show");
+
+            });
+        });
         </script>
 
         <!-- Optionally, you can add Slimscroll and FastClick plugins.
