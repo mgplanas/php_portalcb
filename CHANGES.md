@@ -3,6 +3,7 @@
     N[cal_controles.php]
 - Agrego el link en controles.php
     M[controles.php]
+    TODO: LIMPIAR FORMULARIO DEL MODAL ANTES DE MOSTRAR DATA
 
 ## FIX-PROD
 - Se corrige rango de valores de riesgo en gráfico del dashboard y metricas de riesgo
