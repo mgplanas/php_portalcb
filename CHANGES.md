@@ -1,4 +1,12 @@
-## FIX-PROD
+## FEAT-CALENDAR
+### Adaptación caliendario de guardias para nuevas gerencias/areas
+*Fecha:* 2019-05-20
+*Cambios:*
+- Corrigo seleccion personas filtro borrado
+    - M[pages/calendario.php]
+
+
+## FEAT-CTL-CALENDAR
 - Se crea página para mostrar el calendario anual de los cntroles
     N[cal_controles.php]
 - Agrego el link en controles.php
