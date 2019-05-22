@@ -4,6 +4,9 @@
 *Cambios:*
 - Corrigo seleccion personas filtro borrado
     - M[pages/calendario.php]
+- Agrego ABM de estructura de gerencia, subgerencia y área a la DB y personas
+    - M[pages/admin.php]
+    - N[getAsyncDataFromDB.php]
 
 
 ## FEAT-CTL-CALENDAR
