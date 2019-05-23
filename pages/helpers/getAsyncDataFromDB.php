@@ -1,5 +1,5 @@
 <?php
-    include("../conexion.php");
+    include("../../conexion.php");
 
     $query = $_POST['query'];
 

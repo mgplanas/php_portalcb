@@ -63,8 +63,8 @@ if ($rq_sec['admin']=='0'){
 }
 
 //Get Personas
-$personas = mysqli_query($con, "SELECT * FROM persona");
-
+$personas = mysqli_query($con, "SELECT * FROM persona where borrado = 0 ORDER BY apellido, nombre");
+$subgerencias = mysqli_query($con, "SELECT * FROM subgerencia ORDER BY nombre ASC");
 ?>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -652,53 +652,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <!-- FIN TAB PERSONA -->
 
                                 <!-- TAB ESTRUCTURA -->
-                                <div class="tab-pane active" id="tab_3">
+                                <div class="tab-pane" id="tab_3">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="box">
                                                 <div class="box-header">
                                                     <h3 class="box-title">Gerencias</h3>
-                                                    <a class="btn text-right"><i class="glyphicon glyphicon-plus-sign" title="Agregar gerencia"style="color:green; font-size: 20px;"></i></a>
+                                                    <a class="btn text-right" id='modal-abm-gerencia-btn-alta'><i class="glyphicon glyphicon-plus-sign" title="Agregar gerencia"style="color:green; font-size: 20px;"></i></a>
                                                 </div>
                                                 <div class="box-body no-padding">
                                                     <table class="table table-hover display" id="tbgerencias">
                                                         <thead>
                                                             <tr>
+                                                            <th>ID</th>
+                                                            <th>Sigla</th>
+                                                            <th>Responsable</th>
                                                             <th>Nombre</th>
                                                             <th>Gerente</th>
                                                             <th style="width: 40px; text-align: center"><i class="glyphicon glyphicon-flash"></i></th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
-                                                        <?php
-                                                            $query = "SELECT g.id_gerencia, g.nombre, g.sigla, g.responsable, p.apellido as per_apellido, p.nombre as per_nombre
-                                                            FROM gerencia as g
-                                                            LEFT JOIN persona as p ON g.responsable = p.id_persona
-                                                            WHERE g.borrado = 0
-                                                            ORDER BY g.nombre ASC";
-                                                            
-                                                            $sql = mysqli_query($con, $query);
-                                                            if(mysqli_num_rows($sql) == 0){
-                                                                echo '<tr><td colspan="4">No hay datos.</td></tr>';
-                                                            } 
-                                                            else
-                                                            {
-                                                                while($row = mysqli_fetch_assoc($sql)){
-                                                                    echo '<tr data-id="'.$row['id_gerencia'].'">';
-                                                                    echo '<td>' . $row['nombre'] . '</td>';
-                                                                    echo '<td>' . $row['per_apellido'] . ' ' . $row['per_nombre'] . '</td>';
-                                                                    echo '<td>
-                                                                    <a data-id="'.$row['id_gerencia'].'" 
-                                                                        data-nombre="'.$row['nombre'].'"
-                                                                        data-sigla="'.$row['sigla'].'"
-                                                                        data-responsable="'.$row['responsable'].'"
-                                                                        title="editar" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-                                                                    </td>';
-                                                                    echo '</tr>';
-                                                                }    
-                                                            }
-                                                        ?>                                                    
-                                                        </tbody>
                                                     </table>
                                                 </div>
                                                 <!-- /.box-body -->
@@ -708,13 +681,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <div class="box">
                                                 <div class="box-header">
                                                     <h3 class="box-title">Sub Gerencias</h3>
-                                                    <a class="btn text-right"><i class="glyphicon glyphicon-plus-sign" title="Agregar gerencia"style="color:green; font-size: 20px;"></i></a>
+                                                    <a class="btn text-right" id="modal-abm-subgerencia-btn-alta"><i class="glyphicon glyphicon-plus-sign" title="Agregar gerencia"style="color:green; font-size: 20px;"></i></a>
                                                 </div>
                                                 <div class="box-body no-padding">
                                                     <table class="table table-hover display" id="tbsubgerencias">
                                                         <thead>
                                                             <tr>
                                                             <th>ID</th>
+                                                            <th>Sigla</th>
+                                                            <th>Responsable</th>
                                                             <th>Nombre</th>
                                                             <th>Sub Gerente</th>
                                                             <th style="width: 40px; text-align: center"><i class="glyphicon glyphicon-flash"></i></th>
@@ -729,13 +704,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <div class="box">
                                                 <div class="box-header">
                                                     <h3 class="box-title">Areas</h3>
-                                                    <a class="btn text-right"><i class="glyphicon glyphicon-plus-sign" title="Agregar área"style="color:green; font-size: 20px;"></i></a>
+                                                    <a class="btn text-right" id="modal-abm-area-btn-alta"><i class="glyphicon glyphicon-plus-sign" title="Agregar área"style="color:green; font-size: 20px;"></i></a>
                                                 </div>
                                                 <div class="box-body no-padding">
                                                     <table class="table table-hover display" id="tbareas">
                                                         <thead>
                                                             <tr>
                                                             <th>ID</th>
+                                                            <th>Sigla</th>
+                                                            <th>Responsable</th>
                                                             <th>Nombre</th>
                                                             <th>Responsable</th>
                                                             <th style="width: 40px; text-align: center"><i class="glyphicon glyphicon-flash"></i></th>
@@ -749,6 +726,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                     </div>
                                 </div>
+
+                                <!-- MODAL ABM GERENCIA -->
+                                <?php 
+                                    include_once('./modals/abmgerencia.php'); 
+                                    include_once('./modals/abmsubgerencia.php'); 
+                                    include_once('./modals/abmarea.php'); 
+                                ?>
+                                <!-- FIN MODAL ABM GERENCIAS -->                                
                                 <!-- FIN TAB ESRUCTURA -->
 
                                 <!-- TAB LOG -->
@@ -839,6 +824,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="../bower_components/fastclick/lib/fastclick.js"></script>
     <!-- AdminLTE App -->
     <script src="../dist/js/adminlte.min.js"></script>
+    <!-- MODAL ABM GERENCIAS  -->
+    <script src="./modals/abmestructura.js"></script>
 
     <!--
 <script src="../bower_components/datatables.net/js/jszip.min.js"></script>
@@ -849,8 +836,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/buttons.flash.min.js"></script>
 <script src="../bower_components/datatables.net/js/dataTables.buttons.min.js"></script>
  -->
-
-
+    
     <script>
     window.onload = function() {
         history.replaceState("", "", "admin.php");
@@ -925,6 +911,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
 </script>
     <script>
+
     function updatePerm(perm, id_permiso) {
 
         var datap = perm;
@@ -948,136 +935,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
-    <script>
-        $(function(){
-            // Configuracion de las tablas
-            // GERENCIAS
-            let tbgerencias = $('#tbgerencias');
-            let tbgerenciasDT = tbgerencias.DataTable({
-                'paging': false,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': false,
-                'info': false,
-                'autoWidth': false
-            });
-
-            // SUBGERENCIAS
-            let tbsubgerencias = $('#tbsubgerencias');
-            let tbsubgerenciasDT = tbsubgerencias.DataTable({
-                'paging': false,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': false,
-                'info': false,
-                'autoWidth': false,
-                "columnDefs": [ {
-                    "targets": 0,
-                    "visible": false
-                }]                
-            });
-
-            //AREAS
-            let tbareas = $('#tbareas');
-            let tbareasDT = tbareas.DataTable({
-                'paging': false,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': false,
-                'info': false,
-                'autoWidth': false,
-                "columnDefs": [ {
-                    "targets": 0,
-                    "visible": false
-                }]                
-            });
-
-            // EVENTOS
-            // SELECCION GERENCIA
-            $('#tbgerencias tbody').on( 'click', 'tr', function () {
-                
-                //Extraigo el id de la data de la row
-                let idgerencia = $(this).data('id');
-                // Pinto o despinto la row
-                if ( $(this).hasClass('rowselected') ) {
-                    $(this).removeClass('rowselected');
-                }
-                else {
-                    tbgerenciasDT.$('tr.rowselected').removeClass('rowselected');
-                    $(this).addClass('rowselected');
-                }
-
-                // Limpio las demas tablas
-                tbsubgerencias.DataTable().clear().draw();
-                tbareas.DataTable().clear().draw();
-
-                //Populo las subgerencias
-                $.ajax({
-                    type: 'POST',
-                    url: './getAsyncDataFromDB.php',
-                    data: { query: 'SELECT id_subgerencia as id, nombre, responsable FROM subgerencia WHERE id_gerencia =' + idgerencia },
-                    dataType: 'json',
-                    success: function(json) {
-                        myJsonData = json;
-                        populateDataTable(myJsonData, tbsubgerencias);
-                    },
-                    error: function(e) {
-                        alert(e);
-                    }
-                });
-            });
-
-            // SELECCION EN SUBGERENCIA
-            $('#tbsubgerencias tbody').on( 'click', 'tr', function () {
-                
-                let idsubgerencia = tbsubgerenciasDT.row(this).data()[0];
-                // let idsubgerencia = $(this).data('id');
-                console.log(idsubgerencia);                
-                // Pinto o despinto la row
-                if ( $(this).hasClass('rowselected') ) {
-                    $(this).removeClass('rowselected');
-                }
-                else {
-                    tbsubgerenciasDT.$('tr.rowselected').removeClass('rowselected');
-                    $(this).addClass('rowselected');
-                }
-                // Limpio las demas tablas
-                tbareas.DataTable().clear().draw();
-                //Populo las subgerencias
-                $.ajax({
-                    type: 'POST',
-                    url: './getAsyncDataFromDB.php',
-                    data: { query: 'SELECT id_area as id, nombre, responsable FROM area WHERE id_subgerencia =' + idsubgerencia },
-                    dataType: 'json',
-                    success: function(json) {
-                        myJsonData = json;
-                        populateDataTable(myJsonData, tbareas);
-                    },
-                    error: function(e) {
-                        alert(e);
-                    }
-                });
-            });
-
-              // populate the data table with JSON data
-            function populateDataTable(response, table) {
-                var length = Object.keys(response.data).length;
-                for(var i = 0; i < length; i++) {
-                    let item = response.data[i];
-                    // You could also use an ajax property on the data table initialization
-                    let button = '<a data-id="' + item.id + '" data-nombre="' + item.nombre + '" data-responsable="'+ item.responsable + '" title="editar" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
-                    table.dataTable().fnAddData( [
-                        item.id,
-                        item.nombre,
-                        item.responsable,
-                        button
-                    ]);
-                }
-            }
-
-        });
-    </script>
-
     </body>
 
 </html>

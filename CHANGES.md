@@ -6,7 +6,8 @@
     - M[pages/calendario.php]
 - Agrego ABM de estructura de gerencia, subgerencia y área a la DB y personas
     - M[pages/admin.php]
-    - N[getAsyncDataFromDB.php]
+    - N[helpers/*.php]
+    - N[modals/*.php]
 
 
 ## FEAT-CTL-CALENDAR
