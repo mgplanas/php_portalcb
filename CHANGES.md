@@ -9,6 +9,14 @@
     - N[helpers/*.php]
     - N[modals/*.php]
 
+- Agrego los campos id_subgerencia, id_area a tabla de Persona. Modifico ABM
+
+
+- TODO BAJA Estructura (Ver si posee personas asociadas)
+    - Poner cantidad de subelementos en la grilla
+    - Poner boton de baja en grillas
+    - Mostar aviso de resultado de operación al cerrar el modal
+    - Ver tema de auditoría
 
 ## FEAT-CTL-CALENDAR
 - Se crea página para mostrar el calendario anual de los cntroles

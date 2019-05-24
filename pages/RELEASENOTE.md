@@ -43,4 +43,8 @@
         -subgerencias
         -áreas
 
-- Cambios en src                                                                
+- Cambios en src      
+    - M[pages/calendario.php]
+    - M[pages/admin.php]
+    - N[helpers/*.php]
+    - N[modals/*.php]                                                          
