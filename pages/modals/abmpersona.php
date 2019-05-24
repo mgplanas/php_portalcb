@@ -45,6 +45,9 @@
         <div class="modal-body">
             <!-- form start -->
             <form method="post" role="form" action="">
+
+                <input type="hidden" class="form-control" name="id_persona" id='modal-abm-persona-id' >
+
                 <div class="box-body">
                     <div class="form-group">
                         <label for="legajo">Legajo</label>

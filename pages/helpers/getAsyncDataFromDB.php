@@ -1,7 +1,11 @@
 <?php
     include("../../conexion.php");
 
-    $query = $_POST['query'];
+    if (isset($_POST['query'])) {
+        $query = $_POST['query'];
+    } else {
+        $query = $_GET['query'];
+    }
 
     $result = mysqli_query($con,$query);
 

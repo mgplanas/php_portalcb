@@ -395,7 +395,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="tab-pane" id="tab_0">
                                   <table id="personas" class="table table-bordered table-hover">
                                     <div class="col-sm-12" style="text-align:right;">
-                                      <button type="button" class="btn-sm btn-primary" data-toggle="modal"
+                                      <button id="modal-abm-persona-btn-alta" type="button" class="btn-sm btn-primary" data-toggle="modal"
                                               data-target="#modal-persona"><i
                                               class="glyphicon glyphicon-user"></i> Nueva Persona</button>
                                     </div>
@@ -412,7 +412,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </thead>
                                     <tbody>
                                       <?php
-                                        $query = "SELECT p.id_persona, p.nombre, p.apellido, p.legajo, p.email, p.cargo, g.id_gerencia, g.nombre as gerencia, u.nombre as grupo 
+                                        $query = "SELECT p.id_persona, p.nombre, p.apellido, p.legajo, p.email, p.contacto, p.cargo, g.id_gerencia, p.subgerencia, p.area, g.nombre as gerencia, u.nombre as grupo 
                                         FROM persona as p 
                                         LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia
                                         LEFT JOIN grupo as u on p.grupo = u.id_grupo
@@ -445,7 +445,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             echo '<td>'.$row['cargo'].'</td>'; 
                                             echo '<td>'.$row['gerencia'].'</td>'; 
                                             echo '<td align="center">
-                                                    <a href="edit_persona.php?nik='.$row['id_persona'].'" title="Editar persona" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                                                    <a data-id="'.$row['id_persona'].'" 
+                                                    data-legajo="'.$row['legajo'].'"
+                                                    data-nombre="'.$row['nombre'].'"
+                                                    data-apellido="'.$row['apellido'].'"
+                                                    data-email="'.$row['email'].'"
+                                                    data-contacto="'.$row['contacto'].'"
+                                                    data-cargo="'.$row['cargo'].'"
+                                                    data-gerencia="'.$row['gerencia'].'"
+                                                    data-idgerencia="'.$row['id_gerencia'].'"
+                                                    data-idsubgerencia="'.$row['subgerencia'].'"
+                                                    data-idarea="'.$row['area'].'"
+                                                    data-grupo="'.$row['grupo'].'"
+                                                    title="Editar persona" class="modal-abm-persona-btn-edit btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
                                                     <a href="admin.php?aksip=delete&nik='.$row['id_persona'].'" title="Borrar persona" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['apellido']. ' ' .$row['nombre'].'?\')" class="btn btn-danger btn-sm ';
                                             echo '"><i class="glyphicon glyphicon-trash"></i></a></td>';
                                             echo '</tr>';
@@ -468,187 +480,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
 
                                 <!-- MODAL ADD PERSONA -->
-                                <div class="modal fade" id="modal-persona">
-                                  <div class="modal-dialog">
-                                    <div class="modal-content">
-                                      <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal"
-                                              aria-label="Close">
-                                              <span aria-hidden="true">&times;</span></button>
-                                          <h2 class="modal-title">Nueva Persona</h2>
-                                          <?php
-                                            $gerencias = mysqli_query($con, "SELECT * FROM gerencia ORDER BY nombre ASC");
-                                            $grupos = mysqli_query($con, "SELECT * FROM grupo ORDER BY nombre ASC");
-                                            if(isset($_POST['AddPersona'])){
-                                              
-                                              $legajo = mysqli_real_escape_string($con,(strip_tags($_POST["legajo"],ENT_QUOTES)));//Escanpando caracteres
-                                              $nombre = mysqli_real_escape_string($con,(strip_tags($_POST["nombre"],ENT_QUOTES)));//Escanpando caracteres
-                                              $apellido = mysqli_real_escape_string($con,(strip_tags($_POST["apellido"],ENT_QUOTES)));//Escanpando caracteres 
-                                              $cargo = mysqli_real_escape_string($con,(strip_tags($_POST["cargo"],ENT_QUOTES)));//Escanpando caracteres 
-                                              $gerencia = mysqli_real_escape_string($con,(strip_tags($_POST["gerencia"],ENT_QUOTES)));//Escanpando caracteres 
-                                              $email = mysqli_real_escape_string($con,(strip_tags($_POST["email"],ENT_QUOTES)));//Escanpando caracteres 
-                                              $grupo = mysqli_real_escape_string($con,(strip_tags($_POST["grupo"],ENT_QUOTES)));//Escanpando caracteres 
-                                              $contacto = mysqli_real_escape_string($con,(strip_tags($_POST["contacto"],ENT_QUOTES)));//Escanpando caracteres 
-                                              
-                                              // Si la gerencia no es ciberseguridad limpio el valor del grupo
-                                              if ($gerencia != 1) {
-                                                  $grupo = 0;
-                                              }
-                                              //Inserto Control
-                                              $insert_persona = mysqli_query($con, "INSERT INTO persona(legajo, nombre, apellido, cargo, gerencia, email, grupo, contacto, borrado) 
-                                                                                    VALUES ('$legajo','$nombre','$apellido', '$cargo', '$gerencia', '$email', '$grupo', '$contacto', 0)") or die(mysqli_error());	
-                                              $lastInsert = mysqli_insert_id($con);
-                                              $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-                                                            VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
-                                              unset($_POST);
-                                              if($insert_persona){
-                                                $_SESSION['formSubmitted'] = 3;
-                                                echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-                                              }else{
-                                                $_SESSION['formSubmitted'] = 9;
-                                                echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-                                              }				
-                                            }				
-                                            ?>
-                                      </div>
-                                      <div class="modal-body">
-                                          <!-- form start -->
-                                          <form method="post" role="form" action="">
-                                              <div class="box-body">
-                                                  <div class="form-group">
-                                                      <label for="legajo">Legajo</label>
-                                                      <input type="text" class="form-control" name="legajo"
-                                                          placeholder="Legajo">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="nombre">Nombre</label>
-                                                      <input type="text" class="form-control" name="nombre"
-                                                          placeholder="Nombre">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="apellido">Apellido</label>
-                                                      <input type="text" class="form-control" name="apellido"
-                                                          placeholder="Apellido">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="email">Dirección E-mail</label>
-                                                      <input type="text" class="form-control" name="email"
-                                                          placeholder="E-mail corporativo">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="contacto">Contacto</label>
-                                                      <input type="text" class="form-control" name="contacto"
-                                                          placeholder="Nro de contacto">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="cargo">Cargo</label>
-                                                      <input type="text" class="form-control" name="cargo"
-                                                          placeholder="Cargo">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label>Gerencia</label>
-                                                      <select name="gerencia" class="form-control" id="gerenciaselector">
-                                                          <?php
-                                                            while($rowg = mysqli_fetch_array($gerencias)){
-                                                                echo "<option value=". $rowg['id_gerencia'] . ">" .$rowg['nombre'] . "</option>";
-                                                                }
-                                                          ?>
-                                                      </select>
-                                                  </div>
-                                                  <div class="form-group" id="grupodiv">
-                                                      <label>Grupo</label>
-                                                      <select name="grupo" class="form-control" id="gruposelector">
-                                                          <?php
-                                                            while($rowg = mysqli_fetch_array($grupos)){
-                                                                echo "<option value=". $rowg['id_grupo'] . ">" .$rowg['nombre'] . "</option>";
-                                                                }
-                                                          ?>
-                                                      </select>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <div class="col-sm-3">
-                                                          <input type="submit" name="AddPersona"
-                                                              class="btn  btn-raised btn-success"
-                                                              value="Guardar datos">
-                                                      </div>
-                                                      <div class="col-sm-3">
-                                                          <button type="button"
-                                                              class="btn btn-default pull-left"
-                                                              data-dismiss="modal">Cancelar</button>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </form>
-                                      </div>
-                                    </div>
-                                      <!-- /.modal-content -->
-                                  </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
+                                <?php
+                                    include_once('./modals/abmpersona.php');
+                                ?>
                                 <!-- FIN MODAL PERSONA -->
                                 
-                                <!-- MODAL VER PERSONA -->
-                                <div class="modal fade" id="modal-ver-persona">
-                                  <div class="modal-dialog">
-                                    <div class="modal-content">
-                                      <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal"
-                                              aria-label="Close">
-                                              <span aria-hidden="true">&times;</span></button>
-                                          <h2 class="modal-title">Ver Persona</h2>
-                                      </div>
-                                      <div class="modal-body">
-                                          <!-- form start -->
-                                          <form method="post" role="form" action="">
-                                              <div class="box-body">
-                                                  <div class="form-group">
-                                                      <label for="id_persona">#</label>
-                                                      <input type="text" class="form-control" name="id_persona" id="txtid" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="legajo">Legajo</label>
-                                                      <input type="text" class="form-control" name="legajo" id="txtlegajo" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="nombre">Nombre</label>
-                                                      <input type="text" class="form-control" name="nombre" id="txtnombre" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="apellido">Apellido</label>
-                                                      <input type="text" class="form-control" name="apellido" id="txtapellido" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="email">Dirección E-mail</label>
-                                                      <input type="text" class="form-control" name="email" id="txtemail" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="contacto">Contacto</label>
-                                                      <input type="text" class="form-control" name="contacto" id="txtcontacto" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="cargo">Cargo</label>
-                                                      <input type="text" class="form-control" name="cargo" id="txtcargo" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label>Gerencia</label>
-                                                      <input type="text" class="form-control" name="gerencia" id="txtgerencia" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group" id="grupoverdiv">
-                                                      <label>Grupo</label>
-                                                      <input type="text" class="form-control" name="grupo" id="txtgrupo" value="" readonly>
-                                                  </div>
-                                                  <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
-                                                  </div>	
-                                              </div>
-                                          </form>
-                                      </div>
-                                    </div>
-                                      <!-- /.modal-content -->
-                                  </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
-                                <!-- FIN MODAL PERSONA -->
                                 <!-- FIN TAB PERSONA -->
 
                                 <!-- TAB ESTRUCTURA -->
@@ -826,6 +662,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="../dist/js/adminlte.min.js"></script>
     <!-- MODAL ABM GERENCIAS  -->
     <script src="./modals/abmestructura.js"></script>
+    <script src="./modals/abmpersona.js"></script>
 
     <!--
 <script src="../bower_components/datatables.net/js/jszip.min.js"></script>
