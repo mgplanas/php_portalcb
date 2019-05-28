@@ -124,15 +124,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Alias</th>
                     <th>CUIT</th>
                     <th>Sector</th>
+                    <th>Servicios</th>
                     <th width="110px">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT C.id, C.razon_social, O.razon_social as organismo, C.cuit, C.nombre_corto, C.sector 
-                              FROM cdc_cliente as C 
-                              LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
-                              WHERE C.borrado = 0";
+					$query = "SELECT C.id, C.razon_social, O.razon_social as organismo, C.cuit, C.nombre_corto, C.sector, 
+                    (SELECT COUNT(1) FROM sdc_hosting as HO where HO.id_cliente = C.id) as hosting,
+                    (SELECT COUNT(1) FROM sdc_housing as HU where HU.id_cliente = C.id) as housing
+                  FROM cdc_cliente as C 
+                  LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
+                  WHERE C.borrado = 0";
 					
 					$sql = mysqli_query($con, $query);
 
@@ -147,7 +150,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td>'. $row['razon_social'].'</td>';
 							echo '<td align="center">'. $row['nombre_corto'].'</td>';
 							echo '<td align="center">'. $row['cuit'].'</td>';
-							echo '<td align="center">'. $row['sector'].'</td>';
+              echo '<td align="center">'. $row['sector'].'</td>';
+              echo '<td>';
+              if ($row['housing'] > 0) {
+                echo '<i class="fa fa-home"></i> ' . $row['housing'] . ' ';
+              }
+              if ($row['hosting'] > 0) {
+                echo '<i class="fa fa-server"></i> ' . $row['hosting'] . ' ';
+              }
+              echo '</td>';
 							echo '
 							<td align="center">
 							<a href="edit_activo.php?nik='.$row['id_activo'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
@@ -170,6 +181,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Alias</th>
                     <th>CUIT</th>
                     <th>Sector</th>
+                    <th>Servicios</th>
                     <th width="110px">Acciones</th>
                 </tr>
                 </tfoot>
