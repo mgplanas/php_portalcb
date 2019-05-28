@@ -166,8 +166,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td>'. $row['hostname'].'</td>';
 							echo '<td>'. $row['pool'].'</td>';
 							echo '<td>'. $row['uuid'].'</td>';
-							echo '<td>'. $row['vcpu'].'</td>';
-							echo '<td>'. $row['ram'].'</td>';
+							echo '<td>'. $row['VCPU'].'</td>';
+							echo '<td>'. $row['RAM'].'</td>';
 							echo '<td>'. $row['storage'].'</td>';
 							echo '<td>'. $row['SO'].'</td>';
 							echo '<td>'. $row['datacenter'].'</td>';
