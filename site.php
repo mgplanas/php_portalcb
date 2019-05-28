@@ -351,6 +351,31 @@ desired effect
             </li>';
             }?>
             <li class="treeview">
+              <a href="#">
+                <i class="fa fa-cloud"></i> <span>Clientes DC</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="./pages/cdc_dashboard.php"><i class="fa fa-pie-chart"></i> Dashboard</a></li>
+                <li><a href="./pages/cdc_organismo.php"><i class="fa fa-building"></i> Organismos</a></li>
+                <li><a href="./pages/cdc_cliente.php"><i class="fa fa-user"></i> Clientes</a></li>
+                <li class="treeview">
+                  <a href="#"><i class="fa fa-gears"></i> Servicios
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="./pages/sdc_housing.php"><i class="fa fa-home"></i> Housing</a></li>
+                    <li><a href="./pages/sdc_hosting.php"><i class="fa fa-server"></i> Hosting</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>    
+
+            <li class="treeview">
             <a href="#">
               <i class="fa fa-pie-chart"></i><span>Métricas</span>
               <span class="pull-right-container">

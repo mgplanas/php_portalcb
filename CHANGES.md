@@ -1,3 +1,17 @@
+## FEAT-CLI-DC
+### MIGRACION CLIENTES DC.
+Gererar portal para consulta de clientes/servicios dc basados en una base access
+*Fecha:* 2019-05-28
+*Cambios:*
+    - Se crea la estructura de menu lateral
+        M[pages/site_sidebar.php]
+        M[site.php]
+        N[pages/cdc_dashboard.php]
+        N[pages/cdc_cliente.php]
+        N[pages/cdc_organismo.php]
+        N[pages/sdc_housing.php]
+        N[pages/sdc_hosting.php]
+
 ## FIX-PROD
 - Se crea página para mostrar el calendario anual de los cntroles
     N[cal_controles.php]
