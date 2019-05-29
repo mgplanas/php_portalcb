@@ -4,7 +4,7 @@
 
 ### Pasos
 - Entorno
-    N/A
+    /bower_components/datatables.net/css/jquery.dataTables.min.css
 - BackUp DB                                                                     
 - Backup /pages                                                                 
 - Cambios en DB                                                                 

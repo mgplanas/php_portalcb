@@ -67,6 +67,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     .example-modal .modal {
       background: transparent !important;
     }
+
+      .dataTables_scrollHeadInner {
+  width: 100% !important;
+  }
+  .dataTables_scrollHeadInner table {
+  width: 100% !important;
+  }    
   </style>
 </head>
 
@@ -127,7 +134,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Sector</th>
                     <th><i class="fa fa-home" title="Housing" style="font-size: 20px;"></i></th>
                     <th><i class="fa fa-server" title="Hosting" style="font-size: 20px;"></i></th>
-                    <th width="100px">Acciones</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -160,17 +167,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
               echo '</td>';
               echo '<td align="center">';
               if ($row['hosting'] > 0) {
-                echo '<a data-id="'.$row['id'].'" title="ver servicios de Hosting" class="modal-abm-hosting-view btn">' . $row['hosting'] . '</a>';
+                echo '<a data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicios de Hosting" class="modal-abm-hosting-view btn">' . $row['hosting'] . '</a>';
               }
               echo '</td>';
 							echo '
               <td align="center">
 							<a href="edit_activo.php?nik='.$row['id_activo'].'" title="Editar datos" class="btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-							<a href="activos.php?aksi=delete&nik='.$row['id_activo'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-sm ';
-                            if ($rq_sec['edicion']=='0'){
-                                    echo 'disabled';
-                            }
-                            echo '"><i class="glyphicon glyphicon-trash"></i></a>
 							</td>
 							</tr>
 							';
@@ -189,6 +191,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- MODAL Housing -->
         <?php
             include_once('./modals/sdc_housing_view.php');
+            include_once('./modals/sdc_hosting_view.php');
         ?>
         <!-- FIN Housing -->        
       </div>
@@ -231,6 +234,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
 <script src="./modals/sdc_housing_view.js"></script>      
+<script src="./modals/sdc_hosting_view.js"></script>      
 <script>
   $(function () {
     $('#clientes').DataTable({
