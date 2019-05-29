@@ -125,7 +125,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>CUIT</th>
                     <th>Sector</th>
                     <th>Servicios</th>
-                    <th width="110px">Acciones</th>
+                    <th width="130px">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -160,9 +160,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
               }
               echo '</td>';
 							echo '
-							<td align="center">
-							<a href="edit_activo.php?nik='.$row['id_activo'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-							<a href="activos.php?aksi=delete&nik='.$row['id_activo'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
+              <td align="center">
+							<a data-id="'.$row['id'].'" title="ver datos" class="btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
+							<a href="edit_activo.php?nik='.$row['id_activo'].'" title="Editar datos" class="btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+							<a href="activos.php?aksi=delete&nik='.$row['id_activo'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-sm ';
                             if ($rq_sec['edicion']=='0'){
                                     echo 'disabled';
                             }
@@ -174,17 +175,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					}
 					?>
                 </tbody>
-                <tfoot>
-                <tr>
-                    <th>Organismo</th>
-                    <th>Razon Social</th>
-                    <th>Alias</th>
-                    <th>CUIT</th>
-                    <th>Sector</th>
-                    <th>Servicios</th>
-                    <th width="110px">Acciones</th>
-                </tr>
-                </tfoot>
               </table>
             </div>
             <!-- /.box-body -->
@@ -244,7 +234,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       'ordering'    : true,
       'order'       : [[ 0, 'desc' ], [1, 'asc']],
       'info'        : true,
-      'autoWidth'   : true,
+      'autoWidth'   : false,
       'dom'         : 'frtipB',
       'buttons'     : [{
                   extend: 'pdfHtml5',
