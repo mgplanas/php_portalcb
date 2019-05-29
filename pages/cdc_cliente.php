@@ -182,11 +182,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             <!-- /.box-body -->
           </div>
-          <!-- /.box -->
 
           <!-- /.box -->
         </div>
         <!-- /.col -->
+        <!-- MODAL Housing -->
+        <?php
+            include_once('./modals/sdc_housing_view.php');
+        ?>
+        <!-- FIN Housing -->        
       </div>
       <!-- /.row -->
     </section>
