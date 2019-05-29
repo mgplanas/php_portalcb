@@ -50,6 +50,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
    <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
@@ -116,16 +117,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.box-header -->
 	
 			<div class="box-body">
-              <table id="clientes" class="table table-bordered table-hover">
+              <table id="clientes" class="display">
                 <thead>
                 <tr>
                     <th>Organismo</th>
-                    <th>Razon Social</th>
-                    <th>Alias</th>
+                    <th>Cliente</th>
+                    <th>Alias/Sigla</th>
                     <th>CUIT</th>
                     <th>Sector</th>
-                    <th>Servicios</th>
-                    <th width="130px">Acciones</th>
+                    <th><i class="fa fa-home" title="Housing" style="font-size: 20px;"></i></th>
+                    <th><i class="fa fa-server" title="Hosting" style="font-size: 20px;"></i></th>
+                    <th width="100px">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -151,17 +153,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td align="center">'. $row['nombre_corto'].'</td>';
 							echo '<td align="center">'. $row['cuit'].'</td>';
               echo '<td align="center">'. $row['sector'].'</td>';
-              echo '<td>';
+              echo '<td align="center">';
               if ($row['housing'] > 0) {
-                echo '<i class="fa fa-home"></i> ' . $row['housing'] . ' ';
+                echo '<a data-id="'.$row['id'].'" title="ver servicio de Housing" class="modal-abm-housing-view btn"><i class="glyphicon glyphicon-ok-sign" style="color:green; font-size: 20px;"></i></a>';
               }
+              echo '</td>';
+              echo '<td align="center">';
               if ($row['hosting'] > 0) {
-                echo '<i class="fa fa-server"></i> ' . $row['hosting'] . ' ';
+                echo '<a data-id="'.$row['id'].'" title="ver servicios de Hosting" class="modal-abm-hosting-view btn">' . $row['hosting'] . '</a>';
               }
               echo '</td>';
 							echo '
               <td align="center">
-							<a data-id="'.$row['id'].'" title="ver datos" class="btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
 							<a href="edit_activo.php?nik='.$row['id_activo'].'" title="Editar datos" class="btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
 							<a href="activos.php?aksi=delete&nik='.$row['id_activo'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-sm ';
                             if ($rq_sec['edicion']=='0'){
@@ -208,7 +211,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- DataTables -->
 <script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- <script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
 <!-- SlimScroll -->
 <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -223,7 +226,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
-      
+<script src="./modals/sdc_housing_view.js"></script>      
 <script>
   $(function () {
     $('#clientes').DataTable({
@@ -252,7 +255,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </script>
 <script>
     window.onload = function() {
-        history.replaceState("", "", "cdc_organizacion.php");
+        history.replaceState("", "", "cdc_cliente.php");
     }
 </script>
 </body>
