@@ -2,10 +2,9 @@
     <div class="modal-dialog" style="width:1500px;">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"
-                aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h2 class="modal-title" id='modal-abm-hosting-title'>Servicio de Hosting</h2>
+            
         </div>
         <div class="modal-body">
             <!-- form start -->
@@ -41,7 +40,7 @@
                             <div class="small-box bg-green">
                                 <div class="inner">
                                     <h3 id='modal-abm-hosting-qram'>0</h3>
-                                    <p>Total RAM</p>
+                                    <p>Total RAM (GB)</p>
                                 </div>
                                 <div class="icon"><i class="fa fa-server"></i></div>
                             </div>
@@ -51,7 +50,7 @@
                             <div class="small-box bg-red">
                                 <div class="inner">
                                     <h3 id='modal-abm-hosting-qstorage'>0</h3>
-                                    <p>Total Storage</p>
+                                    <p>Total Storage (GB)</p>
                                 </div>
                                 <div class="icon"><i class="fa fa-database"></i></div>
                             </div>
@@ -71,20 +70,20 @@
                                     <table id="hosting" class="display" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Tipo</th>
+                                                <!-- <th>Tipo</th> -->
                                                 <th>Nombre</th>
-                                                <th>Display Name</th>
+                                                <th>DN</th>
                                                 <th>Proyecto</th>
                                                 <th>Fecha</th>
-                                                <th>Hipervisor</th>
+                                                <th>HV</th>
                                                 <th>Hostname</th>
                                                 <th>Pool</th>
                                                 <th>UUID</th>
                                                 <th>VCPU</th>
                                                 <th>RAM</th>
                                                 <th>Storage</th>
-                                                <th>Sistema Operativo</th>
-                                                <th>Datacenter</th>
+                                                <th>SO</th>
+                                                <!-- <th>Datacenter</th> -->
                                             </tr>
                                         </thead>
                                     </table>
