@@ -135,7 +135,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Storage</th>
                     <th>Sistema Operativo</th>
                     <th>Datacenter</th>
-                    <th width="110px">Acciones</th>
+                    <!-- <th width="110px">Acciones</th> -->
                 </tr>
                 </thead>
                 <tbody>
@@ -171,42 +171,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td>'. $row['storage'].'</td>';
 							echo '<td>'. $row['SO'].'</td>';
 							echo '<td>'. $row['datacenter'].'</td>';
-							echo '
-							<td align="center">
-							<a href="edit_activo.php?nik='.$row['id_activo'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-							<a href="activos.php?aksi=delete&nik='.$row['id_activo'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
-                            if ($rq_sec['edicion']=='0'){
-                                    echo 'disabled';
-                            }
-                            echo '"><i class="glyphicon glyphicon-trash"></i></a>
-							</td>
-							</tr>
-							';
+							// echo '
+							// <td align="center">
+							// <a href="edit_activo.php?nik='.$row['id_activo'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+							// <a href="activos.php?aksi=delete&nik='.$row['id_activo'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
+              //               if ($rq_sec['edicion']=='0'){
+              //                       echo 'disabled';
+              //               }
+              //               echo '"><i class="glyphicon glyphicon-trash"></i></a>
+							// </td>
+							// </tr>
+							// ';
 						}
 					}
 					?>
                 </tbody>
-                <tfoot>
-                <tr>
-                    <th>Cliente</th>
-                    <th>Organismo</th>
-                    <th>Tipo</th>
-                    <th>Nombre</th>
-                    <th>Display Name</th>
-                    <th>Proyecto</th>
-                    <th>Fecha</th>
-                    <th>Hipervisor</th>
-                    <th>Hostname</th>
-                    <th>Pool</th>
-                    <th>UUID</th>
-                    <th>VCPU</th>
-                    <th>RAM</th>
-                    <th>Storage</th>
-                    <th>Sistema Operativo</th>
-                    <th>Datacenter</th>
-                    <th width="110px">Acciones</th>
-                </tr>
-                </tfoot>
               </table>
             </div>
             <!-- /.box-body -->

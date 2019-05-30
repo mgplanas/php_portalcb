@@ -54,7 +54,7 @@
         </span>
       </a>
       <ul class="treeview-menu">
-        <li><a href="cdc_dashboard.php"><i class="fa fa-pie-chart"></i> Dashboard</a></li>
+        <!-- <li><a href="cdc_dashboard.php"><i class="fa fa-pie-chart"></i> Dashboard</a></li> -->
         <li><a href="cdc_organismo.php"><i class="fa fa-building"></i> Organismos</a></li>
         <li><a href="cdc_cliente.php"><i class="fa fa-user"></i> Clientes</a></li>
         <li class="treeview">
@@ -65,7 +65,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="sdc_housing.php"><i class="fa fa-home"></i> Housing</a></li>
-            <li><a href="sdc_hosting.php"><i class="fa fa-server"></i> Hosting</a></li>
+            <li><a href="sdc_hosting.php"><i class="fa fa-server"></i> Hosting (BETA)</a></li>
           </ul>
         </li>
       </ul>
