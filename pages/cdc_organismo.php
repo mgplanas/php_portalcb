@@ -109,7 +109,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					<h2 class="box-title">Listado de Organismos</h2>
 				</div>
  				<div class="col-sm-6" style="text-align:right;">
-					<button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-building"></i> Nuevo Organismo</button>
+					<button type="button" id="modal-abm-organismo-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-building"></i> Nuevo Organismo</button>
 				</div>
             </div>
 
@@ -148,8 +148,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td align="center">'. $row['sector'].'</td>';
 							echo '
 							<td align="center">
-							<a href="edit_activo.php?nik='.$row['id_activo'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-							</td>
+              <a 
+                data-id="' . $row['id'] . '" 
+                data-nombre="' . $row['razon_social'] . '" 
+                data-sigla="' . $row['nombre_corto'] . '" 
+                data-cuit="' . $row['cuit'] . '" 
+                data-sector="' . $row['sector'] . '" 
+                title="Editar Organismo" class="modal-abm-organismo-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+              </td>
 							</tr>
 							';
 						}
@@ -174,6 +180,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- /.box -->
         </div>
         <!-- /.col -->
+        <?php
+            include_once('./modals/cdc_abmorganismo.php');
+        ?>        
       </div>
       <!-- /.row -->
     </section>
@@ -213,7 +222,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
-      
+<script src="./modals/cdc_abmorganismo.js"></script>         
 <script>
   $(function () {
     $('#organizaciones').DataTable({
@@ -241,7 +250,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </script>
 <script>
     window.onload = function() {
-        history.replaceState("", "", "cdc_organizacion.php");
+        history.replaceState("", "", "cdc_organismo.php");
     }
 </script>
 </body>

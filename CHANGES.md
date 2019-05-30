@@ -19,7 +19,12 @@ Gererar portal para consulta de clientes/servicios dc basados en una base access
         N[pages/modals/cdc_abmcliente.php]
         N[pages/modals/cdc_abmcliente.js]
         N[pages/helpers/cdc_abmclientedb.php]
+    - AM Organismos
+        N[pages/modals/cdc_abmorganismo.php]
+        N[pages/modals/cdc_abmorganismo.js]
+        N[pages/helpers/cdc_abmorganismodb.php]
 
+        
 ## FIX-PROD
 - Se crea página para mostrar el calendario anual de los cntroles
     N[cal_controles.php]
