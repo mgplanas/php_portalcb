@@ -117,7 +117,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					<h2 class="box-title">Listado de Clientes</h2>
 				</div>
  				<div class="col-sm-6" style="text-align:right;">
-					<button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-user"></i> Nuevo Cliente</button>
+					<button type="button" id="modal-abm-cliente-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-user"></i> Nuevo Cliente</button>
 				</div>
             </div>
 
@@ -139,7 +139,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT C.id, C.razon_social, O.razon_social as organismo, C.cuit, C.nombre_corto, C.sector, 
+					$query = "SELECT C.id_organismo, C.id, C.razon_social, O.razon_social as organismo, C.cuit, C.nombre_corto, C.sector, 
                     (SELECT COUNT(1) FROM sdc_hosting as HO where HO.id_cliente = C.id) as hosting,
                     (SELECT COUNT(1) FROM sdc_housing as HU where HU.id_cliente = C.id) as housing
                   FROM cdc_cliente as C 
@@ -172,7 +172,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               echo '</td>';
 							echo '
               <td align="center">
-							<a href="edit_activo.php?nik='.$row['id_activo'].'" title="Editar datos" class="btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+              <a 
+                data-id="' . $row['id'] . '" 
+                data-nombre="' . $row['razon_social'] . '" 
+                data-sigla="' . $row['nombre_corto'] . '" 
+                data-cuit="' . $row['cuit'] . '" 
+                data-organismo="' . $row['id_organismo'] . '" 
+                data-sector="' . $row['sector'] . '" 
+                title="Editar Cliente" class="modal-abm-cliente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
 							</td>
 							</tr>
 							';
@@ -192,6 +199,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <?php
             include_once('./modals/sdc_housing_view.php');
             include_once('./modals/sdc_hosting_view.php');
+            include_once('./modals/cdc_abmcliente.php');
         ?>
         <!-- FIN Housing -->        
       </div>
@@ -235,6 +243,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
 <script src="./modals/sdc_housing_view.js"></script>      
 <script src="./modals/sdc_hosting_view.js"></script>      
+<script src="./modals/cdc_abmcliente.js"></script>      
 <script>
   $(function () {
     $('#clientes').DataTable({

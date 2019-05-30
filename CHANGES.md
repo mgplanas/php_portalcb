@@ -11,6 +11,14 @@ Gererar portal para consulta de clientes/servicios dc basados en una base access
         N[pages/cdc_organismo.php]
         N[pages/sdc_housing.php]
         N[pages/sdc_hosting.php]
+    - Se crean los modales para vicualización de servicios de housing/hosting
+        N[pages/modals/*.js]
+        N[pages/modals/*.php]
+        N[pages/helpers/*.php]
+    - AM Clientes
+        N[pages/modals/cdc_abmcliente.php]
+        N[pages/modals/cdc_abmcliente.js]
+        N[pages/helpers/cdc_abmclientedb.php]
 
 ## FIX-PROD
 - Se crea página para mostrar el calendario anual de los cntroles
