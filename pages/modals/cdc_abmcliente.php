@@ -19,6 +19,7 @@
                         <select name="organismo" class="form-control" id='modal-abm-cliente-organismo'>
                             <?php
                             $organismos = mysqli_query($con, "SELECT * FROM cdc_organismo WHERE borrado = 0");
+                            echo "<option value=0>Ninguno</option>";
                             while($rowper = mysqli_fetch_assoc($organismos)){
                                 echo "<option value=". $rowper['id'] . ">" . $rowper['razon_social'] . "</option>";
                             }

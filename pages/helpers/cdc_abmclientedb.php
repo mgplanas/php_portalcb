@@ -4,7 +4,7 @@
     $op = $_POST['operacion'];
 
     $id = $_POST['id'];
-    $id_organismo = $_POST['id_organismo'];
+    $id_organismo = ($_POST['id_organismo'] > 0 ? $_POST['id_organismo']: '');
     $razon_social = $_POST['razon_social'];
     $nombre_corto = $_POST['nombre_corto'];
     $cuit = $_POST['cuit'];
