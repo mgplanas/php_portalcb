@@ -1,6 +1,6 @@
 ## RELEASE NOTE FOR REL 0002
 ### Features
-- FEAT-CTL-CAL
+add css y images
 
 ### Pasos
 - Entorno
@@ -10,5 +10,3 @@
 - Cambios en DB                                                                 
 
 - Cambios en src                                                                
-    - N[cal_controles.php]
-    - M[controles.php]
