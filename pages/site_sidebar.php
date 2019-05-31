@@ -65,7 +65,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="sdc_housing.php"><i class="fa fa-home"></i> Housing</a></li>
-            <li><a href="sdc_hosting.php"><i class="fa fa-server"></i> Hosting (BETA)</a></li>
+            <li><a href="sdc_hosting.php"><i class="fa fa-server"></i> Hosting</a></li>
           </ul>
         </li>
       </ul>
