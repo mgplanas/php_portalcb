@@ -1,6 +1,6 @@
 ## RELEASE NOTE FOR REL 0002
 ### Features
-add css y images
+FEAT-MEJORAS
 
 ### Pasos
 - Entorno
@@ -10,3 +10,5 @@ add css y images
 - Cambios en DB                                                                 
 
 - Cambios en src                                                                
+    add js/colvis.js
+    add css y images

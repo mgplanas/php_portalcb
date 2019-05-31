@@ -78,6 +78,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
+
 <!-- daterange picker -->
   <link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker/daterangepicker.css">
   <!-- bootstrap datepicker -->
@@ -609,7 +611,7 @@ desired effect
 		</div><!-- /.modal -->	
 		
 			<div class="box-body">
-              <table id="mejoras" class="table table-bordered table-hover">
+              <table id="mejoras" class="display" width="100%">
                 <thead>
                 <tr>
                   <th width="1">Ver</th>
@@ -726,7 +728,7 @@ desired effect
 							;
 							echo '
 							<td align="center">
-							<a href="edit_mejora.php?nik='.$row['id_mejora'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+							<a href="edit_mejora.php?nik='.$row['id_mejora'].'&ref='.$no.'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
 							<a href="mejoras.php?aksi=delete&nik='.$row['id_mejora'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['descripcion'].'?\')" class="btn btn-danger btn-sm ';
                             if ($rq_sec['edicion']=='0'){
                                     echo 'disabled';
@@ -887,10 +889,9 @@ desired effect
       'pageLength': 20,
       'lengthChange': false,
       'searching'   : true,
-      'ordering'    : false,
-      'info'        : true,
+      'ordering'    : true,
       'autoWidth'   : true,
-      'dom'         : 'frtipB',
+      'dom'         : 'frtpB',
       'buttons'     : [{
                   extend: 'pdfHtml5',
                   orientation: 'landscape',
@@ -900,7 +901,8 @@ desired effect
                       {
             extend: 'excel',
             text: 'Excel',
-            }]
+            },
+            'colvis']
     })
   })
 </script>
@@ -952,6 +954,47 @@ $(function(){
 	$("#ver-itemDialog").modal("show");
 	
   });
+
+
+  var table = $('#mejoras').DataTable();
+  $('#mejoras thead tr').clone(true).appendTo( '#mejoras thead' );
+  $('#mejoras thead tr:eq(1) th').each( function (colIdx) {
+      $(this).removeClass('sorting');
+      var table = $('#mejoras').DataTable();
+
+      // Si son las columnas de filtro creo el ddl
+      if (colIdx == 3 || colIdx == 4 || colIdx == 5) {
+          var select = $('<select style="width: 100%;"><option value=""></option></select>')
+          .on( 'change', function () {
+              table
+                  .column( colIdx )
+                  .search( $(this).val() )
+                  .draw();
+          } )
+          .on( 'click' , function(){return false;} )
+          // .wrap( "<div></div>" );             // VER
+          // Get the search data for the first column and add to the select list
+          table
+              .column( colIdx )
+              .cache( 'search' )
+              .sort()
+              .unique()
+              .each( function ( d ) {
+                  select.append( $('<option value="'+d+'">'+d+'</option>') );
+              });
+          
+          var filterhtml = select.parent().prop('outerHTML');
+          $(this).html(select);
+          // $(this).html(filterhtml);
+
+      }
+      else {
+          $(this).html("");
+      }
+
+    } );
+
+
 });
 </script>
 

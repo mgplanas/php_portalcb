@@ -1,3 +1,15 @@
+## FEAT-MEJORAS
+### Cambios menores.
+*Fecha:* 2019-05-31
+*Cambios:*
+    - Pongo número de referencia en el título en vez del id
+        M[mejoras.php]
+        M[edit_mejora.php]
+    - Cambio L&F datatable, agrego ordering
+        M[mejoras.php]
+    -filtro por estado, responsable y tipo
+        M[mejoras.php]
+
 ## FIX-PROD
 - Se crea página para mostrar el calendario anual de los cntroles
     N[cal_controles.php]

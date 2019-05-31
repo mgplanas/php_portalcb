@@ -10,6 +10,7 @@ if (!isset($_SESSION['usuario'])){
 $user=$_SESSION['usuario'];
 
 $nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+$referencia = mysqli_real_escape_string($con,(strip_tags($_GET["ref"],ENT_QUOTES)));
 $sql = mysqli_query($con, "SELECT i.*, p.nombre, p.apellido, o.descripcion as dorig, op.nombre as opn, op.apellido as opa FROM mejora as i 
 						 	  LEFT JOIN persona as p on i.responsable = p.id_persona
                               LEFT JOIN persona as op on i.abierto = op.id_persona
@@ -342,7 +343,7 @@ desired effect
     <section class="content-header">
       <h1>
         Gestión de Mejora Continua
-        <small>Editar >> <?php echo $nik; ?></small>
+        <small>Editar >> <?php echo $referencia; ?></small>
       </h1>
     </section>
     <!-- Main content -->
