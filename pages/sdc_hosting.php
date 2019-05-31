@@ -50,6 +50,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
    <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
@@ -108,15 +109,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<div class="col-sm-6" style="text-align:left">
 					<h2 class="box-title">Listado de Servicios</h2>
 				</div>
- 				<div class="col-sm-6" style="text-align:right;">
+ 				<!-- <div class="col-sm-6" style="text-align:right;">
 					<button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-server"></i> Nuevo Servicio de Hosting</button>
-				</div>
+				</div> -->
             </div>
 
             <!-- /.box-header -->
 	
 			<div class="box-body">
-              <table id="hosting" class="table table-bordered table-hover">
+              <table id="hosting" class="display" width="100%">
                 <thead>
                 <tr>
                     <th>Cliente</th>
@@ -138,54 +139,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <!-- <th width="110px">Acciones</th> -->
                 </tr>
                 </thead>
-                <tbody>
-					<?php
-					$query = "SELECT H.id, H.id_cliente, H.tipo, H.nombre, H.displayName, H.proyecto, H.datacenter, H.fecha, H.hipervisor, H.hostname, H.pool, H.uuid, H.VCPU, H.RAM, H.storage, H.SO , C.razon_social as cliente, O.razon_social as organismo, C.sector
-                    FROM sdc_hosting as H
-                    INNER JOIN cdc_cliente as C ON H.id_cliente = C.id
-                    LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
-                    WHERE H.borrado = 0 "; 
-					
-					$sql = mysqli_query($con, $query);
-
-					if(mysqli_num_rows($sql) == 0){
-						echo '<tr><td colspan="8">No hay datos.</td></tr>';
-					}else{
-						$no = 1;
-						while($row = mysqli_fetch_assoc($sql)){
-							
-							echo '<tr>';
-							echo '<td>'. $row['cliente'].'</td>';
-							echo '<td>'. $row['organismo'].'</td>';
-							echo '<td>'. $row['tipo'].'</td>';
-							echo '<td>'. $row['nombre'].'</td>';
-							echo '<td>'. $row['displayName'].'</td>';
-							echo '<td>'. $row['proyecto'].'</td>';
-							echo '<td>'. $row['fecha'].'</td>';
-							echo '<td>'. $row['hipervisor'].'</td>';
-							echo '<td>'. $row['hostname'].'</td>';
-							echo '<td>'. $row['pool'].'</td>';
-							echo '<td>'. $row['uuid'].'</td>';
-							echo '<td>'. $row['VCPU'].'</td>';
-							echo '<td>'. $row['RAM'].'</td>';
-							echo '<td>'. $row['storage'].'</td>';
-							echo '<td>'. $row['SO'].'</td>';
-							echo '<td>'. $row['datacenter'].'</td>';
-							// echo '
-							// <td align="center">
-							// <a href="edit_activo.php?nik='.$row['id_activo'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-							// <a href="activos.php?aksi=delete&nik='.$row['id_activo'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
-              //               if ($rq_sec['edicion']=='0'){
-              //                       echo 'disabled';
-              //               }
-              //               echo '"><i class="glyphicon glyphicon-trash"></i></a>
-							// </td>
-							// </tr>
-							// ';
-						}
-					}
-					?>
-                </tbody>
               </table>
             </div>
             <!-- /.box-body -->
@@ -219,7 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- DataTables -->
 <script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- <script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
 <!-- SlimScroll -->
 <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -237,35 +190,71 @@ scratch. This page gets rid of all links and provides the needed markup only.
       
 <script>
   $(function () {
+
+    let strquery = 'SELECT H.id, H.id_cliente, H.tipo, H.nombre, H.displayName, H.proyecto, H.datacenter, DATE_FORMAT(H.fecha, "%Y-%m-%d") as fecha, H.hipervisor, H.hostname, H.pool, H.uuid, H.VCPU, H.RAM, H.storage, H.SO , C.razon_social as cliente, O.razon_social as organismo, C.sector ';
+    strquery += 'FROM sdc_hosting as H ';
+    strquery += 'INNER JOIN cdc_cliente as C ON H.id_cliente = C.id ';
+    strquery += 'LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id ';
+    strquery += 'WHERE H.borrado = 0 ';
+
+    // REcreo la tabla
     $('#hosting').DataTable({
-        'paging'      : true,
-        'deferRender' : true,
-        'pageLength'  : 20,
-        'lengthChange': false,
-        'searching'   : true,
-        'ordering'    : true,
-        'info'        : true,
-        'autoWidth'   : true,
-        'scrollX'     : true,
-        'dom'         : 'frtipB',
-        'buttons'     : [{
-                    extend: 'pdfHtml5',
-                    orientation: 'landscape',
-                    pageSize: 'A4',
+        "scrollY": 400,
+        "scrollX": true,
+        "paging": false,
+        "deferRender": true,
+        "ajax": {
+            type: 'POST',
+            url: './helpers/getAsyncDataFromDB.php',
+            data: { query: strquery },
+        },
+        "dataSrc": function(json) {
+            console.log(json);
+        },
+        "columns": [
+            { "data": "cliente" },
+            { "data": "organismo" },
+            { "data": "tipo" },
+            { "data": "nombre" },
+            { "data": "displayName" },
+            { "data": "proyecto" },
+            { "data": "fecha" },
+            { "data": "hipervisor" },
+            { "data": "hostname" },
+            { "data": "pool" },
+            { "data": "uuid" },
+            { "data": "VCPU" },
+            { "data": "RAM" },
+            { "data": "storage" },
+            { "data": "SO" },
+            { "data": "datacenter" }
+        ]
+    });
+
+  //   $('#hosting').DataTable({
+  //       'paging'      : true,
+  //       'deferRender' : true,
+  //       'pageLength'  : 20,
+  //       'lengthChange': false,
+  //       'searching'   : true,
+  //       'ordering'    : true,
+  //       'info'        : true,
+  //       'autoWidth'   : true,
+  //       'scrollX'     : true,
+  //       'dom'         : 'frtipB',
+  //       'buttons'     : [{
+  //                   extend: 'pdfHtml5',
+  //                   orientation: 'landscape',
+  //                   pageSize: 'A4',
                             
-                        },
-                        {
-            extend: 'excel',
-            text: 'Excel',
-            }]
+  //                       },
+  //                       {
+  //           extend: 'excel',
+  //           text: 'Excel',
+  //           }]
             
-    })
-  })
-</script>
-<script>
-    window.onload = function() {
-        history.replaceState("", "", "sdc_housing.php");
-    }
+  //   })
+  });
 </script>
 </body>
 </html>
