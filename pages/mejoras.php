@@ -901,8 +901,7 @@ desired effect
                       {
             extend: 'excel',
             text: 'Excel',
-            },
-            'colvis']
+            }]
     })
   })
 </script>
