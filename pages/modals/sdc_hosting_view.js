@@ -2,17 +2,10 @@ $(function() {
 
 
     let tbHosting = $('#hosting');
-    let tbHostingDT = tbHosting.DataTable({
-        'paging': false,
-        'searching': true,
-        'lengthChange': false,
 
-        "scrollY": 300
-    });
     // ==============================================================
     // EVENTOS
     // ==============================================================
-    // SELECCION GERENCIA
     $('.modal-abm-hosting-view').click(function() {
         //Extraigo el id de la data del botón
         let idcliente = $(this).data('id');
@@ -23,22 +16,50 @@ $(function() {
         $('#modal-abm-hosting-title').html(texto + tipo + sector);
         $('#modal-abm-hosting-submit').hide();
 
-        // Busco los servicios
-        $.ajax({
-            type: 'POST',
-            url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT id, nombre, displayName, proyecto, datacenter, DATE_FORMAT(fecha, "%Y-%m-%d") as fecha, hipervisor, hostname, pool, uuid, VCPU, RAM, ROUND(storage,3) as storage, SO FROM sdc_hosting WHERE id_cliente = ' + idcliente },
-            dataType: 'json',
-            success: function(json) {
-                myJsonData = json;
-                populateDataTable(myJsonData, tbHosting);
-                $("#modal-abm-hosting").modal("show");
-                tbHostingDT.columns.adjust().draw();
+        // REcreo la tabla
+        tbHosting.DataTable({
+            "ajax": {
+                type: 'POST',
+                url: './helpers/getAsyncDataFromDB.php',
+                data: { query: 'SELECT id, nombre, displayName, proyecto, datacenter, DATE_FORMAT(fecha, "%Y-%m-%d") as fecha, hipervisor, hostname, pool, uuid, VCPU, RAM, ROUND(storage,3) as storage, SO FROM sdc_hosting WHERE id_cliente = ' + idcliente },
+                // data: { query: 'SELECT 1 as id, "Mariano" as name, "papa" as position FROM sdc_hosting WHERE id_cliente = ' + 21 },
+
             },
-            error: function(xhr, status, error) {
-                alert(xhr.responseText, error);
-            }
+            "dataSrc": function(json) {
+                console.log(json);
+            },
+            "columns": [
+                { "data": "nombre" },
+                { "data": "displayName" },
+                { "data": "proyecto" },
+                { "data": "fecha" },
+                { "data": "hipervisor" },
+                { "data": "hostname" },
+                { "data": "pool" },
+                { "data": "uuid" },
+                { "data": "VCPU" },
+                { "data": "RAM" },
+                { "data": "storage" },
+                { "data": "SO" }
+            ]
         });
+
+        $("#modal-abm-hosting").modal("show");
+        // $.ajax({
+        //     type: 'POST',
+        //     url: './helpers/getAsyncDataFromDB.php',
+        //     data: { query: 'SELECT id, nombre, displayName, proyecto, datacenter, DATE_FORMAT(fecha, "%Y-%m-%d") as fecha, hipervisor, hostname, pool, uuid, VCPU, RAM, ROUND(storage,3) as storage, SO FROM sdc_hosting WHERE id_cliente = ' + idcliente },
+        //     dataType: 'json',
+        //     success: function(json) {
+        //         myJsonData = json;
+        //         populateDataTable(myJsonData, tbHosting);
+        //         $("#modal-abm-hosting").modal("show");
+        //         tbHostingDT.columns.adjust().draw();
+        //     },
+        //     error: function(xhr, status, error) {
+        //         alert(xhr.responseText, error);
+        //     }
+        // });
         // Busco datos indicadores storage
         $.ajax({
             type: 'POST',
@@ -66,7 +87,7 @@ $(function() {
     }
 
     function modalAbmHostingLimpiarCampos() {
-        tbHostingDT.clear().draw();
+        tbHosting.DataTable().clear().destroy();
         $('#modal-abm-hosting-id').val(0);
         $('#modal-abm-hosting-id-cliente').val(0);
         $('#modal-abm-hosting-qram').val(0);
