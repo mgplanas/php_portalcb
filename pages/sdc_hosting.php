@@ -201,7 +201,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     $('#hosting').DataTable({
         "scrollY": 400,
         "scrollX": true,
-        "paging": false,
+        "paging": true,
         "deferRender": true,
         "ajax": {
             type: 'POST',
