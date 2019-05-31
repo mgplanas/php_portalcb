@@ -817,6 +817,7 @@ desired effect
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
+<script src="../bower_components/datatables.net/js/buttons.colVis.min.js"></script>
       
 <script type="text/javascript">
   $(function () {
