@@ -109,7 +109,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					<h2 class="box-title">Listado de Servicios</h2>
 				</div>
  				<div class="col-sm-6" style="text-align:right;">
-					<button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-home"></i> Nuevo Servicio de Housing</button>
+					<button type="button" id="modal-abm-housing-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-home"></i> Nuevo Servicio de Housing</button>
 				</div>
             </div>
 
@@ -126,7 +126,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Fila</th>
                     <th>Rack</th>
                     <th>Observaciones</th>
-                    <!-- <th width="110px">Acciones</th> -->
+                    <th>Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -153,17 +153,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td align="center">'. $row['fila'].'</td>';
 							echo '<td align="center">'. $row['rack'].'</td>';
 							echo '<td align="center">'. $row['observaciones'].'</td>';
-							// echo '
-							// <td align="center">
-							// <a href="edit_activo.php?nik='.$row['id_activo'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-							// <a href="activos.php?aksi=delete&nik='.$row['id_activo'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
-              //               if ($rq_sec['edicion']=='0'){
-              //                       echo 'disabled';
-              //               }
-              //               echo '"><i class="glyphicon glyphicon-trash"></i></a>
-							// </td>
-							// </tr>
-							// ';
+              echo '
+              <td align="center">
+              <a 
+                data-id="' . $row['id'] . '" 
+                data-m2="' . $row['m2'] . '" 
+                data-sala="' . $row['sala'] . '" 
+                data-fila="' . $row['fila'] . '" 
+                data-rack="' . $row['rack'] . '" 
+                data-observaciones="' . $row['observaciones'] . '" 
+                data-cliente="' . $row['id_cliente'] . '" 
+                title="Editar Servicio" class="modal-abm-housing-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+              </td>
+              </tr>';
 						}
 					}
 					?>
@@ -177,6 +179,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- /.box -->
         </div>
         <!-- /.col -->
+        <?php
+            include_once('./modals/sdc_abmhousing.php');
+        ?>        
       </div>
       <!-- /.row -->
     </section>
@@ -216,6 +221,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
+<script src="./modals/sdc_abmhousing.js"></script>
       
 <script>
   $(function () {

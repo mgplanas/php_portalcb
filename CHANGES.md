@@ -23,6 +23,11 @@ Gererar portal para consulta de clientes/servicios dc basados en una base access
         N[pages/modals/cdc_abmorganismo.php]
         N[pages/modals/cdc_abmorganismo.js]
         N[pages/helpers/cdc_abmorganismodb.php]
+    - AM Servicio de Housing
+        N[pages/modals/sdc_abmhousing.php]
+        N[pages/modals/sdc_abmhousing.js]
+        N[pages/helpers/sdc_abmhousingdb.php]
+
 
         
 ## FIX-PROD
