@@ -615,147 +615,136 @@ desired effect
                 <thead>
                 <tr>
                   <th width="1">Ver</th>
-				  <th width="2">Nro</th>
+				          <th width="2">Nro</th>
                   <th width="120">Origen</th>
                   <th>Estado</th>
                   <th>Responsable</th>
-				  <th>Tipo</th>
+				          <th>Tipo</th>
                   <th>Esfuerzo</th>
                   <th>% Avance</th>
                   <th>Descripcion</th>
+                  
+                  <th>Abierto</th>
+                  <th>Fecha Apertura</th>
+                  <th>Fecha Cierre</th>
+                  <th>Fecha Implementacion</th>
+                  <th>Causa</th>
+                  <th>Plan</th>
+                  <th>Eficacia</th>
+                  <th>Evidencia</th>
+
                   <th width="110px">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
-					<?php
-					$query = "SELECT i.*, p.nombre, p.apellido, o.descripcion as dorig, op.nombre as opn, op.apellido as opa FROM mejora as i 
-						 	  LEFT JOIN persona as p on i.responsable = p.id_persona
-                              LEFT JOIN persona as op on i.abierto = op.id_persona
-                              LEFT JOIN origen as o on i.origen = o.id_origen
-							  WHERE i.borrado='0' ORDER BY i.id_mejora ASC";
-					
-					$sql = mysqli_query($con, $query);
+					      <?php
+                $query = "SELECT i.*, p.nombre, p.apellido, o.descripcion as dorig, op.nombre as opn, op.apellido as opa FROM mejora as i 
+                                    LEFT JOIN persona as p on i.responsable = p.id_persona
+                                    LEFT JOIN persona as op on i.abierto = op.id_persona
+                                    LEFT JOIN origen as o on i.origen = o.id_origen
+                          WHERE i.borrado='0' ORDER BY i.id_mejora ASC";
+                $sql = mysqli_query($con, $query);
 
-					if(mysqli_num_rows($sql) == 0){
-						echo '<tr><td colspan="8">No hay datos.</td></tr>';
-					}else{
-						$no = 1;
-						while($row = mysqli_fetch_assoc($sql)){
-							
-							echo '
-							<tr>
-							<td>
-							<a data-id="'.$row['id_mejora'].'" 
-								data-origen="'.$row['dorig'].'"
-								data-tipo="'.$row['tipo'].'"
-								data-estado="'.$row['estado'].'"
-								data-responsable="'.$row['apellido'].' '.$row['nombre'].'"
-                                data-abierto="'.$row['opa'].' '.$row['opn'].'"
-								data-apertura="'.$row['apertura'].'"
-								data-cierre="'.$row['cierre'].'"
-								data-abierto="'.$row['abierto'].'"
-								data-esfuerzo="'.$row['esfuerzo'].'"
-                                data-costo="'.$row['costo'].'"
-                                data-implementacion="'.$row['implementacion'].'"
-                                data-descripcion="'.$row['descripcion'].'"
-                                data-causa="'.$row['causa'].'"
-                                data-plan="'.$row['plan'].'"
-                                data-eficacia="'.$row['eficacia'].'"
-                                data-evidencia="'.$row['evidencia'].'"
-							    title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
-							</td>';
-							echo '
-							
-							
-							<td align="center">'.$no.'</td>';
+                if(mysqli_num_rows($sql) == 0){
+                  echo '<tr><td colspan="8">No hay datos.</td></tr>';
+                }else{
+                  $no = 1;
+                  while($row = mysqli_fetch_assoc($sql)){
+                    echo '<tr>';
 
+                    echo '<td>
+                    <a data-id="'.$row['id_mejora'].'" 
+                      data-origen="'.$row['dorig'].'"
+                      data-tipo="'.$row['tipo'].'"
+                      data-estado="'.$row['estado'].'"
+                      data-responsable="'.$row['apellido'].' '.$row['nombre'].'"
+                      data-abierto="'.$row['opa'].' '.$row['opn'].'"
+                      data-apertura="'.$row['apertura'].'"
+                      data-cierre="'.$row['cierre'].'"
+                      data-abierto="'.$row['abierto'].'"
+                      data-esfuerzo="'.$row['esfuerzo'].'"
+                      data-costo="'.$row['costo'].'"
+                      data-implementacion="'.$row['implementacion'].'"
+                      data-descripcion="'.$row['descripcion'].'"
+                      data-causa="'.$row['causa'].'"
+                      data-plan="'.$row['plan'].'"
+                      data-eficacia="'.$row['eficacia'].'"
+                      data-evidencia="'.$row['evidencia'].'"
+                      title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
+                    </td>';
+                    echo '
+                    <td align="center">'.$no.'</td>';
+                    echo '
+                    </td>								
+                    <td>'.$row['dorig'].'</td>
+                    <td>';
+                    if($row['estado'] == '0'){
+                      echo 'Abierto';
+                    }
+                    else {
+                      echo 'Cerrado';
+                    }
+                    echo '
+                    </td>
+                    <td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
+                    
+                    if($row['tipo'] == '1'){
+                      echo '<td>NC-No Conformidad sin AC</td>';
+                    }
+                    else if ($row['tipo'] == '2' ){
+                      echo '<td>AC-Acción Correctiva</td>';
+                    }
+                    else if ($row['tipo'] == '3' ){
+                      echo '<td>AM-Acción Mejora</td>';
+                    }
+                                  
+                    if($row['esfuerzo'] == '0'){
+                      echo '<td><span class="label label-default">TBD</span></td>';
+                    }
+                    else if ($row['esfuerzo'] == '1' ){
+                      echo '<td><span class="label label-success">Muy Bajo</span></td>';
+                    }
+                                  else if ($row['esfuerzo'] == '2' ){
+                      echo '<td><span class="label label-warning">Moderado</span></td>';
+                    }
+                    else if ($row['esfuerzo'] == '3' ){
+                      echo '<td><span class="label label-danger">Muy Alto</span></td>';
+                    }
+                                  
+                    if($row['costo'] == '0'){
+                      echo '<td>TBD</td>';
+                    }
+                    else {
+                      echo '<td>'.$row['costo'].'</td>';
+                    }
+                    echo '<td>'.$row['descripcion'].'</td>';
 
-							echo '
-							
-							</td>								
-						
-							<td>'.$row['dorig'].'</td>
-							
-							<td>';
-							if($row['estado'] == '0'){
-								echo 'Abierto';
-							}
-							else {
-								echo 'Cerrado';
-							}
-							echo '
-							</td>
-							<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
-							
-							
-							if($row['tipo'] == '1'){
-								echo '<td>NC-No Conformidad sin AC</td>';
-							}
-							else if ($row['tipo'] == '2' ){
-								echo '<td>AC-Acción Correctiva</td>';
-							}
-							else if ($row['tipo'] == '3' ){
-								echo '<td>AM-Acción Mejora</td>';
-							}
-                            
-                            if($row['esfuerzo'] == '0'){
-								echo '<td><span class="label label-default">TBD</span></td>';
-							}
-							else if ($row['esfuerzo'] == '1' ){
-								echo '<td><span class="label label-success">Muy Bajo</span></td>';
-							}
-                            else if ($row['esfuerzo'] == '2' ){
-								echo '<td><span class="label label-warning">Moderado</span></td>';
-							}
-							else if ($row['esfuerzo'] == '3' ){
-								echo '<td><span class="label label-danger">Muy Alto</span></td>';
-							}
-                            
-                            if($row['costo'] == '0'){
-								echo '<td>TBD</td>';
-							}
-							else {
-								echo '<td>'.$row['costo'].'</td>';
-							}
-                            echo '
-							
-							</td>								
-						
-							<td>'.$row['descripcion'].'</td>
-							
-							';
-							 
-							;
-							echo '
-							<td align="center">
-							<a href="edit_mejora.php?nik='.$row['id_mejora'].'&ref='.$no.'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-							<a href="mejoras.php?aksi=delete&nik='.$row['id_mejora'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['descripcion'].'?\')" class="btn btn-danger btn-sm ';
-                            if ($rq_sec['edicion']=='0'){
-                                    echo 'disabled';
-                            }
-                            echo '"><i class="glyphicon glyphicon-trash"></i></a>
-							</td>
-							</tr>
-							';
-							$no++;
-						}
-					}
-					?>
+                    // OCULTOS
+                    echo '<td>'.$row['opa'].' '.$row['opn'].'</td>';
+                    echo '<td>'.$row['apertura'].'</td>';
+                    echo '<td>'.$row['cierre'].'</td>';
+                    echo '<td>'.$row['implementacion'].'</td>';
+                    echo '<td>'.$row['causa'].'</td>';
+                    echo '<td>'.$row['plan'].'</td>';
+                    echo '<td>'.$row['eficacia'].'</td>';
+                    echo '<td>'.$row['evidencia'].'</td>';                    
+                    
+                    echo '
+                    <td align="center">
+                    <a href="edit_mejora.php?nik='.$row['id_mejora'].'&ref='.$no.'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                    <a href="mejoras.php?aksi=delete&nik='.$row['id_mejora'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['descripcion'].'?\')" class="btn btn-danger btn-sm ';
+                                  if ($rq_sec['edicion']=='0'){
+                                          echo 'disabled';
+                                  }
+                                  echo '"><i class="glyphicon glyphicon-trash"></i></a>
+                    </td>
+                    </tr>
+                    ';
+                    $no++;
+                  }
+                }
+                ?>
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th width="1">Ver</th>
-				  <th width="2">Nro</th>
-                  <th width="120">Origen</th>
-                  <th>Estado</th>
-                  <th>Responsable</th>
-				  <th>Tipo</th>
-                  <th>Esfuerzo</th>
-                  <th>% Avance</th>
-                  <th>Descripcion</th>
-                  <th width="110px">Acciones</th>
-                </tr>
-                </tfoot>
               </table>
             </div>
             <!-- /.box-body -->
@@ -901,7 +890,13 @@ desired effect
                       {
             extend: 'excel',
             text: 'Excel',
-            }]
+            }],
+      'columnDefs': [
+      {
+          'targets': [ 9,10,11,12,13,14,15,16 ],
+          'visible': false
+      }
+  ]
     })
   })
 </script>
@@ -955,7 +950,7 @@ $(function(){
   });
 
 
-  var table = $('#mejoras').DataTable();
+  let table = $('#mejoras').DataTable();
   $('#mejoras thead tr').clone(true).appendTo( '#mejoras thead' );
   $('#mejoras thead tr:eq(1) th').each( function (colIdx) {
       $(this).removeClass('sorting');

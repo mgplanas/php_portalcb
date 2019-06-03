@@ -9,6 +9,8 @@
         M[mejoras.php]
     -filtro por estado, responsable y tipo
         M[mejoras.php]
+    -agrego demás campos en la grilla (ocultos) para que se puedan exportar
+        M[mejoras.php]
 
 ## FIX-PROD
 - Se crea página para mostrar el calendario anual de los cntroles

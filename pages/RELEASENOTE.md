@@ -1,4 +1,4 @@
-## RELEASE NOTE FOR REL 0002
+## RELEASE NOTE FOR REL 0004
 ### Features
 FEAT-MEJORAS
 
@@ -10,5 +10,6 @@ FEAT-MEJORAS
 - Cambios en DB                                                                 
 
 - Cambios en src                                                                
-    add js/colvis.js
     add css y images
+    M[edit_mejora.php]
+    M[mejoras.php]
