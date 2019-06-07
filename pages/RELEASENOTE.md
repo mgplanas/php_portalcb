@@ -10,7 +10,7 @@
 - BackUp DB                                                                     
 - Backup /pages                                                                 
 - Cambios en DB       
-    - crear tablas: cdc_cliente, cdc_organizacion, sdc_housing, sdc_hosting                                    
+    - crear tablas: cdc_cliente, cdc_organizacion, sdc_housing, sdc_hosting, sdc_hosting_temp
     - migrar datos
 
 - Cambios en src  

@@ -106,12 +106,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-				<div class="col-sm-6" style="text-align:left">
-					<h2 class="box-title">Listado de Servicios</h2>
-				</div>
- 				<!-- <div class="col-sm-6" style="text-align:right;">
-					<button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-server"></i> Nuevo Servicio de Hosting</button>
-				</div> -->
+              <div class="col-sm-6" style="text-align:left">
+                <h2 class="box-title">Listado de Servicios</h2>
+              </div>
+              <div class="col-sm-6" style="text-align:right;">
+                <button type="button" id="modal-import-hosting-btn-import" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-upload"></i> Importar Servicios</button>
+              </div>
             </div>
 
             <!-- /.box-header -->
@@ -148,6 +148,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- /.box -->
         </div>
         <!-- /.col -->
+        <?php
+            include_once('./modals/sdc_importhosting.php');
+        ?>        
       </div>
       <!-- /.row -->
     </section>
@@ -187,6 +190,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
+<script src="./modals/sdc_importhosting.js"></script>
       
 <script>
   $(function () {
