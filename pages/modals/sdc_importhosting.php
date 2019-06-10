@@ -17,10 +17,12 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 <input id="modal-import-hosting-file" type="file" accept=".csv" name="image" />
+                                <input id="modal-import-hosting-heading" type="checkbox" name="heading"> El archivo posee encabezado
+                                
                                 <p class="help-block">El archivo debe ser ingresado en formato CSV.</p>
                             </div>
                             <div class="form-group">
-                                <button type="button" class="btn btn-primary pull-right" data-loading-text='<i class="fa fa-spinner fa-spin"></i> Processing Order' id="modal-import-hosting-submit">Upload</button>
+                                <button type="button" class="btn btn-primary pull-right" data-loading-text='<i class="fa fa-spinner fa-spin"></i> Procesando' id="modal-import-hosting-submit">Upload</button>
                             </div>
                         </div>
                     </div>

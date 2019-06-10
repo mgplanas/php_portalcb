@@ -2,7 +2,8 @@
     include("../../conexion.php");
     
     $valid_extensions = array('csv'); // valid extensions
-    
+    $hasHeading = $_POST['hasHeading'];
+
     $result = new stdClass();
     $result->ok = false;
 
@@ -36,13 +37,17 @@
                     while (($getData = fgetcsv($file, 10000, ";")) !== FALSE)
                     {
                         $counter++;
-                        $sql = 'INSERT INTO sdc_hosting_temp (`Display Name`, Nombre, Tipo, id_cliente, id_subcliente, Proyecto, Datacenter, Fecha, Hipervisor, Hostname, Pool, uuid, VCPU, RAM, Storage, `Sistema Operativo`) 
-                            VALUES ("'. $getData[0] .'", "'. $getData[1] .'", "'. $getData[2] .'", "'. $getData[3] .'", "'. $getData[4] .'", "'. $getData[5] .'", "'. $getData[6] .'", "'. $getData[7] .'", "'. $getData[8] .'", "'. $getData[9] .'", "'. $getData[10] .'", "'. $getData[11] .'", "'. $getData[12] .'", "'. $getData[13] .'", "'. $getData[14] .'", "'. $getData[15] .'");';
 
-                        $sqlRes = mysqli_query($con, $sql);
-                        
-                        if(!isset($sqlRes)){
-                            $result->error = mysqli_error($con); 
+                        if (!$hasHeading OR ($hasHeading && $counter > 1)) {
+                            
+                            $sql = 'INSERT INTO sdc_hosting_temp (`Display Name`, Nombre, Tipo, id_cliente, id_subcliente, Proyecto, Datacenter, Fecha, Hipervisor, Hostname, Pool, uuid, VCPU, RAM, Storage, `Sistema Operativo`) 
+                                VALUES ("'. $getData[0] .'", "'. $getData[1] .'", "'. $getData[2] .'", "'. $getData[3] .'", "'. $getData[4] .'", "'. $getData[5] .'", "'. $getData[6] .'", "'. $getData[7] .'", "'. $getData[8] .'", "'. $getData[9] .'", "'. $getData[10] .'", "'. $getData[11] .'", "'. $getData[12] .'", "'. $getData[13] .'", "'. $getData[14] .'", "'. $getData[15] .'");';
+    
+                            $sqlRes = mysqli_query($con, $sql);
+                            
+                            if(!isset($sqlRes)){
+                                $result->error = mysqli_error($con); 
+                            }
                         }
                     }
 
@@ -103,7 +108,77 @@
         else { $result->error = 'invalid'; }
     }
     else if ($_POST['op'] == 'APPLY') {
+
+        $result->state = 'ACTUALIZACION DE REGISTROS IMPORTADOS';
+        // cruzo los datos importados con los reales.
+        $sql = 'UPDATE sdc_hosting AS S
+                INNER JOIN sdc_hosting_temp AS T ON T.uuid = S.uuid
+                INNER JOIN cdc_cliente AS C ON T.id_cliente = C.cuit
+                SET 
+                S.fecha = T.Fecha,
+                S.VCPU = T.VCPU,
+                S.RAM = T.RAM,
+                S.storage = T.Storage,
+                S.id_cliente = C.id,
+                S.tipo = T.Tipo,
+                S.nombre = T.Nombre,
+                S.displayName = T.`Display Name`,
+                S.proyecto = T.Proyecto,
+                S.datacenter = T.Datacenter,
+                S.hipervisor = T.Hipervisor,
+                S.hostname = T.Hostname,
+                S.pool = T.Pool,
+                S.SO = T.`Sistema Operativo`';  
+        $sqlRes = mysqli_query($con, $sql);
+        if(!isset($sqlRes)){
+            $result->error = mysqli_error($con); 
+            return;
+        }
         
+
+        $result->state = 'INGRESO DE NUEVOS DE REGISTROS IMPORTADOS';
+        // cruzo los datos importados con los reales.
+        $sql = 'INSERT INTO sdc_hosting (
+                fecha,
+                VCPU,
+                RAM,
+                storage,
+                id_cliente,
+                tipo,
+                nombre,
+                displayName,
+                proyecto,
+                datacenter,
+                hipervisor,
+                hostname,
+                pool,
+                uuid,
+                SO
+                )
+                SELECT  T.Fecha,
+                        T.VCPU,
+                        T.RAM,
+                        T.Storage,
+                        C.id,
+                        T.Tipo,
+                        T.Nombre,
+                        T.`Display Name`,
+                        T.Proyecto,
+                        T.Datacenter,
+                        T.Hipervisor,
+                        T.Hostname,
+                        T.Pool,
+                        T.uuid,
+                        T.`Sistema Operativo`
+                        FROM sdc_hosting_temp AS T
+                        INNER JOIN cdc_cliente AS C ON T.id_cliente = C.cuit 
+                        WHERE T.uuid NOT IN (SELECT S.uuid FROM sdc_hosting AS S)';
+        $sqlRes = mysqli_query($con, $sql);
+        if(!isset($sqlRes)){
+            $result->error = mysqli_error($con); 
+            return;
+        }
+        $result->ok = true;
     }
     echo json_encode($result);
         
