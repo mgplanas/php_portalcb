@@ -22,6 +22,9 @@ $(function() {
     // ejecución de guardado async
     $('#modal-import-hosting-submit').click(function(e) {
         e.preventDefault();
+
+        $("#modal-import-hosting-status-body").empty();
+
         var btn = $(this);
         var formData = new FormData(this);
         var inputFile = $("#modal-import-hosting-file")[0];
@@ -36,17 +39,27 @@ $(function() {
             contentType: false,
             cache: false,
             processData: false,
+            dataType: 'json',
             success: function(data) {
                 btn.button('reset');
                 if (!data.ok) {
-                    $("#err").html(data.error).fadeIn();
+                    $("#modal-import-hosting-status-body")
+                        .append('<p>- Registros con campos de clientes vacíos: ' + data.tot_emptyClients + '</p>')
+                        .append('<p>- Registros con clientes nuevos: ' + data.tot_newClients + '</p>')
+                        .append('<p>Se debe solucionar todos los inconvenientes reportados antes de continuar la importación</p>');
                 } else {
+                    if (confirm('Se actualizarán ' + data.tot_toBeUpdated + ' registros e insertarán ' + data.tot_toBeInserted + '\n ¿Desea continuar?')) {
+                        alert('ok');
+                    } else {
+                        alert('cancel');
+                    };
                     $("#modal-import-hosting-form")[0].reset();
+                    $("#modal-import-hosting-status-body").empty();
                 }
             },
             error: function(e) {
                 btn.button('reset');
-                $("#err").html(e).fadeIn();
+                $("#modal-import-hosting-status-body").append(data);
             }
         });
     });
@@ -56,6 +69,7 @@ $(function() {
     // ==============================================================
     function modalImportHostingServicesLimpiarCampos() {
         $('#modal-import-hosting-file').val('');
+        $("#modal-import-hosting-status-body").empty();
     }
     // ********************************************************************************************
 

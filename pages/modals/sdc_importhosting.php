@@ -12,18 +12,25 @@
             <div class="box-body">
             <!-- form start -->
                 <form id="modal-import-hosting-form" action="./helpers/sdc_importhosting.php" method="post" enctype="multipart/form-data">
-                
-                    <div class="form-group">
-                        <input id="modal-import-hosting-file" type="file" accept=".csv" name="image" />
-                        <button type="button" class="btn btn-primary" data-loading-text='<i class="fa fa-spinner fa-spin"></i> Processing Order' id="modal-import-hosting-submit">Upload</button>
-
-                        <p class="help-block">El archivo debe ser ingresado en formato CSV.</p>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-8"></div>
-                        <div class="col-sm-2">
-                            <!-- <input type="button" name="AddCliente" class="btn  btn-raised btn-success" value="Guardar" id='modal-import-hosting-submit'> -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Importar Archivo</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <input id="modal-import-hosting-file" type="file" accept=".csv" name="image" />
+                                <p class="help-block">El archivo debe ser ingresado en formato CSV.</p>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary pull-right" data-loading-text='<i class="fa fa-spinner fa-spin"></i> Processing Order' id="modal-import-hosting-submit">Upload</button>
+                            </div>
                         </div>
+                    </div>
+                    <div id="modal-import-hosting-status" class="panel panel-danger">
+                        <div id="modal-import-hosting-status-hd" class="panel-heading">Errores</div>
+                        <div id="modal-import-hosting-status-body" class="panel-body">
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-sm-10"></div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
                         </div>
