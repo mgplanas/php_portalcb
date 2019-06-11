@@ -2,7 +2,11 @@
 ### Metricas propuestas por Lucciani.
 *Fecha:* 2019-06-11
 *Cambios:*
+    - Riesgos abiertos por gerencia y nivel 
+        M[met_riesgos.php] 
     - Riesgos abiertos por gerencia y nivel  
+        M[met_riesgos.php]
+    - Riesgo: Calendario de riesgos por gerencia 
 
 ## FEAT-MEJORAS
 ### Cambios menores.
