@@ -39,14 +39,21 @@
                         $counter++;
 
                         if (!$hasHeading OR ($hasHeading && $counter > 1)) {
-                            
-                            $sql = 'INSERT INTO sdc_hosting_temp (`Display Name`, Nombre, Tipo, id_cliente, id_subcliente, Proyecto, Datacenter, Fecha, Hipervisor, Hostname, Pool, uuid, VCPU, RAM, Storage, `Sistema Operativo`) 
-                                VALUES ("'. $getData[0] .'", "'. $getData[1] .'", "'. $getData[2] .'", "'. $getData[3] .'", "'. $getData[4] .'", "'. $getData[5] .'", "'. $getData[6] .'", "'. $getData[7] .'", "'. $getData[8] .'", "'. $getData[9] .'", "'. $getData[10] .'", "'. $getData[11] .'", "'. $getData[12] .'", "'. $getData[13] .'", "'. $getData[14] .'", "'. $getData[15] .'");';
+
+                            $vcpu = str_replace(',', '.', $getData[11]);
+                            $ram = str_replace(',', '.', $getData[12]);
+                            $storage = str_replace(',', '.', $getData[13]);
+                            $fecha = DateTime::createFromFormat('d/m/Y', $getData[6])->format('Y-m-d');
+
+                            $sql = 'INSERT INTO sdc_hosting_temp (`Display Name`, Nombre, Tipo, id_cliente, Proyecto, Datacenter, Fecha, Hipervisor, Hostname, Pool, uuid, VCPU, RAM, Storage, `Sistema Operativo`) 
+                                    VALUES ("'. $getData[0] .'", "'. $getData[1] .'", "'. $getData[2] .'", "'. $getData[3] .'", "'. $getData[4] .'", "'. $getData[5] .'", "'. $fecha .'", "'. $getData[7] .'", "'. $getData[8] .'", "'. $getData[9] .'", "'. $getData[10] .'", "'. $vcpu .'", "'. $ram .'", "'. $storage .'", "'. $getData[14] .'");';
     
                             $sqlRes = mysqli_query($con, $sql);
                             
                             if(!isset($sqlRes)){
                                 $result->error = mysqli_error($con); 
+                                echo json_encode($result);
+                                die();
                             }
                         }
                     }
