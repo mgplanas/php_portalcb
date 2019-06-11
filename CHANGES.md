@@ -1,3 +1,9 @@
+## FEAT-METRICAS
+### Metricas propuestas por Lucciani.
+*Fecha:* 2019-06-11
+*Cambios:*
+    - Riesgos abiertos por gerencia y nivel  
+
 ## FEAT-MEJORAS
 ### Cambios menores.
 *Fecha:* 2019-05-31

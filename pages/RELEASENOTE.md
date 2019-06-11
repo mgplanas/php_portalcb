@@ -1,6 +1,6 @@
-## RELEASE NOTE FOR REL 0004
+## RELEASE NOTE FOR REL 0005
 ### Features
-FEAT-MEJORAS
+FEAT-METRICAS
 
 ### Pasos
 - Entorno
@@ -10,6 +10,3 @@ FEAT-MEJORAS
 - Cambios en DB                                                                 
 
 - Cambios en src                                                                
-    add css y images
-    M[edit_mejora.php]
-    M[mejoras.php]
