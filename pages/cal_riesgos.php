@@ -195,7 +195,7 @@ desired effect
                                                             LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
                                                             WHERE r.borrado=0 AND r.estado='0'
                                                             AND date_format(str_to_date(r.vencimiento, '%d/%m/%Y'), '%Y') = YEAR(NOW())
-                                                            AND ( 1 = 1 OR  p.gerencia = 2 )
+                                                            AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )
                                                             GROUP BY g.nombre, 
                                                             date_format(str_to_date(r.vencimiento, '%d/%m/%Y'), '%m')";
                                                 $sql = mysqli_query($con, $query);

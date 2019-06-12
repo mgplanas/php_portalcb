@@ -11,7 +11,10 @@
         M[riesgos.php]
     - Activos: Activos por gerencia.
         M[met_activos.php]
+    - Controles: Nuevo calendario de controles: Cantidad de controles por gerencia
+        M[cal_controles.php]
 
+        
 ## FEAT-MEJORAS
 ### Cambios menores.
 *Fecha:* 2019-05-31
