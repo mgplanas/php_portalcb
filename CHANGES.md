@@ -7,6 +7,8 @@
     - Riesgos abiertos por gerencia y nivel  
         M[met_riesgos.php]
     - Riesgo: Calendario de riesgos por gerencia 
+        N[cal_riesgos.php]
+        M[riesgos.php]
 
 ## FEAT-MEJORAS
 ### Cambios menores.

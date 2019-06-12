@@ -140,7 +140,7 @@ desired effect
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
-                    Gestión de Controles
+                    Gestión de Riesgos
                     <small>General</small>
                 </h1>
             </section>
@@ -158,85 +158,10 @@ desired effect
                                         <h2 class="box-title">Calendario de Riesgos</h2>
                                     </div>
                                     <div class="col-sm-6" style="text-align:right;">
+                                    <span class="badge bg-red" style="font-size: 14px;">Vencidos</span>
+                                    <span class="badge bg-green" style="font-size: 14px;">Vigentes</span>
                                     </div>
                                 </div>
-                                <!-- MODAL CONTROL -->
-                                <div id="ver-itemDialog" class="modal fade">
-                                    <div class="modal-dialog" style="width:900px;">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span></button>
-                                                    <button type="button" id="criticidad" class="btn"></button>
-                                                
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="box box-primary">
-                                                        <div class="box-body">
-                                                            <div class="form-group">
-                                                                <div class="row">
-                                                                <div class="col-md-9">
-                                                                    <label for="titulo"> Título</label>
-                                                                    <input type="text" class="form-control" name="titulo" id="titulo" value="" readonly>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <label for="periodicidad"> Periodicidad</label>
-                                                                    <input type="text" class="form-control" name="periodicidad" id="periodicidad" value="" readonly>
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="contenido"> Contenido</label>
-                                                                <textarea class="form-control" rows="2" id="contenido" value="" readonly></textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="responsable"><i class="glyphicon glyphicon-user"></i> Responsable</label>
-                                                                <input type="text" class="form-control" name="responsable" id="responsable" value="" readonly>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="box box-primary">
-                                                        <div class="box-body">
-                                                            <div class="form-group">
-                                                                <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <label for="estatus"> Estado</label>
-                                                                    <input type="text" class="form-control" name="estatus" id="estatus" value="" readonly>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <label for="controlador"><i class="glyphicon glyphicon-user"></i>Controlador</label>
-                                                                    <input type="text" class="form-control" name="controlador" id="controlador" value="" readonly>
-                                                                </div>
-                                                                </div>
-                                                            </div>  
-                                                            <div class="form-group" id="divaccion">
-                                                                <label for="accion"><i class="glyphicon glyphicon-flash"></i> Acción</label>
-                                                                <textarea class="form-control" rows="2" id="accion" value="" readonly></textarea>
-                                                            </div>
-                                                            <div class="form-group" id="divobservacion">
-                                                                <label for="observacion"><i class="glyphicon glyphicon-eye-open"></i> Observación</label>
-                                                                <textarea class="form-control" rows="2" id="observacion" value="" readonly></textarea>
-                                                            </div>
-                                                            <div class="form-group" id="divevidencia">
-                                                                <label for="evidencia"><i class="glyphicon glyphicon-list-alt"></i> Evidencia</label>
-                                                                <textarea class="form-control" rows="2" id="evidencia" value="" readonly></textarea>
-                                                            </div>                                                                                                                  
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
-                                            </div>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                </div>
-                                <!-- FIN MODAL CONTROL -->
                                 <!-- /.box-header -->
                                 <div class="box-body">
                                     <table id="riesgos" class="table table-bordered table-hover">
@@ -306,9 +231,9 @@ desired effect
                                                             // Cambio el ícono si está pendiente o no
                                                                 // Si está pendiente me fijo si está atrazado con respecto al mes en curso
                                                             if ($mesActual > $row['mes']) {
-                                                                echo '<span class="badge bg-red">' . $row['cuenta'] . '</span>';
+                                                                echo '<span class="badge bg-red" style="font-size: 15px;">' . $row['cuenta'] . '</span>';
                                                             } else {
-                                                                echo '<span class="badge bg-green">' . $row['cuenta'] . '</span>';
+                                                                echo '<span class="badge bg-green" style="font-size: 15px;">' . $row['cuenta'] . '</span>';
                                                             }
                                                             echo '</td>';
                                                             //----------------------------
