@@ -259,8 +259,6 @@ desired effect
                                 <!-- /.box-body -->
                             </div>
                             <!-- /.box -->
-
-                            <!-- /.box -->
                         </div>
                         <!-- /.col -->
                     </div>
