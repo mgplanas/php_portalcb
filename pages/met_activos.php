@@ -33,8 +33,6 @@ $a_infra = mysqli_num_rows($qa_infra);
 $qa_serv = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '3', ':per_id_gerencia' => $per_id_gerencia)));
 $a_serv = mysqli_num_rows($qa_serv);
 
-
-
 //Get Personas
 $personas = mysqli_query($con, "SELECT * FROM persona");
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
@@ -165,8 +163,9 @@ desired effect
                                           WHERE activo.borrado='0'
                                           AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia );";
                               $count_activos = mysqli_query($con, $query_count_activos);
+                              $total_activos = mysqli_num_rows($count_activos);
                               echo '
-                              <td> ' . mysqli_num_rows($count_activos) . ' </td>
+                              <td> ' . $total_activos . ' </td>
                               <td>';
                             ?>
                         </h3>
@@ -178,10 +177,6 @@ desired effect
                         </div>
                         <a href="./activos.php" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
-                </div>            
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-xs-6">
                     <div class="box box-info">
                         <div class="box-header with-border">
                         <h3 class="box-title">Activos por tipo</h3>
@@ -196,10 +191,57 @@ desired effect
                         <canvas id="pieChartATipo" style="height:250px"></canvas>
                         </div>
                         <!-- /.box-body -->
-                    </div>
-                    <!-- /.box -->
-                </div>            
-            </div>    
+                    </div>                    
+                </div>      
+                <div class="col-lg-4 col-xs-6">
+                    <!-- small box -->
+                    <div class="box box-info">
+                      <div class="box-header with-border">
+                        <h3 class="box-title">Activos por gerencia</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>                        
+                      </div>
+                      <!-- /.box-header -->
+                      <div class="box-body no-padding">
+                        <table class="table table-striped">
+                          <tr>
+                            <th>Gerencia</th>
+                            <th>Activos</th>
+                            <th style="width: 40px"></th>
+                          </tr>
+                          <?php
+                            // Activos por gerencia
+                            $sqlTmpActivosXGcia = "SELECT g.nombre as label, count(1) as value 
+                                              FROM activo as A 
+                                              INNER JOIN persona as p ON a.responsable = p.id_persona
+                                              LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
+                                              WHERE a.borrado='0'
+                                              AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )
+                                              GROUP BY g.nombre 
+                                              ORDER BY count(1) DESC";
+                            $result = mysqli_query($con, strtr($sqlTmpActivosXGcia, array(':per_id_gerencia' => $per_id_gerencia)));                          
+
+                            if(mysqli_num_rows($result) == 0){
+                              echo '<tr><td colspan="3">No hay datos.</td></tr>';
+                            }else{
+                              while($row = mysqli_fetch_assoc($result)){
+                                echo '<tr>';
+                                echo '<td>' . $row['label'] . '</td>';
+                                echo '<td><div class="progress progress-xs"><div class="progress-bar progress-bar-primary" style="width: ' . $row['value']/$total_activos*100 . '%"></div></div></td>';
+                                echo '<td class="text-center">' . $row['value'] . '</td>';
+                                echo '</tr>';
+                              }
+                            }
+                          ?>
+                        </table>
+                      </div>
+                      <!-- /.box-body -->
+                    </div>                  
+                </div>                         
+            </div>
         </section>
     <!-- /.content -->
   </div>
@@ -289,6 +331,7 @@ desired effect
     pieChartATipo.Doughnut(PieData1, pieOptions)
   })
 </script>
+
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->

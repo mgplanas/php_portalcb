@@ -9,6 +9,8 @@
     - Riesgo: Calendario de riesgos por gerencia 
         N[cal_riesgos.php]
         M[riesgos.php]
+    - Activos: Activos por gerencia.
+        M[met_activos.php]
 
 ## FEAT-MEJORAS
 ### Cambios menores.
