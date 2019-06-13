@@ -1,3 +1,10 @@
+## FEAT-FIL-GERENCIA2
+### Continuar con la implementacion de los filtros de gerencia en cada módulo.
+*Fecha:* 2019-06-13
+*Cambios:*
+    - Implementación de filtro de gerencia en el modulo de Mejoras
+        M[mejora.php]
+
 ## FEAT-METRICAS
 ### Metricas propuestas por Lucciani.
 *Fecha:* 2019-06-11
