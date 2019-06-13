@@ -121,6 +121,13 @@ $rowcp = mysqli_num_rows($count_proyectos);
                         <p>
                             <?php echo ''.$rowp['nombre']. ' '.$rowp['apellido']. '';?>
                             <small><?php echo ''.$rowp['cargo']. '';?></small>
+                            <small>
+                            <?php 
+                                $qgerencia = mysqli_query($con, "SELECT nombre FROM gerencia WHERE id_gerencia =" . $rowp['gerencia'] );
+                                $rowg = mysqli_fetch_assoc($qgerencia);
+                                echo  $rowg['nombre'];                            
+                            ?>
+                            </small>
                         </p>
                     </li>
                     <!-- Menu Footer-->
