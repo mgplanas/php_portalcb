@@ -215,7 +215,7 @@ desired effect
                           <?php
                             // Activos por gerencia
                             $sqlTmpActivosXGcia = "SELECT g.nombre as label, count(1) as value 
-                                              FROM activo as A 
+                                              FROM activo as a 
                                               INNER JOIN persona as p ON a.responsable = p.id_persona
                                               LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
                                               WHERE a.borrado='0'
