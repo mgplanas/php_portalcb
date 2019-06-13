@@ -55,12 +55,21 @@ $sqlTmpActivos = "SELECT 1 as total
                   WHERE activo.tipo=':tipoActivo' AND activo.borrado='0'
                   AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
 //$sqlTemp = strtr($sqlTmpActivos, $sqlTmpActivosTipo1);
-$qa_info = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '1', ':per_id_gerencia' => $per_id_gerencia)));
-$a_info = mysqli_num_rows($qa_info);
-$qa_infra = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '2', ':per_id_gerencia' => $per_id_gerencia)));
-$a_infra = mysqli_num_rows($qa_infra);
-$qa_serv = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '3', ':per_id_gerencia' => $per_id_gerencia)));
-$a_serv = mysqli_num_rows($qa_serv);
+$qa_1 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '1', ':per_id_gerencia' => $per_id_gerencia)));
+$a_1 = mysqli_num_rows($qa_1);
+$qa_2 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '2', ':per_id_gerencia' => $per_id_gerencia)));
+$a_2 = mysqli_num_rows($qa_2);
+$qa_3 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '3', ':per_id_gerencia' => $per_id_gerencia)));
+$a_3 = mysqli_num_rows($qa_3);
+
+$qa_4 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '4', ':per_id_gerencia' => $per_id_gerencia)));
+$a_4 = mysqli_num_rows($qa_4);
+$qa_5 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '5', ':per_id_gerencia' => $per_id_gerencia)));
+$a_5 = mysqli_num_rows($qa_5);
+$qa_6 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '6', ':per_id_gerencia' => $per_id_gerencia)));
+$a_6 = mysqli_num_rows($qa_6);
+$qa_7 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '7', ':per_id_gerencia' => $per_id_gerencia)));
+$a_7 = mysqli_num_rows($qa_7);
 
 
 // ISO 270001
@@ -630,22 +639,46 @@ desired effect
     var pieChartATipo       = new Chart(pieChartCanvas1)
     var PieData1        = [
       {
-        value    :  <?php echo $a_info; ?>,
+        value    :  <?php echo $a_1; ?>,
         color    : '#f56954',
         highlight: '#f56954',
-        label    : 'Información'
+        label    : 'Datos/Información'
       },
       {
-        value    : <?php echo $a_infra; ?>,
+        value    : <?php echo $a_2; ?>,
         color    : '#00a65a',
         highlight: '#00a65a',
-        label    : 'Infraestructura'
+        label    : 'Equipamiento'
       },
       {
-        value    : <?php echo $a_serv; ?>,
+        value    : <?php echo $a_3; ?>,
         color    : '#f39c12',
         highlight: '#f39c12',
-        label    : 'Servicio'
+        label    : 'Instalaciones'
+      },
+      {
+        value    :  <?php echo $a_4; ?>,
+        color    : '#f569ff',
+        highlight: '#f569ff',
+        label    : 'Personal'
+      },
+      {
+        value    : <?php echo $a_5; ?>,
+        color    : '#00ff5a',
+        highlight: '#00ff5a',
+        label    : 'Servicios'
+      },
+      {
+        value    : <?php echo $a_6; ?>,
+        color    : '#f3ff12',
+        highlight: '#f3ff12',
+        label    : 'Software'
+      },
+      {
+        value    : <?php echo $a_7; ?>,
+        color    : '#f39cff',
+        highlight: '#f39cff',
+        label    : 'Suministros'
       }
 	]
 	var pieChartCanvas2 = $('#pieChartISOM').get(0).getContext('2d')

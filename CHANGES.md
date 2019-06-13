@@ -13,6 +13,9 @@
         M[met_activos.php]
     - Controles: Nuevo calendario de controles: Cantidad de controles por gerencia
         M[cal_controles.php]
+    - Arreglo del gráfico de torta. Estaba desactualizado con los tipos de activo
+        M[met_activos.php]
+        M[site.php]
 
         
 ## FEAT-MEJORAS
