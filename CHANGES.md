@@ -4,6 +4,8 @@
 *Cambios:*
     - Implementación de filtro de gerencia en el modulo de Mejoras
         M[mejora.php]
+    - Implementación de filtro de gerencia en el modulo de Activos
+        M[activos.php]
 
 ## FEAT-METRICAS
 ### Metricas propuestas por Lucciani.
