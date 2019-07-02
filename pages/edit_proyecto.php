@@ -32,8 +32,9 @@ if(isset($_POST['save'])){
     //$porcentaje = mysqli_real_escape_string($con,(strip_tags($_POST["porcentaje"],ENT_QUOTES)));
     $grupo = mysqli_real_escape_string($con,(strip_tags($_POST["grupo"],ENT_QUOTES)));
     $path = mysqli_real_escape_string($con,(strip_tags($_POST["path"],ENT_QUOTES)));
+    $tipo = mysqli_real_escape_string($con,(strip_tags($_POST["tipo"],ENT_QUOTES)));
 	
-	$update_proyecto = mysqli_query($con, "UPDATE proyecto SET descripcion='$descripcion', responsable='$responsable', categoria='$categoria', prioridad='$prioridad', inicio='$inicio', due_date='$due_date', grupo='$grupo', path='$path', modificado=NOW() WHERE id_proyecto='$nik'") or die(mysqli_error());
+	$update_proyecto = mysqli_query($con, "UPDATE proyecto SET tipo='$tipo', descripcion='$descripcion', responsable='$responsable', categoria='$categoria', prioridad='$prioridad', inicio='$inicio', due_date='$due_date', grupo='$grupo', path='$path', modificado=NOW() WHERE id_proyecto='$nik'") or die(mysqli_error());
     
 	$insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
 											   VALUES ('2', '3','$nik', now(), '$user', '$titulo')") or die(mysqli_error());
@@ -359,21 +360,38 @@ desired effect
                   <?php 
                     echo "<textarea class=form-control name=descripcion>{$row['descripcion']} </textarea>"; ?>
                 </div>
-				<div class="form-group">
+				        <div class="form-group">
                   <label>Responsable</label>
                   <select name="responsable" class="form-control">
-						<?php
+                    <?php
 
-								$personasn = mysqli_query($con, "SELECT * FROM persona");
-								while($rowps = mysqli_fetch_array($personasn)){
-									if($rowps['id_persona']==$row['responsable']) {
-										echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
-									}
-									else {
-										echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
-									}
-								}
-						?>
+                        $personasn = mysqli_query($con, "SELECT * FROM persona");
+                        while($rowps = mysqli_fetch_array($personasn)){
+                          if($rowps['id_persona']==$row['responsable']) {
+                            echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
+                          }
+                          else {
+                            echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+                          }
+                        }
+                    ?>
+                  </select>
+                </div>
+				        <div class="form-group">
+                  <label>Tipo</label>
+                  <select name="tipo" class="form-control">
+                    <?php
+
+                        $tipo = mysqli_query($con, "SELECT * FROM tipo_proyecto");
+                        while($rowt = mysqli_fetch_array($tipo)){
+                          if($rowt['id']==$row['tipo']) {
+                            echo "<option value='". $rowt['id'] . "' selected='selected'>" .$rowt['nombre'] ."</option>";
+                          }
+                          else {
+                            echo "<option value='". $rowt['id'] . "'>" .$rowt['nombre'] ."</option>";
+                          }
+                        }
+                    ?>
                   </select>
                 </div>
                 <div class="form-group">
