@@ -111,6 +111,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker/daterangepicker.css">
   <!-- bootstrap datepicker -->
   <link rel="stylesheet" href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+  <!-- IChecks -->
+  <link rel="stylesheet" href="../plugins/iCheck/all.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -483,6 +485,7 @@ desired effect
                 <tr>
                   <th width="1">Ver</th>
                   <th style="width: 10px">#</th>
+                  <th>R</th>
                   <th>Detalle</th>
                   <th style="width: 150px">Fecha</th>
                 </tr>
@@ -507,17 +510,13 @@ desired effect
                                 data-usuario="'.$row['user'].'"
                                 title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                             </td>';
-                            echo '
-
-
-                            <td align="center">'.$row['id_avance'].'</td>';
-
-
-                            echo '
-
-                            </td>								
-
-                            <td>'.$row['detalle'].'</td>';
+                            echo '<td align="center">'.$row['id_avance'].'</td>';
+                            if ($row['reunion']==1) {
+                              echo '<td><i title="Reunion de ' .$row['tiempo'].' minutos" class="fa fa-users" style="font-size: 20px;"></i></td>';
+                            } else {
+                              echo '<td></td>';
+                            }
+                            echo '<td>'.$row['detalle'].'</td>';
                             echo '
                             <td>'.$row['fecha'].'</td>';
                         }
@@ -554,9 +553,11 @@ desired effect
                     $detalle = mysqli_real_escape_string($con,(strip_tags($_POST["detalle"],ENT_QUOTES)));//Escanpando caracteres
                     $estado = mysqli_real_escape_string($con,(strip_tags($_POST["estado"],ENT_QUOTES)));//Escanpando caracteres
                     $porcentaje = mysqli_real_escape_string($con,(strip_tags($_POST["porcentaje"],ENT_QUOTES)));//Escanpando caracteres
-
-                    $insert_avance = mysqli_query($con, "INSERT INTO avance (id_proyecto, detalle, fecha, user) 
-                                                         VALUES ('$nik', '$detalle', now(), '$user')") or die(mysqli_error());
+                    $esReunion = (mysqli_real_escape_string($con,(strip_tags($_POST["reunion"],ENT_QUOTES)))=="on" ? 1 : 0 );//Escanpando caracteres
+                    $tiempo = mysqli_real_escape_string($con,(strip_tags($_POST["tiempo"],ENT_QUOTES)));//Escanpando caracteres
+                    
+                    $insert_avance = mysqli_query($con, "INSERT INTO avance (id_proyecto, detalle, fecha, user, reunion, tiempo) 
+                                                         VALUES ('$nik', '$detalle', now(), '$user', '$esReunion', '$tiempo')") or die(mysqli_error());
                     
                     $update_proyecto = mysqli_query($con, "UPDATE proyecto SET estado='$estado', porcentaje='$porcentaje', modificado=NOW() 
 										 WHERE id_proyecto='$nik'") or die(mysqli_error());	
@@ -594,6 +595,27 @@ desired effect
                              <div class="form-group">
                               <label for="porcentaje">Porcentaje de avance</label>
                               <input type="text" class="form-control" name="porcentaje" value="<?php echo $rowmp['porcentaje']; ?>">
+                            </div>
+                        </div>
+                </div>
+            <div class="row">
+                        <div class="col-sm-3 text-right">
+                            <div class="form-group">
+                                <label> </label>
+                                <div class="i-checks">
+                                  <label class=""> 
+                                    <div class="icheckbox_square-green" style="position: relative;">
+                                      <input name="reunion" id="esreunion" type="checkbox" style="position: absolute; opacity: 0;">
+                                      <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                                    </div><i></i> &nbsp; Reunión 
+                                  </label>
+                                </div>                              
+                            </div>
+                         </div>
+                        <div class="col-sm-3">
+                             <div id="tiempo" class="form-group">
+                              <label>Minutos</label>
+                              <input type="number" min="0" class="form-control" name="tiempo" value="15">
                             </div>
                         </div>
                 </div>
@@ -680,6 +702,8 @@ desired effect
 <script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
 <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- ICHECKS -->
+<script src="../plugins/iCheck/icheck.min.js"></script>
       
 <script type="text/javascript">
   $(function () {
@@ -743,6 +767,32 @@ $(function(){
 	
   });
 });
+</script>
+<script>
+    $(document).ready(function () {
+
+      $('.i-checks').on('ifCreated ifClicked ifChanged ifChecked ifUnchecked ifDisabled ifEnabled ifDestroyed check ', function(event){                
+        if(event.type ==="ifChecked"){
+            $(this).trigger('click');  
+            $('.i-checks').iCheck('update');
+            $('#tiempo').show();
+        }
+        if(event.type ==="ifUnchecked"){
+            $(this).trigger('click');  
+            $('.i-checks').iCheck('update');
+            $('#tiempo').hide();
+        }       
+        if(event.type ==="ifDisabled"){
+            console.log($(this).attr('id')+'dis');  
+            $('.i-checks').iCheck('update');
+        }                                
+      }).iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+      });
+
+      $('#tiempo').hide();
+    });
 </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

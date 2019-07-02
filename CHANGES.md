@@ -1,3 +1,14 @@
+## FEAT-PROYECTOS
+### Identificación de proyectos y nuevas métricas de avance.
+*Fecha:* 2019-07-02
+*Cambios:*
+    - Cambio L&F de las tablas
+        M[proyecto.php]
+    - Agregar Campo "Tipo de proyecto" a las tablas
+        M[proyecto.php]
+    - Agregar Marca de Reunión en el avance y campo de tiempo en minutos.
+        M[edit_proyecto.php]
+
 ## FEAT-METRICAS
 ### Metricas propuestas por Lucciani.
 *Fecha:* 2019-06-11

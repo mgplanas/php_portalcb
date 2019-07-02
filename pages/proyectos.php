@@ -88,6 +88,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
 <!-- daterange picker -->
   <link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker/daterangepicker.css">
   <!-- bootstrap datepicker -->
@@ -220,11 +221,12 @@ desired effect
                 </div>
                 <div class="box">
                     <div class="box-body">
-                      <table id="mis_proyectos" class="table table-bordered table-hover">
+                      <table id="mis_proyectos" class="display" width="100%">
                         <thead>
                             <th width="1">Ver</th>
                             <th width="2">Nro</th>
                             <th>Titulo</th>
+                            <th>Tipo</th>
                             <th>Categoría</th>
                             <th>Responsable</th>
                             <th>Prioridad</th>
@@ -236,174 +238,156 @@ desired effect
                         </thead>
                         <tbody>
                             <?php
-                              $query = "SELECT i.*, p.nombre, p.apellido FROM proyecto as i 
+                              $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
                                         LEFT JOIN persona as p on i.responsable = p.id_persona
+                                        LEFT JOIN tipo_proyecto as t on i.tipo = t.id
                                         WHERE i.responsable = $id_rowp AND i.borrado='0' AND i.estado!='4'";
 
                               $sql = mysqli_query($con, $query.' ORDER BY id_proyecto ASC');
 
-                              if(mysqli_num_rows($sql) == 0){
-                                  echo '<tr><td colspan="11">No hay datos.</td></tr>';
-                              }else{
-                                while($row = mysqli_fetch_assoc($sql)){
+                              while($row = mysqli_fetch_assoc($sql)){
 
-                                    echo '
-                                    <tr>
-                                    <td>
-                                      <a data-id="'.$row['id_proyecto'].'" 
-                                          data-titulo="'.$row['titulo'].'"
-                                          data-categoria="'.$row['categoria'].'"
-                                          data-descripcion="'.$row['descripcion'].'"
-                                          data-responsable="'.$row['apellido'].' '.$row['nombre'].'"
-                                          data-prioridad="'.$row['prioridad'].'"
-                                          data-inicio="'.$row['inicio'].'"
-                                          data-due_date="'.$row['due_date'].'"
-                                          data-estado="'.$row['estado'].'"
-                                          data-porcentaje="'.$row['porcentaje'].'"
-                                          data-avance="'.$row['avance'].'"
-                                          title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
-                                    </td>';
-                                    echo '<td align="center">'.$row['id_proyecto'].'</td>';
-                                    echo '<td>'.$row['titulo'].'</td>';
-                                    echo '<td>';
-                                      if($row['categoria'] == '1'){
-                                          echo 'Proyecto nuevo';
-                                      }
-                                      else if ($row['categoria'] == '2' ){
-                                          echo 'Proyecto de mejora';
-                                      }
-                                      else if ($row['categoria'] == '3' ){
-                                          echo 'Tarea';
-                                      }
-                                    echo '</td>';
-                                    echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
+                                  echo '<tr>
+                                  <td>
+                                    <a data-id="'.$row['id_proyecto'].'" 
+                                        data-titulo="'.$row['titulo'].'"
+                                        data-categoria="'.$row['categoria'].'"
+                                        data-descripcion="'.$row['descripcion'].'"
+                                        data-responsable="'.$row['apellido'].' '.$row['nombre'].'"
+                                        data-prioridad="'.$row['prioridad'].'"
+                                        data-inicio="'.$row['inicio'].'"
+                                        data-due_date="'.$row['due_date'].'"
+                                        data-estado="'.$row['estado'].'"
+                                        data-porcentaje="'.$row['porcentaje'].'"
+                                        data-avance="'.$row['avance'].'"
+                                        title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
+                                  </td>';
+                                  echo '<td align="center">'.$row['id_proyecto'].'</td>';
+                                  echo '<td>'.$row['titulo'].'</td>';
+                                  echo '<td>'.$row['tipo_nombre'].'</td>';
+                                  echo '<td>';
+                                    if($row['categoria'] == '1'){
+                                        echo 'Proyecto nuevo';
+                                    }
+                                    else if ($row['categoria'] == '2' ){
+                                        echo 'Proyecto de mejora';
+                                    }
+                                    else if ($row['categoria'] == '3' ){
+                                        echo 'Tarea';
+                                    }
+                                  echo '</td>';
+                                  echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
 
-                                    if($row['prioridad'] == '1'){
-                                        echo '<td>Alta</td>';
-                                    }
-                                    else if ($row['prioridad'] == '2' ){
-                                        echo '<td>Media</td>';
-                                    }
-                                    else if ($row['prioridad'] == '3' ){
-                                        echo '<td>Baja</td>';
-                                    }
+                                  if($row['prioridad'] == '1'){
+                                      echo '<td>Alta</td>';
+                                  }
+                                  else if ($row['prioridad'] == '2' ){
+                                      echo '<td>Media</td>';
+                                  }
+                                  else if ($row['prioridad'] == '3' ){
+                                      echo '<td>Baja</td>';
+                                  }
 
-                                    if($row['estado'] == '1'){
-                                        echo '<td><span class="label label-warning">No iniciada</span></td>'; 
-                                    }
-                                    else if ($row['estado'] == '2' ){
-                                        echo '<td><span class="label label-info">En curso</span></td>';
-                                    }
-                                    else if ($row['estado'] == '3' ){
-                                        echo '<td><span class="label label-danger">Aplazada</span></td>';
-                                    }
-                                    else if ($row['estado'] == '4' ){
-                                        echo '<td><span class="label label-success">Completada</span></td>';
-                                    } 
+                                  if($row['estado'] == '1'){
+                                      echo '<td><span class="label label-warning">No iniciada</span></td>'; 
+                                  }
+                                  else if ($row['estado'] == '2' ){
+                                      echo '<td><span class="label label-info">En curso</span></td>';
+                                  }
+                                  else if ($row['estado'] == '3' ){
+                                      echo '<td><span class="label label-danger">Aplazada</span></td>';
+                                  }
+                                  else if ($row['estado'] == '4' ){
+                                      echo '<td><span class="label label-success">Completada</span></td>';
+                                  } 
 
-                                    echo '<td>
-                                        <div class="progress progress-xs">
-                                          <div class="progress-bar progress-bar-';
-                                            if ($row['porcentaje']<='33'){
-                                                echo 'danger';
-                                            }
-                                            else if ($row['porcentaje']<='66' && $row['porcentaje']>'33'){
-                                                echo 'yellow';
-                                            }
-                                            else if ($row['porcentaje']>='66'){
-                                                echo 'green';
-                                            }
-                                            echo '" style="width: '.$row['porcentaje'].'%">
-                                          </div>
+                                  echo '<td>
+                                      <div class="progress progress-xs">
+                                        <div class="progress-bar progress-bar-';
+                                          if ($row['porcentaje']<='33'){
+                                              echo 'danger';
+                                          }
+                                          else if ($row['porcentaje']<='66' && $row['porcentaje']>'33'){
+                                              echo 'yellow';
+                                          }
+                                          else if ($row['porcentaje']>='66'){
+                                              echo 'green';
+                                          }
+                                          echo '" style="width: '.$row['porcentaje'].'%">
                                         </div>
-                                    </td>
-                                    <td><span class="badge bg-';
+                                      </div>
+                                  </td>
+                                  <td><span class="badge bg-';
 
-                                      if ($row['porcentaje']<='33'){
+                                    if ($row['porcentaje']<='33'){
+                                        echo 'red';
+                                    }
+                                    else if ($row['porcentaje']<='66' && $row['porcentaje']>'33'){
+                                        echo 'yellow';
+                                    }
+                                    else if ($row['porcentaje']>='66'){
+                                        echo 'green';
+                                    }
+
+
+                                  echo '">'.$row['porcentaje'].' %</span></td>';
+
+                                  $day=date("d");
+                                  $month=date("m");
+                                  $year=date("Y");
+
+                                  $due = explode("/", $row['due_date']);
+                                  $due_d = $due[0];
+                                  $due_m = $due[1];
+                                  $due_y = $due[2];
+                                  $ok=0;
+
+                                  $dayofy = (($month * 30)+($day));
+                                  $dayofdue = (($due_m * 30)+($due_d));
+
+                                  if ($due_y >= $year){
+                                      if ($dayofy < $dayofdue){
+                                          $ok=1;
+                                      }
+                                      else if ($dayofy == $dayofdue){
+                                          $ok=2;
+                                      }
+                                  }
+
+                                  echo '<td><span class="badge bg-';
+
+                                  if ($row['estado'] !== '4' ){
+                                      if ($ok == '0'){
                                           echo 'red';
                                       }
-                                      else if ($row['porcentaje']<='66' && $row['porcentaje']>'33'){
-                                          echo 'yellow';
-                                      }
-                                      else if ($row['porcentaje']>='66'){
+                                      else if ($ok == '1'){
                                           echo 'green';
                                       }
-
-
-                                    echo '">'.$row['porcentaje'].' %</span></td>';
-
-                                    $day=date("d");
-                                    $month=date("m");
-                                    $year=date("Y");
-
-                                    $due = explode("/", $row['due_date']);
-                                    $due_d = $due[0];
-                                    $due_m = $due[1];
-                                    $due_y = $due[2];
-                                    $ok=0;
-
-                                    $dayofy = (($month * 30)+($day));
-                                    $dayofdue = (($due_m * 30)+($due_d));
-
-                                    if ($due_y >= $year){
-                                        if ($dayofy < $dayofdue){
-                                            $ok=1;
-                                        }
-                                        else if ($dayofy == $dayofdue){
-                                            $ok=2;
-                                        }
-                                    }
-
-                                    echo '<td><span class="badge bg-';
-
-                                    if ($row['estado'] !== '4' ){
-                                        if ($ok == '0'){
-                                            echo 'red';
-                                        }
-                                        else if ($ok == '1'){
-                                            echo 'green';
-                                        }
-                                        else if ($ok == '2'){
-                                            echo 'yellow';
-                                        }
-                                    } else {echo 'gray';}
-
-                                    echo '">'.$row['due_date'].'</span></td>';
-
-                                    echo '
-                                    <td align="center">
-                                      <a href="edit_proyecto.php?nik='.$row['id_proyecto'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-                                      <a href="proyectos.php?aksi=delete&nik='.$row['id_proyecto'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
-                                      if ($rq_sec['edicion']=='0'){
-                                              echo 'disabled';
+                                      else if ($ok == '2'){
+                                          echo 'yellow';
                                       }
-                                      echo '"><i class="glyphicon glyphicon-trash"></i></a>
-                                    </td>
-                                    </tr>
-                                    ';
-                                }
-                            }
+                                  } else {echo 'gray';}
+
+                                  echo '">'.$row['due_date'].'</span></td>';
+
+                                  echo '
+                                  <td align="center">
+                                    <a href="edit_proyecto.php?nik='.$row['id_proyecto'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                                    <a href="proyectos.php?aksi=delete&nik='.$row['id_proyecto'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
+                                    if ($rq_sec['edicion']=='0'){
+                                            echo 'disabled';
+                                    }
+                                    echo '"><i class="glyphicon glyphicon-trash"></i></a>
+                                  </td>
+                                  </tr>
+                                  ';
+                              }
                             ?>
                         </tbody>
-                        <tfoot>
-                        <tr>
-                          <th width="1">Ver</th>
-                          <th width="2">Nro</th>
-                          <th>Titulo</th>
-                          <th>Categoría</th>
-                          <th>Responsable</th>
-                          <th>Prioridad</th>
-                          <th>Estado</th>
-                          <th>Avance</th>
-                          <th>Porcentaje</th>
-                          <th>Vencimiento</th>
-                          <th width="110px">Acciones</th>
-                        </tr>
-                        </tfoot>
                       </table>
                     </div>
                     <!-- /.box-body -->
-                  </div>
+                </div>
               </div>
               <div class="tab-pane" id="tab_2">
                 <div class="box-header">
@@ -413,12 +397,13 @@ desired effect
                 </div>
                 <div class="box">
                     <div class="box-body">
-                      <table id="mi_grupo" class="table table-bordered table-hover">
+                      <table id="mi_grupo" class="display" width="100%">
                         <thead>
                         <tr>
                           <th width="1">Ver</th>
                           <th width="2">Nro</th>
                           <th>Titulo</th>
+                          <th>Tipo</th>
                           <th>Categoría</th>
                           <th>Responsable</th>
                           <th>Prioridad</th>
@@ -431,8 +416,9 @@ desired effect
                         </thead>
                         <tbody>
                             <?php
-                            $query = "SELECT i.*, p.nombre, p.apellido FROM proyecto as i 
+                            $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
                                       LEFT JOIN persona as p on i.responsable = p.id_persona
+                                      LEFT JOIN tipo_proyecto as t on i.tipo = t.id
                                       WHERE i.grupo = $id_rowpg AND i.borrado='0' AND i.estado!='4'";
 
                             $sql = mysqli_query($con, $query.' ORDER BY id_proyecto ASC');
@@ -458,15 +444,10 @@ desired effect
                                         data-avance="'.$row['avance'].'"
                                         title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                                     </td>';
-                                    echo '
-
-
-                                    <td align="center">'.$row['id_proyecto'].'</td>';
-
-
-                                    echo '<td>'.$row['titulo'].'</td>
-
-                                    <td>';
+                                    echo '<td align="center">'.$row['id_proyecto'].'</td>';
+                                    echo '<td>'.$row['titulo'].'</td>';
+                                    echo '<td>'.$row['tipo_nombre'].'</td>';
+                                    echo '<td>';
                                     if($row['categoria'] == '1'){
                                         echo 'Proyecto nuevo';
                                     }
@@ -476,10 +457,8 @@ desired effect
                                     else if ($row['categoria'] == '3' ){
                                         echo 'Tarea';
                                     }
-                                    echo '
-                                    </td>
-                                    <td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
-
+                                    echo '</td>';
+                                    echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
 
                                     if($row['prioridad'] == '1'){
                                         echo '<td>Alta</td>';
@@ -519,8 +498,9 @@ desired effect
 
                                     echo '" style="width: '.$row['porcentaje'].'%"></div>
                                         </div>
-                                        </td>
-                                        <td><span class="badge bg-';
+                                        </td>';
+
+                                    echo '<td><span class="badge bg-';
 
                                     if ($row['porcentaje']<='33'){
                                             echo 'red';
@@ -574,8 +554,7 @@ desired effect
 
                                     echo '">'.$row['due_date'].'</span></td>';
 
-                                    echo '
-                                    <td align="center">
+                                    echo '<td align="center">
                                     <a href="edit_proyecto.php?nik='.$row['id_proyecto'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
                                     <a href="proyectos.php?aksi=delete&nik='.$row['id_proyecto'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
                                     if ($rq_sec['edicion']=='0'){
@@ -589,21 +568,6 @@ desired effect
                             }
                             ?>
                         </tbody>
-                        <tfoot>
-                        <tr>
-                          <th width="1">Ver</th>
-                          <th width="2">Nro</th>
-                          <th>Titulo</th>
-                          <th>Categoría</th>
-                          <th>Responsable</th>
-                          <th>Prioridad</th>
-                          <th>Estado</th>
-                          <th>Avance</th>
-                          <th>Porcentaje</th>
-                          <th>Vencimiento</th>
-                          <th width="110px">Acciones</th>
-                        </tr>
-                        </tfoot>
                       </table>
                     </div>
                     <!-- /.box-body -->
@@ -619,12 +583,13 @@ desired effect
 
                     <!-- /.box-header -->
                     <div class="box-body">
-                      <table id="proyectos" class="table table-bordered table-hover">
+                      <table id="proyectos" class="display" width="100%">
                         <thead>
                         <tr>
                           <th width="1">Ver</th>
                           <th width="2">Nro</th>
                           <th>Titulo</th>
+                          <th>Tipo</th>
                           <th>Categoría</th>
                           <th>Responsable</th>
                           <th>Prioridad</th>
@@ -637,8 +602,9 @@ desired effect
                         </thead>
                         <tbody>
                             <?php
-                            $query = "SELECT i.*, p.nombre, p.apellido FROM proyecto as i 
+                            $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
                                       LEFT JOIN persona as p on i.responsable = p.id_persona
+                                      LEFT JOIN tipo_proyecto as t on i.tipo = t.id
                                       WHERE i.borrado='0' AND i.estado!='4'
                                       ORDER BY id_proyecto ASC";
 
@@ -671,9 +637,9 @@ desired effect
                                     <td align="center">'.$row['id_proyecto'].'</td>';
 
 
-                                    echo '<td>'.$row['titulo'].'</td>
-
-                                    <td>';
+                                    echo '<td>'.$row['titulo'].'</td>';
+                                    echo '<td>'.$row['tipo_nombre'].'</td>';
+                                    echo '<td>';
                                     if($row['categoria'] == '1'){
                                         echo 'Proyecto nuevo';
                                     }
@@ -796,36 +762,22 @@ desired effect
                             }
                             ?>
                         </tbody>
-                        <tfoot>
-                        <tr>
-                          <th width="1">Ver</th>
-                          <th width="2">Nro</th>
-                          <th>Titulo</th>
-                          <th>Categoría</th>
-                          <th>Responsable</th>
-                          <th>Prioridad</th>
-                          <th>Estado</th>
-                          <th>Avance</th>
-                          <th>Porcentaje</th>
-                          <th>Vencimiento</th>
-                          <th width="110px">Acciones</th>
-                        </tr>
-                        </tfoot>
                       </table>
                     </div>
                     <!-- /.box-body -->
                   </div>
                   <!-- /.box -->
-                   </div>
+              </div>
               <div class="tab-pane" id="tab_4">
                 <div class="box">
                   <div class="box-body">
-                    <table id="completados" class="table table-bordered table-hover">
+                    <table id="completados" class="display" width="100%">
                       <thead>
                       <tr>
                         <th width="1">Ver</th>
                         <th width="2">Nro</th>
                         <th>Titulo</th>
+                        <th>Tipo</th>
                         <th>Categoría</th>
                         <th>Responsable</th>
                         <th>Prioridad</th>
@@ -838,8 +790,9 @@ desired effect
                       </thead>
                       <tbody>
                           <?php
-                          $query = "SELECT i.*, p.nombre, p.apellido FROM proyecto as i 
+                          $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
                                     LEFT JOIN persona as p on i.responsable = p.id_persona
+                                    LEFT JOIN tipo_proyecto as t on i.tipo = t.id
                                     WHERE i.borrado='0' AND i.estado='4'
                                     ORDER BY id_proyecto ASC";
 
@@ -872,9 +825,9 @@ desired effect
                                   <td align="center">'.$row['id_proyecto'].'</td>';
 
 
-                                  echo '<td>'.$row['titulo'].'</td>
-
-                                  <td>';
+                                  echo '<td>'.$row['titulo'].'</td>';
+                                  echo '<td>'.$row['tipo_nombre'].'</td>';
+                                  echo '<td>';
                                   if($row['categoria'] == '1'){
                                       echo 'Proyecto nuevo';
                                   }
@@ -942,46 +895,51 @@ desired effect
 
 
                                   echo '">'.$row['porcentaje'].' %</span></td>';
+                                  
+                                  if ($row['due_date']) {
 
-                                  $day=date("d");
-                                  $month=date("m");
-                                  $year=date("Y");
+                                    $day=date("d");
+                                    $month=date("m");
+                                    $year=date("Y");
+  
+                                    $due = explode("/", $row['due_date']);
+                                    $due_d = $due[0];
+                                    $due_m = $due[1];
+                                    $due_y = $due[2];
+                                    $ok=0;
+  
+                                    $dayofy = (($month * 30)+($day));
+                                    $dayofdue = (($due_m * 30)+($due_d));
+  
+                                    if ($due_y == $year){
+                                        if ($dayofy < $dayofdue){
+                                            $ok=1;
+                                        }
+                                        else if ($dayofy == $dayofdue){
+                                            $ok=2;
+                                        }
+                                    }else if ($due_y > $year){ $ok=1;}
+  
+                                    echo '<td><span class="badge bg-';
+  
+                                    if ($row['estado'] !== '4' ){
+                                        if ($ok == '0'){
+                                            echo 'red';
+                                        }
+  
+                                        else if ($ok == '1'){
+                                            echo 'green';
+                                        }
+                                        else if ($ok == '2'){
+                                            echo 'yellow';
+                                        }
+                                    } else {echo 'gray';}
+  
+                                    echo '">'.$row['due_date'].'</span></td>';
 
-                                  $due = explode("/", $row['due_date']);
-                                  $due_d = $due[0];
-                                  $due_m = $due[1];
-                                  $due_y = $due[2];
-                                  $ok=0;
-
-                                  $dayofy = (($month * 30)+($day));
-                                  $dayofdue = (($due_m * 30)+($due_d));
-
-                                  if ($due_y == $year){
-                                      if ($dayofy < $dayofdue){
-                                          $ok=1;
-                                      }
-                                      else if ($dayofy == $dayofdue){
-                                          $ok=2;
-                                      }
-                                  }else if ($due_y > $year){ $ok=1;}
-
-                                  echo '<td><span class="badge bg-';
-
-                                  if ($row['estado'] !== '4' ){
-                                      if ($ok == '0'){
-                                          echo 'red';
-                                      }
-
-                                      else if ($ok == '1'){
-                                          echo 'green';
-                                      }
-                                      else if ($ok == '2'){
-                                          echo 'yellow';
-                                      }
-                                  } else {echo 'gray';}
-
-                                  echo '">'.$row['due_date'].'</span></td>';
-
+                                  } else {
+                                    echo '<td></td>';
+                                  }
                                   echo '
                                   <td align="center">
                                   <a href="edit_proyecto.php?nik='.$row['id_proyecto'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
@@ -1570,6 +1528,7 @@ desired effect
 <script>
   $(function () {
     $('#proyectos').DataTable({
+      'language': { 'emptyTable': 'No hay proyectos' },
       'paging'      : false,
       'lengthChange': true,
       'searching'   : true,
@@ -1583,6 +1542,7 @@ desired effect
 <script>
   $(function () {
     $('#mis_proyectos').DataTable({
+      'language': { 'emptyTable': 'No hay proyectos' },
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -1595,6 +1555,7 @@ desired effect
 <script>
   $(function () {
     $('#mi_grupo').DataTable({
+      'language': { 'emptyTable': 'No hay proyectos' },
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
@@ -1607,6 +1568,7 @@ desired effect
 <script>
   $(function () {
     $('#completados').DataTable({
+      'language': { 'emptyTable': 'No hay proyectos' },
       'paging'      : false,
       'lengthChange': true,
       'searching'   : true,
