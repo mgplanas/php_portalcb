@@ -809,6 +809,7 @@ desired effect
                                   <a data-id="'.$row['id_proyecto'].'" 
                                       data-titulo="'.$row['titulo'].'"
                                       data-categoria="'.$row['categoria'].'"
+                                      data-tipo="'.$row['tipo'].'"
                                       data-descripcion="'.$row['descripcion'].'"
                                       data-responsable="'.$row['apellido'].' '.$row['nombre'].'"
                                       data-prioridad="'.$row['prioridad'].'"
@@ -1318,8 +1319,9 @@ desired effect
                             $porcentaje = mysqli_real_escape_string($con,(strip_tags($_POST["porcentaje"],ENT_QUOTES)));
                             $avance = mysqli_real_escape_string($con,(strip_tags($_POST["avance"],ENT_QUOTES)));
                             $grupo = mysqli_real_escape_string($con,(strip_tags($_POST["grupo"],ENT_QUOTES)));
+                            $tipo = mysqli_real_escape_string($con,(strip_tags($_POST["tipo"],ENT_QUOTES)));
 
-                            $insert_proyecto = mysqli_query($con, "INSERT INTO proyecto (titulo, descripcion, responsable, categoria, prioridad, inicio, due_date, grupo, creado, usuario) VALUES ('$titulo', '$descripcion', '$responsable', '$categoria', '$prioridad', '$inicio', '$due_date', '$grupo', NOW(), '$user')") or die(mysqli_error());	
+                            $insert_proyecto = mysqli_query($con, "INSERT INTO proyecto (titulo, descripcion, responsable, categoria, prioridad, inicio, due_date, grupo, creado, usuario, tipo) VALUES ('$titulo', '$descripcion', '$responsable', '$categoria', '$prioridad', '$inicio', '$due_date', '$grupo', NOW(), '$user', '$tipo')") or die(mysqli_error());	
 
                             $lastInsert = mysqli_insert_id($con);
                             $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
@@ -1367,6 +1369,18 @@ desired effect
                                 ?>
                           </select>
                         </div>
+                        <div class="form-group">
+                          <label>Tipo</label>
+                          <select name="tipo" class="form-control">
+                                <?php
+                                        $tipos = mysqli_query($con, "SELECT * FROM tipo_proyecto");
+                                        while($rowt = mysqli_fetch_array($tipos)){
+                                            echo "<option value='". $rowt['id'] . "'>" .$rowt['nombre'] . "</option>";										
+                                            }
+                                ?>
+                          </select>
+                        </div>
+
                         <div class="form-group">
                           <label>Categoría</label>
                           <select name="categoria" class="form-control">

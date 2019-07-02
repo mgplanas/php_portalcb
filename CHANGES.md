@@ -6,6 +6,9 @@
         M[proyecto.php]
     - Agregar Campo "Tipo de proyecto" a las tablas
         M[proyecto.php]
+    -Agregar campo tipo en formularios de alta/modif
+        M[proyecto.php]
+        M[edit_proyecto.php]
     - Agregar Marca de Reunión en el avance y campo de tiempo en minutos.
         M[edit_proyecto.php]
 
