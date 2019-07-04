@@ -71,6 +71,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -317,7 +318,7 @@ desired effect
 		</div><!-- /.modal -->	
 		
 			<div class="box-body">
-              <table id="iso27k" class="table table-bordered table-hover">
+              <table id="iso27k" class="display" width="100%">
                 <thead>
                 <tr>
                   <th width="1">Ver</th>
@@ -339,72 +340,68 @@ desired effect
 					
 					$sql = mysqli_query($con, $query.' ORDER BY id_item_iso27k ASC');
 
-					if(mysqli_num_rows($sql) == 0){
-						echo '<tr><td colspan="8">No hay datos.</td></tr>';
-					}else{
-						$no = 1;
-						while($row = mysqli_fetch_assoc($sql)){
-							
-							echo '
-							<tr>
-							<td>
-							<a data-id="'.$row['id_activo'].'" 
-								data-codigo="'.$row['codigo'].'"
-                                data-titulo="'.$row['titulo'].'"
-								data-descripcion="'.$row['descripcion'].'"
-								data-responsable="'.$row['apellido'].' '.$row['nombre'].'"
-								data-nivel="'.$row['nivel'].'"
-								data-implementacion="'.$row['implementacion'].'"
-								data-evidencia="'.$row['evidencia'].'"
-								title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
-							</td>';
-							echo '
-							
-							
-							<td align="center">'.$row['codigo'].'</td>';
+          $no = 1;
+          while($row = mysqli_fetch_assoc($sql)){
+            
+            echo '
+            <tr>
+            <td>
+            <a data-id="'.$row['id_activo'].'" 
+              data-codigo="'.$row['codigo'].'"
+                              data-titulo="'.$row['titulo'].'"
+              data-descripcion="'.$row['descripcion'].'"
+              data-responsable="'.$row['apellido'].' '.$row['nombre'].'"
+              data-nivel="'.$row['nivel'].'"
+              data-implementacion="'.$row['implementacion'].'"
+              data-evidencia="'.$row['evidencia'].'"
+              title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
+            </td>';
+            echo '
+            
+            
+            <td align="center">'.$row['codigo'].'</td>';
 
 
-							echo '
-							
-							</td>								
-						
-							<td>'.$row['titulo'].'</td>
-							
-							';
-                            echo '
-							
-							</td>								
-						
-							<td>'.$row['descripcion'].'</td>
-							
-							';
-							
-							echo '
-							</td>
-							<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
-							
-                            echo '
-							</td>
-							<td>'.$row['nivel'].'</td>'; 
-							
-							echo '
-							</td>
-							<td>'.$row['implementacion'].'</td>'; 
-							
-							echo '
-							<td align="center">
-							<a href="edit_iso27k.php?nik='.$row['id_item_iso27k'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-							<a href="iso27k.php?aksi=delete&nik='.$row['id_item_iso27k'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
-                            if ($rq_sec['edicion']=='0'){
-                                    echo 'disabled';
-                            }
-                            echo '"><i class="glyphicon glyphicon-trash" ></i></a>
-							</td>
-							</tr>
-							';
-							$no++;
-						}
-					}
+            echo '
+            
+            </td>								
+          
+            <td>'.$row['titulo'].'</td>
+            
+            ';
+                          echo '
+            
+            </td>								
+          
+            <td>'.$row['descripcion'].'</td>
+            
+            ';
+            
+            echo '
+            </td>
+            <td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
+            
+                          echo '
+            </td>
+            <td>'.$row['nivel'].'</td>'; 
+            
+            echo '
+            </td>
+            <td>'.$row['implementacion'].'</td>'; 
+            
+            echo '
+            <td align="center">
+            <a href="edit_iso27k.php?nik='.$row['id_item_iso27k'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+            <a href="iso27k.php?aksi=delete&nik='.$row['id_item_iso27k'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
+                          if ($rq_sec['edicion']=='0'){
+                                  echo 'disabled';
+                          }
+                          echo '"><i class="glyphicon glyphicon-trash" ></i></a>
+            </td>
+            </tr>
+            ';
+            $no++;
+          }
 					?>
                 </tbody>
                 <tfoot>
@@ -471,6 +468,7 @@ desired effect
 <script>
   $(function () {
     $('#iso27k').DataTable({
+      'language': { 'emptyTable': 'No hay datos' },
       'paging'      : true,
       'pageLength': 20,
       'lengthChange': false,

@@ -1,3 +1,10 @@
+## FEAT-ISO271K
+### Cambios en la matriz de cumplimiento.
+*Fecha:* 2019-07-04
+*Cambios:*
+    - Cambio L&F de las tablas
+    M[iso271k.php]
+
 ## FEAT-PROYECTOS
 ### Identificación de proyectos y nuevas métricas de avance.
 *Fecha:* 2019-07-02
