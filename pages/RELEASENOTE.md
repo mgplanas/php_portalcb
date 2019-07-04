@@ -1,6 +1,7 @@
 ## RELEASE NOTE FOR REL 0005
 ### Features
 FEAT-METRICAS
+FEAT-FIL-GERENCIA2
 
 ### Pasos
 - Entorno

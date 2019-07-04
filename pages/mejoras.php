@@ -36,9 +36,12 @@ if(isset($_GET['aksi']) == 'delete'){
 
 
 //Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' AND borrado = 0");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
+$per_id_gerencia = $rowp['gerencia'];
+// GERENCIA DE CIBER SEGURIDAD = 1 
+// PUEDE VER TODO
 
 //Get Personas
 $personas = mysqli_query($con, "SELECT * FROM persona");
@@ -642,8 +645,12 @@ desired effect
                                     LEFT JOIN persona as p on i.responsable = p.id_persona
                                     LEFT JOIN persona as op on i.abierto = op.id_persona
                                     LEFT JOIN origen as o on i.origen = o.id_origen
-                          WHERE i.borrado='0' ORDER BY i.id_mejora ASC";
-                $sql = mysqli_query($con, $query);
+                          WHERE i.borrado='0' ";
+                // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
+                if ( $per_id_gerencia != 1) {
+                  $query = $query . " AND p.gerencia = $per_id_gerencia ";
+                }                          
+                $sql = mysqli_query($con, $query . 'ORDER BY i.id_mejora ASC');
 
                 if(mysqli_num_rows($sql) == 0){
                   echo '<tr><td colspan="8">No hay datos.</td></tr>';
