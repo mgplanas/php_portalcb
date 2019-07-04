@@ -1,3 +1,17 @@
+## FEAT-PROYECTOS
+### Identificación de proyectos y nuevas métricas de avance.
+*Fecha:* 2019-07-02
+*Cambios:*
+    - Cambio L&F de las tablas
+        M[proyecto.php]
+    - Agregar Campo "Tipo de proyecto" a las tablas
+        M[proyecto.php]
+    -Agregar campo tipo en formularios de alta/modif
+        M[proyecto.php]
+        M[edit_proyecto.php]
+    - Agregar Marca de Reunión en el avance y campo de tiempo en minutos.
+        M[edit_proyecto.php]
+
 ## FEAT-FIL-GERENCIA2
 ### Continuar con la implementacion de los filtros de gerencia en cada módulo.
 *Fecha:* 2019-06-13
@@ -8,6 +22,7 @@
         M[activos.php]
     - Se agrega el indicador de la gerencia en el dropdown del perfil
         M[site_header.php]
+
 
 ## FEAT-METRICAS
 ### Metricas propuestas por Lucciani.
