@@ -1,11 +1,7 @@
 ## RELEASE NOTE FOR REL 0005
 ### Features
-<<<<<<< HEAD
-FEAT-METRICAS
 FEAT-FIL-GERENCIA2
-=======
 FEAT-PROYECTOS
->>>>>>> FEAT-PROYECTOS
 
 ### Pasos
 - Entorno
