@@ -322,100 +322,61 @@ desired effect
                 <thead>
                 <tr>
                   <th width="1">Ver</th>
-				  <th width="2">Codigo</th>
+				          <th width="2">Codigo</th>
                   <th>Titulo</th>
                   <th>Descripcion</th>
                   <th>Referente</th>
-				  <th>Madurez</th>
+				          <th>Madurez</th>
                   <th>Implementación</th>
                   <th width="110px">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
-					<?php
-					$query = "SELECT i.*, m.nivel, p.nombre, p.apellido  FROM item_iso27k as i 
-						      LEFT JOIN madurez as m on i.madurez = m.id_madurez 
-						      LEFT JOIN persona as p on i.responsable = p.id_persona 
-							  WHERE i.borrado='0'";
-					
-					$sql = mysqli_query($con, $query.' ORDER BY id_item_iso27k ASC');
+                  <?php
+                  $query = "SELECT i.*, m.nivel, p.nombre, p.apellido  FROM item_iso27k as i 
+                          LEFT JOIN madurez as m on i.madurez = m.id_madurez 
+                          LEFT JOIN persona as p on i.responsable = p.id_persona 
+                        WHERE i.borrado='0'";
+                  
+                  $sql = mysqli_query($con, $query.' ORDER BY id_item_iso27k ASC');
 
-          $no = 1;
-          while($row = mysqli_fetch_assoc($sql)){
-            
-            echo '
-            <tr>
-            <td>
-            <a data-id="'.$row['id_activo'].'" 
-              data-codigo="'.$row['codigo'].'"
-                              data-titulo="'.$row['titulo'].'"
-              data-descripcion="'.$row['descripcion'].'"
-              data-responsable="'.$row['apellido'].' '.$row['nombre'].'"
-              data-nivel="'.$row['nivel'].'"
-              data-implementacion="'.$row['implementacion'].'"
-              data-evidencia="'.$row['evidencia'].'"
-              title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
-            </td>';
-            echo '
-            
-            
-            <td align="center">'.$row['codigo'].'</td>';
-
-
-            echo '
-            
-            </td>								
-          
-            <td>'.$row['titulo'].'</td>
-            
-            ';
-                          echo '
-            
-            </td>								
-          
-            <td>'.$row['descripcion'].'</td>
-            
-            ';
-            
-            echo '
-            </td>
-            <td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
-            
-                          echo '
-            </td>
-            <td>'.$row['nivel'].'</td>'; 
-            
-            echo '
-            </td>
-            <td>'.$row['implementacion'].'</td>'; 
-            
-            echo '
-            <td align="center">
-            <a href="edit_iso27k.php?nik='.$row['id_item_iso27k'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-            <a href="iso27k.php?aksi=delete&nik='.$row['id_item_iso27k'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
-                          if ($rq_sec['edicion']=='0'){
-                                  echo 'disabled';
-                          }
-                          echo '"><i class="glyphicon glyphicon-trash" ></i></a>
-            </td>
-            </tr>
-            ';
-            $no++;
-          }
-					?>
+                  $no = 1;
+                  while($row = mysqli_fetch_assoc($sql)){
+                    
+                    echo '
+                    <tr>
+                    <td>
+                    <a data-id="'.$row['id_activo'].'" 
+                      data-codigo="'.$row['codigo'].'"
+                      data-titulo="'.$row['titulo'].'"
+                      data-descripcion="'.$row['descripcion'].'"
+                      data-responsable="'.$row['apellido'].' '.$row['nombre'].'"
+                      data-nivel="'.$row['nivel'].'"
+                      data-implementacion="'.$row['implementacion'].'"
+                      data-evidencia="'.$row['evidencia'].'"
+                      title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
+                    </td>';
+                    echo '<td align="center">'.$row['codigo'].'</td>';
+                    echo '<td>'.$row['titulo'].'</td>';
+                    echo '<td>'.$row['descripcion'].'</td>';
+                    echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
+                    echo '<td>'.$row['nivel'].'</td>'; 
+                    echo '<td>'.$row['implementacion'].'</td>'; 
+                    echo '
+                    <td align="center">
+                      <a href="edit_iso27k.php?nik='.$row['id_item_iso27k'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                      <a href="iso27k.php?aksi=delete&nik='.$row['id_item_iso27k'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
+                      if ($rq_sec['edicion']=='0'){
+                        echo 'disabled';
+                      }
+                      echo '"><i class="glyphicon glyphicon-trash" ></i></a>
+                    </td>
+                    </tr>
+                    ';
+                    $no++;
+                  }
+                  ?>
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th width="1">Ver</th>
-				  <th width="2">Codigo</th>
-                  <th>Titulo</th>
-                  <th>Descripcion</th>
-                  <th>Referente</th>
-				  <th>Madurez</th>
-                  <th>Implementación</th>
-                  <th width="110px">Acciones</th>
-                </tr>
-                </tfoot>
               </table>
             </div>
             <!-- /.box-body -->
