@@ -14,6 +14,7 @@ $sql = mysqli_query($con, "SELECT i.*, m.nivel, p.nombre, p.apellido FROM item_i
 						      LEFT JOIN madurez as m on i.madurez = m.id_madurez 
 						      LEFT JOIN persona as p on i.responsable = p.id_persona
 							  WHERE i.borrado='0' AND i.id_item_iso27k='$nik'");
+$sqlrefs = mysqli_query($con, "SELECT * FROM iso27k_refs WHERE id_item_iso27k = '$nik'");
 
 if(mysqli_num_rows($sql) == 0){
 	header("Location: iso27k.php");
@@ -23,15 +24,43 @@ if(mysqli_num_rows($sql) == 0){
 if(isset($_POST['save'])){
 
 	$responsable = mysqli_real_escape_string($con,(strip_tags($_POST["responsable"],ENT_QUOTES)));
+	$referentes = $_POST["referentes"];
 	$madurez = mysqli_real_escape_string($con,(strip_tags($_POST["madurez"],ENT_QUOTES)));
 	$implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
 	$evidencia = mysqli_real_escape_string($con,(strip_tags($_POST["evidencia"],ENT_QUOTES)));
-    $codigo = mysqli_real_escape_string($con,(strip_tags($_POST["codigo"],ENT_QUOTES)));
-	
-	$update_iso27k = mysqli_query($con, "UPDATE item_iso27k SET responsable='$responsable', madurez='$madurez', implementacion='$implementacion',                                          evidencia='$evidencia', modificado=NOW(), usuario='$user' 
-										 WHERE id_item_iso27k='$nik'") or die(mysqli_error());	
+  $codigo = mysqli_real_escape_string($con,(strip_tags($_POST["codigo"],ENT_QUOTES)));
+  
+  mysqli_autocommit($con, false);
+  $resultado = true;
+  $update_iso27k = mysqli_query($con, "UPDATE item_iso27k SET responsable='$responsable', madurez='$madurez', implementacion='$implementacion',                                          evidencia='$evidencia', modificado=NOW(), usuario='$user' 
+                     WHERE id_item_iso27k='$nik'");
+  if (!$update_iso27k) {
+    $resultado = false;
+  }
+  $clearRefs = mysqli_query($con, "DELETE FROM iso27k_refs WHERE id_item_iso27k ='$nik'");
+  if (!$clearRefs) {
+      $resultado = false;
+  }
+  $sqlInsRef = "INSERT INTO iso27k_refs (id_item_iso27k, id_persona,  borrado) VALUES ";
+  $refCounter = 0;
+  foreach ($referentes as $ref) {
+    if ($refCounter > 0) $sqlInsRef .= ", ";
+    $sqlInsRef .= "('$nik', '$ref', 0)";
+    $refCounter++;
+  }  
+  $insRefs = mysqli_query($con, $sqlInsRef);
+  if (!$insRefs) {
+      $resultado = false;
+  }  
 	$insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
-											   VALUES ('2', '6','$nik', now(), '$user', '$codigo')") or die(mysqli_error());
+                         VALUES ('2', '6','$nik', now(), '$user', '$codigo')") or die(mysqli_error());
+                    
+  if ($resultado) {
+    mysqli_commit($con);
+  } else {
+    mysqli_rollback($con);
+  }
+  mysqli_autocommit($con, true);
 	if($update_iso27k){
 		$_SESSION['formSubmitted'] = 1;
 		header("Location: iso27k.php");
@@ -339,28 +368,52 @@ desired effect
                 <div class="form-group">
                   <label for="titulo">Titulo</label>
                   <?php echo "<textarea class=form-control readonly name=titulo>{$row['titulo']}</textarea>"; ?>
-               </div>
+                </div>
                 <div class="form-group">
                   <label for="descripcion">Descripción</label>
                   <?php echo "<textarea class=form-control readonly name=descripcion>{$row['descripcion']}</textarea>"; ?>
-               </div>
-				<div class="form-group">
-                  <label>Referente</label>
+                </div>
+				        <div class="form-group">
+                  <label>Responsable</label>
                   <select name="responsable" class="form-control">
-						<?php
-								$personasn = mysqli_query($con, "SELECT * FROM persona");
-								while($rowps = mysqli_fetch_array($personasn)){
-									if($rowps['id_persona']==$row['responsable']) {
-										echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
-									}
-									else {
-										echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
-									}
-								}
-						?>
+                    <?php
+                        $personasn = mysqli_query($con, "SELECT * FROM persona ORDER BY apellido, nombre");
+                        while($rowps = mysqli_fetch_array($personasn)){
+                          if($rowps['id_persona']==$row['responsable']) {
+                            echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
+                          }
+                          else {
+                            echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+                          }
+                        }
+                        ?>
                   </select>
                 </div>
-				<div class="form-group">
+				        <div class="form-group">
+                  <label>Referentes &nbsp;<code>Realizar la selección con la tecla CTRL presionada. De lo contrario se perderán los referentes seleccionados.</code></label>
+                  <select name="referentes[]" class="form-control custom-select" multiple>
+                    <?php
+                          mysqli_data_seek($personasn,0);
+                          while($rowps = mysqli_fetch_array($personasn)){
+                            // lo busco en los seleccionados
+                            mysqli_data_seek($sqlrefs,0);
+                            $existe = false;
+                            while($rowrefs = mysqli_fetch_array($sqlrefs)){
+                              if($rowps['id_persona']==$rowrefs['id_persona']){
+                                $existe = true;
+                                break;
+                              }
+                            }
+                            if ($existe) {
+                              echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
+                            } else {
+                              echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+                            }
+                          }
+                      ?>
+                    </select>
+                </div>
+				        <div class="form-group">
                   <label>Madurez</label>
                   <select name="madurez" class="form-control">
                         <?php

@@ -4,6 +4,8 @@
 *Cambios:*
     - Cambio L&F de las tablas
     M[iso271k.php]
+    - Poder seleccionar multiples referentes.
+    M[edit_iso27k.php]
 
 ## FEAT-PROYECTOS
 ### Identificación de proyectos y nuevas métricas de avance.
