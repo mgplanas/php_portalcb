@@ -390,7 +390,7 @@ desired effect
                   </select>
                 </div>
 				        <div class="form-group">
-                  <label>Referentes &nbsp;<code>Realizar la selección con la tecla CTRL presionada. De lo contrario se perderán los referentes seleccionados.</code></label>
+                  <label>Referentes &nbsp;<code>Realizar la selección/deselección con la tecla CTRL presionada. De lo contrario se perderán los referentes seleccionados.</code></label>
                   <select name="referentes[]" class="form-control custom-select" multiple>
                     <?php
                           mysqli_data_seek($personasn,0);

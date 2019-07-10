@@ -6,6 +6,9 @@
     M[iso271k.php]
     - Poder seleccionar multiples referentes.
     M[edit_iso27k.php]
+    - Agrego columna referentes a la grilla y cambio label referente por responsable
+    M[iso271k.php]
+
 
 ## FEAT-PROYECTOS
 ### Identificación de proyectos y nuevas métricas de avance.

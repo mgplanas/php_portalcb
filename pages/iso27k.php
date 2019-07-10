@@ -325,7 +325,8 @@ desired effect
 				          <th width="2">Codigo</th>
                   <th>Titulo</th>
                   <th>Descripcion</th>
-                  <th>Referente</th>
+                  <th>Responsable</th>
+                  <th>Referentes</th>
 				          <th>Madurez</th>
                   <th>Implementación</th>
                   <th width="110px">Acciones</th>
@@ -333,10 +334,19 @@ desired effect
                 </thead>
                 <tbody>
                   <?php
-                  $query = "SELECT i.*, m.nivel, p.nombre, p.apellido  FROM item_iso27k as i 
-                          LEFT JOIN madurez as m on i.madurez = m.id_madurez 
-                          LEFT JOIN persona as p on i.responsable = p.id_persona 
-                        WHERE i.borrado='0'";
+                  $query = "SELECT i.*, m.nivel, p.nombre, p.apellido, 
+                  (
+                    SELECT GROUP_CONCAT(CONCAT(refp.apellido, ',', refp.nombre)  SEPARATOR '<br/>') as referentes
+                    FROM iso27k_refs as r
+                    INNER JOIN persona as refp ON r.id_persona = refp.id_persona
+                    WHERE r.id_item_iso27k = i.id_item_iso27k
+                    GROUP BY r.id_item_iso27k
+                    
+                  ) as referentes
+                  FROM item_iso27k as i 
+                  LEFT JOIN madurez as m on i.madurez = m.id_madurez 
+                  LEFT JOIN persona as p on i.responsable = p.id_persona
+                  WHERE i.borrado='0'";
                   
                   $sql = mysqli_query($con, $query.' ORDER BY id_item_iso27k ASC');
 
@@ -346,7 +356,7 @@ desired effect
                     echo '
                     <tr>
                     <td>
-                    <a data-id="'.$row['id_activo'].'" 
+                    <a data-id="'.$row['id_item_iso27k'].'" 
                       data-codigo="'.$row['codigo'].'"
                       data-titulo="'.$row['titulo'].'"
                       data-descripcion="'.$row['descripcion'].'"
@@ -360,6 +370,7 @@ desired effect
                     echo '<td>'.$row['titulo'].'</td>';
                     echo '<td>'.$row['descripcion'].'</td>';
                     echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
+                    echo '<td>'.$row['referentes'].'</td>'; 
                     echo '<td>'.$row['nivel'].'</td>'; 
                     echo '<td>'.$row['implementacion'].'</td>'; 
                     echo '
