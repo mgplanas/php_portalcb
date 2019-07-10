@@ -72,6 +72,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
   <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/rowGroup.dataTables.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -321,6 +322,8 @@ desired effect
               <table id="iso27k" class="display" width="100%">
                 <thead>
                 <tr>
+                  <th width="1"></th>
+                  <th width="1"></th>
                   <th width="1">Ver</th>
 				          <th width="2">Codigo</th>
                   <th>Titulo</th>
@@ -341,21 +344,26 @@ desired effect
                     INNER JOIN persona as refp ON r.id_persona = refp.id_persona
                     WHERE r.id_item_iso27k = i.id_item_iso27k
                     GROUP BY r.id_item_iso27k
-                    
-                  ) as referentes
+                  ) as referentes,
+                  stit.codigo as s_codigo, stit.titulo as s_titulo, stit.descripcion as s_descripcion,
+                  tit.codigo as t_codigo, tit.titulo as t_titulo, tit.descripcion as t_descripcion
                   FROM item_iso27k as i 
                   LEFT JOIN madurez as m on i.madurez = m.id_madurez 
                   LEFT JOIN persona as p on i.responsable = p.id_persona
-                  WHERE i.borrado='0'";
+                  LEFT JOIN item_iso27k as stit on  i.parent = stit.id_item_iso27k
+                  LEFT JOIN item_iso27k as tit on stit.parent = tit.id_item_iso27k
+                  WHERE i.borrado='0'
+                    AND i.nivel = 3";
                   
                   $sql = mysqli_query($con, $query.' ORDER BY id_item_iso27k ASC');
 
                   $no = 1;
                   while($row = mysqli_fetch_assoc($sql)){
                     
-                    echo '
-                    <tr>
-                    <td>
+                    echo '<tr>';
+                    echo '<td>'.$row['t_codigo']. ' - ' .$row['t_titulo']. '</td>'; 
+                    echo '<td>'.$row['s_codigo']. ' - ' .$row['s_titulo']. ' <br/><small>' .$row['s_descripcion']. '</small></td>'; 
+                    echo '<td>
                     <a data-id="'.$row['id_item_iso27k'].'" 
                       data-codigo="'.$row['codigo'].'"
                       data-titulo="'.$row['titulo'].'"
@@ -430,6 +438,7 @@ desired effect
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- export -->
 <script src="../bower_components/datatables.net/js/dataTables.buttons.min.js"></script>
+<script src="../bower_components/datatables.net/js/dataTables.rowGroup.min.js"></script>
 <script src="../bower_components/datatables.net/js/buttons.flash.min.js"></script>
 <script src="../bower_components/datatables.net/js/jszip.min.js"></script>
 <script src="../bower_components/datatables.net/js/buttons.html5.min.js"></script>
@@ -448,6 +457,14 @@ desired effect
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : true,
+      'order': [[0, 'asc'], [1, 'asc']],
+        'rowGroup': {
+            'dataSrc': [ 0, 1 ]
+        },
+        'columnDefs': [ {
+            'targets': [ 0, 1 ],
+            'visible': false
+        } ],
       'dom'         : 'frtipB',
       'buttons'     : [{
                   extend: 'pdfHtml5',

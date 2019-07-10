@@ -1,11 +1,7 @@
-## RELEASE NOTE FOR REL 0005
+## RELEASE NOTE FOR REL 0006
 ### Features
-<<<<<<< HEAD
-FEAT-METRICAS
-FEAT-FIL-GERENCIA2
-=======
-FEAT-PROYECTOS
->>>>>>> FEAT-PROYECTOS
+FEAT-ISO271K
+
 
 ### Pasos
 - Entorno
@@ -13,22 +9,19 @@ FEAT-PROYECTOS
 - BackUp DB                                                                     
 - Backup /pages                                                                 
 - Cambios en DB                                                                 
-    - Creacion tabla tipo_proyecto
-        CREATE TABLE `tipo_proyeto` (
-        `id` int(11) NOT NULL AUTO_INCREMENT,
-        `nombre` varchar(20) DEFAULT NULL,
-        PRIMARY KEY (`id`)
+    - Creación tabla relaciones items-iso -> referentes
+        CREATE TABLE `iso27k_refs` (
+        `id_item_iso27k` int(11) NOT NULL,
+        `id_persona` int(11) NOT NULL,
+        `borrado` int(11) NOT NULL DEFAULT '0'
         ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-        1	Sin Definir
-        2	Proyecto Interno
-        3	Proyecto Externo
 
-    - Agregado de campo tipo a tabla proyecto   INT NOT NULL DEFAULT 1
 
-    - Agregado de campos reunion y tiempo en avance
-        ALTER TABLE controls.avance
-            ADD reunion INT AFTER borrado, //NOT NULL DEFAULT 1
-            ADD tiempo INT;
+    - Agregado de campo nivel (titulo, subtitulo, item) y parent a tabla item_iso27k1
+        ALTER TABLE controls.item_iso27k
+        ADD nivel INT NOT NULL DEFAULT '3' AFTER usuario,
+        ADD parent INT;
+
 - Cambios en src        
-    M[edit_proyecto.php]
-    M[proyecto.php]                                                        
+    M[iso27k.php]
+    M[edit_iso27k.php]
