@@ -454,7 +454,7 @@ desired effect
       'pageLength': 20,
       'lengthChange': false,
       'searching'   : true,
-      'ordering'    : true,
+      'ordering'    : false,
       'info'        : true,
       'autoWidth'   : true,
       'order': [[0, 'asc'], [1, 'asc']],

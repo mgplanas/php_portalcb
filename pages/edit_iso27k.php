@@ -53,7 +53,7 @@ if(isset($_POST['save'])){
       $resultado = false;
   }  
 	$insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
-                         VALUES ('2', '6','$nik', now(), '$user', '$codigo')") or die(mysqli_error());
+                         VALUES ('2', '6','$nik', now(), '$user', '$codigo')");
                     
   if ($resultado) {
     mysqli_commit($con);

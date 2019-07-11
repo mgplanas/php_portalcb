@@ -3,14 +3,17 @@
 *Fecha:* 2019-07-04
 *Cambios:*
     - Cambio L&F de las tablas
-    M[iso271k.php]
+        M[iso271k.php]
     - Poder seleccionar multiples referentes.
-    M[edit_iso27k.php]
+        M[edit_iso27k.php]
     - Agrego columna referentes a la grilla y cambio label referente por responsable
-    M[iso271k.php]
+        M[iso271k.php]
     - Agrego campos de nivel y parent para agrupar los items
-    M[iso271k.php]
-    N[datatable.rougroup.css/js]
+        M[iso271k.php]
+        N[datatable.rougroup.css/js]
+    - Agrego campo de versión y selector de la misma
+        M[iso271k.php]
+        M[edit-iso27.php] 
 
 
 ## FEAT-PROYECTOS
