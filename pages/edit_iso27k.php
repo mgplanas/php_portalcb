@@ -10,9 +10,10 @@ if (!isset($_SESSION['usuario'])){
 $user=$_SESSION['usuario'];
 
 $nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
-$sql = mysqli_query($con, "SELECT i.*, m.nivel, p.nombre, p.apellido FROM item_iso27k as i 
+$sql = mysqli_query($con, "SELECT i.*, m.nivel, p.nombre, p.apellido,v.modificacion as v_mod, v.numero as v_numero, v.descripcion as v_desc FROM item_iso27k as i 
 						      LEFT JOIN madurez as m on i.madurez = m.id_madurez 
-						      LEFT JOIN persona as p on i.responsable = p.id_persona
+						      LEFT JOIN persona as p on i.responsable = p.id_persona 
+                  LEFT JOIN iso27k_version as v on i.version = v.id
 							  WHERE i.borrado='0' AND i.id_item_iso27k='$nik'");
 $sqlrefs = mysqli_query($con, "SELECT * FROM iso27k_refs WHERE id_item_iso27k = '$nik'");
 
@@ -361,6 +362,10 @@ desired effect
             <!-- form start -->
             <form method="post" role="form" action="">
               <div class="box-body">
+                <div class="form-group">
+                  <label for="evidencia">Versión de Matriz</label>
+                  <input type="text" class="form-control" name="version" id="version" value="<?php echo $row['v_numero'] . ' [' . $row ['v_mod'] . ']'; ?>" readonly>                  
+                </div> 
                 <div class="form-group">
                   <label for="codigo">Código</label>
                   <input type="text" class="form-control" name="codigo" value="<?php echo $row ['codigo']; ?>"readonly>

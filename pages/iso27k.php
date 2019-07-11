@@ -186,17 +186,17 @@ desired effect
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-				<div class="col-sm-2 align-middle" style="text-align:left;">
-					<h2 class="box-title">Versión de la matriz</h2>
+				<div class="col-sm-4 align-middle" style="text-align:left;">
+					<h2 class="box-title">Versión de la matriz de cumplimiento</h2>
           <select id="versionselector" name="responsable" class="form-control">
             <?php
               $versiones = mysqli_query($con, "SELECT * FROM iso27k_version WHERE borrado = 0 ORDER BY modificacion desc ");
               while($rowps = mysqli_fetch_array($versiones)){
                 if($rowps['id']==$current_version) {
-                  echo "<option value='". $rowps['id'] . "' selected='selected'>" .$rowps['numero'] . " - " . $rowps['descripcion']. "</option>";
+                  echo "<option value='". $rowps['id'] . "' selected='selected'>" .$rowps['numero'] . " [ " . $rowps['modificacion']. '] - ' . $rowps['descripcion']. "</option>";
                 }
                 else {
-                  echo "<option value='". $rowps['id'] . "'>" .$rowps['numero'] . " - " . $rowps['descripcion']. "</option>";
+                  echo "<option value='". $rowps['id'] . "'>" .$rowps['numero'] . " [ " . $rowps['modificacion']. '] - ' . $rowps['descripcion']. "</option>";
                 }
               }
             ?>
