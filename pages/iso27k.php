@@ -9,6 +9,16 @@ if (!isset($_SESSION['usuario'])){
 }
 
 $user=$_SESSION['usuario'];
+$current_version = 0;
+//VERSION DE LA MATRIZ
+if ($_GET["version"]) {
+  $current_version = $_GET["version"];
+} else {
+  $sqllastver = mysqli_query($con, "SELECT id FROM iso27k_version WHERE borrado=0 ORDER BY modificacion desc LIMIT 1");
+  $rowlv = mysqli_fetch_assoc($sqllastver); 
+  $current_version = $rowlv['id'];
+}
+
 //Get user query
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
 $rowp = mysqli_fetch_assoc($persona);
@@ -176,10 +186,22 @@ desired effect
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-				<div class="col-sm-6" style="text-align:left">
-					<h2 class="box-title">Listado de ítems</h2>
-				</div>
- 				<div class="col-sm-6" style="text-align:right;">
+				<div class="col-sm-2 align-middle" style="text-align:left;">
+					<h2 class="box-title">Versión de la matriz</h2>
+        <select name="responsable" class="form-control">
+          <?php
+            $versiones = mysqli_query($con, "SELECT * FROM iso27k_version WHERE borrado = 0 ORDER BY modificacion desc ");
+            while($rowps = mysqli_fetch_array($versiones)){
+              if($rowps['id']==$current_version) {
+                echo "<option value='". $rowps['id'] . "' selected='selected'>" .$rowps['numero'] . " - " . $rowps['descripcion']. "</option>";
+              }
+              else {
+                echo "<option value='". $rowps['id'] . "'>" .$rowps['numero'] . " - " . $rowps['descripcion']. "</option>";
+              }
+            }
+          ?>
+        </select>
+              
 				</div>
             </div>
         <!-- /.modal Activo-->
