@@ -188,19 +188,19 @@ desired effect
             <div class="box-header">
 				<div class="col-sm-2 align-middle" style="text-align:left;">
 					<h2 class="box-title">Versión de la matriz</h2>
-        <select name="responsable" class="form-control">
-          <?php
-            $versiones = mysqli_query($con, "SELECT * FROM iso27k_version WHERE borrado = 0 ORDER BY modificacion desc ");
-            while($rowps = mysqli_fetch_array($versiones)){
-              if($rowps['id']==$current_version) {
-                echo "<option value='". $rowps['id'] . "' selected='selected'>" .$rowps['numero'] . " - " . $rowps['descripcion']. "</option>";
+          <select id="versionselector" name="responsable" class="form-control">
+            <?php
+              $versiones = mysqli_query($con, "SELECT * FROM iso27k_version WHERE borrado = 0 ORDER BY modificacion desc ");
+              while($rowps = mysqli_fetch_array($versiones)){
+                if($rowps['id']==$current_version) {
+                  echo "<option value='". $rowps['id'] . "' selected='selected'>" .$rowps['numero'] . " - " . $rowps['descripcion']. "</option>";
+                }
+                else {
+                  echo "<option value='". $rowps['id'] . "'>" .$rowps['numero'] . " - " . $rowps['descripcion']. "</option>";
+                }
               }
-              else {
-                echo "<option value='". $rowps['id'] . "'>" .$rowps['numero'] . " - " . $rowps['descripcion']. "</option>";
-              }
-            }
-          ?>
-        </select>
+            ?>
+          </select>
               
 				</div>
             </div>
@@ -375,7 +375,8 @@ desired effect
                   LEFT JOIN item_iso27k as stit on  i.parent = stit.id_item_iso27k
                   LEFT JOIN item_iso27k as tit on stit.parent = tit.id_item_iso27k
                   WHERE i.borrado='0'
-                    AND i.nivel = 3";
+                    AND i.nivel = 3 
+                    AND i.version = " . $current_version;
                   
                   $sql = mysqli_query($con, $query.' ORDER BY id_item_iso27k ASC');
 
@@ -499,14 +500,14 @@ desired effect
             text: 'Excel',
             }]
 
-    })
-  })
+    });
+
+    $('#versionselector').on('change', function() {
+      window.location.href = "iso27k.php?version=".concat(this.value);
+    });    
+  });
 </script>
-<script>
-    window.onload = function() {
-        history.replaceState("", "", "iso27k.php");
-    }
-</script>
+
 <script>
 $(function(){
   $(".ver-itemDialog").click(function(){
