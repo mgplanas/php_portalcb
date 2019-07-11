@@ -36,6 +36,8 @@ FEAT-ISO271K
     - Agregar registro de versión manual
         1, 4.0, '', NOW(), 0
 
+    - se cambia la restriccion de indice unico a UNIQUE KEY `codigo_UNIQUE` (`version`,`codigo`)
+
 - Cambios en src        
     M[iso27k.php]
     M[edit_iso27k.php]

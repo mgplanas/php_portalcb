@@ -14,6 +14,10 @@
     - Agrego campo de versión y selector de la misma
         M[iso271k.php]
         M[edit-iso27.php] 
+    - Corrijo metricas del dashboard principal y particular de iso
+        M[site.php]
+        M[met_iso27k.php]
+    
 
 
 ## FEAT-PROYECTOS

@@ -76,7 +76,8 @@ $a_7 = mysqli_num_rows($qa_7);
 $sqlTmpISO27k = "SELECT 1 as total 
                 FROM controls.item_iso27k 
                 INNER JOIN persona as p ON item_iso27k.responsable = p.id_persona
-                WHERE item_iso27k.madurez=:madurez
+                WHERE item_iso27k.madurez=:madurez 
+                AND item_iso27k.version = (SELECT id FROM iso27k_version WHERE borrado = 0 ORDER BY modificacion desc LIMIT 1)
                 AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
 $qiso_def = mysqli_query($con, strtr($sqlTmpISO27k, array(':madurez' => '1', ':per_id_gerencia' => $per_id_gerencia)));
 $iso_def = mysqli_num_rows($qiso_def);
