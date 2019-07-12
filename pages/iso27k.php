@@ -205,148 +205,13 @@ desired effect
 				</div>
             </div>
         <!-- /.modal Activo-->
-		<div class="modal fade" id="modal-persona">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h2 class="modal-title">Nueva Persona</h2>
-				<?php
-				$gerencias = mysqli_query($con, "SELECT * FROM gerencia ORDER BY nombre ASC");
-				if(isset($_POST['Addp'])){
-					$legajo = mysqli_real_escape_string($con,(strip_tags($_POST["legajo"],ENT_QUOTES)));//Escanpando caracteres
-					$nombre = mysqli_real_escape_string($con,(strip_tags($_POST["nombre"],ENT_QUOTES)));//Escanpando caracteres
-					$apellido = mysqli_real_escape_string($con,(strip_tags($_POST["apellido"],ENT_QUOTES)));//Escanpando caracteres 
-					$cargo = mysqli_real_escape_string($con,(strip_tags($_POST["cargo"],ENT_QUOTES)));//Escanpando caracteres 
-					$gerencia = mysqli_real_escape_string($con,(strip_tags($_POST["gerencia"],ENT_QUOTES)));//Escanpando caracteres 
-					$email = mysqli_real_escape_string($con,(strip_tags($_POST["email"],ENT_QUOTES)));//Escanpando caracteres 
-					//Inserto Control
-					$insert_persona = mysqli_query($con, "INSERT INTO persona(legajo, nombre, apellido, cargo, gerencia, email) VALUES ('$legajo','$nombre','$apellido', '$cargo', '$gerencia', '$email')") or die(mysqli_error());	
-					$lastInsert = mysqli_insert_id($con);
-					$insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-											   VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
-					unset($_POST);
-					if($insert_persona){
-						$_SESSION['formSubmitted'] = 3;
-						echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-					}else{
-						$_SESSION['formSubmitted'] = 9;
-						echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-					}				
-				}				
-				?>
-              </div>
-              <div class="modal-body">
-				<!-- form start -->
-            <form method="post" role="form" action="">
-              <div class="box-body">
-                <div class="form-group">
-                  <label for="legajo">Legajo</label>
-                  <input type="text" class="form-control" name="legajo" placeholder="Legajo">
-                </div>
-                <div class="form-group">
-                  <label for="nombre">Nombre</label>
-                  <input type="text" class="form-control" name="nombre" placeholder="Nombre">
-                </div>
-				<div class="form-group">
-                  <label for="apellido">Apellido</label>
-                  <input type="text" class="form-control" name="apellido" placeholder="Apellido">
-                </div>
-				<div class="form-group">
-                  <label for="email">Dirección E-mail</label>
-                  <input type="text" class="form-control" name="email" placeholder="E-mail corporativo">
-                </div>
-				<div class="form-group">
-                  <label for="cargo">Cargo</label>
-                  <input type="text" class="form-control" name="cargo" placeholder="Cargo">
-                </div>
-				
-				<div class="form-group">
-                  <label>Gerencia</label>
-                  <select name="gerencia" class="form-control">
-						<?php
-							while($rowg = mysqli_fetch_array($gerencias)){
-									echo "<option value=". $rowg['id_gerencia'] . ">" .$rowg['nombre'] . "</option>";
-									}
-						?>
-                  </select>
-                </div>
-				<div class="form-group">
-					<div class="col-sm-3">
-						<input type="submit" name="Addp" class="btn  btn-raised btn-success" value="Guardar datos">
-					</div>
-					<div class="col-sm-3">
-						<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-					</div>
-				</div>
-			  </div>
-              
-            </form>
-
-              </div>
-              
-            </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal Persona -->
-            <!-- /.box-header -->
-		<div id="ver-itemDialog" class="modal fade">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span></button>
-						<h2 class="modal-title">Item de cumplimiento >> Ver Item</h2>
-					</div>
-					<div class="box box-primary">
-						<div class="modal-body">
-							<div class="form-group">
-								<label for="codigo">Codigo</label>
-								<input type="text" class="form-control" name="codigo" id="codigo" value="" readonly>
-							</div>
-							<div class="form-group">
-								<label for="madurez">Madurez</label>
-								<input type="text" class="form-control" name="nivel" id="nivel" value="" readonly>
-							</div>
-                            <div class="form-group">
-								<label for="titulo">Titulo</label>
-								<textarea class="form-control" rows="3" name="titulo" id="titulo" value="" readonly></textarea>
-							</div>
-							<div class="form-group">
-								<label for="descripcion">Descripcion</label>
-								<textarea class="form-control" rows="3" name="descripcion" id="descripcion" value="" readonly></textarea>
-							</div>
-						  <div class="form-group">
-								<label for="responsable">Referente</label>
-								<input type="text" class="form-control" name="responsable" id="responsable" value="" readonly>
-							</div>
-                            <div class="form-group">
-								<label for="implementacion">Implementación</label>
-								<textarea class="form-control" rows="3" name="implementacion" id="implementacion" value="" readonly></textarea>
-							</div>
-							<div class="form-group">
-								<label for="evidencia">Evidencia</label>
-								<input type="text" class="form-control" name="evidencia" id="evidencia" value="" readonly>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
-					</div>	
- 				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->	
-		
+            <!-- /.box-header -->		
 			<div class="box-body">
               <table id="iso27k" class="display" width="100%">
                 <thead>
                 <tr>
                   <th width="1"></th>
                   <th width="1"></th>
-                  <th width="1">Ver</th>
 				          <th width="2">Codigo</th>
                   <th>Titulo</th>
                   <th>Descripcion</th>
@@ -386,17 +251,6 @@ desired effect
                     echo '<tr>';
                     echo '<td>'.$row['t_codigo']. ' - ' .$row['t_titulo']. '</td>'; 
                     echo '<td>'.$row['s_codigo']. ' - ' .$row['s_titulo']. ' <br/><small>' .$row['s_descripcion']. '</small></td>'; 
-                    echo '<td>
-                    <a data-id="'.$row['id_item_iso27k'].'" 
-                      data-codigo="'.$row['codigo'].'"
-                      data-titulo="'.$row['titulo'].'"
-                      data-descripcion="'.$row['descripcion'].'"
-                      data-responsable="'.$row['apellido'].' '.$row['nombre'].'"
-                      data-nivel="'.$row['nivel'].'"
-                      data-implementacion="'.$row['implementacion'].'"
-                      data-evidencia="'.$row['evidencia'].'"
-                      title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
-                    </td>';
                     echo '<td align="center">'.$row['codigo'].'</td>';
                     echo '<td>'.$row['titulo'].'</td>';
                     echo '<td>'.$row['descripcion'].'</td>';
@@ -508,25 +362,5 @@ desired effect
   });
 </script>
 
-<script>
-$(function(){
-  $(".ver-itemDialog").click(function(){
-    $('#itemId').val($(this).data('id'));
-	$('#codigo').val($(this).data('codigo'));
-    $('#titulo').val($(this).data('titulo'));
-	$('#descripcion').val($(this).data('descripcion'));
-	$('#responsable').val($(this).data('responsable'));
-	$('#nivel').val($(this).data('nivel'));
-	$('#implementacion').val($(this).data('implementacion'));
-	$('#evidencia').val($(this).data('evidencia'));
-	
-	$("#ver-itemDialog").modal("show");
-	
-  });
-});
-</script>
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. -->
 </body>
 </html>

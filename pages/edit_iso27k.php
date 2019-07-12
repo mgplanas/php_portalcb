@@ -8,7 +8,7 @@ if (!isset($_SESSION['usuario'])){
 	header('Location: index.html');
 }
 $user=$_SESSION['usuario'];
-$current_version=$_GET["version"];
+$current_version=mysqli_real_escape_string($con,(strip_tags($_GET["version"],ENT_QUOTES)));
 $nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
 $sql = mysqli_query($con, "SELECT i.*, m.nivel, p.nombre, p.apellido,v.modificacion as v_mod, v.numero as v_numero, v.descripcion as v_desc FROM item_iso27k as i 
 						      LEFT JOIN madurez as m on i.madurez = m.id_madurez 
@@ -18,14 +18,14 @@ $sql = mysqli_query($con, "SELECT i.*, m.nivel, p.nombre, p.apellido,v.modificac
 $sqlrefs = mysqli_query($con, "SELECT * FROM iso27k_refs WHERE id_item_iso27k = '$nik'");
 
 if(mysqli_num_rows($sql) == 0){
-	header("Location: iso27k.php?version='.$current_version.'");
+	header("Location: iso27k.php?version='$current_version'");
 }else{
 	$row = mysqli_fetch_assoc($sql);}
 			
 if(isset($_POST['save'])){
 
 	$responsable = mysqli_real_escape_string($con,(strip_tags($_POST["responsable"],ENT_QUOTES)));
-	$referentes = $_POST["referentes"];
+  $referentes = (isset($_POST["referentes"]) ? $_POST["referentes"] : []);
 	$madurez = mysqli_real_escape_string($con,(strip_tags($_POST["madurez"],ENT_QUOTES)));
 	$implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
 	$evidencia = mysqli_real_escape_string($con,(strip_tags($_POST["evidencia"],ENT_QUOTES)));
@@ -33,28 +33,30 @@ if(isset($_POST['save'])){
   
   mysqli_autocommit($con, false);
   $resultado = true;
-  $update_iso27k = mysqli_query($con, "UPDATE item_iso27k SET responsable='$responsable', madurez='$madurez', implementacion='$implementacion',                                          evidencia='$evidencia', modificado=NOW(), usuario='$user' 
+  $resultado = mysqli_query($con, "UPDATE item_iso27k SET responsable='$responsable', madurez='$madurez', implementacion='$implementacion',                                          evidencia='$evidencia', modificado=NOW(), usuario='$user' 
                      WHERE id_item_iso27k='$nik'");
-  if (!$update_iso27k) {
-    $resultado = false;
+  if ($resultado) {
+    
+    $resultado = mysqli_query($con, "DELETE FROM iso27k_refs WHERE id_item_iso27k ='$nik'");
+    if ($resultado) {
+
+      if (count($referentes,COUNT_NORMAL)>0) {
+        $sqlInsRef = "INSERT INTO iso27k_refs (id_item_iso27k, id_persona,  borrado) VALUES ";
+        $refCounter = 0;
+        foreach ($referentes as $ref) {
+          if ($refCounter > 0) $sqlInsRef .= ", ";
+          $sqlInsRef .= "('$nik', '$ref', 0)";
+          $refCounter++;
+        }  
+          
+        $resultado = mysqli_query($con, $sqlInsRef);
+      }
+      if ($resultado) {
+        $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+                        VALUES ('2', '6','$nik', now(), '$user', '$codigo')");
+      }  
+    }
   }
-  $clearRefs = mysqli_query($con, "DELETE FROM iso27k_refs WHERE id_item_iso27k ='$nik'");
-  if (!$clearRefs) {
-      $resultado = false;
-  }
-  $sqlInsRef = "INSERT INTO iso27k_refs (id_item_iso27k, id_persona,  borrado) VALUES ";
-  $refCounter = 0;
-  foreach ($referentes as $ref) {
-    if ($refCounter > 0) $sqlInsRef .= ", ";
-    $sqlInsRef .= "('$nik', '$ref', 0)";
-    $refCounter++;
-  }  
-  $insRefs = mysqli_query($con, $sqlInsRef);
-  if (!$insRefs) {
-      $resultado = false;
-  }  
-	$insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
-                         VALUES ('2', '6','$nik', now(), '$user', '$codigo')");
                     
   if ($resultado) {
     mysqli_commit($con);
@@ -62,12 +64,12 @@ if(isset($_POST['save'])){
     mysqli_rollback($con);
   }
   mysqli_autocommit($con, true);
-	if($update_iso27k){
+	if($resultado){
 		$_SESSION['formSubmitted'] = 1;
-		header("Location: iso27k.php?version='.$current_version.'");
+		header("Location: iso27k.php?version='$current_version'");
 	}else{
 		$_SESSION['formSubmitted'] = 9;
-		header("Location: iso27k.php?version='.$current_version.'");					
+		header("Location: iso27k.php?version='$current_version'");					
 	}
 }
 //Alert icons data on top bar
