@@ -10,13 +10,15 @@ if (!isset($_SESSION['usuario'])){
 
 $user=$_SESSION['usuario'];
 $current_version = 0;
+$last_version = 0;
+$sqllastver = mysqli_query($con, "SELECT id FROM iso27k_version WHERE borrado=0 ORDER BY modificacion desc LIMIT 1");
+$rowlv = mysqli_fetch_assoc($sqllastver); 
+$last_version = $rowlv['id'];
 //VERSION DE LA MATRIZ
 if ($_GET["version"]) {
   $current_version = $_GET["version"];
 } else {
-  $sqllastver = mysqli_query($con, "SELECT id FROM iso27k_version WHERE borrado=0 ORDER BY modificacion desc LIMIT 1");
-  $rowlv = mysqli_fetch_assoc($sqllastver); 
-  $current_version = $rowlv['id'];
+  $current_version = $last_version;
 }
 
 //Get user query
@@ -219,7 +221,7 @@ desired effect
                   <th>Referentes</th>
 				          <th>Madurez</th>
                   <th>Implementación</th>
-                  <th width="110px">Acciones</th>
+                  <?php if ($current_version == $last_version) { echo '<th width="110px">Acciones</th>';}?>
                 </tr>
                 </thead>
                 <tbody>
@@ -258,17 +260,18 @@ desired effect
                     echo '<td>'.$row['referentes'].'</td>'; 
                     echo '<td>'.$row['nivel'].'</td>'; 
                     echo '<td>'.$row['implementacion'].'</td>'; 
-                    echo '
-                    <td align="center">
-                      <a href="edit_iso27k.php?nik='.$row['id_item_iso27k'].'&version='. $current_version .'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-                      <a href="iso27k.php?aksi=delete&nik='.$row['id_item_iso27k'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
-                      if ($rq_sec['edicion']=='0'){
-                        echo 'disabled';
-                      }
-                      echo '"><i class="glyphicon glyphicon-trash" ></i></a>
-                    </td>
-                    </tr>
-                    ';
+                    if ($current_version == $last_version) {
+                      echo '
+                      <td align="center">
+                        <a href="edit_iso27k.php?nik='.$row['id_item_iso27k'].'&version='. $current_version .'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                        <a href="iso27k.php?aksi=delete&nik='.$row['id_item_iso27k'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
+                        if ($rq_sec['edicion']=='0'){
+                          echo 'disabled';
+                        }
+                        echo '"><i class="glyphicon glyphicon-trash" ></i></a>
+                      </td>';
+                    }
+                    echo '</tr>';
                     $no++;
                   }
                   ?>
