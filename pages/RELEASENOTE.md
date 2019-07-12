@@ -38,6 +38,12 @@ FEAT-ISO271K
 
     - se cambia la restriccion de indice unico a UNIQUE KEY `codigo_UNIQUE` (`version`,`codigo`)
 
+    - se amplian los campos varchar a 1000 para albergar más información
+        ALTER TABLE controls.item_iso27k
+        CHANGE descripcion descripcion VARCHAR(1000),
+        CHANGE implementacion implementacion VARCHAR(1000),
+        CHANGE evidencia evidencia VARCHAR(1000);
+
 - Cambios en src        
     M[iso27k.php]
     M[edit_iso27k.php]

@@ -406,7 +406,7 @@ desired effect
                     echo '<td>'.$row['implementacion'].'</td>'; 
                     echo '
                     <td align="center">
-                      <a href="edit_iso27k.php?nik='.$row['id_item_iso27k'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                      <a href="edit_iso27k.php?nik='.$row['id_item_iso27k'].'&version='. $current_version .'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
                       <a href="iso27k.php?aksi=delete&nik='.$row['id_item_iso27k'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
                       if ($rq_sec['edicion']=='0'){
                         echo 'disabled';

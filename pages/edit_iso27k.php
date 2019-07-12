@@ -8,7 +8,7 @@ if (!isset($_SESSION['usuario'])){
 	header('Location: index.html');
 }
 $user=$_SESSION['usuario'];
-
+$current_version=$_GET["version"];
 $nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
 $sql = mysqli_query($con, "SELECT i.*, m.nivel, p.nombre, p.apellido,v.modificacion as v_mod, v.numero as v_numero, v.descripcion as v_desc FROM item_iso27k as i 
 						      LEFT JOIN madurez as m on i.madurez = m.id_madurez 
@@ -18,7 +18,7 @@ $sql = mysqli_query($con, "SELECT i.*, m.nivel, p.nombre, p.apellido,v.modificac
 $sqlrefs = mysqli_query($con, "SELECT * FROM iso27k_refs WHERE id_item_iso27k = '$nik'");
 
 if(mysqli_num_rows($sql) == 0){
-	header("Location: iso27k.php");
+	header("Location: iso27k.php?version='.$current_version.'");
 }else{
 	$row = mysqli_fetch_assoc($sql);}
 			
@@ -64,10 +64,10 @@ if(isset($_POST['save'])){
   mysqli_autocommit($con, true);
 	if($update_iso27k){
 		$_SESSION['formSubmitted'] = 1;
-		header("Location: iso27k.php");
+		header("Location: iso27k.php?version='.$current_version.'");
 	}else{
 		$_SESSION['formSubmitted'] = 9;
-		header("Location: iso27k.php");					
+		header("Location: iso27k.php?version='.$current_version.'");					
 	}
 }
 //Alert icons data on top bar
@@ -447,7 +447,7 @@ desired effect
 						<input type="submit" name="save" class="btn  btn-raised btn-success" value="Guardar datos">
 					</div>
 					<div class="col-sm-2">
-						<a href="iso27k.php" class="btn btn-warning btn-raised">Cancelar</a>
+						<a href=<?php echo '"iso27k.php?version=' .$current_version. '"'; ?> class="btn btn-warning btn-raised">Cancelar</a>
 					</div>
 				</div>
 			  </div>
