@@ -85,7 +85,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
   <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="../bower_components/datatables.net/css/rowGroup.dataTables.min.css">
-
+  <link rel="stylesheet" href="../css/bootstrap-select.min.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -204,7 +204,14 @@ desired effect
             ?>
           </select>
               
-				</div>
+        </div>
+        <div class="col-sm-8" style="text-align:right;">
+          <?php
+          if ($current_version == $last_version) {
+            echo '<button type="button" id="modal-abm-iso27k-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-refresh"></i> Nuevo ítem</button>';
+          }
+          ?>
+        </div>        
             </div>
         <!-- /.modal Activo-->
             <!-- /.box-header -->		
@@ -234,8 +241,15 @@ desired effect
                     WHERE r.id_item_iso27k = i.id_item_iso27k
                     GROUP BY r.id_item_iso27k
                   ) as referentes,
-                  stit.codigo as s_codigo, stit.titulo as s_titulo, stit.descripcion as s_descripcion,
-                  tit.codigo as t_codigo, tit.titulo as t_titulo, tit.descripcion as t_descripcion
+                  (
+                    SELECT GROUP_CONCAT(refp.id_persona) as referentes
+                    FROM iso27k_refs as r
+                    INNER JOIN persona as refp ON r.id_persona = refp.id_persona
+                    WHERE r.id_item_iso27k = i.id_item_iso27k
+                    GROUP BY r.id_item_iso27k
+                  ) as referentes_ids,
+                  stit.id_item_iso27k as s_id, stit.codigo as s_codigo, stit.titulo as s_titulo, stit.descripcion as s_descripcion,
+                  tit.id_item_iso27k as t_id, tit.codigo as t_codigo, tit.titulo as t_titulo, tit.descripcion as t_descripcion
                   FROM item_iso27k as i 
                   LEFT JOIN madurez as m on i.madurez = m.id_madurez 
                   LEFT JOIN persona as p on i.responsable = p.id_persona
@@ -245,7 +259,7 @@ desired effect
                     AND i.nivel = 3 
                     AND i.version = " . $current_version;
                   
-                  $sql = mysqli_query($con, $query.' ORDER BY id_item_iso27k ASC');
+                  $sql = mysqli_query($con, $query.' ORDER BY tit.id_item_iso27k, stit.id_item_iso27k, i.id_item_iso27k ASC');
 
                   $no = 1;
                   while($row = mysqli_fetch_assoc($sql)){
@@ -260,10 +274,25 @@ desired effect
                     echo '<td>'.$row['referentes'].'</td>'; 
                     echo '<td>'.$row['nivel'].'</td>'; 
                     echo '<td>'.$row['implementacion'].'</td>'; 
+                    // href="edit_iso27k.php?nik='.$row['id_item_iso27k'].'&version='. $current_version .'"
                     if ($current_version == $last_version) {
                       echo '
                       <td align="center">
-                        <a href="edit_iso27k.php?nik='.$row['id_item_iso27k'].'&version='. $current_version .'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                        <a 
+                          data-id="'.$row['id_item_iso27k'].'"
+                          data-version-id="'.$current_version.'" 
+                          data-grupo="'.$row['t_id'].'" 
+                          data-subgrupo="'.$row['s_id'].'" 
+                          data-responsable="'.$row['responsable'].'" 
+                          data-referentes="'.$row['referentes_ids'].'" 
+                          data-madurez="'.$row['madurez'].'" 
+                          data-codigo="'.$row['codigo'].'" 
+                          data-titulo="'.$row['titulo'].'" 
+                          data-descripcion="'.$row['descripcion'].'" 
+                          data-implementacion="'.$row['implementacion'].'" 
+                          data-evidencia="'.$row['evidencia'].'" 
+                          data-usuario="'.$user.'" 
+                          title="Editar datos" class="modal-abm-iso27k-btn-edit btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
                         <a href="iso27k.php?aksi=delete&nik='.$row['id_item_iso27k'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
                         if ($rq_sec['edicion']=='0'){
                           echo 'disabled';
@@ -285,6 +314,9 @@ desired effect
           <!-- /.box -->
         </div>
         <!-- /.col -->
+        <?php
+            include_once('./modals/abmiso27k.php');
+        ?>        
       </div>
       <!-- /.row -->
     </section>
@@ -325,6 +357,8 @@ desired effect
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
+<script src="../js/bootstrap-select.min.js"></script>
+<script src="./modals/abmiso27k.js"></script>  
       
 <script>
   $(function () {
@@ -362,6 +396,14 @@ desired effect
     $('#versionselector').on('change', function() {
       window.location.href = "iso27k.php?version=".concat(this.value);
     });    
+
+    // let tableISO = $('#iso27k').dataTable();
+    // tableISO.$('.edititem').click( function () {
+    //   let data = tableISO.fnGetData( $(this).parents('tr') );
+    //   console.log(data);
+    //   data[3] = 'changed';
+    //   tableISO.fnUpdate(data,$(this).parents('tr'),undefined,false);
+    // });
   });
 </script>
 

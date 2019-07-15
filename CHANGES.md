@@ -17,7 +17,18 @@
     - Corrijo metricas del dashboard principal y particular de iso
         M[site.php]
         M[met_iso27k.php]
-    
+    - Corrijo redireccion de edit_iso27k.php
+        M[edit_iso27k.php]
+    - Muestro acciones solo para la última version de la matriz
+        M[iso27k.php]
+    - ABM ItemISO
+        N[modals]
+        N[helpers]
+        N[modals/abmiso27k.js/php]
+        N[helpers/abmiso27kdb.php]
+        N[helpers/getAsyncDataFromDB.php]
+        N[..css/boostrap-select.min.css]
+        N[..js/boostrap-select.min.js]
 
 
 ## FEAT-PROYECTOS

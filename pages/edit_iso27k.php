@@ -433,26 +433,26 @@ desired effect
                                     echo "<option value='". $rowmd['id_madurez'] . "'>" .$rowmd['nivel'] . "</option>";										
                                 }
                             }
-						?>
+						            ?>
                    </select>
                 </div>
                 <div class="form-group">
                   <label for="implementacion">Implementación</label>
                   <?php echo "<textarea class=form-control name=implementacion>{$row['implementacion']}</textarea>"; ?>
                </div>
-				<div class="form-group">
+				      <div class="form-group">
                   <label for="evidencia">Evidencia</label>
                   <?php echo "<textarea class=form-control name=evidencia>{$row['evidencia']}</textarea>"; ?>
                </div>
-				 <div class="form-group">
-					<div class="col-sm-2">
-						<input type="submit" name="save" class="btn  btn-raised btn-success" value="Guardar datos">
-					</div>
-					<div class="col-sm-2">
-						<a href=<?php echo '"iso27k.php?version=' .$current_version. '"'; ?> class="btn btn-warning btn-raised">Cancelar</a>
-					</div>
-				</div>
-			  </div>
+              <div class="form-group">
+                <div class="col-sm-2">
+                  <input type="submit" name="save" class="btn  btn-raised btn-success" value="Guardar datos">
+                </div>
+                <div class="col-sm-2">
+                  <a href=<?php echo '"iso27k.php?version=' .$current_version. '"'; ?> class="btn btn-warning btn-raised">Cancelar</a>
+                </div>
+              </div>
+			        </div>
             </form>
           </div>
     <!-- /.content -->
