@@ -47,3 +47,15 @@ FEAT-ISO271K
 - Cambios en src        
     M[iso27k.php]
     M[edit_iso27k.php]
+    N[/datatables.net/css/rowGroup.dataTables.min.css] 
+    N[/datatables.net/js/dataTables.rowGroup.min.js]   |  25 ++
+    N[css/bootstrap-select.min.css]                       |   6 +
+    N[js/bootstrap-select.min.js]                         |   9 +
+    M[pages/edit_iso27k.php]                              | 140 +++++--
+    N[pages/helpers/abmiso27kdb.php]                      | 118 ++++++
+    N[pages/helpers/getAsyncDataFromDB.php]               |  21 +
+    M[pages/iso27k.php]                                   | 431 +++++++--------------
+    M[pages/met_iso27k.php]                               |   3 +-
+    N[pages/modals/abmiso27k.js]                          | 176 +++++++++
+    N[pages/modals/abmiso27k.php]                         | 115 ++++++
+    M[site.php]                                           |   3 +-
