@@ -4,6 +4,36 @@ $(function() {
     // ISO 27K
     // ********************************************************************************************
     function setAMBISO27kTriggers() {
+
+        // BAJA
+        $('.modal-abm-iso27k-btn-baja').click(function() {
+            if (confirm('Esta seguro de borrar los datos del ítem ' + $(this).data('codigo') + '?')) {
+                let id = $(this).data('id');
+                let version = $('#versionselector :selected').val();
+                // Ejecuto
+                $.ajax({
+                    type: 'POST',
+                    url: './helpers/abmiso27kdb.php',
+                    data: {
+                        operacion: 'B',
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function(json) {
+                        if (!json.ok) {
+                            alert(json.err);
+                        } else {
+                            window.location.href = "iso27k.php?version=".concat(version);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert(xhr.responseText, error);
+                    }
+                });
+
+            }
+        });
+
         // ALTA
         // seteo boton trigger para el alta de gerencia
         $('#modal-abm-iso27k-btn-alta').click(function() {
@@ -93,7 +123,15 @@ $(function() {
             dataType: 'json',
             success: function(json) {
                 $("#modal-abm-iso27k").modal("hide");
-                window.location.href = "iso27k.php?version=".concat(json.version);
+                if (!json.ok) {
+                    if (json.err.indexOf('UNIQUE')) {
+                        alert('El código del ítem debe ser único para el grupo/subgrupo.');
+                    } else {
+                        alert(json.err);
+                    }
+                } else {
+                    window.location.href = "iso27k.php?version=".concat(json.version);
+                }
                 // refreshDataRow($('#modal-abm-iso27k-rowindex').val());
                 // setAMBISO27kTriggers();
             },

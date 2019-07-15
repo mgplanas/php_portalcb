@@ -12,6 +12,8 @@
 	$responsable = mysqli_real_escape_string($con,(strip_tags($_POST["responsable"],ENT_QUOTES)));
     $referentes = (isset($_POST["referentes"]) ? $_POST["referentes"] : []);
 	$madurez = mysqli_real_escape_string($con,(strip_tags($_POST["madurez"],ENT_QUOTES)));
+	$titulo = mysqli_real_escape_string($con,(strip_tags($_POST["titulo"],ENT_QUOTES)));
+	$descripcion = mysqli_real_escape_string($con,(strip_tags($_POST["descripcion"],ENT_QUOTES)));
 	$implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
 	$evidencia = mysqli_real_escape_string($con,(strip_tags($_POST["evidencia"],ENT_QUOTES)));
     $codigo = mysqli_real_escape_string($con,(strip_tags($_POST["codigo"],ENT_QUOTES)));
@@ -26,23 +28,44 @@
     switch ($op) {
         case 'A':
             // INSERT
-            // $insert_cliente = mysqli_query($con, "INSERT INTO cdc_cliente(id_organismo, razon_social, nombre_corto,cuit, sector) 
-            //                                     VALUES ('$id_organismo', '$razon_social', '$nombre_corto','$cuit', '$sector')") or die(mysqli_error());	
-            // $lastInsert = mysqli_insert_id($con);
-            // $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-            //                                     VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
-            // $result->id = $lastInsert;
+            $resultado = mysqli_query($con, "INSERT INTO item_iso27k (codigo,titulo,descripcion,madurez,implementacion,responsable,evidencia,modificado,borrado,usuario,nivel,parent,version) 
+                                      VALUES ('$codigo', '$titulo', '$descripcion', '$madurez', '$implementacion', '$responsable', '$evidencia', NOW(), 0, '$user', 3, '$subgrupo', '$version')");
+            $result->err = $con->error;
+            if ($resultado) {
+                $lastInsert = mysqli_insert_id($con);
+
+                if ($referentes && count($referentes,COUNT_NORMAL)>0) {
+                    $sqlInsRef = "INSERT INTO iso27k_refs (id_item_iso27k, id_persona,  borrado) VALUES ";
+                    $refCounter = 0;
+                    foreach ($referentes as $ref) {
+                        if ($refCounter > 0) $sqlInsRef .= ", ";
+                        $sqlInsRef .= "('$lastInsert', '$ref', 0)";
+                        $refCounter++;
+                    }  
+                    $resultado = mysqli_query($con, $sqlInsRef);
+                    $result->err = $con->error;
+                }
+                if ($resultado) {
+                    $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+                            VALUES ('1', '6','$id', now(), '$user', '$codigo')");
+                }  
+            }
+
+            
+            $result->id = $lastInsert;
             break;
         
         case 'M':
             //UPDATE
-            $resultado = mysqli_query($con, "UPDATE item_iso27k SET parent='$subgrupo', responsable='$responsable', madurez='$madurez', implementacion='$implementacion', evidencia='$evidencia', modificado=NOW(), usuario='$user' WHERE id_item_iso27k='$id'");
+            $resultado = mysqli_query($con, "UPDATE item_iso27k SET codigo='$codigo', titulo='$titulo', descripcion='$descripcion', parent='$subgrupo', responsable='$responsable', madurez='$madurez', implementacion='$implementacion', evidencia='$evidencia', modificado=NOW(), usuario='$user' WHERE id_item_iso27k='$id'");
+            $result->err = $con->error;
             if ($resultado) {
 
                 $resultado = mysqli_query($con, "DELETE FROM iso27k_refs WHERE id_item_iso27k ='$id'");
+                $result->err = $con->error;
                 if ($resultado) {
 
-                    if (count($referentes,COUNT_NORMAL)>0) {
+                    if ($referentes && count($referentes,COUNT_NORMAL)>0) {
                         $sqlInsRef = "INSERT INTO iso27k_refs (id_item_iso27k, id_persona,  borrado) VALUES ";
                         $refCounter = 0;
                         foreach ($referentes as $ref) {
@@ -51,6 +74,7 @@
                             $refCounter++;
                         }  
                         $resultado = mysqli_query($con, $sqlInsRef);
+                        $result->err = $con->error;
                     }
                     if ($resultado) {
                         $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
@@ -58,18 +82,20 @@
                     }  
                 }
             }
-
-            // $update_clietne = mysqli_query($con, "UPDATE cdc_cliente SET id_organismo='$id_organismo', razon_social='$razon_social', nombre_corto='$nombre_corto', cuit='$cuit', sector='$sector' 
-            //                                         WHERE id='$id'") or die(mysqli_error());	
-            // $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-            //                                     VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
             break;
 
         case 'B':
             //UPDATE
-            // $update_cliente = mysqli_query($con, "UPDATE cdc_cliente SET borrado='1' WHERE id='$id'") or die(mysqli_error());	
-            // $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-            //                                     VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
+            $resultado = mysqli_query($con, "UPDATE item_iso27k SET borrado='1' WHERE id_item_iso27k='$id'");
+            $result->err = $con->error;
+            if ($resultado) {
+                $resultado = mysqli_query($con, "DELETE FROM iso27k_refs WHERE id_item_iso27k ='$id'");
+                $result->err = $con->error;
+                if ($resultado) {
+                    $resultado = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
+                                                        VALUES ('3', '6', '$lastInsert', now(), '$user')");
+                }                
+            }
             break;
 
         default:

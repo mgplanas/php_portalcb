@@ -28,28 +28,6 @@ $id_rowp = $rowp['id_persona'];
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);
 
-if(isset($_GET['aksi']) == 'delete'){
-	// escaping, additionally removing everything that could be (html/javascript-) code
-	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
-	$cek = mysqli_query($con, "SELECT * FROM item_iso27k WHERE id_item_iso27k='$nik'");
-	$cekd = mysqli_fetch_assoc($cek);
-    $titulo = $cekd['codigo'];
-    
-    if(mysqli_num_rows($cek) == 0){
-		echo '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> No se encontraron datos.</div>';
-	}else{
-		//Elimino Activo
-		
-        $delete_iso = mysqli_query($con, "UPDATE item_iso27k SET `borrado`='1' WHERE id_item_iso27k='$nik'");
-      
-        $delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
-											   VALUES ('3', '6', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
-		if(!$delete_iso){
-			$_SESSION['formSubmitted'] = 9;
-		}
-	}
-}
-
 //Get Personas
 $personas = mysqli_query($con, "SELECT * FROM persona");
 				
@@ -293,7 +271,7 @@ desired effect
                           data-evidencia="'.$row['evidencia'].'" 
                           data-usuario="'.$user.'" 
                           title="Editar datos" class="modal-abm-iso27k-btn-edit btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-                        <a href="iso27k.php?aksi=delete&nik='.$row['id_item_iso27k'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
+                        <a data-id="'.$row['id_item_iso27k'].'" data-codigo="'.$row['codigo'].'" title="Borrar datos" class="btn btn-danger btn-sm modal-abm-iso27k-btn-baja';
                         if ($rq_sec['edicion']=='0'){
                           echo 'disabled';
                         }
