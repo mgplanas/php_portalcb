@@ -50,7 +50,7 @@
                         order by i.id_item_iso27k';
         $resnivel2 = mysqli_query($con_SRC, $sqlnivel2);
         while($rowN2 = mysqli_fetch_assoc($resnivel2)){
-            $sqlinsertN2 = 'INSERT INTO item_iso27k (codigo, titulo, descripcion, nivel, version, borrado) values ("'. $rowN2['codigo'].'", "'. $rowN2['titulo'].'", "'. $rowN2['descripcion'].'", 2, 2, 0 );' ;
+            $sqlinsertN2 = 'INSERT INTO item_iso27k (codigo, titulo, descripcion, nivel, version, parent, borrado) values ("'. $rowN2['codigo'].'", "'. $rowN2['titulo'].'", "'. $rowN2['descripcion'].'", 2, 2,'. $idN1 .', 0 );' ;
             $insnivel2 = mysqli_query($con_TRG, $sqlinsertN2);
             $idN2 = mysqli_insert_id($con_TRG);
 
