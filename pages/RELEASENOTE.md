@@ -45,12 +45,12 @@ FEAT-ISO271K
         CHANGE evidencia evidencia VARCHAR(1000);
 
 - Cambios en src        
-    M[iso27k.php]
-    M[edit_iso27k.php]
     N[/datatables.net/css/rowGroup.dataTables.min.css] 
     N[/datatables.net/js/dataTables.rowGroup.min.js]   |  25 ++
     N[css/bootstrap-select.min.css]                       |   6 +
     N[js/bootstrap-select.min.js]                         |   9 +
+    M[iso27k.php]
+    M[edit_iso27k.php]
     M[pages/edit_iso27k.php]                              | 140 +++++--
     N[pages/helpers/abmiso27kdb.php]                      | 118 ++++++
     N[pages/helpers/getAsyncDataFromDB.php]               |  21 +

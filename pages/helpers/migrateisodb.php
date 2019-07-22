@@ -9,7 +9,7 @@
     $db_name_SRC = "controls";
 
     /*Datos de conexion a la base de datos TARGET*/
-    $db_host_TRG = "192.168.24.122";
+    $db_host_TRG = "192.168.26.122";
     $db_user_TRG = "admin";
     $db_pass_TRG = "Swap33done";
     $db_name_TRG = "controls";
