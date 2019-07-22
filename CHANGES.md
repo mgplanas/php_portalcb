@@ -1,3 +1,11 @@
+## FEAT-PROY-TAREAS
+### Cambios en la Proyectos.
+*Fecha:* 2019-07-22
+*Cambios:*
+    - Cambio L&F de las tablas
+    - Agregado de filtro en campo categoría en tabla Completados
+    M[proyetos.php]
+
 ## FEAT-ISO271K
 ### Cambios en la matriz de cumplimiento.
 *Fecha:* 2019-07-04

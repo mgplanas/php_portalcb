@@ -1581,17 +1581,53 @@ desired effect
 </script>  
 <script>
   $(function () {
-    $('#completados').DataTable({
+    let tableCompletados = $('#completados').DataTable({
       'language': { 'emptyTable': 'No hay proyectos' },
       'paging'      : false,
       'lengthChange': true,
       'searching'   : true,
-      'ordering'    : false,
+      'ordering'    : true,
       'info'        : true,
       'autoWidth'   : true,
+    });
+    $('#completados thead tr').clone(true).appendTo( '#completados thead' );
+    $('#completados thead tr:eq(1) th').each( function (colIdx) {
+      $(this).removeClass('sorting');
+      let table = $('#completados').DataTable();
 
-    })
-  })
+      // Si son las columnas de filtro creo el ddl
+      if (colIdx == 4) {
+          var select = $('<select style="width: 100%;"><option value=""></option></select>')
+          .on( 'change', function () {
+              table
+                  .column( colIdx )
+                  .search( $(this).val() )
+                  .draw();
+          } )
+          .on( 'click' , function(){return false;} )
+          // .wrap( "<div></div>" );             // VER
+          // Get the search data for the first column and add to the select list
+          table
+              .column( colIdx )
+              .cache( 'search' )
+              .sort()
+              .unique()
+              .each( function ( d ) {
+                  select.append( $('<option value="'+d+'">'+d+'</option>') );
+              });
+          
+          var filterhtml = select.parent().prop('outerHTML');
+          $(this).html(select);
+          // $(this).html(filterhtml);
+
+      }
+      else {
+          $(this).html("");
+      }
+
+    } );
+
+  });
 </script>
 <script>
     window.onload = function() {
