@@ -1,3 +1,36 @@
+## FEAT-ISO271K
+### Cambios en la matriz de cumplimiento.
+*Fecha:* 2019-07-04
+*Cambios:*
+    - Cambio L&F de las tablas
+        M[iso271k.php]
+    - Poder seleccionar multiples referentes.
+        M[edit_iso27k.php]
+    - Agrego columna referentes a la grilla y cambio label referente por responsable
+        M[iso271k.php]
+    - Agrego campos de nivel y parent para agrupar los items
+        M[iso271k.php]
+        N[datatable.rougroup.css/js]
+    - Agrego campo de versión y selector de la misma
+        M[iso271k.php]
+        M[edit-iso27.php] 
+    - Corrijo metricas del dashboard principal y particular de iso
+        M[site.php]
+        M[met_iso27k.php]
+    - Corrijo redireccion de edit_iso27k.php
+        M[edit_iso27k.php]
+    - Muestro acciones solo para la última version de la matriz
+        M[iso27k.php]
+    - ABM ItemISO
+        N[modals]
+        N[helpers]
+        N[modals/abmiso27k.js/php]
+        N[helpers/abmiso27kdb.php]
+        N[helpers/getAsyncDataFromDB.php]
+        N[..css/boostrap-select.min.css]
+        N[..js/boostrap-select.min.js]
+
+
 ## FEAT-PROYECTOS
 ### Identificación de proyectos y nuevas métricas de avance.
 *Fecha:* 2019-07-02
