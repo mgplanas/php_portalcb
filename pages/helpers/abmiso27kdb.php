@@ -102,6 +102,12 @@
             break;
     }
 
+    // AGREG LA ACTUALIZACION DE LA FECHA DE LA VERSION
+    if ($resultado) {
+        $resultado = mysqli_query($con, "UPDATE iso27k_version SET modificacion=NOW() WHERE id='$version'");
+        $result->err = $con->error;
+    }
+
     if ($resultado) {
         mysqli_commit($con);
     } else {
