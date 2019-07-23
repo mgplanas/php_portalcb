@@ -185,9 +185,9 @@ desired effect
         </div>
         <div class="col-sm-8" style="text-align:right;">
           <?php
-          if ($current_version == $last_version) {
-            echo '<button type="button" id="modal-abm-iso27k-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-refresh"></i> Nuevo ítem</button>';
-          }
+          // if ($current_version == $last_version) {
+          //   echo '<button type="button" id="modal-abm-iso27k-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-refresh"></i> Nuevo ítem</button>';
+          // }
           ?>
         </div>        
             </div>

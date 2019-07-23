@@ -6,6 +6,8 @@
         M[iso27k.php]
     - Se actualiza la fecha de la versión de la matriz al actualizar cualquier item
         M[helpers/abmiso27kdb.php]
+    - Se oculta la funcionalidad de alta
+        M[iso27k.php]
 
 ## FEAT-PROY-TAREAS
 ### Cambios en la Proyectos.
