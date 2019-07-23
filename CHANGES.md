@@ -1,3 +1,12 @@
+## FIX-ISO27K
+### Correcciones a los últimos cambios en la matriz de la iso27k.
+*Fecha:* 2019-07-23
+*Cambios:*
+    - Se oculta el botón de borrado 
+        M[iso27k.php]
+    - Se actualiza la fecha de la versión de la matriz al actualizar cualquier item
+        M[helpers/abmiso27kdb.php]
+
 ## FEAT-PROY-TAREAS
 ### Cambios en la Proyectos.
 *Fecha:* 2019-07-22

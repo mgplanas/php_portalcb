@@ -206,7 +206,7 @@ desired effect
                   <th>Referentes</th>
 				          <th>Madurez</th>
                   <th>Implementación</th>
-                  <?php if ($current_version == $last_version) { echo '<th width="110px">Acciones</th>';}?>
+                  <?php if ($current_version == $last_version) { echo '<th width="1"></th>';}?>
                 </tr>
                 </thead>
                 <tbody>
@@ -270,13 +270,13 @@ desired effect
                           data-implementacion="'.$row['implementacion'].'" 
                           data-evidencia="'.$row['evidencia'].'" 
                           data-usuario="'.$user.'" 
-                          title="Editar datos" class="modal-abm-iso27k-btn-edit btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-                        <a data-id="'.$row['id_item_iso27k'].'" data-codigo="'.$row['codigo'].'" title="Borrar datos" class="btn btn-danger btn-sm modal-abm-iso27k-btn-baja';
-                        if ($rq_sec['edicion']=='0'){
-                          echo 'disabled';
-                        }
-                        echo '"><i class="glyphicon glyphicon-trash" ></i></a>
-                      </td>';
+                          title="Editar datos" class="modal-abm-iso27k-btn-edit btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                        // echo '<a data-id="'.$row['id_item_iso27k'].'" data-codigo="'.$row['codigo'].'" title="Borrar datos" class="btn btn-danger btn-sm modal-abm-iso27k-btn-baja';
+                        // if ($rq_sec['edicion']=='0'){
+                        //   echo 'disabled';
+                        // }
+                        // echo '"><i class="glyphicon glyphicon-trash" ></i></a>
+                      echo '</td>';
                     }
                     echo '</tr>';
                     $no++;

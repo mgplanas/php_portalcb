@@ -1,6 +1,7 @@
 ## RELEASE NOTE FOR REL 0008
 ### Features
 FEAT-PROY-TAREAS
+FIX-ISO27K
 
 
 ### Pasos
@@ -11,4 +12,6 @@ FEAT-PROY-TAREAS
 - Cambios en DB                                                                 
 
 - Cambios en src        
-    M[proyectos.php]                                         
+    M[proyectos.php]
+    M[iso27k.php]   
+    M[helpers/abmiso27kdb.php]                                      
