@@ -1,3 +1,17 @@
+## FIX-ISO9K1
+### Nuevo módulo para alojar la matriz de ISO9001 basado en la misma funcionalidad de la iso27k1.
+*Fecha:* 2019-07-23
+*Cambios:*
+    - Se duplican las estructuras de datos para alojar la informacion de la ISO9K1
+    M[BBDD]
+    - Se duplica la existete funcionalidad de la iso 27k1 para la 90001
+    N[helpers/abmiso9k.php]
+    N[modals/abmiso9k.js]
+    N[modals/abmiso9k.php]
+    N[iso9k.php]
+    - Creo estructura de menu para alojar las matrices
+    M[site_sidebar.php]
+
 ## FIX-ISO27K
 ### Correcciones a los últimos cambios en la matriz de la iso27k.
 *Fecha:* 2019-07-23
