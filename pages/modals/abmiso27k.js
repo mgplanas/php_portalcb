@@ -54,7 +54,7 @@ $(function() {
 
             let referentes_ids = [];
             if ($(this).data('referentes')) {
-                referentes_ids = $(this).data('referentes').split(',');
+                referentes_ids = $(this).data('referentes').toString().split(',');
             }
             $('#modal-abm-iso27k-id').val($(this).data('id'));
             $('#modal-abm-iso27k-version-id').val($('#versionselector :selected').val());

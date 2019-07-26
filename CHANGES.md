@@ -8,6 +8,8 @@
         M[helpers/abmiso27kdb.php]
     - Se oculta la funcionalidad de alta
         M[iso27k.php]
+    - Error al abrir popup cuando hay un solo referente
+        M[iso27k.php]
 
 ## FEAT-PROY-TAREAS
 ### Cambios en la Proyectos.
