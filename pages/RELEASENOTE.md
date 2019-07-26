@@ -52,4 +52,5 @@ CREATE TABLE `iso9k_refs` (
     N[modals/abmiso9k.js]
     N[modals/abmiso9k.php]
     N[iso9k.php]
-    M[site_sidebar.php]                                    
+    M[site_sidebar.php]
+    M[../site.php]                                    
