@@ -26,7 +26,7 @@ $(function() {
         $("#modal-import-hosting-status-body").empty();
 
         var btn = $(this);
-        var formData = new FormData(this);
+        var formData = new FormData();
         var inputFile = $("#modal-import-hosting-file")[0];
         var hasHeading = $("#modal-import-hosting-heading").is(':checked');
         if (!inputFile.files.length) {
