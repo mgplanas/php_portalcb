@@ -388,7 +388,7 @@ desired effect
                            <label for="abierto">Abierto por</label>
                             <select name="abierto" class="form-control">
                             <?php
-                                    $personasn = mysqli_query($con, "SELECT * FROM persona");
+                                    $personasn = mysqli_query($con, "SELECT * FROM persona WHERE borrado=0 ORDER BY apellido, nombre");
                                     while($rowps = mysqli_fetch_array($personasn)){
                                         if($rowps['id_persona']==$row['abierto']) {
                                             echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
@@ -404,7 +404,7 @@ desired effect
                            <label for="responsable">Responsable</label>
                             <select name="responsable" class="form-control">
                             <?php
-                                    $personasn = mysqli_query($con, "SELECT * FROM persona");
+                                    $personasn = mysqli_query($con, "SELECT * FROM persona WHERE borrado=0 ORDER BY apellido, nombre");
                                     while($rowps = mysqli_fetch_array($personasn)){
                                         if($rowps['id_persona']==$row['responsable']) {
                                             echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";

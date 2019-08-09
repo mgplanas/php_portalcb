@@ -59,7 +59,7 @@
                         <label>Responsable</label>
                         <select name="responsable" class="form-control" id="modal-abm-iso9k-responsable">
                             <?php
-                                $personasn = mysqli_query($con, "SELECT * FROM persona ORDER BY apellido, nombre");
+                                $personasn = mysqli_query($con, "SELECT * FROM persona  WHERE borrado=0 ORDER BY apellido, nombre");
                                 while($rowps = mysqli_fetch_array($personasn)){
                                     echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
                                 }
