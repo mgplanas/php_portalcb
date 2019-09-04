@@ -1,3 +1,16 @@
+## FEAT-CTRL-OBS
+### Identificación de nuevos estados en las referencia de los controles para determinar aquellos que han sido observados.
+*Fecha:* 2019-09-04
+*Cambios:*
+    - Se agregan los estados 3 y 4 ("Controlado con obs alta" y "Controlado con obs baja"en la edición de las instancias de controles
+    M[pages/edit_referencia.php]
+    - Se actualiza la visualización en la grilla de instancias del control.
+    - Se actualizan los indicadores de cumplimiento (Gráfico de tortas)
+    M[pages/control.php]
+    - Se actualizan los graficos de métricas
+    M[pages/met_controles.php]
+    M[site.php]
+
 ## FIX-ISO9K1
 ### Nuevo módulo para alojar la matriz de ISO9001 basado en la misma funcionalidad de la iso27k1.
 *Fecha:* 2019-07-23

@@ -125,6 +125,28 @@ AND referencias.status='2'
 AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )");
 $cp = mysqli_num_rows($qcp);
 
+$qoa = mysqli_query($con,"SELECT 1 as total 
+FROM controles 
+INNER JOIN persona as p ON controles.responsable = p.id_persona
+INNER JOIN referencias ON controles.id_control = referencias.id_control
+WHERE referencias.mes <= MONTH(CURRENT_DATE()) AND referencias.ano =  YEAR(CURRENT_DATE()) 
+and controles.borrado = 0
+and referencias.borrado = 0
+AND referencias.status='3'
+AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )");
+$oa = mysqli_num_rows($qoa);
+
+$qob = mysqli_query($con,"SELECT 1 as total 
+FROM controles 
+INNER JOIN persona as p ON controles.responsable = p.id_persona
+INNER JOIN referencias ON controles.id_control = referencias.id_control
+WHERE referencias.mes <= MONTH(CURRENT_DATE()) AND referencias.ano =  YEAR(CURRENT_DATE()) 
+and controles.borrado = 0
+and referencias.borrado = 0
+AND referencias.status='4'
+AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )");
+$ob = mysqli_num_rows($qob);
+
 ?>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -741,6 +763,18 @@ desired effect
         color    : '#00a65a',
         highlight: '#00a65a',
         label    : 'Controlado'
+      },
+      {
+        value    : <?php echo $oa; ?>,
+        color    : '#f39c12',
+        highlight: '#f39c12',
+        label    : 'Controlado con obs alta'
+      },
+      {
+        value    : <?php echo $ob; ?>,
+        color    : '#f37c00',
+        highlight: '#f37c00',
+        label    : 'Controlado con obs baja'
       }
 	]
     var pieOptions     = {
