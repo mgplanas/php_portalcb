@@ -10,6 +10,9 @@
     - Se actualizan los graficos de métricas
     M[pages/met_controles.php]
     M[site.php]
+    - Se agrega el campo de búsqueda en la grilla de controles
+    M[pages/controles.php]
+
 
 ## FIX-ISO9K1
 ### Nuevo módulo para alojar la matriz de ISO9001 basado en la misma funcionalidad de la iso27k1.
