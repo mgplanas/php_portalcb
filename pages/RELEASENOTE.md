@@ -15,5 +15,7 @@ insert into estados select 4,"Controlado con obs baja", "yellow"
 - Cambios en src
     M[edit_referencia.php]
     M[pages/control.php]
+    M[pages/controles.php]
+    M[pages/cal_controles.php]
     M[pages/met_controles.php]
     M[site.php]

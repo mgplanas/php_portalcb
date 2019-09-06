@@ -12,6 +12,8 @@
     M[site.php]
     - Se agrega el campo de búsqueda en la grilla de controles
     M[pages/controles.php]
+    - Se corrige el calendario de controles para alojar los nuevos estados.
+    M[pages/cal_controles]
 
 
 ## FIX-ISO9K1

@@ -296,12 +296,14 @@ desired effect
                                                                             REF.status as estadoControl, 
                                                                             REF.controlador,
                                                                             GER.nombre as gerencia,
+                                                                            EST.estado as nombreEstado,
                                                                             CONCAT(CLD.apellido , ', ' , CLD.nombre) as controladorNombre
                                                                     FROM referencias as REF
                                                                     INNER JOIN controles as CON ON REF.id_control = CON.id_control
                                                                     LEFT JOIN persona AS RES ON CON.responsable = RES.id_persona
                                                                     LEFT JOIN gerencia AS GER ON RES.gerencia = GER.id_gerencia
                                                                     LEFT JOIN persona AS CLD ON REF.controlador = CLD.id_persona
+                                                                    LEFT JOIN estados AS EST ON REF.status = EST.id_estado
                                                                     WHERE CON.ano = YEAR(NOW())
                                                                     AND REF.borrado = 0
                                                                     AND CON.borrado = 0 
@@ -353,7 +355,12 @@ desired effect
                                                                         //----------------------------
                                                                         echo '<td ' . ($row['mes']==$mesActual ? 'class="mesactual"' : ''  ) . '>';
                                                                         // Cambio el ícono si está pendiente o no
-                                                                        if ($row['estadoControl']==1) {
+                                                                        // Controlado/Obs Altas y bajas
+                                                                        if ($row['estadoControl']!=2) {
+                                                                            $color = 'green';
+                                                                            if ($row['estadoControl'] == 3) { $color = '#f39c12'; }
+                                                                            if ($row['estadoControl'] == 4) { $color = '#f37c00'; }
+
                                                                             echo '<a  data-idref="'.$row['id_referencia'].'"
                                                                                 data-criticidad="'.$row['criticidad'].'" 
                                                                                 data-titulo="'.$row['titulo'].'" 
@@ -362,13 +369,14 @@ desired effect
                                                                                 data-responsable="'.$row['responsableNombre'].'" 
                                                                                 data-gerencia="'.$row['gerencia'].'" 
                                                                                 data-estatus="'.$row['estadoControl'].'" 
+                                                                                data-nombreestado="'.$row['nombreEstado'].'" 
                                                                                 data-controlador="'.$row['controladorNombre'].'" 
                                                                                 data-accion="'.$row['accion'].'" 
                                                                                 data-observacion="'.$row['observacion'].'" 
                                                                                 data-evidencia="'.$row['evidencia'].'" 
                                                                                 data-mes="'.$row['mes'].'" 
-                                                                                title="Controlado - [' . $row['controladorNombre'] . ']" class="ver-itemDialog btn"><i class="glyphicon glyphicon-ok-sign" style="color:green; font-size: 20px;"></i></a>';
-                                                                            } else {
+                                                                                title="'. $row['nombreEstado']. ' - [' . $row['controladorNombre'] . ']" class="ver-itemDialog btn"><i class="glyphicon glyphicon-ok-sign" style="color:' . $color . '; font-size: 20px;"></i></a>';
+                                                                        } else {
                                                                                 // Si está pendiente me fijo si está atrazado con respecto al mes en curso
                                                                             if ($mesActual > $row['mes']) {
                                                                                 echo '<a 
@@ -662,8 +670,8 @@ desired effect
                 $('#divaccion').hide();
                 $('#divobservacion').hide();
                 $('#divevidencia').hide();
-                if ($(this).data('estatus') == 1) {
-                    $('#estatus').val('Completado');
+                if ($(this).data('estatus') != 2) {
+                    $('#estatus').val($(this).data('nombreestado'));
                     $('#controlador').val($(this).data('controlador'));
                     $('#divaccion').show();
                     $('#divobservacion').show();
