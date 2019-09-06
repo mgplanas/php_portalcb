@@ -1,3 +1,10 @@
+## FEAT-CAL-RIESGOS
+### Nuevas funcionalidades en el calendario de Riesgos.
+*Fecha:* 2019-09-06
+*Cambios:*
+    - Se agrega un nuevo calendario de riesgos para representar los cerrados
+    M[pages/cal_riegos.php]
+
 ## FEAT-CTRL-OBS
 ### Identificación de nuevos estados en las referencia de los controles para determinar aquellos que han sido observados.
 *Fecha:* 2019-09-04
