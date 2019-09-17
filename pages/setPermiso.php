@@ -55,5 +55,17 @@
         $sel1=mysqli_query($con, $sel);
     }
     }
+    else if ($f=='5'){
+    $admin = $check['admin_proy'];
+    
+    if ($admin == '0'){
+        $sel="update permisos set admin_proy='1' where id_permiso='$s'";
+        $sel1=mysqli_query($con, $sel);
+    }
+    else{
+        $sel="update permisos set admin_proy='0' where id_permiso='$s'";
+        $sel1=mysqli_query($con, $sel);
+    }
+    }
     
 ?>

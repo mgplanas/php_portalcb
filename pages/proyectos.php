@@ -40,6 +40,7 @@ $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' and bor
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
 $id_rowpg = $rowp['grupo'];
+$per_id_gerencia = $rowp['gerencia'];
 
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);
@@ -205,7 +206,7 @@ desired effect
               <li class="active"><a href="#tab_1" data-toggle="tab">Mis Proyectos</a></li>
               <li><a href="#tab_2" data-toggle="tab">Mi Grupo</a></li>
               <?php
-                    if ($rq_sec['admin']=='1'){
+                    if ($rq_sec['admin_proy']=='1'){
                     echo ' <li><a href="#tab_3" data-toggle="tab">Proyectos</a></li>';
                     echo ' <li><a href="#tab_4" data-toggle="tab">Completados</a></li>';
                     echo ' <li><a href="#tab_5" data-toggle="tab">Indicadores</a></li>';    
@@ -605,10 +606,12 @@ desired effect
                             $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
                                       LEFT JOIN persona as p on i.responsable = p.id_persona
                                       LEFT JOIN tipo_proyecto as t on i.tipo = t.id
-                                      WHERE i.borrado='0' AND i.estado!='4'
-                                      ORDER BY id_proyecto ASC";
-
-                            $sql = mysqli_query($con, $query);
+                                      WHERE i.borrado='0' AND i.estado!='4' AND p.borrado ='0' ";
+                            // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
+                            if ( $per_id_gerencia != 1) {
+                              $query = $query . " AND p.gerencia = $per_id_gerencia ";
+                            }                                        
+                            $sql = mysqli_query($con, $query . " ORDER BY id_proyecto ASC;");
 
                             if(mysqli_num_rows($sql) == 0){
                                 echo '<tr><td colspan="11">No hay datos.</td></tr>';
@@ -793,10 +796,13 @@ desired effect
                           $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
                                     LEFT JOIN persona as p on i.responsable = p.id_persona
                                     LEFT JOIN tipo_proyecto as t on i.tipo = t.id
-                                    WHERE i.borrado='0' AND i.estado='4'
-                                    ORDER BY id_proyecto ASC";
+                                    WHERE i.borrado='0' AND i.estado='4' AND p.borrado = '0' ";
+                            // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
+                            if ( $per_id_gerencia != 1) {
+                              $query = $query . " AND p.gerencia = $per_id_gerencia ";
+                            }                                         
 
-                          $sql = mysqli_query($con, $query);
+                          $sql = mysqli_query($con, $query . "ORDER BY id_proyecto ASC");
 
                           if(mysqli_num_rows($sql) == 0){
                               echo '<tr><td colspan="8">No hay datos.</td></tr>';

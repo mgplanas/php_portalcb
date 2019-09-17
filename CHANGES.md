@@ -1,5 +1,27 @@
 # CHANGES
 
+## FEAT-CTRL-OBS
+
+### Extender la funcionalidad de proyectos al toda la empresa.
+
+*Fecha:* 2019-09-17
+*Cambios:*
+    - Se agregan el campo en la base de permisos admin_proy para administrar proyectos
+        ALTER TABLE controls.permisos
+        ADD admin_proy INT(11) AFTER guardias; [DEFAULT 0]
+    - Se agrega en la tabla de permisos la columna de Admin proy con la funcionalidad de actualizar onclick 
+        M[pages/admin.php]
+        M[pages/setPermiso.php]
+    - Se actualizan los permisos de aquellos que hoy en día son admin
+        update permisos set admin_proy = 1 where admin = 1;
+    - Se actualiza la página de proyectos para que tome como admin el campo admin_proy
+        M[pages/proyectos.php]
+    - Aplico el filtro de gerencias en proyectos a la solapa de Proyectos, completados e indicadores
+        - Proyetos
+        - Completos
+        - indicadores :TODO
+        M[pages/proyectos.php]
+
 ## FEAT-KPI-MC
 
 ### Indicadores
