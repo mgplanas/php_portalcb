@@ -44,6 +44,9 @@
                 ADD id_gerencia INT NOT NULL DEFAULT '0' AFTER id_grupo;
             Se actualizan los grupos actuales con la generecia de CiberSeguridad:
                 update grupo set id_gerencia = 1;
+        - Se agrega la columna del permiso "proy"
+            M[admin.php]
+            M[setPermiso.php]
 
 ## FEAT-KPI-MC
 

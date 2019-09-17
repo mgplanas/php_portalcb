@@ -201,6 +201,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="100">Correo</th>
                                                 <th width="100">Usuario</th>
                                                 <th width="1">Admin</th>
+                                                <th width="1">Proyectos</th>
                                                 <th width="1">Admin Proy</th>
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
@@ -230,6 +231,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                   echo '<td>
                                                           <div class="checkbox">
                                                             <label><a href=#><input name="admin" type="checkbox" onclick="updatePerm(1, '.$row['id_permiso'].');" value="1"'; if($row['admin'] == '1'){ echo 'checked'; } echo'></a></label>
+                                                          </div>
+                                                        </td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
+                                                            <label><a href=#><input name="proy" type="checkbox" onclick="updatePerm(6, '.$row['id_permiso'].');" value="1"'; if($row['proy'] == '1'){ echo 'checked'; } echo'></a></label>
                                                           </div>
                                                         </td>'; 
                                                   echo '<td>
@@ -269,6 +275,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="100">Correo</th>
                                                 <th width="100">Usuario</th>
                                                 <th width="1">Admin</th>
+                                                <th width="1">Proyectos</th>
                                                 <th width="1">Admin Proy</th>
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
