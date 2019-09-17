@@ -1,4 +1,56 @@
+# CHANGES
+
+## FEAT-KPI-MC
+
+### Indicadores
+
+#### Status de las Acciones de Mejora (AM)/ No Conformidades (NC)    [Gráficos de Torta]
+
+1)	Cantidad de AM  - Abiertos
+2)	Cantidad de AM  - Cerrados
+3)	Cantidad de NC  - Abiertos
+4)	Cantidad de NC  - Cerrados
+
+#### *[Graficos de barras]* Abiertos + histograma por año de cerrados
+
+B)	Origen de las Acciones de Mejora (AM)/ No Conformidades (NC)
+B1) Auditoria Externa
+1)	Cantidad de AM por Auditor Externo (AE) – Abiertos
+2)	Cantidad de AM por Auditor Externo (AE) – Cerrados
+3)	Cantidad de NC por Auditor Externo (AE) – Abiertos
+4)	Cantidad de NC por Auditor Externo (AE) - Cerrados
+
+#### Auditoria Interna
+
+1)	Cantidad de AM por Auditor Interno (AI) – Abiertos
+2)	Cantidad de AM por Auditor Interno (AI) – Cerrados
+3)	Cantidad de NC por Auditor Interno (AI) – Abiertos
+4)	Cantidad de NC por Auditor Interno (AI) – Cerrados
+
+#### Negocio
+
+1)	Cantidad de AM por Negocio – Abiertos 
+2)	Cantidad de AM por Negocio – Cerrados
+3)	Cantidad de NC por Negocio – Abiertos
+4)	Cantidad de NC por Negocio – Cerrados
+
+En vez de por área por responsable
+
+#### Acciones de Mejora por Área (AM)/ No Conformidades (NC):
+
+1)	Cantidad de AM por Área  - Abiertos
+2)	Cantidad de AM  por Área – Cerrados
+3)	Cantidad de NC por Área  - Abiertos
+4)	Cantidad de NC  por Área – Cerrados
+
+*Fecha:* 2019-09-16
+*Cambios:*
+    - Se agrega una nueva página de metricas para mejoras N[met_mejoras]
+    - Se actualizan los links en site y sidebar M[/site.php] M[site_sidebar.php]
+    - Se crean los graficos para AMy NC totales y por origen
+
 ## FEAT-CTRL-OBS
+
 ### Identificación de nuevos estados en las referencia de los controles para determinar aquellos que han sido observados.
 *Fecha:* 2019-09-04
 *Cambios:*
@@ -15,8 +67,8 @@
     - Se corrige el calendario de controles para alojar los nuevos estados.
     M[pages/cal_controles]
 
-
 ## FIX-ISO9K1
+
 ### Nuevo módulo para alojar la matriz de ISO9001 basado en la misma funcionalidad de la iso27k1.
 *Fecha:* 2019-07-23
 *Cambios:*
