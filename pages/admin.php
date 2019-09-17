@@ -473,10 +473,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                               $grupo = mysqli_real_escape_string($con,(strip_tags($_POST["grupo"],ENT_QUOTES)));//Escanpando caracteres 
                                               $contacto = mysqli_real_escape_string($con,(strip_tags($_POST["contacto"],ENT_QUOTES)));//Escanpando caracteres 
                                               
-                                              // Si la gerencia no es ciberseguridad limpio el valor del grupo
-                                              if ($gerencia != 1) {
-                                                  $grupo = 0;
-                                              }
                                               //Inserto Control
                                               $insert_persona = mysqli_query($con, "INSERT INTO persona(legajo, nombre, apellido, cargo, gerencia, email, grupo, contacto, borrado) 
                                                                                     VALUES ('$legajo','$nombre','$apellido', '$cargo', '$gerencia', '$email', '$grupo', '$contacto', 0)") or die(mysqli_error());	
@@ -775,17 +771,45 @@ scratch. This page gets rid of all links and provides the needed markup only.
         })
     })
     </script>
-    <script>
+<script>
     $(function() {
-        $('#gerenciaselector').on('change', function() {
-            if (this.value !=1 ) {    // Gerencia de CiberSeguridad
-                $('#grupodiv').hide();
-            } else {
-                $('#grupodiv').show();
-            }
-        });
-    })
-    </script>
+      function populateGroups(id_gerencia) {
+          //Limpio los grupos
+          $("#gruposelector").empty().append('<option selected="selected" value="0">Ninguno</option>');
+          //Populo los grupos
+          $.ajax({
+              type: 'POST',
+              url: './helpers/getAsyncDataFromDB.php',
+              data: { query: 'SELECT * FROM grupo WHERE id_gerencia =' + id_gerencia + ' ORDER BY nombre ASC;' },
+              dataType: 'json',
+              success: function(json) {
+
+                console.log(json)
+                console.log("data" in json)
+                if ("data" in json == true) {
+                    // Use jQuery's each to iterate over the opts value
+                    $.each(json.data, function(i, d) {
+                        // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                        $('#gruposelector').append('<option value="' + d.id_grupo + '">' + d.nombre + '</option>');
+                    });
+                }
+              },
+              error: function(xhr, status, error) {
+                  alert(xhr.responseText, error);
+              }
+          });
+      }
+
+      //Seto el trigger si la gerencia cambia 
+      $('#gerenciaselector').on('change', function() {
+        populateGroups($("#gerenciaselector").val());
+      });      
+
+      // disparo el cambio en el load;
+      populateGroups($("#gerenciaselector").val());
+    });
+</script>
+
     <script>
         $(function(){
         $(".ver-itemDialog").click(function(){

@@ -425,7 +425,7 @@ desired effect
                             $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
                                       LEFT JOIN persona as p on i.responsable = p.id_persona
                                       LEFT JOIN tipo_proyecto as t on i.tipo = t.id
-                                      WHERE i.grupo = $id_rowpg AND i.borrado='0' AND i.estado!='4'";
+                                      WHERE (i.grupo > 0 AND i.grupo = $id_rowpg) AND i.borrado='0' AND i.estado!='4'";
 
                             $sql = mysqli_query($con, $query.' ORDER BY id_proyecto ASC');
 

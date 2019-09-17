@@ -1,14 +1,16 @@
 # CHANGES
 
-## FEAT-CTRL-OBS
+## FEAT-PROY-GTI
 
 ### Extender la funcionalidad de proyectos al toda la empresa.
 
 *Fecha:* 2019-09-17
 *Cambios:*
-    - Se agregan el campo en la base de permisos admin_proy para administrar proyectos
+    - Se agregan el campo en la base de permisos admin_proy para administrar proyectos y "proyectos" para dar acceso al módulo independientemente el permiso SOC
         ALTER TABLE controls.permisos
         ADD admin_proy INT(11) AFTER guardias; [DEFAULT 0]
+        ALTER TABLE controls.permisos
+        ADD proy INT(11) DEFAULT '0' AFTER admin_proy;
     - Se agrega en la tabla de permisos la columna de Admin proy con la funcionalidad de actualizar onclick 
         M[pages/admin.php]
         M[pages/setPermiso.php]
@@ -28,6 +30,20 @@
             - Asignación de proyectos M[pages/getProyResp.php] (le paso id_gerencia por POST)
             - Estado de proyectos M[pages/getProyRespStat.php] (le paso id_gerencia por POST)
         M[pages/proyectos.php]
+        - Limpio el campo de grupo al cambio de gerencia en persona. M[pages/edit_persona.php]
+ TEST   - Se aplica el acceso al módulo de proyectos para los permisos "proy"
+            - Se le dan los permisos de proyecto a los de soc
+            update permisos set proy = 1 where soc = 1;
+            M[pages/site_sidebar.php]
+            M[site.php]
+        - Permitir en el AM de peronas poder seleccionar el grupo.
+            M[pages/admin.php]  OK
+            M[pages/edit_persona.php]   OK
+            - Agrega el campo id_gerencia a la base de datos para dar la posibilidad de generar grupos por gerencia.
+            ALTER TABLE controls.grupo
+                ADD id_gerencia INT NOT NULL DEFAULT '0' AFTER id_grupo;
+            Se actualizan los grupos actuales con la generecia de CiberSeguridad:
+                update grupo set id_gerencia = 1;
 
 ## FEAT-KPI-MC
 
