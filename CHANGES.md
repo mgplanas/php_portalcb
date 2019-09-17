@@ -43,6 +43,11 @@ En vez de por área por responsable
 3)	Cantidad de NC por Área  - Abiertos
 4)	Cantidad de NC  por Área – Cerrados
 
+*Fecha:* 2019-09-16
+*Cambios:*
+    - Se agrega una nueva página de metricas para mejoras N[met_mejoras]
+    - Se actualizan los links en site y sidebar M[/site.php] M[site_sidebar.php]
+    - Se crean los graficos para AMy NC totales y por origen
 
 
 ## FIX-ISO9K1
