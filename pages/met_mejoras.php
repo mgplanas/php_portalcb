@@ -25,10 +25,10 @@ $sql_kpi = "SELECT M.tipo, M.origen, M.estado, COUNT(*) as cuenta
 FROM mejora as M 
 INNER JOIN persona as p ON M.responsable = p.id_persona
 WHERE M.borrado = 0 AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )
-GROUP BY M.tipo, M.origen, m.estado;";
+GROUP BY M.tipo, M.origen, M.estado;";
 $q_kpi = mysqli_query($con, $sql_kpi);
 $row_kpi = mysqli_fetch_assoc($q_kpi);
-
+//var_dump($sql_kpi);exit;
 function extraerSum($result, $tipo, $origen, $estado) {
   $cuenta = 0;
   mysqli_data_seek($result, 0);
