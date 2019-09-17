@@ -609,9 +609,9 @@ desired effect
                                       LEFT JOIN tipo_proyecto as t on i.tipo = t.id
                                       WHERE i.borrado='0' AND i.estado!='4' AND p.borrado ='0' ";
                             // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
-                            if ( $per_id_gerencia != 1) {
+                            // if ( $per_id_gerencia != 1) {
                               $query = $query . " AND p.gerencia = $per_id_gerencia ";
-                            }                                        
+                            // }                                        
                             $sql = mysqli_query($con, $query . " ORDER BY id_proyecto ASC;");
 
                                 while($row = mysqli_fetch_assoc($sql)){
@@ -795,9 +795,9 @@ desired effect
                                     LEFT JOIN tipo_proyecto as t on i.tipo = t.id
                                     WHERE i.borrado='0' AND i.estado='4' AND p.borrado = '0' ";
                             // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
-                            if ( $per_id_gerencia != 1) {
+                            // if ( $per_id_gerencia != 1) {
                               $query = $query . " AND p.gerencia = $per_id_gerencia ";
-                            }                                         
+                            // }                                         
 
                           $sql = mysqli_query($con, $query . "ORDER BY id_proyecto ASC");
 
@@ -986,7 +986,8 @@ desired effect
                                       $query_count_vencidas = "SELECT y.due_date FROM proyecto as y
                                                               INNER JOIN persona as p ON y.responsable = p.id_persona
                                                               WHERE y.borrado='0' AND (y.estado='1' OR y.estado='2') AND p.borrado = '0'
-                                                              AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
+                                                              AND ( p.gerencia = $per_id_gerencia )";
+                                                              // AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                       $count_vencidas = mysqli_query($con, $query_count_vencidas);
                                 
                                       $day=date("d");
@@ -1032,7 +1033,9 @@ desired effect
                                                       FROM proyecto as y
                                                       INNER JOIN persona as p ON y.responsable = p.id_persona
                                                       WHERE y.borrado='0' AND p.borrado = '0'
-                                                      AND y.estado='1' AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
+                                                      AND y.estado='1' 
+                                                      AND ( p.gerencia = $per_id_gerencia )";
+                                                      // AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                     $count_no = mysqli_query($con, $query_count_no);
 
                                     echo '
@@ -1057,7 +1060,9 @@ desired effect
                                     FROM proyecto as y 
                                     INNER JOIN persona as p ON y.responsable = p.id_persona
                                     WHERE y.borrado='0' AND p.borrado = '0'
-                                    AND y.estado='2' AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
+                                    AND y.estado='2' 
+                                    AND ( p.gerencia = $per_id_gerencia )";
+                                    // AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                     $count_si = mysqli_query($con, $query_count_si);
 
                                     echo '
@@ -1081,7 +1086,9 @@ desired effect
                                     $query_count_comp = "SELECT 1 as total 
                                                           FROM proyecto as y 
                                                           INNER JOIN persona as p ON y.responsable = p.id_persona
-                                                          WHERE y.borrado='0' AND estado='4' AND p.borrado = '0' AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
+                                                          WHERE y.borrado='0' AND estado='4' AND p.borrado = '0' 
+                                                          AND ( p.gerencia = $per_id_gerencia )";
+                                                          // AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                     $count_comp = mysqli_query($con, $query_count_comp);
 
                                     echo '

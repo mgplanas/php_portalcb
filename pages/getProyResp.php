@@ -12,7 +12,7 @@
       
                     INNER JOIN persona as r ON p.responsable=r.id_persona
                     WHERE p.borrado='0' AND estado!='4'
-                    AND ( 1 = $id_gerencia OR  r.gerencia = $id_gerencia )
+                    AND ( r.gerencia = $id_gerencia )
                     AND r.borrado = '0'
                     group by responsable;";
     $query = mysqli_query($con, $proy_resp) or die('Query failed: ' . mysql_error());
