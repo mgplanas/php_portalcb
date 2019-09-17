@@ -28,10 +28,6 @@ if(isset($_POST['save'])){
     $grupo = mysqli_real_escape_string($con,(strip_tags($_POST["grupo"],ENT_QUOTES)));//Escanpando caracteres 
     $contacto = mysqli_real_escape_string($con,(strip_tags($_POST["contacto"],ENT_QUOTES)));//Escanpando caracteres 
     
-    // Si la gerencia no es ciberseguridad limpio el valor del grupo
-    if ($gerencia != 1) {
-      $grupo = 0;
-    }
 	  $update_persona = mysqli_query($con, "UPDATE persona 
                                             SET legajo='$legajo', 
                                             nombre='$nombre', 

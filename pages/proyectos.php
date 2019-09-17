@@ -429,9 +429,6 @@ desired effect
 
                             $sql = mysqli_query($con, $query.' ORDER BY id_proyecto ASC');
 
-                            if(mysqli_num_rows($sql) == 0){
-                                echo '<tr><td colspan="11">No hay datos.</td></tr>';
-                            }else{
                                 while($row = mysqli_fetch_assoc($sql)){
 
                                     echo '
@@ -571,7 +568,6 @@ desired effect
                                     </tr>
                                     ';
                                 }
-                            }
                             ?>
                         </tbody>
                       </table>
@@ -618,9 +614,6 @@ desired effect
                             }                                        
                             $sql = mysqli_query($con, $query . " ORDER BY id_proyecto ASC;");
 
-                            if(mysqli_num_rows($sql) == 0){
-                                echo '<tr><td colspan="11">No hay datos.</td></tr>';
-                            }else{
                                 while($row = mysqli_fetch_assoc($sql)){
 
                                     echo '
@@ -767,7 +760,6 @@ desired effect
                                     </tr>
                                     ';
                                 }
-                            }
                             ?>
                         </tbody>
                       </table>
@@ -809,9 +801,6 @@ desired effect
 
                           $sql = mysqli_query($con, $query . "ORDER BY id_proyecto ASC");
 
-                          if(mysqli_num_rows($sql) == 0){
-                              echo '<tr><td colspan="8">No hay datos.</td></tr>';
-                          }else{
                               while($row = mysqli_fetch_assoc($sql)){
 
                                   echo '
@@ -964,7 +953,6 @@ desired effect
                                   </tr>
                                   ';
                               }
-                          }
                           ?>
                       </tbody>
                       <tfoot>
@@ -1032,7 +1020,7 @@ desired effect
                           <div class="icon">
                             <i class="fa fa-thumbs-down"></i>
                           </div>
-                          <a class="small-box-footer"><?php $pv=round((($countv) * 100) / ($rowtp), PHP_ROUND_HALF_UP); echo $pv . " % del total de los proyectos"; ?></a>
+                          <a class="small-box-footer"><?php $pv=($rowtp > 0 ? round((($countv) * 100) / ($rowtp), PHP_ROUND_HALF_UP): 0); echo $pv . " % del total de los proyectos"; ?></a>
                         </div>
                       </div>
                     <div class="col-lg-3 col-xs-6">
@@ -1057,7 +1045,7 @@ desired effect
                         <div class="icon">
                           <i class="fa fa-thumbs-down"></i>
                         </div>
-                      <a class="small-box-footer"><?php $pno=round((((mysqli_num_rows($count_no)) * 100) / $rowtp), PHP_ROUND_HALF_UP); echo $pno . " % del total de los proyectos"; ?></a>
+                      <a class="small-box-footer"><?php $pno=($rowtp > 0 ? round((((mysqli_num_rows($count_no)) * 100) / $rowtp), PHP_ROUND_HALF_UP):0); echo $pno . " % del total de los proyectos"; ?></a>
                       </div>
                     </div>
                     <div class="col-lg-3 col-xs-6">
@@ -1082,7 +1070,7 @@ desired effect
                         <div class="icon">
                           <i class="fa fa-gears"></i>
                         </div>
-                      <a class="small-box-footer"><?php $psi=round(((mysqli_num_rows($count_si)) * 100) / ($rowtp), PHP_ROUND_HALF_UP); echo $psi . " % del total de los proyectos"; ?></a>
+                      <a class="small-box-footer"><?php $psi=($rowtp > 0 ? round(((mysqli_num_rows($count_si)) * 100) / ($rowtp), PHP_ROUND_HALF_UP):0); echo $psi . " % del total de los proyectos"; ?></a>
                       </div>
                     </div>
                     <div class="col-lg-3 col-xs-6">
@@ -1105,7 +1093,7 @@ desired effect
                         <div class="icon">
                           <i class="fa fa-thumbs-up"></i>
                         </div>
-                      <a class="small-box-footer"><?php $psi=round(((mysqli_num_rows($count_comp)) * 100) / ($rowtp), PHP_ROUND_HALF_UP); echo $psi . " % del total de los proyectos"; ?></a>
+                      <a class="small-box-footer"><?php $psi=($rowtp > 0 ? round(((mysqli_num_rows($count_comp)) * 100) / ($rowtp), PHP_ROUND_HALF_UP):0); echo $psi . " % del total de los proyectos"; ?></a>
                       </div>
                     </div>
                   </div>
