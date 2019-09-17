@@ -19,7 +19,14 @@
     - Aplico el filtro de gerencias en proyectos a la solapa de Proyectos, completados e indicadores
         - Proyetos
         - Completos
-        - indicadores :TODO
+        - indicadores:
+            - cuenta vencidos
+            - cuenta total
+            - No iniciados
+            - En curso
+            - Completados
+            - Asignación de proyectos M[pages/getProyResp.php] (le paso id_gerencia por POST)
+            - Estado de proyectos M[pages/getProyRespStat.php] (le paso id_gerencia por POST)
         M[pages/proyectos.php]
 
 ## FEAT-KPI-MC

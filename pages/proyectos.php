@@ -50,7 +50,12 @@ if ($rq_sec['soc']=='0'){
 }
 
 //Count Total de Proyectos
-$query_total_proyectos = "SELECT 1 as total FROM proyecto WHERE proyecto.borrado='0'";// AND proyecto.estado!='4'";
+$query_total_proyectos = "SELECT 1 as total 
+                          FROM proyecto as y
+                          INNER JOIN persona as p ON y.responsable = p.id_persona                          
+                          WHERE y.borrado='0'
+                          AND p.borrado = '0'
+                          AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";// AND proyecto.estado!='4'";
 $count_total_proyectos = mysqli_query($con, $query_total_proyectos); 
 $rowtp = mysqli_num_rows($count_total_proyectos);
 
@@ -990,8 +995,10 @@ desired effect
                         <div class="small-box bg-red">
                           <div class="inner">
                             <h3><?php
-                                      $query_count_vencidas = "SELECT due_date FROM proyecto
-                                                              WHERE borrado='0' AND (estado='1' OR estado='2')";
+                                      $query_count_vencidas = "SELECT y.due_date FROM proyecto as y
+                                                              INNER JOIN persona as p ON y.responsable = p.id_persona
+                                                              WHERE y.borrado='0' AND (y.estado='1' OR y.estado='2') AND p.borrado = '0'
+                                                              AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                       $count_vencidas = mysqli_query($con, $query_count_vencidas);
                                 
                                       $day=date("d");
@@ -1033,7 +1040,11 @@ desired effect
                       <div class="small-box bg-orange">
                         <div class="inner">
                           <h3><?php
-                                    $query_count_no = "SELECT 1 as total FROM proyecto WHERE borrado='0' AND estado='1'";
+                                    $query_count_no = "SELECT 1 as total 
+                                                      FROM proyecto as y
+                                                      INNER JOIN persona as p ON y.responsable = p.id_persona
+                                                      WHERE y.borrado='0' AND p.borrado = '0'
+                                                      AND y.estado='1' AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                     $count_no = mysqli_query($con, $query_count_no);
 
                                     echo '
@@ -1054,7 +1065,11 @@ desired effect
                       <div class="small-box bg-blue">
                         <div class="inner">
                           <h3><?php
-                                    $query_count_si = "SELECT 1 as total FROM proyecto WHERE borrado='0' AND estado='2'";
+                                    $query_count_si = "SELECT 1 as total 
+                                    FROM proyecto as y 
+                                    INNER JOIN persona as p ON y.responsable = p.id_persona
+                                    WHERE y.borrado='0' AND p.borrado = '0'
+                                    AND y.estado='2' AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                     $count_si = mysqli_query($con, $query_count_si);
 
                                     echo '
@@ -1075,7 +1090,10 @@ desired effect
                       <div class="small-box bg-green">
                         <div class="inner">
                           <h3><?php
-                                    $query_count_comp = "SELECT 1 as total FROM proyecto WHERE borrado='0' AND estado='4'";
+                                    $query_count_comp = "SELECT 1 as total 
+                                                          FROM proyecto as y 
+                                                          INNER JOIN persona as p ON y.responsable = p.id_persona
+                                                          WHERE y.borrado='0' AND estado='4' AND p.borrado = '0' AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                     $count_comp = mysqli_query($con, $query_count_comp);
 
                                     echo '
@@ -1115,7 +1133,7 @@ desired effect
                                       function showGraph1()
                                       {
                                           {
-                                              $.post("getProyResp.php",
+                                              $.post("getProyResp.php", {id_gerencia: "<?=$per_id_gerencia ?>"},
                                               function (data1)
                                               {
                                                   var name1 = [];
@@ -1208,7 +1226,7 @@ desired effect
                                       function showGraph()
                                       {
                                           {
-                                              $.post("getProyRespStat.php",
+                                              $.post("getProyRespStat.php", {id_gerencia: "<?=$per_id_gerencia ?>"},
                                               function (data)
                                               {
                                                   var name = [];
