@@ -24,7 +24,7 @@ $per_id_gerencia = $rowp['gerencia'];
 $sql_kpi = "SELECT M.tipo, M.origen, M.estado, COUNT(*) as cuenta
 FROM mejora as M 
 INNER JOIN persona as p ON M.responsable = p.id_persona
-WHERE M.borrado = 0 AND ( 1 = 1 OR  p.gerencia = 1 )
+WHERE M.borrado = 0 AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )
 GROUP BY M.tipo, M.origen, m.estado;";
 $q_kpi = mysqli_query($con, $sql_kpi);
 $row_kpi = mysqli_fetch_assoc($q_kpi);
@@ -249,6 +249,22 @@ desired effect
                   <!-- /.box-body -->
                 </div>
               </div>                      
+              <div class="col-lg-5 col-xs-6">
+                <!-- CantidadAM Abiertos/Cerrados-->
+                <div class="box box-success">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">AM - Por Responsable</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                  </div>
+                  <div class="box-body">
+                    <canvas id="kpi_AM_R_OC" height="212" style="display: block; height:250px"></canvas>
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+              </div>                      
             </div>    
             <div class="row">
               <div class="col-lg-3 col-xs-6">
@@ -281,7 +297,23 @@ desired effect
                   </div>
                   <!-- /.box-body -->
                 </div>
-              </div>                          
+              </div> 
+              <div class="col-lg-5 col-xs-6">
+                <!-- CantidadAM Abiertos/Cerrados-->
+                <div class="box box-danger">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">NC - Por Responsable</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                  </div>
+                  <div class="box-body">
+                    <canvas id="kpi_NC_R_OC" height="212" style="display: block; height:250px"></canvas>
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+              </div>                                         
             </div>    
         </section>
     <!-- /.content -->
@@ -447,10 +479,158 @@ desired effect
         });
     }
 
+    // AM Por Responsables
+    function fn_ShowKPI_AM_R() {
+      // Busco el servicio
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC"},
+          dataType: 'json',
+          success: function(json) {
+              let parsedData = json.data;
+              var name = [];
+              var abiertos = [];
+              var cerrados = [];
+              
+              // parsedData = JSON.parse(data);
+              
+              for (var i in parsedData) {
+                  name.push(parsedData[i].persona);
+                  abiertos.push(parsedData[i].abiertos);
+                  cerrados.push(parsedData[i].cerrados);
+              }
+              var chartdata = {
+                  labels: name,
+                  datasets: [
+                    {
+                          label: 'Abiertos',
+                          data: abiertos,
+                          backgroundColor: 'rgb(245, 105, 84)'
+                        },
+                      {
+                          label: 'Cerrados',
+                          data: cerrados,
+                          backgroundColor: 'rgb(0, 166, 90)'
+                      }
+                  ]
+              };
+              var options = {
+                  responsive: true,
+                  title: {
+                      display: false,
+                      position: "top",
+                      text: "Bar Graph",
+                      fontSize: 18,
+                      fontColor: "#111"
+                  },
+                  legend: {
+                      display: true,
+                      position: "top",
+                      labels: {
+                          fontColor: "#333",
+                          fontSize: 16
+                      }
+                  },
+                  scales: {
+                          xAxes: [{ stacked: true }],
+                          yAxes: [{ stacked: true }]
+                        }
+              };
+
+              var graphTarget = $("#kpi_AM_R_OC");
+
+              var barGraph = new Chart(graphTarget, {
+                  type: 'horizontalBar',
+                  data: chartdata,
+                  options: options
+              });
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+    }     
+    // NC Por Responsables
+    function fn_ShowKPI_NC_R() {
+      // Busco el servicio
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC"},
+          dataType: 'json',
+          success: function(json) {
+              let parsedData = json.data;
+              var name = [];
+              var abiertos = [];
+              var cerrados = [];
+              
+              // parsedData = JSON.parse(data);
+              
+              for (var i in parsedData) {
+                  name.push(parsedData[i].persona);
+                  abiertos.push(parsedData[i].abiertos);
+                  cerrados.push(parsedData[i].cerrados);
+              }
+              var chartdata = {
+                  labels: name,
+                  datasets: [
+                    {
+                          label: 'Abiertos',
+                          data: abiertos,
+                          backgroundColor: 'rgb(245, 105, 84)'
+                        },
+                      {
+                          label: 'Cerrados',
+                          data: cerrados,
+                          backgroundColor: 'rgb(0, 166, 90)'
+                      }
+                  ]
+              };
+              var options = {
+                  responsive: true,
+                  title: {
+                      display: false,
+                      position: "top",
+                      text: "Bar Graph",
+                      fontSize: 18,
+                      fontColor: "#111"
+                  },
+                  legend: {
+                      display: true,
+                      position: "top",
+                      labels: {
+                          fontColor: "#333",
+                          fontSize: 16
+                      }
+                  },
+                  scales: {
+                          xAxes: [{ stacked: true }],
+                          yAxes: [{ stacked: true }]
+                        }
+              };
+
+              var graphTarget = $("#kpi_NC_R_OC");
+
+              var barGraph = new Chart(graphTarget, {
+                  type: 'horizontalBar',
+                  data: chartdata,
+                  options: options
+              });
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+    }     
+
+
     fn_ShowKPI_AM();
     fn_ShowKPI_NC();
     fn_ShowKPI_AM_O();
     fn_ShowKPI_NC_O();
+    fn_ShowKPI_AM_R();
+    fn_ShowKPI_NC_R();
   });
 </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
