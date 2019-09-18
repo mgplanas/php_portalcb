@@ -361,169 +361,296 @@ desired effect
 <script>
   $(function () {
 
+    var chart_tot_AM = null;
+    var chart_tot_NC = null;
+    var chart_tot_AM_O = null;
+    var chart_tot_NC_O = null;
+    var chart_tot_AM_R = null;
+    var chart_tot_NC_R = null;
+
+    // Populo filtro de años
     function fn_popular_anios(){
-		// Busco el servicio
-    $.ajax({
-        type: 'POST',
-        url: './helpers/getAsyncDataFromDB.php',
-        data: { query: "select DISTINCT YEAR(str_to_date(apertura, '%d/%m/%Y')) as anio FROM mejora where apertura is not null" },
-        dataType: 'json',
-        success: function(json) {
-            let data = json.data;
-            $("#ddlAnio").empty().
-            for (var i in data) {
-
-            }
-        },
-        error: function(xhr, status, error) {
-            alert(xhr.responseText, error);
-        }
-      });
-    }
-    // GRAFICO BARRA POR ORIGEN AM
-    function fn_ShowKPI_AM_O() {
-        var origenes = ["Auditoría Int.", "Auditoría Ext.", "Negocio"];
-        var abiertos = [<?=$v_kpi_AM_AI_A?>,<?=$v_kpi_AM_AE_A?>,<?=$v_kpi_AM_NE_A?>];
-        var cerrados = [<?=$v_kpi_AM_AI_C?>,<?=$v_kpi_AM_AE_C?>,<?=$v_kpi_AM_NE_C?>];
-        
-        var chartdata = {
-            labels: origenes,
-            datasets: [
-              {
-                    label: 'Abiertos',
-                    data: abiertos,
-                    backgroundColor: 'rgb(245, 105, 84)'
-                  },
-                {
-                    label: 'Cerrados',
-                    data: cerrados,
-                    backgroundColor: 'rgb(0, 166, 90)'
-                }
-            ]
-        };
-        var options = {
-            responsive: true,
-            title: {
-                display: false,
-                position: "top",
-                text: "Bar Graph",
-                fontSize: 18,
-                fontColor: "#111"
-            },
-            legend: {
-                display: true,
-                position: "top",
-                labels: {
-                    fontColor: "#333",
-                    fontSize: 16
-                }
-            },
-            scales: {
-                    xAxes: [{ stacked: true }],
-                    yAxes: [{ stacked: true }]
-                  }
-        };
-
-        var graphTarget = $("#kpi_AM_O_OC");
-
-        var barGraph = new Chart(graphTarget, {
-            type: 'bar',
-            data: chartdata,
-            options: options
-        });
-  
-    } 
-    // GRAFICO BARRA POR ORIGEN AM
-    function fn_ShowKPI_NC_O() {
-        var origenes = ["Auditoría Int.", "Auditoría Ext.", "Negocio"];
-        var abiertos = [<?=$v_kpi_NC_AI_A?>,<?=$v_kpi_NC_AE_A?>,<?=$v_kpi_NC_NE_A?>];
-        var cerrados = [<?=$v_kpi_NC_AI_C?>,<?=$v_kpi_NC_AE_C?>,<?=$v_kpi_NC_NE_C?>];
-        
-        var chartdata = {
-            labels: origenes,
-            datasets: [
-              {
-                    label: 'Abiertos',
-                    data: abiertos,
-                    backgroundColor: 'rgb(245, 105, 84)'
-                  },
-                {
-                    label: 'Cerrados',
-                    data: cerrados,
-                    backgroundColor: 'rgb(0, 166, 90)'
-                }
-            ]
-        };
-        var options = {
-            responsive: true,
-            title: {
-                display: false,
-                position: "top",
-                text: "Bar Graph",
-                fontSize: 18,
-                fontColor: "#111"
-            },
-            legend: {
-                display: true,
-                position: "top",
-                labels: {
-                    fontColor: "#333",
-                    fontSize: 16
-                }
-            },
-            scales: {
-                    xAxes: [{ stacked: true }],
-                    yAxes: [{ stacked: true }]
-                  }
-        };
-
-        var graphTarget = $("#kpi_NC_O_OC");
-
-        var barGraph = new Chart(graphTarget, {
-            type: 'bar',
-            data: chartdata,
-            options: options
-        });
-  
-    }     
-    // TOTALES ABIERTOS/CERRADOS AM
-    function fn_ShowKPI_AM() {
-      new Chart($("#kpi_AM_OC"),
-        {
-          "type":"doughnut",
-          "data":{
-            "labels":["Total Abiertos","Total Cerrados"],
-            "datasets":[{
-              "label":"My First Dataset",
-              "data":[<?=$v_kpi_AM_A ?>, <?=$v_kpi_AM_C; ?>],
-              "backgroundColor":["rgb(245, 105, 84)","rgb(0, 166, 90)"]
-            }]
-          }
-        });
-    }
-    // TOTALES ABIERTOS/CERRADOS NC
-    function fn_ShowKPI_NC() {
-      new Chart($("#kpi_NC_OC"),
-        {
-          "type":"doughnut",
-          "data":{
-            "labels":["Total Abiertos","Total Cerrados"],
-            "datasets":[{
-              "label":"My First Dataset",
-              "data":[<?=$v_kpi_NC_A ?>, <?=$v_kpi_NC_C; ?>],
-              "backgroundColor":["rgb(245, 105, 84)","rgb(0, 166, 90)"]
-            }]
-          }
-        });
-    }
-
-    // AM Por Responsables
-    function fn_ShowKPI_AM_R() {
       // Busco el servicio
       $.ajax({
           type: 'POST',
           url: './helpers/getAsyncDataFromDB.php',
-          data: { query: "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC"},
+          data: { query: "select DISTINCT YEAR(str_to_date(apertura, '%d/%m/%Y')) as anio FROM mejora where apertura is not null" },
+          dataType: 'json',
+          success: function(json) {
+              $("#ddlAnio").empty().append('<option selected="selected" value="0">Todos</option>');
+              if ("data" in json == true) {
+                  $.each(json.data, function(i, d) {
+                      if (d.anio > 2000) {
+                        $('#ddlAnio').append('<option value="' + d.anio + '">' + d.anio + '</option>');
+                      }
+                  });
+              }
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+    }
+
+    // Populo filtro de apertura
+    function fn_popular_fechas_aperturas(anio){
+      // Busco el servicio
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: "select DISTINCT apertura FROM mejora WHERE apertura is not null AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " ORDER BY str_to_date(apertura, '%d/%m/%Y')" },
+          dataType: 'json',
+          success: function(json) {
+              $("#ddlFechaApertura").empty().append('<option selected="selected" value="0">Todas</option>');
+              if ("data" in json == true) {
+                  $.each(json.data, function(i, d) {
+                      $('#ddlFechaApertura').append('<option value="' + d.apertura + '">' + d.apertura + '</option>');
+                  });
+              }
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+    }    
+
+    // Funcion que actualiza todos los gráficos
+    function fn_update_metricas(apertura){
+      fn_ShowKPI_AM(apertura);
+      fn_ShowKPI_NC(apertura);
+      fn_ShowKPI_AM_O(apertura);
+      fn_ShowKPI_NC_O(apertura);
+      fn_ShowKPI_AM_R(apertura);
+      fn_ShowKPI_NC_R(apertura);
+    }
+
+    // GRAFICO BARRA POR ORIGEN AM
+    function fn_ShowKPI_AM_O(apertura) {
+      if (chart_tot_AM_O !=null) {
+        chart_tot_AM_O.destroy();
+      }      
+      // Busco el servicio
+      query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 3 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: query },
+          // data: { query: "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC"},
+          dataType: 'json',
+          success: function(json) {
+              let parsedData = json.data;
+              var origenes = [];
+              var abiertos = [];
+              var cerrados = [];
+              
+              for (var i in parsedData) {
+                  origenes.push(parsedData[i].origen);
+                  abiertos.push(parsedData[i].abiertos);
+                  cerrados.push(parsedData[i].cerrados);
+              }
+              var chartdata = {
+                  labels: origenes,
+                  datasets: [
+                    {
+                          label: 'Abiertos',
+                          data: abiertos,
+                          backgroundColor: 'rgb(245, 105, 84)'
+                        },
+                      {
+                          label: 'Cerrados',
+                          data: cerrados,
+                          backgroundColor: 'rgb(0, 166, 90)'
+                      }
+                  ]
+              };
+              var options = {
+                  responsive: true,
+                  title: {
+                      display: false,
+                      position: "top",
+                      text: "Bar Graph",
+                      fontSize: 18,
+                      fontColor: "#111"
+                  },
+                  legend: {
+                      display: true,
+                      position: "top",
+                      labels: {
+                          fontColor: "#333",
+                          fontSize: 16
+                      }
+                  },
+                  scales: {
+                          xAxes: [{ stacked: true }],
+                          yAxes: [{ stacked: true }]
+                        }
+              };
+
+              var graphTarget = $("#kpi_AM_O_OC");
+
+              chart_tot_AM_O = new Chart(graphTarget, {
+                  type: 'bar',
+                  data: chartdata,
+                  options: options
+              });
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+    } 
+    // GRAFICO BARRA POR ORIGEN AM
+    function fn_ShowKPI_NC_O(apertura) {
+      if (chart_tot_NC_O !=null) {
+        chart_tot_NC_O.destroy();
+      }      
+      // Busco el servicio
+      query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 1 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: query },
+          dataType: 'json',
+          success: function(json) {
+              let parsedData = json.data;
+              var origenes = [];
+              var abiertos = [];
+              var cerrados = [];
+              
+              for (var i in parsedData) {
+                  origenes.push(parsedData[i].origen);
+                  abiertos.push(parsedData[i].abiertos);
+                  cerrados.push(parsedData[i].cerrados);
+              }
+              var chartdata = {
+                  labels: origenes,
+                  datasets: [
+                    {
+                          label: 'Abiertos',
+                          data: abiertos,
+                          backgroundColor: 'rgb(245, 105, 84)'
+                        },
+                      {
+                          label: 'Cerrados',
+                          data: cerrados,
+                          backgroundColor: 'rgb(0, 166, 90)'
+                      }
+                  ]
+              };
+              var options = {
+                  responsive: true,
+                  title: {
+                      display: false,
+                      position: "top",
+                      text: "Bar Graph",
+                      fontSize: 18,
+                      fontColor: "#111"
+                  },
+                  legend: {
+                      display: true,
+                      position: "top",
+                      labels: {
+                          fontColor: "#333",
+                          fontSize: 16
+                      }
+                  },
+                  scales: {
+                          xAxes: [{ stacked: true }],
+                          yAxes: [{ stacked: true }]
+                        }
+              };
+
+              var graphTarget = $("#kpi_NC_O_OC");
+
+              chart_tot_NC_O = new Chart(graphTarget, {
+                  type: 'bar',
+                  data: chartdata,
+                  options: options
+              });
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+  
+    }     
+    // TOTALES ABIERTOS/CERRADOS AM
+    function fn_ShowKPI_AM(apertura) {
+      if (chart_tot_AM !=null) {
+        chart_tot_AM.destroy();
+      }
+      // Busco el servicio
+      query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: query },
+          dataType: 'json',
+          success: function(json) {
+              var abiertos = json.data[0].abiertos;
+              var cerrados = json.data[0].cerrados;
+              chart_tot_AM = new Chart($("#kpi_AM_OC"),
+              {
+                "type":"doughnut",
+                "data":{
+                  "labels":["Abiertos","Cerrados"],
+                  "datasets":[{
+                    "label":"My First Dataset",
+                    "data":[abiertos, cerrados],
+                    "backgroundColor":["rgb(245, 105, 84)","rgb(0, 166, 90)"]
+                  }]
+                }
+              });              
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+    }
+    // TOTALES ABIERTOS/CERRADOS NC
+    function fn_ShowKPI_NC(apertura) {
+      if (chart_tot_NC !=null) {
+        chart_tot_NC.destroy();
+      }
+      // Busco el servicio
+      query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: query },
+          dataType: 'json',
+          success: function(json) {
+              var abiertos = json.data[0].abiertos;
+              var cerrados = json.data[0].cerrados;
+              chart_tot_NC = new Chart($("#kpi_NC_OC"),
+              {
+                "type":"doughnut",
+                "data":{
+                  "labels":["Abiertos","Cerrados"],
+                  "datasets":[{
+                    "label":"My First Dataset",
+                    "data":[abiertos, cerrados],
+                    "backgroundColor":["rgb(245, 105, 84)","rgb(0, 166, 90)"]
+                  }]
+                }
+              });              
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+    }
+
+    // AM Por Responsables
+    function fn_ShowKPI_AM_R(apertura) {
+      if (chart_tot_AM_R !=null) {
+        chart_tot_AM_R.destroy();
+      }        
+      // Busco el servicio
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC"},
           dataType: 'json',
           success: function(json) {
               let parsedData = json.data;
@@ -578,7 +705,7 @@ desired effect
 
               var graphTarget = $("#kpi_AM_R_OC");
 
-              var barGraph = new Chart(graphTarget, {
+              chart_tot_AM_R = new Chart(graphTarget, {
                   type: 'horizontalBar',
                   data: chartdata,
                   options: options
@@ -590,12 +717,15 @@ desired effect
       });
     }     
     // NC Por Responsables
-    function fn_ShowKPI_NC_R() {
+    function fn_ShowKPI_NC_R(apertura) {
+      if (chart_tot_NC_R !=null) {
+        chart_tot_NC_R.destroy();
+      }        
       // Busco el servicio
       $.ajax({
           type: 'POST',
           url: './helpers/getAsyncDataFromDB.php',
-          data: { query: "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC"},
+          data: { query: "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC"},
           dataType: 'json',
           success: function(json) {
               let parsedData = json.data;
@@ -650,7 +780,7 @@ desired effect
 
               var graphTarget = $("#kpi_NC_R_OC");
 
-              var barGraph = new Chart(graphTarget, {
+              chart_tot_NC_R = new Chart(graphTarget, {
                   type: 'horizontalBar',
                   data: chartdata,
                   options: options
@@ -662,13 +792,25 @@ desired effect
       });
     }     
 
-    fn_popular_anios();
-    fn_ShowKPI_AM();
-    fn_ShowKPI_NC();
-    fn_ShowKPI_AM_O();
-    fn_ShowKPI_NC_O();
-    fn_ShowKPI_AM_R();
-    fn_ShowKPI_NC_R();
+    // Cargo los años
+    fn_popular_anios(); 
+    
+    //Seto el trigger si la el anio cambia 
+    $('#ddlAnio').on('change', function() {
+      fn_popular_fechas_aperturas($("#ddlAnio").val());
+    });  
+
+    //Seto el trigger si la la fecha cambia
+    $('#ddlFechaApertura').on('change', function() {
+      fn_update_metricas($("#ddlFechaApertura").val());
+    });  
+
+    // fn_ShowKPI_AM();
+    // fn_ShowKPI_NC();
+    // fn_ShowKPI_AM_O();
+    // fn_ShowKPI_NC_O();
+    // fn_ShowKPI_AM_R();
+    // fn_ShowKPI_NC_R();
   });
 </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
