@@ -373,7 +373,7 @@ desired effect
               <li><a href="./pages/met_iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
               <li><a href="./pages/met_riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
               <li><a href="./pages/met_controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
-              <li><a href="./pages/met_mejoras.php"><i class="fa fa-refresh"></i> <span>Mejoas</span></a></li>
+              <li><a href="./pages/met_mejoras.php"><i class="fa fa-refresh"></i> <span>Mejoras</span></a></li>
             </ul>
           </li>;
       </ul>
