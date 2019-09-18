@@ -51,6 +51,7 @@ En vez de por área por responsable
     - Creo filtros de año + fecha de apertura
     - Se pasan todas la generación de gráficos a jquery + ajax.post
     - Aplicar filtro de todas las fechas de apertura para un año específico. (por si elije todas las fechas)
+    - Aplicar filtro de todas las fechas de todos los anios.
 
 ## FEAT-CTRL-OBS
 
