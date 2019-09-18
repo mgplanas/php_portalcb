@@ -48,6 +48,8 @@ En vez de por área por responsable
     - Se agrega una nueva página de metricas para mejoras N[met_mejoras]
     - Se actualizan los links en site y sidebar M[/site.php] M[site_sidebar.php]
     - Se crean los graficos para AMy NC totales y por origen
+    - Creo filtros de año + fecha de apertura
+    - Se pasan todas la generación de gráficos a jquery + ajax.post
 
 
 ## FIX-ISO9K1

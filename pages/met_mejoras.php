@@ -217,6 +217,25 @@ desired effect
      -------------------------->
 	    <section class="content">
             <div class="row">
+              <div class="col-md-12">
+                <form role="form" class="form-inline">
+                  <div class="form-group" style="margin-right: 10px;">
+                      <label for="ddlAnio">Año:</label>
+                      <select name="ddlAnio" class="form-control" id="ddlAnio">
+                        <option value="-1">Todos</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label for="ddlFechaApertura">Fecha Apertura:</label>
+                      <select name="ddlFechaApertura" class="form-control" id="ddlFechaApertura">
+                        <option value="-1">Todas</option>
+                      </select>                        
+                  </div>
+                </form>
+                <br>
+              </div>
+            </div>
+            <div class="row">
               <div class="col-lg-3 col-xs-6">
                 <!-- CantidadAM Abiertos/Cerrados-->
                 <div class="box box-success">
@@ -342,6 +361,25 @@ desired effect
 <script>
   $(function () {
 
+    function fn_popular_anios(){
+		// Busco el servicio
+    $.ajax({
+        type: 'POST',
+        url: './helpers/getAsyncDataFromDB.php',
+        data: { query: "select DISTINCT YEAR(str_to_date(apertura, '%d/%m/%Y')) as anio FROM mejora where apertura is not null" },
+        dataType: 'json',
+        success: function(json) {
+            let data = json.data;
+            $("#ddlAnio").empty().
+            for (var i in data) {
+
+            }
+        },
+        error: function(xhr, status, error) {
+            alert(xhr.responseText, error);
+        }
+      });
+    }
     // GRAFICO BARRA POR ORIGEN AM
     function fn_ShowKPI_AM_O() {
         var origenes = ["Auditoría Int.", "Auditoría Ext.", "Negocio"];
@@ -624,7 +662,7 @@ desired effect
       });
     }     
 
-
+    fn_popular_anios();
     fn_ShowKPI_AM();
     fn_ShowKPI_NC();
     fn_ShowKPI_AM_O();
