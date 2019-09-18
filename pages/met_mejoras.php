@@ -432,7 +432,11 @@ desired effect
       }      
       // Si elije todas filtro por año directamente
       if (apertura == 0) {
-        query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 3 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+        if (anio == 0) {
+          query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 3 AND M.borrado = 0 AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+        } else {
+          query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 3 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+        }
       } else {
         query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 3 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
       }
@@ -511,7 +515,11 @@ desired effect
       }      
       // Si elije todas filtro por año directamente
       if (apertura == 0) {
-        query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 1 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+        if (anio == 0) {  
+          query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 1 AND M.borrado = 0 AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+        } else {
+          query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 1 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+        }
       } else {
         query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 1 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
       }
@@ -590,7 +598,11 @@ desired effect
       }
       // Si elije todas filtro por año directamente
       if (apertura == 0) {
-        query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+        if (anio == 0) {
+          query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+        } else {
+          query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+        }
       } else {
         query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
       }
@@ -627,7 +639,11 @@ desired effect
       }
       // Si elije todas filtro por año directamente
       if (apertura == 0) {
-        query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+        if (anio == 0) {
+          query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+        } else {
+          query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+        }
       } else {
         query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
       }
@@ -664,7 +680,11 @@ desired effect
       }        
       // Si elije todas filtro por año directamente
       if (apertura == 0) {
-        query = "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC";
+        if (anio == 0) {
+          query = "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC";
+        } else {
+          query = "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC";
+        }
       } else {
         query = "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC";
       }
@@ -744,7 +764,11 @@ desired effect
       }        
       // Si elije todas filtro por año directamente
       if (apertura == 0) {
-        query = "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC";
+        if (anio == 0) {
+          query = "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC";
+        } else {
+          query = "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC";
+        }
       } else {
         query = "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC";
       }
@@ -831,6 +855,8 @@ desired effect
       fn_update_metricas($("#ddlFechaApertura").val(), $("#ddlAnio").val());
     });  
 
+    // Aplico el filtro de todos
+    fn_update_metricas(0,0);
   });
 </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
