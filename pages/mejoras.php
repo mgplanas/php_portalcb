@@ -681,7 +681,7 @@ desired effect
                             title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                           </td>';
                           echo '
-                          <td align="center">'.$no.'</td>';
+                          <td align="center">'.$row['id_mejora'].'</td>';
                           echo '
                           </td>								
                           <td>'.$row['dorig'].'</td>

@@ -54,6 +54,7 @@ En vez de por área por responsable
     - Aplicar filtro de todas las fechas de todos los anios.
     - Se corrige label Análisis de Causas M[/pages/edit_mejora.php]
     - Se limitan los orígenes de mejora a solo AI,AE y NE [mejoras.php] [edit_mejora.php]
+    - Se muestra como número de mejora el mismo id [mejora.php]
 
 ## FEAT-CTRL-OBS
 
