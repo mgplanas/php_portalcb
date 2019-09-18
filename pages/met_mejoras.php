@@ -406,6 +406,7 @@ desired effect
                   $.each(json.data, function(i, d) {
                       $('#ddlFechaApertura').append('<option value="' + d.apertura + '">' + d.apertura + '</option>');
                   });
+                  fn_update_metricas($('#ddlFechaApertura').val(), $('#ddlAnio').val())                  
               }
           },
           error: function(xhr, status, error) {
@@ -415,22 +416,26 @@ desired effect
     }    
 
     // Funcion que actualiza todos los gráficos
-    function fn_update_metricas(apertura){
-      fn_ShowKPI_AM(apertura);
-      fn_ShowKPI_NC(apertura);
-      fn_ShowKPI_AM_O(apertura);
-      fn_ShowKPI_NC_O(apertura);
-      fn_ShowKPI_AM_R(apertura);
-      fn_ShowKPI_NC_R(apertura);
+    function fn_update_metricas(apertura, anio){
+      fn_ShowKPI_AM(apertura, anio);
+      fn_ShowKPI_NC(apertura, anio);
+      fn_ShowKPI_AM_O(apertura, anio);
+      fn_ShowKPI_NC_O(apertura, anio);
+      fn_ShowKPI_AM_R(apertura, anio);
+      fn_ShowKPI_NC_R(apertura, anio);
     }
 
     // GRAFICO BARRA POR ORIGEN AM
-    function fn_ShowKPI_AM_O(apertura) {
+    function fn_ShowKPI_AM_O(apertura, anio) {
       if (chart_tot_AM_O !=null) {
         chart_tot_AM_O.destroy();
       }      
-      // Busco el servicio
-      query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 3 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+      // Si elije todas filtro por año directamente
+      if (apertura == 0) {
+        query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 3 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+      } else {
+        query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 3 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+      }
       $.ajax({
           type: 'POST',
           url: './helpers/getAsyncDataFromDB.php',
@@ -500,12 +505,16 @@ desired effect
       });
     } 
     // GRAFICO BARRA POR ORIGEN AM
-    function fn_ShowKPI_NC_O(apertura) {
+    function fn_ShowKPI_NC_O(apertura, anio) {
       if (chart_tot_NC_O !=null) {
         chart_tot_NC_O.destroy();
       }      
-      // Busco el servicio
-      query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 1 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+      // Si elije todas filtro por año directamente
+      if (apertura == 0) {
+        query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 1 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+      } else {
+        query = "SELECT O.descripcion as origen, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona INNER JOIN origen as o ON M.origen = o.id_origen WHERE M.tipo = 1 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.origen";
+      }
       $.ajax({
           type: 'POST',
           url: './helpers/getAsyncDataFromDB.php',
@@ -575,12 +584,16 @@ desired effect
   
     }     
     // TOTALES ABIERTOS/CERRADOS AM
-    function fn_ShowKPI_AM(apertura) {
+    function fn_ShowKPI_AM(apertura, anio) {
       if (chart_tot_AM !=null) {
         chart_tot_AM.destroy();
       }
-      // Busco el servicio
-      query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+      // Si elije todas filtro por año directamente
+      if (apertura == 0) {
+        query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+      } else {
+        query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+      }
       $.ajax({
           type: 'POST',
           url: './helpers/getAsyncDataFromDB.php',
@@ -608,12 +621,16 @@ desired effect
       });
     }
     // TOTALES ABIERTOS/CERRADOS NC
-    function fn_ShowKPI_NC(apertura) {
+    function fn_ShowKPI_NC(apertura, anio) {
       if (chart_tot_NC !=null) {
         chart_tot_NC.destroy();
       }
-      // Busco el servicio
-      query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+      // Si elije todas filtro por año directamente
+      if (apertura == 0) {
+        query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+      } else {
+        query = "SELECT COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) ";
+      }
       $.ajax({
           type: 'POST',
           url: './helpers/getAsyncDataFromDB.php',
@@ -640,17 +657,21 @@ desired effect
           }
       });
     }
-
     // AM Por Responsables
-    function fn_ShowKPI_AM_R(apertura) {
+    function fn_ShowKPI_AM_R(apertura, anio) {
       if (chart_tot_AM_R !=null) {
         chart_tot_AM_R.destroy();
       }        
-      // Busco el servicio
+      // Si elije todas filtro por año directamente
+      if (apertura == 0) {
+        query = "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC";
+      } else {
+        query = "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC";
+      }
       $.ajax({
           type: 'POST',
           url: './helpers/getAsyncDataFromDB.php',
-          data: { query: "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 3 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC"},
+          data: { query: query},
           dataType: 'json',
           success: function(json) {
               let parsedData = json.data;
@@ -717,15 +738,20 @@ desired effect
       });
     }     
     // NC Por Responsables
-    function fn_ShowKPI_NC_R(apertura) {
+    function fn_ShowKPI_NC_R(apertura, anio) {
       if (chart_tot_NC_R !=null) {
         chart_tot_NC_R.destroy();
       }        
-      // Busco el servicio
+      // Si elije todas filtro por año directamente
+      if (apertura == 0) {
+        query = "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC";
+      } else {
+        query = "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC";
+      }
       $.ajax({
           type: 'POST',
           url: './helpers/getAsyncDataFromDB.php',
-          data: { query: "SELECT CONCAT(p.apellido,', ',p.nombre) as persona, COUNT(IF(estado='0',1,null)) as abiertos, COUNT(IF(estado='1',1,null)) as cerrados FROM mejora as M INNER JOIN persona as p ON M.responsable=p.id_persona WHERE M.tipo = 1 AND M.borrado = 0 AND ('0' = '" + apertura + "' OR apertura = '" + apertura + "') AND ( 1 = <?=$per_id_gerencia ?> OR  p.gerencia = <?=$per_id_gerencia ?> ) group by M.responsable ORDER BY (COUNT(IF(estado='0',1,0)) + COUNT(IF(estado='1',1,0))) DESC"},
+          data: { query: query},
           dataType: 'json',
           success: function(json) {
               let parsedData = json.data;
@@ -802,15 +828,9 @@ desired effect
 
     //Seto el trigger si la la fecha cambia
     $('#ddlFechaApertura').on('change', function() {
-      fn_update_metricas($("#ddlFechaApertura").val());
+      fn_update_metricas($("#ddlFechaApertura").val(), $("#ddlAnio").val());
     });  
 
-    // fn_ShowKPI_AM();
-    // fn_ShowKPI_NC();
-    // fn_ShowKPI_AM_O();
-    // fn_ShowKPI_NC_O();
-    // fn_ShowKPI_AM_R();
-    // fn_ShowKPI_NC_R();
   });
 </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
