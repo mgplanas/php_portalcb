@@ -52,6 +52,7 @@ En vez de por área por responsable
     - Se pasan todas la generación de gráficos a jquery + ajax.post
     - Aplicar filtro de todas las fechas de apertura para un año específico. (por si elije todas las fechas)
     - Aplicar filtro de todas las fechas de todos los anios.
+    - Se corrige label Análisis de Causas M[/pages/edit_mejora.php]
 
 ## FEAT-CTRL-OBS
 

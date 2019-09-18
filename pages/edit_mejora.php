@@ -423,7 +423,7 @@ desired effect
                          <?php echo "<textarea class=form-control name=descripcion>{$row['descripcion']}</textarea>"; ?>
                     </div>
                     <div class="form-group">
-                        <label for="causa">Análisis de causas</label>
+                        <label for="causa">Análisis de Causas (NC) / Objetivo de la Mejora (OM)</label>
                           <?php echo "<textarea class=form-control name=causa>{$row['causa']}</textarea>"; ?>
                     </div>
                     <div class="form-group">
