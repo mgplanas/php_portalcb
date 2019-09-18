@@ -374,7 +374,7 @@ desired effect
       $.ajax({
           type: 'POST',
           url: './helpers/getAsyncDataFromDB.php',
-          data: { query: "select DISTINCT YEAR(str_to_date(apertura, '%d/%m/%Y')) as anio FROM mejora where apertura is not null" },
+          data: { query: "select DISTINCT YEAR(str_to_date(apertura, '%d/%m/%Y')) as anio FROM mejora where borrado = 0 and apertura is not null" },
           dataType: 'json',
           success: function(json) {
               $("#ddlAnio").empty().append('<option selected="selected" value="0">Todos</option>');
@@ -398,7 +398,7 @@ desired effect
       $.ajax({
           type: 'POST',
           url: './helpers/getAsyncDataFromDB.php',
-          data: { query: "select DISTINCT apertura FROM mejora WHERE apertura is not null AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " ORDER BY str_to_date(apertura, '%d/%m/%Y')" },
+          data: { query: "select DISTINCT apertura FROM mejora WHERE borrado = 0 and apertura is not null AND YEAR(str_to_date(apertura, '%d/%m/%Y')) = " + anio + " ORDER BY str_to_date(apertura, '%d/%m/%Y')" },
           dataType: 'json',
           success: function(json) {
               $("#ddlFechaApertura").empty().append('<option selected="selected" value="0">Todas</option>');
