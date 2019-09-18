@@ -47,6 +47,17 @@
         - Se agrega la columna del permiso "proy"
             M[admin.php]
             M[setPermiso.php]
+        - Se aplica el filtro estrico de gerencias.
+            - Proyetos
+            - Completos
+            - indicadores:
+                - cuenta vencidos
+                - cuenta total
+                - No iniciados
+                - En curso
+                - Completados
+                - Asignación de proyectos M[pages/getProyResp.php] (le paso id_gerencia por POST)
+                - Estado de proyectos M[pages/getProyRespStat.php] (le paso id_gerencia por POST)
 
 ## FEAT-KPI-MC
 
