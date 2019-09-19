@@ -1,5 +1,78 @@
 # CHANGES
 
+## FEAT-PROY-GTI (CON FEAT-ADMIN-PER)
+
+### Extender la funcionalidad de proyectos al toda la empresa.
+
+*Fecha:* 2019-09-17
+*Cambios:*
+    - Se agregan el campo en la base de permisos admin_proy para administrar proyectos y "proyectos" para dar acceso al módulo independientemente el permiso SOC
+        ALTER TABLE controls.permisos
+        ADD admin_proy INT(11) AFTER guardias; [DEFAULT 0]
+        ALTER TABLE controls.permisos
+        ADD proy INT(11) DEFAULT '0' AFTER admin_proy;
+    - Se agrega en la tabla de permisos la columna de Admin proy con la funcionalidad de actualizar onclick 
+        M[pages/admin.php]
+        M[pages/setPermiso.php]
+    - Se actualizan los permisos de aquellos que hoy en día son admin
+        update permisos set admin_proy = 1 where admin = 1;
+    - Se actualiza la página de proyectos para que tome como admin el campo admin_proy
+        M[pages/proyectos.php]
+    - Aplico el filtro de gerencias en proyectos a la solapa de Proyectos, completados e indicadores
+        - Proyetos
+        - Completos
+        - indicadores:
+            - cuenta vencidos
+            - cuenta total
+            - No iniciados
+            - En curso
+            - Completados
+            - Asignación de proyectos M[pages/getProyResp.php] (le paso id_gerencia por POST)
+            - Estado de proyectos M[pages/getProyRespStat.php] (le paso id_gerencia por POST)
+        M[pages/proyectos.php]
+        - Limpio el campo de grupo al cambio de gerencia en persona. M[pages/edit_persona.php]
+ TEST   - Se aplica el acceso al módulo de proyectos para los permisos "proy"
+            - Se le dan los permisos de proyecto a los de soc
+            update permisos set proy = 1 where soc = 1;
+            M[pages/site_sidebar.php]
+            M[site.php]
+        - Permitir en el AM de peronas poder seleccionar el grupo.
+            M[pages/admin.php]  OK
+            M[pages/edit_persona.php]   OK
+            - Agrega el campo id_gerencia a la base de datos para dar la posibilidad de generar grupos por gerencia.
+            ALTER TABLE controls.grupo
+                ADD id_gerencia INT NOT NULL DEFAULT '0' AFTER id_grupo;
+            Se actualizan los grupos actuales con la generecia de CiberSeguridad:
+                update grupo set id_gerencia = 1;
+        - Se agrega la columna del permiso "proy"
+            M[admin.php]
+            M[setPermiso.php]
+        - Se aplica el filtro estrico de gerencias.
+            - Proyetos
+            - Completos
+            - indicadores:
+                - cuenta vencidos
+                - cuenta total
+                - No iniciados
+                - En curso
+                - Completados
+                - Asignación de proyectos M[pages/getProyResp.php] (le paso id_gerencia por POST)
+                - Estado de proyectos M[pages/getProyRespStat.php] (le paso id_gerencia por POST)
+        - Se actualiza el modal de "nuevo acceso" M[admin.php]
+        - FEAT-ADMIN-PER:
+            - Se agregan el campo en la base de permisos admin_per para administrar personal y accesos
+                ALTER TABLE controls.permisos
+                ADD admin_per INT(11) DEFAULT '0' AFTER proy;
+            - Se agrega en la tabla de permisos la columna de Admin proy con la funcionalidad de actualizar onclick
+                M[pages/admin.php]
+                M[pages/setPermiso.php]
+            - Se actualizan los permisos de aquellos que hoy en día son admin
+                update permisos set admin_per = 1 where admin = 1;
+            - Se actualiza la página de sit_header para que tome como admin el campo admin_per
+                M[pages/site_header.php]
+                M[site.php]
+
+
 ## FEAT-KPI-MC
 
 ### Indicadores

@@ -40,6 +40,7 @@ $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' and bor
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
 $id_rowpg = $rowp['grupo'];
+$per_id_gerencia = $rowp['gerencia'];
 
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);
@@ -49,7 +50,12 @@ if ($rq_sec['soc']=='0'){
 }
 
 //Count Total de Proyectos
-$query_total_proyectos = "SELECT 1 as total FROM proyecto WHERE proyecto.borrado='0'";// AND proyecto.estado!='4'";
+$query_total_proyectos = "SELECT 1 as total 
+                          FROM proyecto as y
+                          INNER JOIN persona as p ON y.responsable = p.id_persona                          
+                          WHERE y.borrado='0'
+                          AND p.borrado = '0'
+                          AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";// AND proyecto.estado!='4'";
 $count_total_proyectos = mysqli_query($con, $query_total_proyectos); 
 $rowtp = mysqli_num_rows($count_total_proyectos);
 
@@ -205,7 +211,7 @@ desired effect
               <li class="active"><a href="#tab_1" data-toggle="tab">Mis Proyectos</a></li>
               <li><a href="#tab_2" data-toggle="tab">Mi Grupo</a></li>
               <?php
-                    if ($rq_sec['admin']=='1'){
+                    if ($rq_sec['admin_proy']=='1'){
                     echo ' <li><a href="#tab_3" data-toggle="tab">Proyectos</a></li>';
                     echo ' <li><a href="#tab_4" data-toggle="tab">Completados</a></li>';
                     echo ' <li><a href="#tab_5" data-toggle="tab">Indicadores</a></li>';    
@@ -419,13 +425,10 @@ desired effect
                             $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
                                       LEFT JOIN persona as p on i.responsable = p.id_persona
                                       LEFT JOIN tipo_proyecto as t on i.tipo = t.id
-                                      WHERE i.grupo = $id_rowpg AND i.borrado='0' AND i.estado!='4'";
+                                      WHERE (i.grupo > 0 AND i.grupo = $id_rowpg) AND i.borrado='0' AND i.estado!='4'";
 
                             $sql = mysqli_query($con, $query.' ORDER BY id_proyecto ASC');
 
-                            if(mysqli_num_rows($sql) == 0){
-                                echo '<tr><td colspan="11">No hay datos.</td></tr>';
-                            }else{
                                 while($row = mysqli_fetch_assoc($sql)){
 
                                     echo '
@@ -565,7 +568,6 @@ desired effect
                                     </tr>
                                     ';
                                 }
-                            }
                             ?>
                         </tbody>
                       </table>
@@ -605,14 +607,13 @@ desired effect
                             $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
                                       LEFT JOIN persona as p on i.responsable = p.id_persona
                                       LEFT JOIN tipo_proyecto as t on i.tipo = t.id
-                                      WHERE i.borrado='0' AND i.estado!='4'
-                                      ORDER BY id_proyecto ASC";
+                                      WHERE i.borrado='0' AND i.estado!='4' AND p.borrado ='0' ";
+                            // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
+                            // if ( $per_id_gerencia != 1) {
+                              $query = $query . " AND p.gerencia = $per_id_gerencia ";
+                            // }                                        
+                            $sql = mysqli_query($con, $query . " ORDER BY id_proyecto ASC;");
 
-                            $sql = mysqli_query($con, $query);
-
-                            if(mysqli_num_rows($sql) == 0){
-                                echo '<tr><td colspan="11">No hay datos.</td></tr>';
-                            }else{
                                 while($row = mysqli_fetch_assoc($sql)){
 
                                     echo '
@@ -759,7 +760,6 @@ desired effect
                                     </tr>
                                     ';
                                 }
-                            }
                             ?>
                         </tbody>
                       </table>
@@ -793,14 +793,14 @@ desired effect
                           $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
                                     LEFT JOIN persona as p on i.responsable = p.id_persona
                                     LEFT JOIN tipo_proyecto as t on i.tipo = t.id
-                                    WHERE i.borrado='0' AND i.estado='4'
-                                    ORDER BY id_proyecto ASC";
+                                    WHERE i.borrado='0' AND i.estado='4' AND p.borrado = '0' ";
+                            // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
+                            // if ( $per_id_gerencia != 1) {
+                              $query = $query . " AND p.gerencia = $per_id_gerencia ";
+                            // }                                         
 
-                          $sql = mysqli_query($con, $query);
+                          $sql = mysqli_query($con, $query . "ORDER BY id_proyecto ASC");
 
-                          if(mysqli_num_rows($sql) == 0){
-                              echo '<tr><td colspan="8">No hay datos.</td></tr>';
-                          }else{
                               while($row = mysqli_fetch_assoc($sql)){
 
                                   echo '
@@ -953,7 +953,6 @@ desired effect
                                   </tr>
                                   ';
                               }
-                          }
                           ?>
                       </tbody>
                       <tfoot>
@@ -984,8 +983,11 @@ desired effect
                         <div class="small-box bg-red">
                           <div class="inner">
                             <h3><?php
-                                      $query_count_vencidas = "SELECT due_date FROM proyecto
-                                                              WHERE borrado='0' AND (estado='1' OR estado='2')";
+                                      $query_count_vencidas = "SELECT y.due_date FROM proyecto as y
+                                                              INNER JOIN persona as p ON y.responsable = p.id_persona
+                                                              WHERE y.borrado='0' AND (y.estado='1' OR y.estado='2') AND p.borrado = '0'
+                                                              AND ( p.gerencia = $per_id_gerencia )";
+                                                              // AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                       $count_vencidas = mysqli_query($con, $query_count_vencidas);
                                 
                                       $day=date("d");
@@ -1019,7 +1021,7 @@ desired effect
                           <div class="icon">
                             <i class="fa fa-thumbs-down"></i>
                           </div>
-                          <a class="small-box-footer"><?php $pv=round((($countv) * 100) / ($rowtp), PHP_ROUND_HALF_UP); echo $pv . " % del total de los proyectos"; ?></a>
+                          <a class="small-box-footer"><?php $pv=($rowtp > 0 ? round((($countv) * 100) / ($rowtp), PHP_ROUND_HALF_UP): 0); echo $pv . " % del total de los proyectos"; ?></a>
                         </div>
                       </div>
                     <div class="col-lg-3 col-xs-6">
@@ -1027,7 +1029,13 @@ desired effect
                       <div class="small-box bg-orange">
                         <div class="inner">
                           <h3><?php
-                                    $query_count_no = "SELECT 1 as total FROM proyecto WHERE borrado='0' AND estado='1'";
+                                    $query_count_no = "SELECT 1 as total 
+                                                      FROM proyecto as y
+                                                      INNER JOIN persona as p ON y.responsable = p.id_persona
+                                                      WHERE y.borrado='0' AND p.borrado = '0'
+                                                      AND y.estado='1' 
+                                                      AND ( p.gerencia = $per_id_gerencia )";
+                                                      // AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                     $count_no = mysqli_query($con, $query_count_no);
 
                                     echo '
@@ -1040,7 +1048,7 @@ desired effect
                         <div class="icon">
                           <i class="fa fa-thumbs-down"></i>
                         </div>
-                      <a class="small-box-footer"><?php $pno=round((((mysqli_num_rows($count_no)) * 100) / $rowtp), PHP_ROUND_HALF_UP); echo $pno . " % del total de los proyectos"; ?></a>
+                      <a class="small-box-footer"><?php $pno=($rowtp > 0 ? round((((mysqli_num_rows($count_no)) * 100) / $rowtp), PHP_ROUND_HALF_UP):0); echo $pno . " % del total de los proyectos"; ?></a>
                       </div>
                     </div>
                     <div class="col-lg-3 col-xs-6">
@@ -1048,7 +1056,13 @@ desired effect
                       <div class="small-box bg-blue">
                         <div class="inner">
                           <h3><?php
-                                    $query_count_si = "SELECT 1 as total FROM proyecto WHERE borrado='0' AND estado='2'";
+                                    $query_count_si = "SELECT 1 as total 
+                                    FROM proyecto as y 
+                                    INNER JOIN persona as p ON y.responsable = p.id_persona
+                                    WHERE y.borrado='0' AND p.borrado = '0'
+                                    AND y.estado='2' 
+                                    AND ( p.gerencia = $per_id_gerencia )";
+                                    // AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                     $count_si = mysqli_query($con, $query_count_si);
 
                                     echo '
@@ -1061,7 +1075,7 @@ desired effect
                         <div class="icon">
                           <i class="fa fa-gears"></i>
                         </div>
-                      <a class="small-box-footer"><?php $psi=round(((mysqli_num_rows($count_si)) * 100) / ($rowtp), PHP_ROUND_HALF_UP); echo $psi . " % del total de los proyectos"; ?></a>
+                      <a class="small-box-footer"><?php $psi=($rowtp > 0 ? round(((mysqli_num_rows($count_si)) * 100) / ($rowtp), PHP_ROUND_HALF_UP):0); echo $psi . " % del total de los proyectos"; ?></a>
                       </div>
                     </div>
                     <div class="col-lg-3 col-xs-6">
@@ -1069,7 +1083,12 @@ desired effect
                       <div class="small-box bg-green">
                         <div class="inner">
                           <h3><?php
-                                    $query_count_comp = "SELECT 1 as total FROM proyecto WHERE borrado='0' AND estado='4'";
+                                    $query_count_comp = "SELECT 1 as total 
+                                                          FROM proyecto as y 
+                                                          INNER JOIN persona as p ON y.responsable = p.id_persona
+                                                          WHERE y.borrado='0' AND estado='4' AND p.borrado = '0' 
+                                                          AND ( p.gerencia = $per_id_gerencia )";
+                                                          // AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
                                     $count_comp = mysqli_query($con, $query_count_comp);
 
                                     echo '
@@ -1081,7 +1100,7 @@ desired effect
                         <div class="icon">
                           <i class="fa fa-thumbs-up"></i>
                         </div>
-                      <a class="small-box-footer"><?php $psi=round(((mysqli_num_rows($count_comp)) * 100) / ($rowtp), PHP_ROUND_HALF_UP); echo $psi . " % del total de los proyectos"; ?></a>
+                      <a class="small-box-footer"><?php $psi=($rowtp > 0 ? round(((mysqli_num_rows($count_comp)) * 100) / ($rowtp), PHP_ROUND_HALF_UP):0); echo $psi . " % del total de los proyectos"; ?></a>
                       </div>
                     </div>
                   </div>
@@ -1109,7 +1128,7 @@ desired effect
                                       function showGraph1()
                                       {
                                           {
-                                              $.post("getProyResp.php",
+                                              $.post("getProyResp.php", {id_gerencia: "<?=$per_id_gerencia ?>"},
                                               function (data1)
                                               {
                                                   var name1 = [];
@@ -1202,7 +1221,7 @@ desired effect
                                       function showGraph()
                                       {
                                           {
-                                              $.post("getProyRespStat.php",
+                                              $.post("getProyRespStat.php", {id_gerencia: "<?=$per_id_gerencia ?>"},
                                               function (data)
                                               {
                                                   var name = [];
