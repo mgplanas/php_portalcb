@@ -50,9 +50,10 @@ if(isset($_POST['save'])){
 $user=$_SESSION['usuario'];
 
 //Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' and borrado=0");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
+$per_id_gerencia = $rowp['gerencia'];
 
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);
@@ -365,7 +366,7 @@ desired effect
                   <select name="responsable" class="form-control">
                     <?php
 
-                        $personasn = mysqli_query($con, "SELECT * FROM persona");
+                        $personasn = mysqli_query($con, "SELECT * FROM persona WHERE borrado = 0 and gerencia='$per_id_gerencia'");
                         while($rowps = mysqli_fetch_array($personasn)){
                           if($rowps['id_persona']==$row['responsable']) {
                             echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
@@ -408,7 +409,7 @@ desired effect
                               <label>Grupo</label>
                               <select name="grupo" class="form-control">
                                     <?php
-                                            $grupos = mysqli_query($con, "SELECT * FROM grupo");
+                                            $grupos = mysqli_query($con, "SELECT * FROM grupo WHERE id_gerencia='$per_id_gerencia'");
                                             while($rowpg = mysqli_fetch_array($grupos)){
                                                 if($rowpg['id_grupo']==$row['grupo']) {
                                                     echo "<option value='". $rowpg['id_grupo'] . "' selected='selected'>" .$rowpg['nombre'] . "</option>";

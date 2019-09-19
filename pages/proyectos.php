@@ -1370,7 +1370,7 @@ desired effect
                           <label>Responsable</label>
                           <select name="responsable" class="form-control">
                                 <?php
-                                        $personasn = mysqli_query($con, "SELECT * FROM persona where gerencia='1'");
+                                        $personasn = mysqli_query($con, "SELECT * FROM persona where borrado=0 and gerencia='$per_id_gerencia'");
                                         while($rowps = mysqli_fetch_array($personasn)){
                                             echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
                                             }
@@ -1381,7 +1381,7 @@ desired effect
                           <label>Grupo</label>
                           <select name="grupo" class="form-control">
                                 <?php
-                                        $grupos = mysqli_query($con, "SELECT * FROM grupo");
+                                        $grupos = mysqli_query($con, "SELECT * FROM grupo WHERE id_gerencia='$per_id_gerencia'");
                                         while($rowps = mysqli_fetch_array($grupos)){
                                             echo "<option value='". $rowps['id_grupo'] . "'>" .$rowps['nombre'] . "</option>";										
                                             }

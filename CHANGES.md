@@ -71,6 +71,9 @@
             - Se actualiza la página de sit_header para que tome como admin el campo admin_per
                 M[pages/site_header.php]
                 M[site.php]
+            - Se adapta el modal de nuevo proyecto y edición de proyecto para que se visualicen los grupos de la gerencia a la cual pertenecen
+                M[proyectos.php]
+                M[edit_proyecto.php]
 
 
 ## FEAT-KPI-MC
