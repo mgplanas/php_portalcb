@@ -262,6 +262,111 @@ desired effect
                         </div>
                         <!-- /.col -->
                     </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                    <div class="col-sm-6" style="text-align:left">
+                                        <h2 class="box-title">Calendario de Riesgos [Cerrados]</h2>
+                                    </div>
+                                    <div class="col-sm-6" style="text-align:right;">
+                                    <span class="badge bg-blue" style="font-size: 14px;">Cerrados</span>
+                                    </div>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <table id="riesgos_cerrados" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                            <?php
+                                            $mActual = date('m');
+                                                echo '<th>Gerencia</th>';
+                                                echo '<th ' . (1==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Enero</th>';
+                                                echo '<th ' . (2==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Febrero</th>';
+                                                echo '<th ' . (3==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Marzo</th>';
+                                                echo '<th ' . (4==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Abril</th>';
+                                                echo '<th ' . (5==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Mayo</th>';
+                                                echo '<th ' . (6==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Junio</th>';
+                                                echo '<th ' . (7==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Julio</th>';
+                                                echo '<th ' . (8==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Agosto</th>';
+                                                echo '<th ' . (9==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Septiembre</th>';
+                                                echo '<th ' . (10==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Octubre</th>';
+                                                echo '<th ' . (11==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Novimebre</th>';
+                                                echo '<th ' . (12==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Diciembre</th>';
+                                            ?>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                $query = "SELECT g.nombre,
+                                                                date_format(r.modificado, '%m') as mes, 
+                                                                COUNT(1) as cuenta
+                                                            FROM riesgo as r
+                                                            INNER JOIN persona as p ON r.responsable = p.id_persona
+                                                            LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
+                                                            WHERE r.borrado=0 AND r.estado='1'
+                                                            AND date_format(r.modificado, '%Y') = YEAR(NOW())
+                                                            AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )
+                                                            GROUP BY g.nombre, 
+                                                            date_format(r.modificado, '%m')";
+                                                $sql = mysqli_query($con, $query);
+                                                $allRows = mysqli_num_rows($sql);
+                                                if($allRows == 0) {
+                                                    echo '<tr><td colspan="13">No hay datos.</td></tr>';
+                                                } else {
+                                                    $nRow = 1;
+                                                    $mesActual = date('m');
+
+                                                    $gerencia_actual = '';
+                                                    $row = mysqli_fetch_assoc($sql);
+                                                    while($nRow <= $allRows) {
+
+                                                        $gerencia_actual = $row['nombre'];
+                                                        echo '<tr>';
+                                                        // Celda de ver control
+                                                        echo '<td>' . $row['nombre'] . '</td>';
+                                                        
+                                                        $mesControl = 1;
+                                                        while ($nRow <= $allRows && $row['nombre'] == $gerencia_actual) {
+                                                            
+                                                            // Formo el calendario mes a mes creado las celdas vacias hasat el mes del control
+                                                            // de 1-12 y marcando las que vienen por DB
+                                                            for ($i = $mesControl; $i < $row['mes']; $i++) {
+                                                                echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
+                                                            }
+                                                            
+                                                            //----------------------------
+                                                            //En esta celda hay riesgos
+                                                            //----------------------------
+                                                            echo '<td class="text-center ' . ($row['mes']==$mesActual ? 'mesactual"' : '"'  ) . '>';
+                                                            echo '<span class="badge bg-blue" style="font-size: 15px;">' . $row['cuenta'] . '</span>';
+                                                            echo '</td>';
+                                                            //----------------------------
+
+                                                            //Incremento el mes para generar celdas hasta el próximo mes 
+                                                            $mesControl = $row['mes'] + 1;
+                                                            
+                                                            $row = mysqli_fetch_assoc($sql);
+                                                            $nRow++;
+                                                        }
+                                                        
+                                                        // relleno los meses que faltan
+                                                        for ($i = $mesControl; $i <= 12; $i++) {
+                                                            echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
+                                                        }
+                                                        echo '</tr>';
+                                                    }
+                                                  }
+                                              ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
                     <!-- /.row -->
                 </section>
                 <!-- /.content -->
