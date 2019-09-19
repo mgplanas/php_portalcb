@@ -1370,7 +1370,7 @@ desired effect
                           <label>Responsable</label>
                           <select name="responsable" class="form-control">
                                 <?php
-                                        $personasn = mysqli_query($con, "SELECT * FROM persona where borrado=0 and gerencia='$per_id_gerencia'");
+                                        $personasn = mysqli_query($con, "SELECT * FROM persona where borrado=0 and gerencia='$per_id_gerencia' ORDER BY apellido");
                                         while($rowps = mysqli_fetch_array($personasn)){
                                             echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
                                             }

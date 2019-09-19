@@ -366,7 +366,7 @@ desired effect
                   <select name="responsable" class="form-control">
                     <?php
 
-                        $personasn = mysqli_query($con, "SELECT * FROM persona WHERE borrado = 0 and gerencia='$per_id_gerencia'");
+                        $personasn = mysqli_query($con, "SELECT * FROM persona WHERE borrado = 0 and gerencia='$per_id_gerencia' ORDER BY apellido");
                         while($rowps = mysqli_fetch_array($personasn)){
                           if($rowps['id_persona']==$row['responsable']) {
                             echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
