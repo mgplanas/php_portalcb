@@ -198,8 +198,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <tr>
                                                 <th width="1">Nro</th>
                                                 <th width="1">Legajo</th>
-                                                <th width="100">Correo</th>
                                                 <th width="100">Usuario</th>
+                                                <th width="100">Correo</th>
                                                 <th width="1">Admin</th>
                                                 <th width="1">Admin Per</th>
                                                 <th width="1">Proyectos</th>
@@ -215,7 +215,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                               $query = "SELECT i.*, p.nombre, p.apellido, p.legajo, p.email FROM permisos as i 
                                                         LEFT JOIN persona as p on i.id_persona = p.id_persona
                                                         WHERE i.borrado='0'
-                                                        ORDER BY i.id_permiso ASC";
+                                                        ORDER BY p.apellido, p.nombre  ASC";
                                               
                                               $sql = mysqli_query($con, $query);
                                               if(mysqli_num_rows($sql) == 0){
@@ -227,8 +227,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 while($row = mysqli_fetch_assoc($sql)){
                                                   echo '<td align="center">'.$row['id_permiso'].'</td>';
                                                   echo '<td>'.$row['legajo'].'</td>';
-                                                  echo '<td>'.$row['email'].'</td>';
                                                   echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
+                                                  echo '<td>'.$row['email'].'</td>';
                                                   echo '<td>
                                                           <div class="checkbox">
                                                             <label><a href=#><input name="admin" type="checkbox" onclick="updatePerm(1, '.$row['id_permiso'].');" value="1"'; if($row['admin'] == '1'){ echo 'checked'; } echo'></a></label>
@@ -278,8 +278,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <tr>
                                                 <th width="1">Nro</th>
                                                 <th width="1">Legajo</th>
-                                                <th width="100">Correo</th>
                                                 <th width="100">Usuario</th>
+                                                <th width="100">Correo</th>
                                                 <th width="1">Admin</th>
                                                 <th width="1">Admin Per</th>
                                                 <th width="1">Proyectos</th>

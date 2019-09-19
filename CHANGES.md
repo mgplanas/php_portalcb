@@ -74,6 +74,8 @@
             - Se adapta el modal de nuevo proyecto y edición de proyecto para que se visualicen los grupos de la gerencia a la cual pertenecen
                 M[proyectos.php]
                 M[edit_proyecto.php]
+            - Ordeno los accessos por apellido
+                M[admin.php]
 
 
 ## FEAT-KPI-MC
