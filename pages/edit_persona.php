@@ -28,10 +28,6 @@ if(isset($_POST['save'])){
     $grupo = mysqli_real_escape_string($con,(strip_tags($_POST["grupo"],ENT_QUOTES)));//Escanpando caracteres 
     $contacto = mysqli_real_escape_string($con,(strip_tags($_POST["contacto"],ENT_QUOTES)));//Escanpando caracteres 
     
-    // Si la gerencia no es ciberseguridad limpio el valor del grupo
-    if ($gerencia != 1) {
-      $grupo = 0;
-    }
 	  $update_persona = mysqli_query($con, "UPDATE persona 
                                             SET legajo='$legajo', 
                                             nombre='$nombre', 
@@ -305,10 +301,12 @@ desired effect
 		<li><a href="iso27k.php"><i class="fa fa-crosshairs"></i> <span>Ítems ISO 27001</span></a></li>
          <li><a href="mejoras.php"><i class="fa fa-refresh"></i> <span>Mejora Continua</span></a></li>
 		<li><a href="riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
+        <?php if ($rq_sec['admin']=='1' OR $rq_sec['proy']=='1'){
+          echo '<li><a href="proyectos.php"><i class="fa fa-list"></i> <span>Proyectos</span></a></li>';
+        }?>
         <?php if ($rq_sec['admin']=='1' OR $rq_sec['soc']=='1'){
             echo '<li><a href="calendario.php"><i class="fa fa-calendar"></i> <span>Calendario</span></a></li>';
             echo '<li><a href="novedades.php"><i class="fa fa-envelope"></i> <span>Novedades</span></a></li>';
-            echo '<li><a href="proyectos.php"><i class="fa fa-list"></i> <span>Proyectos</span></a></li>';
             echo '<li class="treeview">
               <a href="#">
                 <i class="fa fa-book"></i><span>Inventario</span>
@@ -448,20 +446,42 @@ desired effect
 <script src="../dist/js/adminlte.min.js"></script>
 <script>
     $(function() {
+      function populateGroups(id_gerencia) {
+          //Limpio los grupos
+          $("#gruposelector").empty().append('<option selected="selected" value="0">Ninguno</option>');
+          //Populo los grupos
+          $.ajax({
+              type: 'POST',
+              url: './helpers/getAsyncDataFromDB.php',
+              data: { query: 'SELECT * FROM grupo WHERE id_gerencia =' + id_gerencia + ' ORDER BY nombre ASC;' },
+              dataType: 'json',
+              success: function(json) {
 
-      if ($('#gerenciaselector').val() != 1) {
-        $('#grupodiv').hide();
+                console.log(json)
+                console.log("data" in json)
+                if ("data" in json == true) {
+                    // Use jQuery's each to iterate over the opts value
+                    $.each(json.data, function(i, d) {
+                        // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                        $('#gruposelector').append('<option value="' + d.id_grupo + '">' + d.nombre + '</option>');
+                    });
+                }
+              },
+              error: function(xhr, status, error) {
+                  alert(xhr.responseText, error);
+              }
+          });
       }
 
+      //Seto el trigger si la gerencia cambia 
       $('#gerenciaselector').on('change', function() {
-          if (this.value !=1 ) {    // Gerencia de CiberSeguridad
-              $('#grupodiv').hide();
-          } else {
-              $('#grupodiv').show();
-          }
-      });
-    })
-    </script>
+        populateGroups($("#gerenciaselector").val());
+      });      
+
+      // disparo el cambio en el load;
+      populateGroups($("#gerenciaselector").val());
+    });
+</script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->

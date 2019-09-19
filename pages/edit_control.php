@@ -335,7 +335,7 @@ desired effect
                   <input type="text" class="form-control" name="titulo" value="<?php echo $row ['titulo']; ?>">
                 </div>
                 <div class="form-group">
-                  <label for="contenido">Contenido</label>
+                  <label for="contenido">Items a controlar</label>
                   <?php echo "<textarea class=form-control name=contenido>{$row['contenido']}</textarea>"; ?>
                </div>
                <div class="form-group">

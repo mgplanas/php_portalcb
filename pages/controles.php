@@ -595,7 +595,7 @@ desired effect
                 'paging': true,
                 'pageLength': 20,
                 'lengthChange': false,
-                'searching': false,
+                'searching': true,
                 'ordering': true,
                 'info': true,
                 'autoWidth': true,

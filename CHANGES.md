@@ -1,11 +1,151 @@
+# CHANGES
+
 ## FEAT-CAL-RIESGOS
+
 ### Nuevas funcionalidades en el calendario de Riesgos.
+
 *Fecha:* 2019-09-06
 *Cambios:*
     - Se agrega un nuevo calendario de riesgos para representar los cerrados
     M[pages/cal_riegos.php]
 
+## FEAT-PROY-GTI (CON FEAT-ADMIN-PER)
+
+### Extender la funcionalidad de proyectos al toda la empresa.
+
+*Fecha:* 2019-09-17
+*Cambios:*
+    - Se agregan el campo en la base de permisos admin_proy para administrar proyectos y "proyectos" para dar acceso al módulo independientemente el permiso SOC
+        ALTER TABLE controls.permisos
+        ADD admin_proy INT(11) AFTER guardias; [DEFAULT 0]
+        ALTER TABLE controls.permisos
+        ADD proy INT(11) DEFAULT '0' AFTER admin_proy;
+    - Se agrega en la tabla de permisos la columna de Admin proy con la funcionalidad de actualizar onclick 
+        M[pages/admin.php]
+        M[pages/setPermiso.php]
+    - Se actualizan los permisos de aquellos que hoy en día son admin
+        update permisos set admin_proy = 1 where admin = 1;
+    - Se actualiza la página de proyectos para que tome como admin el campo admin_proy
+        M[pages/proyectos.php]
+    - Aplico el filtro de gerencias en proyectos a la solapa de Proyectos, completados e indicadores
+        - Proyetos
+        - Completos
+        - indicadores:
+            - cuenta vencidos
+            - cuenta total
+            - No iniciados
+            - En curso
+            - Completados
+            - Asignación de proyectos M[pages/getProyResp.php] (le paso id_gerencia por POST)
+            - Estado de proyectos M[pages/getProyRespStat.php] (le paso id_gerencia por POST)
+        M[pages/proyectos.php]
+        - Limpio el campo de grupo al cambio de gerencia en persona. M[pages/edit_persona.php]
+ TEST   - Se aplica el acceso al módulo de proyectos para los permisos "proy"
+            - Se le dan los permisos de proyecto a los de soc
+            update permisos set proy = 1 where soc = 1;
+            M[pages/site_sidebar.php]
+            M[site.php]
+        - Permitir en el AM de peronas poder seleccionar el grupo.
+            M[pages/admin.php]  OK
+            M[pages/edit_persona.php]   OK
+            - Agrega el campo id_gerencia a la base de datos para dar la posibilidad de generar grupos por gerencia.
+            ALTER TABLE controls.grupo
+                ADD id_gerencia INT NOT NULL DEFAULT '0' AFTER id_grupo;
+            Se actualizan los grupos actuales con la generecia de CiberSeguridad:
+                update grupo set id_gerencia = 1;
+        - Se agrega la columna del permiso "proy"
+            M[admin.php]
+            M[setPermiso.php]
+        - Se aplica el filtro estrico de gerencias.
+            - Proyetos
+            - Completos
+            - indicadores:
+                - cuenta vencidos
+                - cuenta total
+                - No iniciados
+                - En curso
+                - Completados
+                - Asignación de proyectos M[pages/getProyResp.php] (le paso id_gerencia por POST)
+                - Estado de proyectos M[pages/getProyRespStat.php] (le paso id_gerencia por POST)
+        - Se actualiza el modal de "nuevo acceso" M[admin.php]
+        - FEAT-ADMIN-PER:
+            - Se agregan el campo en la base de permisos admin_per para administrar personal y accesos
+                ALTER TABLE controls.permisos
+                ADD admin_per INT(11) DEFAULT '0' AFTER proy;
+            - Se agrega en la tabla de permisos la columna de Admin proy con la funcionalidad de actualizar onclick
+                M[pages/admin.php]
+                M[pages/setPermiso.php]
+            - Se actualizan los permisos de aquellos que hoy en día son admin
+                update permisos set admin_per = 1 where admin = 1;
+            - Se actualiza la página de sit_header para que tome como admin el campo admin_per
+                M[pages/site_header.php]
+                M[site.php]
+            - Se adapta el modal de nuevo proyecto y edición de proyecto para que se visualicen los grupos de la gerencia a la cual pertenecen
+                M[proyectos.php]
+                M[edit_proyecto.php]
+            - Ordeno los accessos por apellido
+                M[admin.php]
+
+
+## FEAT-KPI-MC
+
+### Indicadores
+
+#### Status de las Acciones de Mejora (AM)/ No Conformidades (NC)    [Gráficos de Torta]
+
+1)	Cantidad de AM  - Abiertos
+2)	Cantidad de AM  - Cerrados
+3)	Cantidad de NC  - Abiertos
+4)	Cantidad de NC  - Cerrados
+
+#### *[Graficos de barras]* Abiertos + histograma por año de cerrados
+
+B)	Origen de las Acciones de Mejora (AM)/ No Conformidades (NC)
+B1) Auditoria Externa
+1)	Cantidad de AM por Auditor Externo (AE) – Abiertos
+2)	Cantidad de AM por Auditor Externo (AE) – Cerrados
+3)	Cantidad de NC por Auditor Externo (AE) – Abiertos
+4)	Cantidad de NC por Auditor Externo (AE) - Cerrados
+
+#### Auditoria Interna
+
+1)	Cantidad de AM por Auditor Interno (AI) – Abiertos
+2)	Cantidad de AM por Auditor Interno (AI) – Cerrados
+3)	Cantidad de NC por Auditor Interno (AI) – Abiertos
+4)	Cantidad de NC por Auditor Interno (AI) – Cerrados
+
+#### Negocio
+
+1)	Cantidad de AM por Negocio – Abiertos 
+2)	Cantidad de AM por Negocio – Cerrados
+3)	Cantidad de NC por Negocio – Abiertos
+4)	Cantidad de NC por Negocio – Cerrados
+
+En vez de por área por responsable
+
+#### Acciones de Mejora por Área (AM)/ No Conformidades (NC):
+
+1)	Cantidad de AM por Área  - Abiertos
+2)	Cantidad de AM  por Área – Cerrados
+3)	Cantidad de NC por Área  - Abiertos
+4)	Cantidad de NC  por Área – Cerrados
+
+*Fecha:* 2019-09-16
+*Cambios:*
+    - Se agrega una nueva página de metricas para mejoras N[met_mejoras]
+    - Se actualizan los links en site y sidebar M[/site.php] M[site_sidebar.php]
+    - Se crean los graficos para AMy NC totales y por origen
+    - Creo filtros de año + fecha de apertura
+    - Se pasan todas la generación de gráficos a jquery + ajax.post
+    - Aplicar filtro de todas las fechas de apertura para un año específico. (por si elije todas las fechas)
+    - Aplicar filtro de todas las fechas de todos los anios.
+    - Se corrige label Análisis de Causas M[/pages/edit_mejora.php]
+    - Se limitan los orígenes de mejora a solo AI,AE y NE [mejoras.php] [edit_mejora.php]
+    - Se muestra como número de mejora el mismo id [mejora.php]
+>>>>>>> devel
+
 ## FEAT-CTRL-OBS
+
 ### Identificación de nuevos estados en las referencia de los controles para determinar aquellos que han sido observados.
 *Fecha:* 2019-09-04
 *Cambios:*
@@ -17,8 +157,13 @@
     - Se actualizan los graficos de métricas
     M[pages/met_controles.php]
     M[site.php]
+    - Se agrega el campo de búsqueda en la grilla de controles
+    M[pages/controles.php]
+    - Se corrige el calendario de controles para alojar los nuevos estados.
+    M[pages/cal_controles]
 
 ## FIX-ISO9K1
+
 ### Nuevo módulo para alojar la matriz de ISO9001 basado en la misma funcionalidad de la iso27k1.
 *Fecha:* 2019-07-23
 *Cambios:*
