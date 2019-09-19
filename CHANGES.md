@@ -1,6 +1,6 @@
 # CHANGES
 
-## FEAT-PROY-GTI
+## FEAT-PROY-GTI (CON FEAT-ADMIN-PER)
 
 ### Extender la funcionalidad de proyectos al toda la empresa.
 
@@ -59,6 +59,19 @@
                 - Asignación de proyectos M[pages/getProyResp.php] (le paso id_gerencia por POST)
                 - Estado de proyectos M[pages/getProyRespStat.php] (le paso id_gerencia por POST)
         - Se actualiza el modal de "nuevo acceso" M[admin.php]
+        - FEAT-ADMIN-PER:
+            - Se agregan el campo en la base de permisos admin_per para administrar personal y accesos
+                ALTER TABLE controls.permisos
+                ADD admin_per INT(11) DEFAULT '0' AFTER proy;
+            - Se agrega en la tabla de permisos la columna de Admin proy con la funcionalidad de actualizar onclick
+                M[pages/admin.php]
+                M[pages/setPermiso.php]
+            - Se actualizan los permisos de aquellos que hoy en día son admin
+                update permisos set admin_per = 1 where admin = 1;
+            - Se actualiza la página de sit_header para que tome como admin el campo admin_per
+                M[pages/site_header.php]
+                M[site.php]
+
 
 ## FEAT-KPI-MC
 

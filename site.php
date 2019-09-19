@@ -315,8 +315,8 @@ desired effect
               <li class="user-footer">
                 <div class="pull-left">
                     <?php
-                    if ($rq_sec['admin']=='1'){
-                    echo '<a href="./pages/admin.php" class="btn btn-default btn-flat "><i class="fa fa-gears"></i> Admin</a>';
+                    if ($rq_sec['admin']=='1' || $rq_sec['admin_per']=='1' ){
+                    echo '<a href="./pages/admin.php" class="btn btn-default btn-flat "><i class="fa fa-gears"></i> Admin. Permisos</a>';
                     }
                     ?>
                 </div>
