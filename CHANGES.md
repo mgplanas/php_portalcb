@@ -1,5 +1,13 @@
 # CHANGES
 
+## FIX-MC
+
+### Correcciónes MC
+
+    - Se indica el id en vez de la referencia al editar
+    - Se muestra la totalidad de los responsables en editar_mejora por si estubo dado de baja.
+
+
 ## FEAT-KPI-MC
 
 ### Indicadores
