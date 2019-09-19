@@ -76,6 +76,9 @@
                 M[edit_proyecto.php]
             - Ordeno los accessos por apellido
                 M[admin.php]
+            - Cambio el link de los indicadores del header
+                M[site_header.php]
+                M[site.php]
 
 
 ## FEAT-KPI-MC
