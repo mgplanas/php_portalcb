@@ -13,3 +13,5 @@ FEAT-KPI-MC
     M[pages/site_sidebar.php]
     M[pages/met_mejoras.php]
     M[site.php]
+    M[/pages/edit_mejora.php]
+    M[mejoras.php] [edit_mejora.php]
