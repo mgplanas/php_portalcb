@@ -58,6 +58,7 @@
                 - Completados
                 - Asignación de proyectos M[pages/getProyResp.php] (le paso id_gerencia por POST)
                 - Estado de proyectos M[pages/getProyRespStat.php] (le paso id_gerencia por POST)
+        - Se actualiza el modal de "nuevo acceso" M[admin.php]
 
 ## FEAT-KPI-MC
 

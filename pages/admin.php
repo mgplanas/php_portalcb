@@ -300,8 +300,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     $edicion = mysqli_real_escape_string($con,(strip_tags($_POST["edicion"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $compliance = mysqli_real_escape_string($con,(strip_tags($_POST["compliance"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $soc = mysqli_real_escape_string($con,(strip_tags($_POST["soc"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $proy = mysqli_real_escape_string($con,(strip_tags($_POST["proy"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $admin_proy = mysqli_real_escape_string($con,(strip_tags($_POST["admin_proy"],ENT_QUOTES)));//Escanpando caracteres 
                                                     //Inserto Control
-                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc')") or die(mysqli_error());	
+                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy')") or die(mysqli_error());	
                                                     $lastInsert = mysqli_insert_id($con);
                                                     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                                   VALUES ('1', '16', '$lastInsert', now(), '$user')") or die(mysqli_error());
@@ -354,6 +356,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             <label>
                                                                 <input name="soc" type="checkbox" value="1"> SOC
                                                                 (Operaciones de Ciberseguridad)
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="proy" type="checkbox" value="1"> Proyectos
+                                                                (Gestión de proyectos)
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="admin_proy" type="checkbox" value="1"> Admin. Proy.
+                                                                (Administrador de proyectos)
                                                             </label>
                                                         </div>
 
