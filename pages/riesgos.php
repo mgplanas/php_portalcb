@@ -257,13 +257,14 @@ desired effect
                                     </div>
 
                                     <div class="col-sm-6" style="text-align:right;">
-                                        <button type="button" class="btn-sm" data-toggle="modal"
+                                    <a href="cal_riesgos.php" class="btn btn-primary"><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i> Calendario</a>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
                                             data-target="#modal-ciclo"><i class="glyphicon glyphicon-repeat"></i>
                                             Ciclo</button>
-                                        <button type="button" class="btn-sm" data-toggle="modal"
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
                                             data-target="#modal-inherente"><i class="glyphicon glyphicon-th"></i>
                                             Inherente</button>
-                                        <button type="button" class="btn-sm" data-toggle="modal"
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
                                             data-target="#modal-residual"><i class="glyphicon glyphicon-th"></i>
                                             Residual</button>
                                         <button type="button" class="btn-sm btn-primary" data-toggle="modal"

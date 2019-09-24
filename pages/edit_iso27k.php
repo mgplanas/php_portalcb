@@ -8,36 +8,68 @@ if (!isset($_SESSION['usuario'])){
 	header('Location: index.html');
 }
 $user=$_SESSION['usuario'];
-
+$current_version=mysqli_real_escape_string($con,(strip_tags($_GET["version"],ENT_QUOTES)));
 $nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
-$sql = mysqli_query($con, "SELECT i.*, m.nivel, p.nombre, p.apellido FROM item_iso27k as i 
+$sql = mysqli_query($con, "SELECT i.*, m.nivel, p.nombre, p.apellido,v.modificacion as v_mod, v.numero as v_numero, v.descripcion as v_desc FROM item_iso27k as i 
 						      LEFT JOIN madurez as m on i.madurez = m.id_madurez 
-						      LEFT JOIN persona as p on i.responsable = p.id_persona
+						      LEFT JOIN persona as p on i.responsable = p.id_persona 
+                  LEFT JOIN iso27k_version as v on i.version = v.id
 							  WHERE i.borrado='0' AND i.id_item_iso27k='$nik'");
+$sqlrefs = mysqli_query($con, "SELECT * FROM iso27k_refs WHERE id_item_iso27k = '$nik'");
 
 if(mysqli_num_rows($sql) == 0){
-	header("Location: iso27k.php");
+	header("Location: iso27k.php?version='$current_version'");
 }else{
 	$row = mysqli_fetch_assoc($sql);}
 			
 if(isset($_POST['save'])){
 
 	$responsable = mysqli_real_escape_string($con,(strip_tags($_POST["responsable"],ENT_QUOTES)));
+  $referentes = (isset($_POST["referentes"]) ? $_POST["referentes"] : []);
 	$madurez = mysqli_real_escape_string($con,(strip_tags($_POST["madurez"],ENT_QUOTES)));
 	$implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
 	$evidencia = mysqli_real_escape_string($con,(strip_tags($_POST["evidencia"],ENT_QUOTES)));
-    $codigo = mysqli_real_escape_string($con,(strip_tags($_POST["codigo"],ENT_QUOTES)));
-	
-	$update_iso27k = mysqli_query($con, "UPDATE item_iso27k SET responsable='$responsable', madurez='$madurez', implementacion='$implementacion',                                          evidencia='$evidencia', modificado=NOW(), usuario='$user' 
-										 WHERE id_item_iso27k='$nik'") or die(mysqli_error());	
-	$insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
-											   VALUES ('2', '6','$nik', now(), '$user', '$codigo')") or die(mysqli_error());
-	if($update_iso27k){
+  $codigo = mysqli_real_escape_string($con,(strip_tags($_POST["codigo"],ENT_QUOTES)));
+  
+  mysqli_autocommit($con, false);
+  $resultado = true;
+  $resultado = mysqli_query($con, "UPDATE item_iso27k SET responsable='$responsable', madurez='$madurez', implementacion='$implementacion',                                          evidencia='$evidencia', modificado=NOW(), usuario='$user' 
+                     WHERE id_item_iso27k='$nik'");
+  if ($resultado) {
+    
+    $resultado = mysqli_query($con, "DELETE FROM iso27k_refs WHERE id_item_iso27k ='$nik'");
+    if ($resultado) {
+
+      if (count($referentes,COUNT_NORMAL)>0) {
+        $sqlInsRef = "INSERT INTO iso27k_refs (id_item_iso27k, id_persona,  borrado) VALUES ";
+        $refCounter = 0;
+        foreach ($referentes as $ref) {
+          if ($refCounter > 0) $sqlInsRef .= ", ";
+          $sqlInsRef .= "('$nik', '$ref', 0)";
+          $refCounter++;
+        }  
+          
+        $resultado = mysqli_query($con, $sqlInsRef);
+      }
+      if ($resultado) {
+        $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+                        VALUES ('2', '6','$nik', now(), '$user', '$codigo')");
+      }  
+    }
+  }
+                    
+  if ($resultado) {
+    mysqli_commit($con);
+  } else {
+    mysqli_rollback($con);
+  }
+  mysqli_autocommit($con, true);
+	if($resultado){
 		$_SESSION['formSubmitted'] = 1;
-		header("Location: iso27k.php");
+		header("Location: iso27k.php?version='$current_version'");
 	}else{
 		$_SESSION['formSubmitted'] = 9;
-		header("Location: iso27k.php");					
+		header("Location: iso27k.php?version='$current_version'");					
 	}
 }
 //Alert icons data on top bar
@@ -333,34 +365,62 @@ desired effect
             <form method="post" role="form" action="">
               <div class="box-body">
                 <div class="form-group">
+                  <label for="evidencia">Versión de Matriz</label>
+                  <input type="text" class="form-control" name="version" id="version" value="<?php echo $row['v_numero'] . ' [' . $row ['v_mod'] . ']'; ?>" readonly>                  
+                </div> 
+                <div class="form-group">
                   <label for="codigo">Código</label>
                   <input type="text" class="form-control" name="codigo" value="<?php echo $row ['codigo']; ?>"readonly>
                 </div>
                 <div class="form-group">
                   <label for="titulo">Titulo</label>
                   <?php echo "<textarea class=form-control readonly name=titulo>{$row['titulo']}</textarea>"; ?>
-               </div>
+                </div>
                 <div class="form-group">
                   <label for="descripcion">Descripción</label>
                   <?php echo "<textarea class=form-control readonly name=descripcion>{$row['descripcion']}</textarea>"; ?>
-               </div>
-				<div class="form-group">
-                  <label>Referente</label>
+                </div>
+				        <div class="form-group">
+                  <label>Responsable</label>
                   <select name="responsable" class="form-control">
-						<?php
-								$personasn = mysqli_query($con, "SELECT * FROM persona");
-								while($rowps = mysqli_fetch_array($personasn)){
-									if($rowps['id_persona']==$row['responsable']) {
-										echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
-									}
-									else {
-										echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
-									}
-								}
-						?>
+                    <?php
+                        $personasn = mysqli_query($con, "SELECT * FROM persona ORDER BY apellido, nombre");
+                        while($rowps = mysqli_fetch_array($personasn)){
+                          if($rowps['id_persona']==$row['responsable']) {
+                            echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
+                          }
+                          else {
+                            echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+                          }
+                        }
+                        ?>
                   </select>
                 </div>
-				<div class="form-group">
+				        <div class="form-group">
+                  <label>Referentes &nbsp;<code>Realizar la selección/deselección con la tecla CTRL presionada. De lo contrario se perderán los referentes seleccionados.</code></label>
+                  <select name="referentes[]" class="form-control custom-select" multiple>
+                    <?php
+                          mysqli_data_seek($personasn,0);
+                          while($rowps = mysqli_fetch_array($personasn)){
+                            // lo busco en los seleccionados
+                            mysqli_data_seek($sqlrefs,0);
+                            $existe = false;
+                            while($rowrefs = mysqli_fetch_array($sqlrefs)){
+                              if($rowps['id_persona']==$rowrefs['id_persona']){
+                                $existe = true;
+                                break;
+                              }
+                            }
+                            if ($existe) {
+                              echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
+                            } else {
+                              echo "<option value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+                            }
+                          }
+                      ?>
+                    </select>
+                </div>
+				        <div class="form-group">
                   <label>Madurez</label>
                   <select name="madurez" class="form-control">
                         <?php
@@ -373,26 +433,26 @@ desired effect
                                     echo "<option value='". $rowmd['id_madurez'] . "'>" .$rowmd['nivel'] . "</option>";										
                                 }
                             }
-						?>
+						            ?>
                    </select>
                 </div>
                 <div class="form-group">
                   <label for="implementacion">Implementación</label>
                   <?php echo "<textarea class=form-control name=implementacion>{$row['implementacion']}</textarea>"; ?>
                </div>
-				<div class="form-group">
+				      <div class="form-group">
                   <label for="evidencia">Evidencia</label>
                   <?php echo "<textarea class=form-control name=evidencia>{$row['evidencia']}</textarea>"; ?>
                </div>
-				 <div class="form-group">
-					<div class="col-sm-2">
-						<input type="submit" name="save" class="btn  btn-raised btn-success" value="Guardar datos">
-					</div>
-					<div class="col-sm-2">
-						<a href="iso27k.php" class="btn btn-warning btn-raised">Cancelar</a>
-					</div>
-				</div>
-			  </div>
+              <div class="form-group">
+                <div class="col-sm-2">
+                  <input type="submit" name="save" class="btn  btn-raised btn-success" value="Guardar datos">
+                </div>
+                <div class="col-sm-2">
+                  <a href=<?php echo '"iso27k.php?version=' .$current_version. '"'; ?> class="btn btn-warning btn-raised">Cancelar</a>
+                </div>
+              </div>
+			        </div>
             </form>
           </div>
     <!-- /.content -->

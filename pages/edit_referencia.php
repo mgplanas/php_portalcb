@@ -343,6 +343,8 @@ desired effect
                   <select name="status" class="form-control">
                     <option value='1'<?php if($row['status'] == '1'){ echo 'selected'; } ?>>Controlado</option>
                     <option value='2'<?php if($row['status'] == '2'){ echo 'selected'; } ?>>Pendiente</option>
+                    <option value='3'<?php if($row['status'] == '3'){ echo 'selected'; } ?>>Controlado con obs alta</option>
+                    <option value='4'<?php if($row['status'] == '4'){ echo 'selected'; } ?>>Controlado con obs baja</option>
                   </select>
                 </div>
                  <div class="form-group">
