@@ -10,6 +10,7 @@ if (!isset($_SESSION['usuario'])){
 $user=$_SESSION['usuario'];
 
 $nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+$referencia = mysqli_real_escape_string($con,(strip_tags($_GET["ref"],ENT_QUOTES)));
 $sql = mysqli_query($con, "SELECT i.*, p.nombre, p.apellido, o.descripcion as dorig, op.nombre as opn, op.apellido as opa FROM mejora as i 
 						 	  LEFT JOIN persona as p on i.responsable = p.id_persona
                               LEFT JOIN persona as op on i.abierto = op.id_persona
@@ -342,7 +343,7 @@ desired effect
     <section class="content-header">
       <h1>
         Gestión de Mejora Continua
-        <small>Editar >> <?php echo $nik; ?></small>
+        <small>Editar >> <?php echo $referencia; ?></small>
       </h1>
     </section>
     <!-- Main content -->
@@ -360,7 +361,7 @@ desired effect
                             <label for="origen">Origen</label>
                             <select name="origen" class="form-control">
                             <?php
-                                    $origenes = mysqli_query($con, "SELECT * FROM origen");
+                                    $origenes = mysqli_query($con, "SELECT * FROM origen WHERE id_origen IN (1,2,4)");
                                     while($rowpo = mysqli_fetch_array($origenes)){
                                         if($rowpo['id_origen']==$row['origen']) {
                                             echo "<option value='". $rowpo['id_origen'] . "' selected='selected'>" .$rowpo['descripcion'] . "</option>";
@@ -387,7 +388,7 @@ desired effect
                            <label for="abierto">Abierto por</label>
                             <select name="abierto" class="form-control">
                             <?php
-                                    $personasn = mysqli_query($con, "SELECT * FROM persona");
+                                    $personasn = mysqli_query($con, "SELECT * FROM persona WHERE borrado=0 ORDER BY apellido, nombre");
                                     while($rowps = mysqli_fetch_array($personasn)){
                                         if($rowps['id_persona']==$row['abierto']) {
                                             echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
@@ -403,7 +404,7 @@ desired effect
                            <label for="responsable">Responsable</label>
                             <select name="responsable" class="form-control">
                             <?php
-                                    $personasn = mysqli_query($con, "SELECT * FROM persona");
+                                    $personasn = mysqli_query($con, "SELECT * FROM persona WHERE borrado=0 ORDER BY apellido, nombre");
                                     while($rowps = mysqli_fetch_array($personasn)){
                                         if($rowps['id_persona']==$row['responsable']) {
                                             echo "<option value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
@@ -422,7 +423,7 @@ desired effect
                          <?php echo "<textarea class=form-control name=descripcion>{$row['descripcion']}</textarea>"; ?>
                     </div>
                     <div class="form-group">
-                        <label for="causa">Análisis de causas</label>
+                        <label for="causa">Análisis de Causas (NC) / Objetivo de la Mejora (OM)</label>
                           <?php echo "<textarea class=form-control name=causa>{$row['causa']}</textarea>"; ?>
                     </div>
                     <div class="form-group">

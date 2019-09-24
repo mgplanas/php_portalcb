@@ -1,8 +1,12 @@
+# RELEASE NOTE FOR REL-
+
 ## RELEASE NOTE FOR REL 0004
+
 ### Features
 - FEAT-CLI-DC
 
 ### Pasos
+
 - Entorno
     /bower_components/datatables.net/css/jquery.dataTables.min.css
     /bower_components/datatables.net/images
