@@ -198,9 +198,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <tr>
                                                 <th width="1">Nro</th>
                                                 <th width="1">Legajo</th>
-                                                <th width="100">Correo</th>
                                                 <th width="100">Usuario</th>
+                                                <th width="100">Correo</th>
                                                 <th width="1">Admin</th>
+                                                <th width="1">Admin Per</th>
+                                                <th width="1">Proyectos</th>
+                                                <th width="1">Admin Proy</th>
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
                                                 <th width="1">Edición</th>
@@ -212,7 +215,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                               $query = "SELECT i.*, p.nombre, p.apellido, p.legajo, p.email FROM permisos as i 
                                                         LEFT JOIN persona as p on i.id_persona = p.id_persona
                                                         WHERE i.borrado='0'
-                                                        ORDER BY i.id_permiso ASC";
+                                                        ORDER BY p.apellido, p.nombre  ASC";
                                               
                                               $sql = mysqli_query($con, $query);
                                               if(mysqli_num_rows($sql) == 0){
@@ -224,11 +227,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 while($row = mysqli_fetch_assoc($sql)){
                                                   echo '<td align="center">'.$row['id_permiso'].'</td>';
                                                   echo '<td>'.$row['legajo'].'</td>';
-                                                  echo '<td>'.$row['email'].'</td>';
                                                   echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
+                                                  echo '<td>'.$row['email'].'</td>';
                                                   echo '<td>
                                                           <div class="checkbox">
                                                             <label><a href=#><input name="admin" type="checkbox" onclick="updatePerm(1, '.$row['id_permiso'].');" value="1"'; if($row['admin'] == '1'){ echo 'checked'; } echo'></a></label>
+                                                          </div>
+                                                        </td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
+                                                            <label><a href=#><input name="admin_per" type="checkbox" onclick="updatePerm(7, '.$row['id_permiso'].');" value="1"'; if($row['admin_per'] == '1'){ echo 'checked'; } echo'></a></label>
+                                                          </div>
+                                                        </td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
+                                                            <label><a href=#><input name="proy" type="checkbox" onclick="updatePerm(6, '.$row['id_permiso'].');" value="1"'; if($row['proy'] == '1'){ echo 'checked'; } echo'></a></label>
+                                                          </div>
+                                                        </td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
+                                                            <label><a href=#><input name="admin_proy" type="checkbox" onclick="updatePerm(5, '.$row['id_permiso'].');" value="1"'; if($row['admin_proy'] == '1'){ echo 'checked'; } echo'></a></label>
                                                           </div>
                                                         </td>'; 
                                                   echo '<td>
@@ -260,9 +278,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <tr>
                                                 <th width="1">Nro</th>
                                                 <th width="1">Legajo</th>
-                                                <th width="100">Correo</th>
                                                 <th width="100">Usuario</th>
+                                                <th width="100">Correo</th>
                                                 <th width="1">Admin</th>
+                                                <th width="1">Admin Per</th>
+                                                <th width="1">Proyectos</th>
+                                                <th width="1">Admin Proy</th>
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
                                                 <th width="1">Edición</th>
@@ -286,8 +307,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     $edicion = mysqli_real_escape_string($con,(strip_tags($_POST["edicion"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $compliance = mysqli_real_escape_string($con,(strip_tags($_POST["compliance"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $soc = mysqli_real_escape_string($con,(strip_tags($_POST["soc"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $proy = mysqli_real_escape_string($con,(strip_tags($_POST["proy"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $admin_proy = mysqli_real_escape_string($con,(strip_tags($_POST["admin_proy"],ENT_QUOTES)));//Escanpando caracteres 
                                                     //Inserto Control
-                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc')") or die(mysqli_error());	
+                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy')") or die(mysqli_error());	
                                                     $lastInsert = mysqli_insert_id($con);
                                                     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                                   VALUES ('1', '16', '$lastInsert', now(), '$user')") or die(mysqli_error());
@@ -340,6 +363,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             <label>
                                                                 <input name="soc" type="checkbox" value="1"> SOC
                                                                 (Operaciones de Ciberseguridad)
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="proy" type="checkbox" value="1"> Proyectos
+                                                                (Gestión de proyectos)
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="admin_proy" type="checkbox" value="1"> Admin. Proy.
+                                                                (Administrador de proyectos)
                                                             </label>
                                                         </div>
 
@@ -466,10 +501,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                               $grupo = mysqli_real_escape_string($con,(strip_tags($_POST["grupo"],ENT_QUOTES)));//Escanpando caracteres 
                                               $contacto = mysqli_real_escape_string($con,(strip_tags($_POST["contacto"],ENT_QUOTES)));//Escanpando caracteres 
                                               
-                                              // Si la gerencia no es ciberseguridad limpio el valor del grupo
-                                              if ($gerencia != 1) {
-                                                  $grupo = 0;
-                                              }
                                               //Inserto Control
                                               $insert_persona = mysqli_query($con, "INSERT INTO persona(legajo, nombre, apellido, cargo, gerencia, email, grupo, contacto, borrado) 
                                                                                     VALUES ('$legajo','$nombre','$apellido', '$cargo', '$gerencia', '$email', '$grupo', '$contacto', 0)") or die(mysqli_error());	
@@ -768,17 +799,45 @@ scratch. This page gets rid of all links and provides the needed markup only.
         })
     })
     </script>
-    <script>
+<script>
     $(function() {
-        $('#gerenciaselector').on('change', function() {
-            if (this.value !=1 ) {    // Gerencia de CiberSeguridad
-                $('#grupodiv').hide();
-            } else {
-                $('#grupodiv').show();
-            }
-        });
-    })
-    </script>
+      function populateGroups(id_gerencia) {
+          //Limpio los grupos
+          $("#gruposelector").empty().append('<option selected="selected" value="0">Ninguno</option>');
+          //Populo los grupos
+          $.ajax({
+              type: 'POST',
+              url: './helpers/getAsyncDataFromDB.php',
+              data: { query: 'SELECT * FROM grupo WHERE id_gerencia =' + id_gerencia + ' ORDER BY nombre ASC;' },
+              dataType: 'json',
+              success: function(json) {
+
+                console.log(json)
+                console.log("data" in json)
+                if ("data" in json == true) {
+                    // Use jQuery's each to iterate over the opts value
+                    $.each(json.data, function(i, d) {
+                        // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                        $('#gruposelector').append('<option value="' + d.id_grupo + '">' + d.nombre + '</option>');
+                    });
+                }
+              },
+              error: function(xhr, status, error) {
+                  alert(xhr.responseText, error);
+              }
+          });
+      }
+
+      //Seto el trigger si la gerencia cambia 
+      $('#gerenciaselector').on('change', function() {
+        populateGroups($("#gerenciaselector").val());
+      });      
+
+      // disparo el cambio en el load;
+      populateGroups($("#gerenciaselector").val());
+    });
+</script>
+
     <script>
         $(function(){
         $(".ver-itemDialog").click(function(){

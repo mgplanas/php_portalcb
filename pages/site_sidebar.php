@@ -29,10 +29,13 @@
     <li><a href="iso9k.php"><i class="fa fa-crosshairs"></i> <span>ISO 9001</span></a></li>
     <li><a href="mejoras.php"><i class="fa fa-refresh"></i> <span>Mejora Continua</span></a></li>
     <li><a href="riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
+    <?php if ($rq_sec['admin']=='1' OR $rq_sec['proy']=='1' OR $rq_sec['admin_proy']=='1'){
+          echo '<li><a href="proyectos.php"><i class="fa fa-list"></i> <span>Proyectos</span></a></li>';
+    }?>
+    
     <?php if ($rq_sec['admin']=='1' OR $rq_sec['soc']=='1'){
     echo '<li><a href="calendario.php"><i class="fa fa-calendar"></i> <span>Calendario</span></a></li>';
     echo '<li><a href="novedades.php"><i class="fa fa-envelope"></i> <span>Novedades</span></a></li>';
-    echo '<li><a href="proyectos.php"><i class="fa fa-list"></i> <span>Proyectos</span></a></li>';
     echo '<li class="treeview">
       <a href="#">
         <i class="fa fa-book"></i><span>Inventario</span>

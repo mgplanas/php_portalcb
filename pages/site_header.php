@@ -97,7 +97,7 @@ $rowcp = mysqli_num_rows($count_proyectos);
                     <li class="header">Tienes <?php echo $rowcp; ?> proyectos asignados</li>
                     
                     <li class="footer">
-                    <a href="controles.php">Gestionar proyectos</a>
+                    <a href="proyectos.php">Gestionar proyectos</a>
                     </li>
                 </ul>
             </li>
@@ -134,8 +134,8 @@ $rowcp = mysqli_num_rows($count_proyectos);
                     <li class="user-footer">
                         <div class="pull-left">
                             <?php
-                            if ($rq_sec['admin']=='1'){
-                            echo '<a href="admin.php" class="btn btn-default btn-flat "><i class="fa fa-gears"></i> Admin</a>';
+                            if ($rq_sec['admin']=='1' || $rq_sec['admin_per']=='1' ){
+                            echo '<a href="admin.php" class="btn btn-default btn-flat "><i class="fa fa-gears"></i> Admin. Permisos</a>';
                             }
                             ?>
                         </div>
