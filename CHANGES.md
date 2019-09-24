@@ -37,8 +37,6 @@ Gererar portal para consulta de clientes/servicios dc basados en una base access
         bd: sdc_hosting_temp
 
 
-        
-
 ## FEAT-PROY-GTI (CON FEAT-ADMIN-PER)
 
 ### Extender la funcionalidad de proyectos al toda la empresa.
