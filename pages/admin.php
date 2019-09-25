@@ -206,6 +206,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">Admin Proy</th>
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
+                                                <th width="1">Cli. DC</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>
@@ -260,6 +261,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 </div></td>'; 
                                                   echo '<td>
                                                           <div class="checkbox">
+                                                            <label><input name="clidc" type="checkbox" onclick="updatePerm(8, '.$row['id_permiso'].');" value="1"'; if($row['cli_dc'] == '1'){ echo 'checked'; } echo'></label>
+                                                                </div></td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
                                                             <label><input name="edicion" type="checkbox" onclick="updatePerm(4, '.$row['id_permiso'].');" value="1"'; if($row['edicion'] == '1'){ echo 'checked'; } echo'></label>
                                                           </div></td>'; 
                                                   echo '<td align="center">
@@ -286,6 +291,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">Admin Proy</th>
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
+                                                <th width="1">Cli. DC</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>
@@ -309,8 +315,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     $soc = mysqli_real_escape_string($con,(strip_tags($_POST["soc"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $proy = mysqli_real_escape_string($con,(strip_tags($_POST["proy"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $admin_proy = mysqli_real_escape_string($con,(strip_tags($_POST["admin_proy"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $clidc = mysqli_real_escape_string($con,(strip_tags($_POST["clidc"],ENT_QUOTES)));//Escanpando caracteres 
                                                     //Inserto Control
-                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy')") or die(mysqli_error());	
+                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy, cli_dc) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy', '$clidc')") or die(mysqli_error());	
                                                     $lastInsert = mysqli_insert_id($con);
                                                     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                                   VALUES ('1', '16', '$lastInsert', now(), '$user')") or die(mysqli_error());
@@ -375,6 +382,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             <label>
                                                                 <input name="admin_proy" type="checkbox" value="1"> Admin. Proy.
                                                                 (Administrador de proyectos)
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="clidc" type="checkbox" value="1"> Clientes DC
                                                             </label>
                                                         </div>
 

@@ -40,6 +40,16 @@ Gererar portal para consulta de clientes/servicios dc basados en una base access
         N[pages/modals/sdc_abmhousing.js]
         N[pages/helpers/sdc_abmhousingdb.php]
         M[pages/sdc_housing.php]
+    - Agrego permisos especial para dar acceso a módulo de clientes DC
+        ALTER TABLE permisos
+        ADD cli_dc INT(11) DEFAULT '0' AFTER admin_per;
+    - Se agrega en la tabla de permisos la columna de Admin proy con la funcionalidad de actualizar onclick 
+        M[pages/admin.php]
+        M[pages/setPermiso.php]
+    - Se actualiza los permisos del menu lateral
+        M[pages/sitte_sidebar.php]
+        M[site.php]
+
 
 
 

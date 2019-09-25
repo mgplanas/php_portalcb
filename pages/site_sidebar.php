@@ -50,6 +50,7 @@
     </li>';
     }
     ?>
+    <?php if ($rq_sec['admin']=='1' OR $rq_sec['cli_dc']=='1'){ ?>
     <li class="treeview">
       <a href="#">
         <i class="fa fa-cloud"></i> <span>Clientes DC</span>
@@ -74,6 +75,7 @@
         </li>
       </ul>
     </li>    
+    <?php } ?>
     <li class="treeview">
       <a href="#">
         <i class="fa fa-pie-chart"></i><span>Métricas</span>
