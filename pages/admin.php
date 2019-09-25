@@ -215,7 +215,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <?php
                                               $query = "SELECT i.*, p.nombre, p.apellido, p.legajo, p.email FROM permisos as i 
                                                         LEFT JOIN persona as p on i.id_persona = p.id_persona
-                                                        WHERE i.borrado='0'
+                                                        WHERE i.borrado='0' AND p.borrado = '0'
                                                         ORDER BY p.apellido, p.nombre  ASC";
                                               
                                               $sql = mysqli_query($con, $query);

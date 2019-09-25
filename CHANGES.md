@@ -49,6 +49,14 @@ Gererar portal para consulta de clientes/servicios dc basados en una base access
     - Se actualiza los permisos del menu lateral
         M[pages/sitte_sidebar.php]
         M[site.php]
+    - Arreglo permisos en páginas:
+        M[admin.php]
+        M[calendario.php]
+        M[inventario.php]
+        M[iso27k.php]
+        M[iso9k.php]
+        M[novedades.php]
+        M[topologia.php]
 
 
 
