@@ -18,6 +18,8 @@
     - crear tablas: cdc_cliente, cdc_organizacion, sdc_housing, sdc_hosting, sdc_hosting_temp (con index en uuid)
     - migrar datos
 
+    ALTER TABLE permisos
+    ADD cli_dc INT(11) DEFAULT '0' AFTER admin_per;
 - Cambios en src  
         M[pages/site_sidebar.php]
         M[site.php]
@@ -31,4 +33,15 @@
         N[pages/modals/sdc_abmhousing.js] 
         N[pages/modals/sdc_abmhousing.php]
         N[pages/modals/sdc_importhosting.js]  
-        N[pages/modals/sdc_importhosting.php]                                                                   
+        N[pages/modals/sdc_importhosting.php]     
+        M[pages/admin.php]
+        M[pages/setPermiso.php]
+        M[pages/admin.php]
+        M[pages/calendario.php]
+        M[pages/inventario.php]
+        M[pages/iso27k.php]
+        M[pages/iso9k.php]
+        M[pages/novedades.php]
+        M[pages/topologia.php]
+
+
