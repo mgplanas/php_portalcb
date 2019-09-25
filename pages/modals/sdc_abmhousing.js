@@ -24,6 +24,9 @@ $(function() {
             $('#modal-abm-housing-sala').val($(this).data('sala'));
             $('#modal-abm-housing-fila').val($(this).data('fila'));
             $('#modal-abm-housing-rack').val($(this).data('rack'));
+            $('#modal-abm-housing-evidencia').val($(this).data('evidencia'));
+            $('#modal-abm-housing-energia').val($(this).data('energia'));
+            $('#modal-abm-housing-alta').val($(this).data('alta'));
             $('#modal-abm-housing-observaciones').val($(this).data('observaciones'));
             $("#modal-abm-housing-cliente").val($(this).data('cliente')).change();
 
@@ -48,6 +51,9 @@ $(function() {
         let sala = $('#modal-abm-housing-sala').val();
         let fila = $('#modal-abm-housing-fila').val();
         let rack = $('#modal-abm-housing-rack').val();
+        let energia = $('#modal-abm-housing-energia').val();
+        let evidencia = $('#modal-abm-housing-evidencia').val();
+        let alta = $('#modal-abm-housing-alta').val();
         let observaciones = $('#modal-abm-housing-observaciones').val();
         // Ejecuto
         $.ajax({
@@ -61,6 +67,9 @@ $(function() {
                 sala: sala,
                 fila: fila,
                 rack: rack,
+                energia: energia,
+                evidencia: evidencia,
+                alta: alta,
                 observaciones: observaciones
             },
             dataType: 'json',
@@ -83,6 +92,9 @@ $(function() {
         $('#modal-abm-housing-sala').val('');
         $('#modal-abm-housing-fila').val('');
         $('#modal-abm-housing-rack').val('');
+        $('#modal-abm-housing-energia').val('');
+        $('#modal-abm-housing-evidencia').val('');
+        $('#modal-abm-housing-alta').val('');
         $('#modal-abm-housing-observaciones').val('');
         $("#modal-abm-housing-cliente").prop("selectedIndex", 0);
         // $("#modal-abm-housing-cliente").val(0).change();

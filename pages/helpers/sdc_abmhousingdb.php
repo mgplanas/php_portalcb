@@ -9,6 +9,9 @@
     $sala = $_POST['sala'];
     $fila = $_POST['fila'];
     $rack = $_POST['rack'];
+    $evidencia = $_POST['evidencia'];
+    $energia = $_POST['energia'];
+    $alta = $_POST['alta'];
     $observaciones = $_POST['observaciones'];
 
     $result = new stdClass();
@@ -17,8 +20,8 @@
     switch ($op) {
         case 'A':
             // INSERT
-            $insert_housing = mysqli_query($con, "INSERT INTO sdc_housing(id_cliente, m2, sala, fila, rack, observaciones) 
-                                                VALUES ('$id_cliente', '$m2', '$sala','$fila', '$rack', '$observaciones')") or die(mysqli_error());	
+            $insert_housing = mysqli_query($con, "INSERT INTO sdc_housing(id_cliente, m2, sala, fila, rack, energia, fecha_alta, evidencia, observaciones) 
+                                                VALUES ('$id_cliente', '$m2', '$sala','$fila', '$rack', '$energia', '$alta', '$evidencia', '$observaciones')") or die(mysqli_error());	
             $lastInsert = mysqli_insert_id($con);
             $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                 VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
@@ -27,17 +30,17 @@
         
         case 'M':
             //UPDATE
-            $update_housing = mysqli_query($con, "UPDATE sdc_housing SET id_cliente='$id_cliente', m2='$m2', sala='$sala', fila='$fila', rack='$rack', observaciones='$observaciones' 
+            $update_housing = mysqli_query($con, "UPDATE sdc_housing SET id_cliente='$id_cliente', m2='$m2', sala='$sala', fila='$fila', rack='$rack', energia='$energia', evidencia='$evidencia', fecha_alta='$alta', observaciones='$observaciones' 
                                                     WHERE id='$id'") or die(mysqli_error());	
             $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-                                                VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
+                                                VALUES ('1', '2', '$id', now(), '$user')") or die(mysqli_error());
             break;
 
         case 'B':
             //UPDATE
             $update_housing = mysqli_query($con, "UPDATE sdc_housing SET borrado='1' WHERE id='$id'") or die(mysqli_error());	
             $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-                                                VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
+                                                VALUES ('1', '2', '$id', now(), '$user')") or die(mysqli_error());
             break;
 
         default:

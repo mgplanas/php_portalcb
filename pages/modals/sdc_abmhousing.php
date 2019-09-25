@@ -26,6 +26,10 @@
                         </select>
                     </div>                    
                     <div class="form-group">
+                        <label for="energia">Energia (KVA)</label>
+                        <input type="text" class="form-control" name="energia" placeholder="KVA" id='modal-abm-housing-energia'>
+                    </div>
+                    <div class="form-group">
                         <label for="m2">M2</label>
                         <input type="text" class="form-control" name="m2" placeholder="Metros cuadrados" id='modal-abm-housing-m2' required>
                     </div>
@@ -40,6 +44,14 @@
                     <div class="form-group">
                         <label for="rack">Rack</label>
                         <input type="text" class="form-control" name="rack" placeholder="rack" id='modal-abm-housing-rack'>
+                    </div>                    
+                    <div class="form-group">
+                        <label for="alta">Fecha Alta</label>
+                        <input type="date" class="form-control" name="alta" placeholder="Fecha de Alta" id='modal-abm-housing-alta'>
+                    </div>                    
+                    <div class="form-group">
+                        <label for="evidencia">Evidencia</label>
+                        <input type="text" class="form-control" name="evidencia" placeholder="Evidencia (SS)" id='modal-abm-housing-evidencia'>
                     </div>                    
                     <div class="form-group">
                         <label for="observaciones">Observaciones</label>

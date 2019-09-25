@@ -35,6 +35,12 @@ Gererar portal para consulta de clientes/servicios dc basados en una base access
     - Importación masiva de Servicios de Hosting via csv
         M[pages/sdc_hosting.php]
         bd: sdc_hosting_temp
+    - Se crean los campos energía, evidencia y fecha_alta para housing
+        N[pages/modals/sdc_abmhousing.php]
+        N[pages/modals/sdc_abmhousing.js]
+        N[pages/helpers/sdc_abmhousingdb.php]
+        M[pages/sdc_housing.php]
+
 
 
 ## FEAT-PROY-GTI (CON FEAT-ADMIN-PER)

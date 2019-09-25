@@ -10,6 +10,7 @@
 - Entorno
     /bower_components/datatables.net/css/jquery.dataTables.min.css
     /bower_components/datatables.net/images
+    update php.ini set upload_max_filesize=8M
 
 - BackUp DB                                                                     
 - Backup /pages                                                                 

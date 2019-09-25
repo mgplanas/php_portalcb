@@ -121,17 +121,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <tr>
                     <th>Cliente</th>
                     <th>Organismo</th>
+                    <th>Energía</th>
                     <th>M2</th>
                     <th>Sala</th>
                     <th>Fila</th>
                     <th>Rack</th>
+                    <th>Alta</th>
+                    <th>Evidencia</th>
                     <th>Observaciones</th>
                     <th>Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT H.id, H.id_cliente, H.m2, H.sala, H.fila, H.rack, H.observaciones, C.razon_social as cliente, O.razon_social as organismo
+					$query = "SELECT H.id, H.id_cliente, H.m2, H.sala, H.fila, H.rack, H.observaciones, H.energia, H.fecha_alta, H.evidencia, C.razon_social as cliente, O.razon_social as organismo
                                 FROM sdc_housing as H
                                 INNER JOIN cdc_cliente as C ON H.id_cliente = C.id
                                 LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
@@ -148,10 +151,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<tr>';
 							echo '<td>'. $row['cliente'].'</td>';
 							echo '<td>'. $row['organismo'].'</td>';
+							echo '<td align="center">'. $row['energia'].'</td>';
 							echo '<td align="center">'. $row['m2'].'</td>';
 							echo '<td align="center">'. $row['sala'].'</td>';
 							echo '<td align="center">'. $row['fila'].'</td>';
 							echo '<td align="center">'. $row['rack'].'</td>';
+							echo '<td align="center">'. $row['fecha_alta'].'</td>';
+							echo '<td align="center">'. $row['evidencia'].'</td>';
 							echo '<td align="center">'. $row['observaciones'].'</td>';
               echo '
               <td align="center">
@@ -161,6 +167,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 data-sala="' . $row['sala'] . '" 
                 data-fila="' . $row['fila'] . '" 
                 data-rack="' . $row['rack'] . '" 
+                data-evidencia="' . $row['evidencia'] . '" 
+                data-alta="' . $row['fecha_alta'] . '" 
+                data-energia="' . $row['energia'] . '" 
                 data-observaciones="' . $row['observaciones'] . '" 
                 data-cliente="' . $row['id_cliente'] . '" 
                 title="Editar Servicio" class="modal-abm-housing-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
