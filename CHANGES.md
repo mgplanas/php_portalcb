@@ -1,5 +1,14 @@
 # CHANGES
 
+## FEAT-SIDEBAR
+
+Modificaciones post produccion
+*Fecha:* 2019-09-26
+*Cambios:*
+    - Se agrupan los items del menu de controles, riesgos, isos y mejoras dentro del permiso compliance
+    M[pages/site_sidebar.php]
+    M[site.php]
+
 ## FEAT-CDC-HOUSING
 
 Modificaciones post produccion
