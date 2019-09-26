@@ -9,6 +9,88 @@
     - Se agrega un nuevo calendario de riesgos para representar los cerrados
     M[pages/cal_riegos.php]
 
+## FEAT-SIDEBAR
+
+Modificaciones post produccion
+*Fecha:* 2019-09-26
+*Cambios:*
+    - Se agrupan los items del menu de controles, riesgos, isos y mejoras dentro del permiso compliance
+    M[pages/site_sidebar.php]
+    M[site.php]
+
+## FEAT-CDC-HOUSING
+
+Modificaciones post produccion
+*Fecha:* 2019-09-26
+*Cambios:*
+    - Se cambia la visualización de housing por la cantidad de servicios que posea el cleinte
+    M[pages/cdc_cliente.php]
+    - Se cambia el popup para visualizar grilla con la cantidad de servicios de housing.
+    M[pages/modals/sdc_housing_view.js]
+    M[pages/modals/sdc_housing_view.php]
+
+## FEAT-CLI-DC
+
+### MIGRACION CLIENTES DC.
+
+Gererar portal para consulta de clientes/servicios dc basados en una base access
+*Fecha:* 2019-05-28
+*Cambios:*
+    - Se crea la estructura de menu lateral
+        M[pages/site_sidebar.php]
+        M[site.php]
+        N[pages/cdc_dashboard.php]
+        N[pages/cdc_cliente.php]
+        N[pages/cdc_organismo.php]
+        N[pages/sdc_housing.php]
+        N[pages/sdc_hosting.php]
+    - Se crean los modales para vicualización de servicios de housing/hosting
+        N[pages/modals/*.js]
+        N[pages/modals/*.php]
+        N[pages/helpers/*.php]
+    - AM Clientes
+        N[pages/modals/cdc_abmcliente.php]
+        N[pages/modals/cdc_abmcliente.js]
+        N[pages/helpers/cdc_abmclientedb.php]
+    - AM Organismos
+        N[pages/modals/cdc_abmorganismo.php]
+        N[pages/modals/cdc_abmorganismo.js]
+        N[pages/helpers/cdc_abmorganismodb.php]
+    - AM Servicio de Housing
+        N[pages/modals/sdc_abmhousing.php]
+        N[pages/modals/sdc_abmhousing.js]
+        N[pages/helpers/sdc_abmhousingdb.php]
+        M[pages/sdc_housing.php]
+    - Importación masiva de Servicios de Hosting via csv
+        M[pages/sdc_hosting.php]
+        bd: sdc_hosting_temp
+    - Se crean los campos energía, evidencia y fecha_alta para housing
+        N[pages/modals/sdc_abmhousing.php]
+        N[pages/modals/sdc_abmhousing.js]
+        N[pages/helpers/sdc_abmhousingdb.php]
+        M[pages/sdc_housing.php]
+    - Agrego permisos especial para dar acceso a módulo de clientes DC
+        ALTER TABLE permisos
+        ADD cli_dc INT(11) DEFAULT '0' AFTER admin_per;
+    - Se agrega en la tabla de permisos la columna de Admin proy con la funcionalidad de actualizar onclick 
+        M[pages/admin.php]
+        M[pages/setPermiso.php]
+    - Se actualiza los permisos del menu lateral
+        M[pages/sitte_sidebar.php]
+        M[site.php]
+    - Arreglo permisos en páginas:
+        M[admin.php]
+        M[calendario.php]
+        M[inventario.php]
+        M[iso27k.php]
+        M[iso9k.php]
+        M[novedades.php]
+        M[topologia.php]
+
+
+
+>>>>>>> devel
+
 ## FEAT-PROY-GTI (CON FEAT-ADMIN-PER)
 
 ### Extender la funcionalidad de proyectos al toda la empresa.
@@ -85,6 +167,9 @@
                 M[edit_proyecto.php]
             - Ordeno los accessos por apellido
                 M[admin.php]
+            - Cambio el link de los indicadores del header
+                M[site_header.php]
+                M[site.php]
 
 
 ## FEAT-KPI-MC
@@ -291,6 +376,7 @@ En vez de por área por responsable
     -agrego demás campos en la grilla (ocultos) para que se puedan exportar
         M[mejoras.php]
 
+>>>>>>> devel
 ## FIX-PROD
 - Se crea página para mostrar el calendario anual de los cntroles
     N[cal_controles.php]

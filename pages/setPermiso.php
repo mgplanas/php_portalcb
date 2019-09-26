@@ -91,5 +91,17 @@
         $sel1=mysqli_query($con, $sel);
     }
     }
+    else if ($f=='8'){
+    $admin = $check['cli_dc'];
+    
+    if ($admin == '0'){
+        $sel="update permisos set cli_dc='1' where id_permiso='$s'";
+        $sel1=mysqli_query($con, $sel);
+    }
+    else{
+        $sel="update permisos set cli_dc='0' where id_permiso='$s'";
+        $sel1=mysqli_query($con, $sel);
+    }
+    }
     
 ?>

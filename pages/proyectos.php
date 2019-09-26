@@ -45,9 +45,9 @@ $per_id_gerencia = $rowp['gerencia'];
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);
 
-if ($rq_sec['soc']=='0'){
-	header('Location: ../site.php');
-}
+// if ($rq_sec['soc']=='0'){
+// 	header('Location: ../site.php');
+// }
 
 //Count Total de Proyectos
 $query_total_proyectos = "SELECT 1 as total 

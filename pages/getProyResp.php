@@ -8,7 +8,7 @@
     }
 
     //$proy_resp = "SELECT CONCAT(r.nombre, ' ', r.apellido) as persona, COUNT(*) as total FROM controls.proyecto as p
-      $proy_resp = "SELECT r.apellido as persona, COUNT(*) as total FROM controls.proyecto as p
+      $proy_resp = "SELECT r.apellido as persona, COUNT(*) as total FROM proyecto as p
       
                     INNER JOIN persona as r ON p.responsable=r.id_persona
                     WHERE p.borrado='0' AND estado!='4'

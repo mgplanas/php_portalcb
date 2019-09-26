@@ -13,7 +13,7 @@
                     COUNT(IF(estado='3',1,null)) as aplazado,
                     COUNT(IF(estado='2',1,null)) as en_curso,
                     COUNT(IF(estado='1',1,null)) as no_iniciado
-                    FROM controls.proyecto as p
+                    FROM proyecto as p
                     INNER JOIN persona as r ON p.responsable=r.id_persona
                     WHERE p.borrado='0'
                     AND ( r.gerencia = $id_gerencia )
