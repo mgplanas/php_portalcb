@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal-abm-housing">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="width:900px;">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"
@@ -15,35 +15,38 @@
                 <input type="hidden" class="form-control" name="id" placeholder="id" id='modal-abm-housing-id' >
                 
                 <div class="box-body">
-                    <div class="form-group">
-                        <label for="nombre">M2</label>
-                        <input type="text" class="form-control" name="m2" placeholder="m2" id='modal-abm-housing-m2'>
-                    </div>
-                    <div class="form-group">
-                        <label for="nombre">Sala</label>
-                        <input type="text" class="form-control" name="Sala" placeholder="Sala" id='modal-abm-housing-sala'>
-                    </div>
-                    <div class="form-group">
-                        <label for="nombre">Fila</label>
-                        <input type="text" class="form-control" name="fila" placeholder="fila" id='modal-abm-housing-fila'>
-                    </div>
-                    <div class="form-group">
-                        <label for="nombre">Rack</label>
-                        <input type="text" class="form-control" name="rack" placeholder="rack" id='modal-abm-housing-rack'>
-                    </div>
-                    <div class="form-group">
-                        <label for="nombre">Observaciones</label>
-                        <input type="text" class="form-control" name="observaciones" placeholder="observaciones" id='modal-abm-housing-observaciones'>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-8"></div>
-                        <div class="col-sm-2">
-                            <input type="button" name="Addarea" class="btn  btn-raised btn-success" value="Guardar" id='modal-abm-housing-submit'>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                    <div class="col-sm-6" style="text-align:left">
+                                        <h2 class="box-title">Listados de servicios</h2>
+                                    </div>
+                                </div>
+
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <table id="housing" class="display" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <!-- <th>Tipo</th> -->
+                                                <th>Energía</th>
+                                                <th>M2</th>
+                                                <th>Sala</th>
+                                                <th>Fila</th>
+                                                <th>Rack</th>
+                                                <th>Alta</th>
+                                                <th>Evidencia</th>
+                                                <th>Observaciones</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
                         </div>
-                        <div class="col-sm-2">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                        </div>
-                    </div>
+                        <!-- /.col -->
+                    </div>                
                 </div>
             </form>
         </div>
