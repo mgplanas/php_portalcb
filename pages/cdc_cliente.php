@@ -162,7 +162,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               echo '<td align="center">'. $row['sector'].'</td>';
               echo '<td align="center">';
               if ($row['housing'] > 0) {
-                echo '<a data-id="'.$row['id'].'" title="ver servicio de Housing" class="modal-abm-housing-view btn"><i class="glyphicon glyphicon-ok-sign" style="color:green; font-size: 20px;"></i></a>';
+                echo '<a data-id="'.$row['id'].'" title="ver servicio de Housing" class="modal-abm-housing-view btn">' . $row['housing'] . '</a>';
               }
               echo '</td>';
               echo '<td align="center">';
