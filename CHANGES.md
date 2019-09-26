@@ -1,5 +1,16 @@
 # CHANGES
 
+## FEAT-CDC-HOUSING
+
+Modificaciones post produccion
+*Fecha:* 2019-09-26
+*Cambios:*
+    - Se cambia la visualización de housing por la cantidad de servicios que posea el cleinte
+    M[pages/cdc_cliente.php]
+    - Se cambia el popup para visualizar grilla con la cantidad de servicios de housing.
+    M[pages/modals/sdc_housing_view.js]
+    M[pages/modals/sdc_housing_view.php]
+
 ## FEAT-CLI-DC
 
 ### MIGRACION CLIENTES DC.
