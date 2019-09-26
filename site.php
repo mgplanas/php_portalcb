@@ -55,19 +55,29 @@ $sqlTmpActivos = "SELECT 1 as total
                   WHERE activo.tipo=':tipoActivo' AND activo.borrado='0'
                   AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
 //$sqlTemp = strtr($sqlTmpActivos, $sqlTmpActivosTipo1);
-$qa_info = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '1', ':per_id_gerencia' => $per_id_gerencia)));
-$a_info = mysqli_num_rows($qa_info);
-$qa_infra = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '2', ':per_id_gerencia' => $per_id_gerencia)));
-$a_infra = mysqli_num_rows($qa_infra);
-$qa_serv = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '3', ':per_id_gerencia' => $per_id_gerencia)));
-$a_serv = mysqli_num_rows($qa_serv);
+$qa_1 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '1', ':per_id_gerencia' => $per_id_gerencia)));
+$a_1 = mysqli_num_rows($qa_1);
+$qa_2 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '2', ':per_id_gerencia' => $per_id_gerencia)));
+$a_2 = mysqli_num_rows($qa_2);
+$qa_3 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '3', ':per_id_gerencia' => $per_id_gerencia)));
+$a_3 = mysqli_num_rows($qa_3);
+
+$qa_4 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '4', ':per_id_gerencia' => $per_id_gerencia)));
+$a_4 = mysqli_num_rows($qa_4);
+$qa_5 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '5', ':per_id_gerencia' => $per_id_gerencia)));
+$a_5 = mysqli_num_rows($qa_5);
+$qa_6 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '6', ':per_id_gerencia' => $per_id_gerencia)));
+$a_6 = mysqli_num_rows($qa_6);
+$qa_7 = mysqli_query($con, strtr($sqlTmpActivos, array(':tipoActivo' => '7', ':per_id_gerencia' => $per_id_gerencia)));
+$a_7 = mysqli_num_rows($qa_7);
 
 
 // ISO 270001
 $sqlTmpISO27k = "SELECT 1 as total 
                 FROM controls.item_iso27k 
                 INNER JOIN persona as p ON item_iso27k.responsable = p.id_persona
-                WHERE item_iso27k.madurez=:madurez
+                WHERE item_iso27k.madurez=:madurez 
+                AND item_iso27k.version = (SELECT id FROM iso27k_version WHERE borrado = 0 ORDER BY modificacion desc LIMIT 1)
                 AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
 $qiso_def = mysqli_query($con, strtr($sqlTmpISO27k, array(':madurez' => '1', ':per_id_gerencia' => $per_id_gerencia)));
 $iso_def = mysqli_num_rows($qiso_def);
@@ -114,6 +124,28 @@ and referencias.borrado = 0
 AND referencias.status='2'
 AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )");
 $cp = mysqli_num_rows($qcp);
+
+$qoa = mysqli_query($con,"SELECT 1 as total 
+FROM controles 
+INNER JOIN persona as p ON controles.responsable = p.id_persona
+INNER JOIN referencias ON controles.id_control = referencias.id_control
+WHERE referencias.mes <= MONTH(CURRENT_DATE()) AND referencias.ano =  YEAR(CURRENT_DATE()) 
+and controles.borrado = 0
+and referencias.borrado = 0
+AND referencias.status='3'
+AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )");
+$oa = mysqli_num_rows($qoa);
+
+$qob = mysqli_query($con,"SELECT 1 as total 
+FROM controles 
+INNER JOIN persona as p ON controles.responsable = p.id_persona
+INNER JOIN referencias ON controles.id_control = referencias.id_control
+WHERE referencias.mes <= MONTH(CURRENT_DATE()) AND referencias.ano =  YEAR(CURRENT_DATE()) 
+and controles.borrado = 0
+and referencias.borrado = 0
+AND referencias.status='4'
+AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )");
+$ob = mysqli_num_rows($qob);
 
 ?>
 <!--
@@ -283,8 +315,8 @@ desired effect
               <li class="user-footer">
                 <div class="pull-left">
                     <?php
-                    if ($rq_sec['admin']=='1'){
-                    echo '<a href="./pages/admin.php" class="btn btn-default btn-flat "><i class="fa fa-gears"></i> Admin</a>';
+                    if ($rq_sec['admin']=='1' || $rq_sec['admin_per']=='1' ){
+                    echo '<a href="./pages/admin.php" class="btn btn-default btn-flat "><i class="fa fa-gears"></i> Admin. Permisos</a>';
                     }
                     ?>
                 </div>
@@ -329,14 +361,19 @@ desired effect
         <!-- Optionally, you can add icons to the links -->
         <li class="active"><a href="#"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
         <li><a href="./pages/activos.php"><i class="fa fa-archive"></i> <span>Activos</span></a></li>
-        <li><a href="./pages/controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
-        <li><a href="./pages/iso27k.php"><i class="fa fa-crosshairs"></i> <span>Ítems ISO 27001</span></a></li>
-            <li><a href="./pages/mejoras.php"><i class="fa fa-refresh"></i> <span>Mejora Continua</span></a></li>
-        <li><a href="./pages/riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
+        <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
+          <li><a href="./pages/controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
+          <li><a href="./pages/iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
+          <li><a href="./pages/iso9k.php"><i class="fa fa-crosshairs"></i> <span>ISO 9001</span></a></li>        
+          <li><a href="./pages/mejoras.php"><i class="fa fa-refresh"></i> <span>Mejora Continua</span></a></li>
+          <li><a href="./pages/riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
+        <?php }?>
+        <?php if ($rq_sec['admin']=='1' OR $rq_sec['proy']=='1' OR $rq_sec['admin_proy']=='1'){
+          echo '<li><a href="./pages/proyectos.php"><i class="fa fa-list"></i> <span>Proyectos</span></a></li>';
+        }?>
         <?php if ($rq_sec['admin']=='1' OR $rq_sec['soc']=='1'){
             echo '<li><a href="./pages/calendario.php"><i class="fa fa-calendar"></i> <span>Calendario</span></a></li>';
             echo '<li><a href="./pages/novedades.php"><i class="fa fa-envelope"></i> <span>Novedades</span></a></li>';
-            echo '<li><a href="./pages/proyectos.php"><i class="fa fa-list"></i> <span>Proyectos</span></a></li>';
             echo '<li class="treeview">
               <a href="#">
                 <i class="fa fa-book"></i><span>Inventario</span>
@@ -350,6 +387,32 @@ desired effect
               </ul>
             </li>';
             }?>
+            <?php if ($rq_sec['admin']=='1' OR $rq_sec['cli_dc']=='1'){ ?>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-cloud"></i> <span>Clientes DC</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="./pages/cdc_dashboard.php"><i class="fa fa-pie-chart"></i> Dashboard</a></li>
+                <li><a href="./pages/cdc_organismo.php"><i class="fa fa-building"></i> Organismos</a></li>
+                <li><a href="./pages/cdc_cliente.php"><i class="fa fa-user"></i> Clientes</a></li>
+                <li class="treeview">
+                  <a href="#"><i class="fa fa-gears"></i> Servicios
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="./pages/sdc_housing.php"><i class="fa fa-home"></i> Housing</a></li>
+                    <li><a href="./pages/sdc_hosting.php"><i class="fa fa-server"></i> Hosting</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>    
+            <?php } ?>
             <li class="treeview">
             <a href="#">
               <i class="fa fa-pie-chart"></i><span>Métricas</span>
@@ -362,6 +425,7 @@ desired effect
               <li><a href="./pages/met_iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
               <li><a href="./pages/met_riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
               <li><a href="./pages/met_controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
+              <li><a href="./pages/met_mejoras.php"><i class="fa fa-refresh"></i> <span>Mejoras</span></a></li>
             </ul>
           </li>;
       </ul>
@@ -630,22 +694,46 @@ desired effect
     var pieChartATipo       = new Chart(pieChartCanvas1)
     var PieData1        = [
       {
-        value    :  <?php echo $a_info; ?>,
+        value    :  <?php echo $a_1; ?>,
         color    : '#f56954',
         highlight: '#f56954',
-        label    : 'Información'
+        label    : 'Datos/Información'
       },
       {
-        value    : <?php echo $a_infra; ?>,
+        value    : <?php echo $a_2; ?>,
         color    : '#00a65a',
         highlight: '#00a65a',
-        label    : 'Infraestructura'
+        label    : 'Equipamiento'
       },
       {
-        value    : <?php echo $a_serv; ?>,
+        value    : <?php echo $a_3; ?>,
         color    : '#f39c12',
         highlight: '#f39c12',
-        label    : 'Servicio'
+        label    : 'Instalaciones'
+      },
+      {
+        value    :  <?php echo $a_4; ?>,
+        color    : '#f569ff',
+        highlight: '#f569ff',
+        label    : 'Personal'
+      },
+      {
+        value    : <?php echo $a_5; ?>,
+        color    : '#00ff5a',
+        highlight: '#00ff5a',
+        label    : 'Servicios'
+      },
+      {
+        value    : <?php echo $a_6; ?>,
+        color    : '#f3ff12',
+        highlight: '#f3ff12',
+        label    : 'Software'
+      },
+      {
+        value    : <?php echo $a_7; ?>,
+        color    : '#f39cff',
+        highlight: '#f39cff',
+        label    : 'Suministros'
       }
 	]
 	var pieChartCanvas2 = $('#pieChartISOM').get(0).getContext('2d')
@@ -706,6 +794,18 @@ desired effect
         color    : '#00a65a',
         highlight: '#00a65a',
         label    : 'Controlado'
+      },
+      {
+        value    : <?php echo $oa; ?>,
+        color    : '#f39c12',
+        highlight: '#f39c12',
+        label    : 'Controlado con obs alta'
+      },
+      {
+        value    : <?php echo $ob; ?>,
+        color    : '#f37c00',
+        highlight: '#f37c00',
+        label    : 'Controlado con obs baja'
       }
 	]
     var pieOptions     = {

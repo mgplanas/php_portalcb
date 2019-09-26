@@ -9,34 +9,24 @@ if (!isset($_SESSION['usuario'])){
 }
 
 $user=$_SESSION['usuario'];
+$current_version = 0;
+$last_version = 0;
+$sqllastver = mysqli_query($con, "SELECT id FROM iso27k_version WHERE borrado=0 ORDER BY modificacion desc LIMIT 1");
+$rowlv = mysqli_fetch_assoc($sqllastver); 
+$last_version = $rowlv['id'];
+//VERSION DE LA MATRIZ
+if ($_GET["version"]) {
+  $current_version = $_GET["version"];
+} else {
+  $current_version = $last_version;
+}
+
 //Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' AND borrado = 0");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);
-
-if(isset($_GET['aksi']) == 'delete'){
-	// escaping, additionally removing everything that could be (html/javascript-) code
-	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
-	$cek = mysqli_query($con, "SELECT * FROM item_iso27k WHERE id_item_iso27k='$nik'");
-	$cekd = mysqli_fetch_assoc($cek);
-    $titulo = $cekd['codigo'];
-    
-    if(mysqli_num_rows($cek) == 0){
-		echo '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> No se encontraron datos.</div>';
-	}else{
-		//Elimino Activo
-		
-        $delete_iso = mysqli_query($con, "UPDATE item_iso27k SET `borrado`='1' WHERE id_item_iso27k='$nik'");
-      
-        $delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
-											   VALUES ('3', '6', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
-		if(!$delete_iso){
-			$_SESSION['formSubmitted'] = 9;
-		}
-	}
-}
 
 //Get Personas
 $personas = mysqli_query($con, "SELECT * FROM persona");
@@ -71,7 +61,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
-
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/rowGroup.dataTables.min.css">
+  <link rel="stylesheet" href="../css/bootstrap-select.min.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -174,251 +166,123 @@ desired effect
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-				<div class="col-sm-6" style="text-align:left">
-					<h2 class="box-title">Listado de ítems</h2>
-				</div>
- 				<div class="col-sm-6" style="text-align:right;">
-				</div>
+				<div class="col-sm-4 align-middle" style="text-align:left;">
+					<h2 class="box-title">Versión de la matriz de cumplimiento</h2>
+          <select id="versionselector" name="responsable" class="form-control">
+            <?php
+              $versiones = mysqli_query($con, "SELECT * FROM iso27k_version WHERE borrado = 0 ORDER BY modificacion desc ");
+              while($rowps = mysqli_fetch_array($versiones)){
+                if($rowps['id']==$current_version) {
+                  echo "<option value='". $rowps['id'] . "' selected='selected'>" .$rowps['numero'] . " [ " . $rowps['modificacion']. '] - ' . $rowps['descripcion']. "</option>";
+                }
+                else {
+                  echo "<option value='". $rowps['id'] . "'>" .$rowps['numero'] . " [ " . $rowps['modificacion']. '] - ' . $rowps['descripcion']. "</option>";
+                }
+              }
+            ?>
+          </select>
+              
+        </div>
+        <div class="col-sm-8" style="text-align:right;">
+          <?php
+          // if ($current_version == $last_version) {
+          //   echo '<button type="button" id="modal-abm-iso27k-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-refresh"></i> Nuevo ítem</button>';
+          // }
+          ?>
+        </div>        
             </div>
         <!-- /.modal Activo-->
-		<div class="modal fade" id="modal-persona">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h2 class="modal-title">Nueva Persona</h2>
-				<?php
-				$gerencias = mysqli_query($con, "SELECT * FROM gerencia ORDER BY nombre ASC");
-				if(isset($_POST['Addp'])){
-					$legajo = mysqli_real_escape_string($con,(strip_tags($_POST["legajo"],ENT_QUOTES)));//Escanpando caracteres
-					$nombre = mysqli_real_escape_string($con,(strip_tags($_POST["nombre"],ENT_QUOTES)));//Escanpando caracteres
-					$apellido = mysqli_real_escape_string($con,(strip_tags($_POST["apellido"],ENT_QUOTES)));//Escanpando caracteres 
-					$cargo = mysqli_real_escape_string($con,(strip_tags($_POST["cargo"],ENT_QUOTES)));//Escanpando caracteres 
-					$gerencia = mysqli_real_escape_string($con,(strip_tags($_POST["gerencia"],ENT_QUOTES)));//Escanpando caracteres 
-					$email = mysqli_real_escape_string($con,(strip_tags($_POST["email"],ENT_QUOTES)));//Escanpando caracteres 
-					//Inserto Control
-					$insert_persona = mysqli_query($con, "INSERT INTO persona(legajo, nombre, apellido, cargo, gerencia, email) VALUES ('$legajo','$nombre','$apellido', '$cargo', '$gerencia', '$email')") or die(mysqli_error());	
-					$lastInsert = mysqli_insert_id($con);
-					$insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-											   VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
-					unset($_POST);
-					if($insert_persona){
-						$_SESSION['formSubmitted'] = 3;
-						echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-					}else{
-						$_SESSION['formSubmitted'] = 9;
-						echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-					}				
-				}				
-				?>
-              </div>
-              <div class="modal-body">
-				<!-- form start -->
-            <form method="post" role="form" action="">
-              <div class="box-body">
-                <div class="form-group">
-                  <label for="legajo">Legajo</label>
-                  <input type="text" class="form-control" name="legajo" placeholder="Legajo">
-                </div>
-                <div class="form-group">
-                  <label for="nombre">Nombre</label>
-                  <input type="text" class="form-control" name="nombre" placeholder="Nombre">
-                </div>
-				<div class="form-group">
-                  <label for="apellido">Apellido</label>
-                  <input type="text" class="form-control" name="apellido" placeholder="Apellido">
-                </div>
-				<div class="form-group">
-                  <label for="email">Dirección E-mail</label>
-                  <input type="text" class="form-control" name="email" placeholder="E-mail corporativo">
-                </div>
-				<div class="form-group">
-                  <label for="cargo">Cargo</label>
-                  <input type="text" class="form-control" name="cargo" placeholder="Cargo">
-                </div>
-				
-				<div class="form-group">
-                  <label>Gerencia</label>
-                  <select name="gerencia" class="form-control">
-						<?php
-							while($rowg = mysqli_fetch_array($gerencias)){
-									echo "<option value=". $rowg['id_gerencia'] . ">" .$rowg['nombre'] . "</option>";
-									}
-						?>
-                  </select>
-                </div>
-				<div class="form-group">
-					<div class="col-sm-3">
-						<input type="submit" name="Addp" class="btn  btn-raised btn-success" value="Guardar datos">
-					</div>
-					<div class="col-sm-3">
-						<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-					</div>
-				</div>
-			  </div>
-              
-            </form>
-
-              </div>
-              
-            </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal Persona -->
-            <!-- /.box-header -->
-		<div id="ver-itemDialog" class="modal fade">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span></button>
-						<h2 class="modal-title">Item de cumplimiento >> Ver Item</h2>
-					</div>
-					<div class="box box-primary">
-						<div class="modal-body">
-							<div class="form-group">
-								<label for="codigo">Codigo</label>
-								<input type="text" class="form-control" name="codigo" id="codigo" value="" readonly>
-							</div>
-							<div class="form-group">
-								<label for="madurez">Madurez</label>
-								<input type="text" class="form-control" name="nivel" id="nivel" value="" readonly>
-							</div>
-                            <div class="form-group">
-								<label for="titulo">Titulo</label>
-								<textarea class="form-control" rows="3" name="titulo" id="titulo" value="" readonly></textarea>
-							</div>
-							<div class="form-group">
-								<label for="descripcion">Descripcion</label>
-								<textarea class="form-control" rows="3" name="descripcion" id="descripcion" value="" readonly></textarea>
-							</div>
-						  <div class="form-group">
-								<label for="responsable">Referente</label>
-								<input type="text" class="form-control" name="responsable" id="responsable" value="" readonly>
-							</div>
-                            <div class="form-group">
-								<label for="implementacion">Implementación</label>
-								<textarea class="form-control" rows="3" name="implementacion" id="implementacion" value="" readonly></textarea>
-							</div>
-							<div class="form-group">
-								<label for="evidencia">Evidencia</label>
-								<input type="text" class="form-control" name="evidencia" id="evidencia" value="" readonly>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
-					</div>	
- 				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->	
-		
+            <!-- /.box-header -->		
 			<div class="box-body">
-              <table id="iso27k" class="table table-bordered table-hover">
+              <table id="iso27k" class="display" width="100%">
                 <thead>
                 <tr>
-                  <th width="1">Ver</th>
-				  <th width="2">Codigo</th>
+                  <th width="1"></th>
+                  <th width="1"></th>
+				          <th width="2">Codigo</th>
                   <th>Titulo</th>
                   <th>Descripcion</th>
-                  <th>Referente</th>
-				  <th>Madurez</th>
+                  <th>Responsable</th>
+                  <th>Referentes</th>
+				          <th>Madurez</th>
                   <th>Implementación</th>
-                  <th width="110px">Acciones</th>
+                  <?php if ($current_version == $last_version) { echo '<th width="1"></th>';}?>
                 </tr>
                 </thead>
                 <tbody>
-					<?php
-					$query = "SELECT i.*, m.nivel, p.nombre, p.apellido  FROM item_iso27k as i 
-						      LEFT JOIN madurez as m on i.madurez = m.id_madurez 
-						      LEFT JOIN persona as p on i.responsable = p.id_persona 
-							  WHERE i.borrado='0'";
-					
-					$sql = mysqli_query($con, $query.' ORDER BY id_item_iso27k ASC');
+                  <?php
+                  $query = "SELECT i.*, m.nivel, p.nombre, p.apellido, 
+                  (
+                    SELECT GROUP_CONCAT(CONCAT(refp.apellido, ',', refp.nombre)  SEPARATOR '<br/>') as referentes
+                    FROM iso27k_refs as r
+                    INNER JOIN persona as refp ON r.id_persona = refp.id_persona
+                    WHERE r.id_item_iso27k = i.id_item_iso27k
+                    GROUP BY r.id_item_iso27k
+                  ) as referentes,
+                  (
+                    SELECT GROUP_CONCAT(refp.id_persona) as referentes
+                    FROM iso27k_refs as r
+                    INNER JOIN persona as refp ON r.id_persona = refp.id_persona
+                    WHERE r.id_item_iso27k = i.id_item_iso27k
+                    GROUP BY r.id_item_iso27k
+                  ) as referentes_ids,
+                  stit.id_item_iso27k as s_id, stit.codigo as s_codigo, stit.titulo as s_titulo, stit.descripcion as s_descripcion,
+                  tit.id_item_iso27k as t_id, tit.codigo as t_codigo, tit.titulo as t_titulo, tit.descripcion as t_descripcion
+                  FROM item_iso27k as i 
+                  LEFT JOIN madurez as m on i.madurez = m.id_madurez 
+                  LEFT JOIN persona as p on i.responsable = p.id_persona
+                  LEFT JOIN item_iso27k as stit on  i.parent = stit.id_item_iso27k
+                  LEFT JOIN item_iso27k as tit on stit.parent = tit.id_item_iso27k
+                  WHERE i.borrado='0'
+                    AND i.nivel = 3 
+                    AND i.version = " . $current_version;
+                  
+                  $sql = mysqli_query($con, $query.' ORDER BY tit.id_item_iso27k, stit.id_item_iso27k, i.id_item_iso27k ASC');
 
-					if(mysqli_num_rows($sql) == 0){
-						echo '<tr><td colspan="8">No hay datos.</td></tr>';
-					}else{
-						$no = 1;
-						while($row = mysqli_fetch_assoc($sql)){
-							
-							echo '
-							<tr>
-							<td>
-							<a data-id="'.$row['id_activo'].'" 
-								data-codigo="'.$row['codigo'].'"
-                                data-titulo="'.$row['titulo'].'"
-								data-descripcion="'.$row['descripcion'].'"
-								data-responsable="'.$row['apellido'].' '.$row['nombre'].'"
-								data-nivel="'.$row['nivel'].'"
-								data-implementacion="'.$row['implementacion'].'"
-								data-evidencia="'.$row['evidencia'].'"
-								title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
-							</td>';
-							echo '
-							
-							
-							<td align="center">'.$row['codigo'].'</td>';
-
-
-							echo '
-							
-							</td>								
-						
-							<td>'.$row['titulo'].'</td>
-							
-							';
-                            echo '
-							
-							</td>								
-						
-							<td>'.$row['descripcion'].'</td>
-							
-							';
-							
-							echo '
-							</td>
-							<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
-							
-                            echo '
-							</td>
-							<td>'.$row['nivel'].'</td>'; 
-							
-							echo '
-							</td>
-							<td>'.$row['implementacion'].'</td>'; 
-							
-							echo '
-							<td align="center">
-							<a href="edit_iso27k.php?nik='.$row['id_item_iso27k'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-							<a href="iso27k.php?aksi=delete&nik='.$row['id_item_iso27k'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
-                            if ($rq_sec['edicion']=='0'){
-                                    echo 'disabled';
-                            }
-                            echo '"><i class="glyphicon glyphicon-trash" ></i></a>
-							</td>
-							</tr>
-							';
-							$no++;
-						}
-					}
-					?>
+                  $no = 1;
+                  while($row = mysqli_fetch_assoc($sql)){
+                    
+                    echo '<tr>';
+                    echo '<td>'.$row['t_codigo']. ' - ' .$row['t_titulo']. '</td>'; 
+                    echo '<td>'.$row['s_codigo']. ' - ' .$row['s_titulo']. ' <br/><small>' .$row['s_descripcion']. '</small></td>'; 
+                    echo '<td align="center">'.$row['codigo'].'</td>';
+                    echo '<td>'.$row['titulo'].'</td>';
+                    echo '<td>'.$row['descripcion'].'</td>';
+                    echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
+                    echo '<td>'.$row['referentes'].'</td>'; 
+                    echo '<td>'.$row['nivel'].'</td>'; 
+                    echo '<td>'.$row['implementacion'].'</td>'; 
+                    // href="edit_iso27k.php?nik='.$row['id_item_iso27k'].'&version='. $current_version .'"
+                    if ($current_version == $last_version) {
+                      echo '
+                      <td align="center">
+                        <a 
+                          data-id="'.$row['id_item_iso27k'].'"
+                          data-version-id="'.$current_version.'" 
+                          data-grupo="'.$row['t_id'].'" 
+                          data-subgrupo="'.$row['s_id'].'" 
+                          data-responsable="'.$row['responsable'].'" 
+                          data-referentes="'.$row['referentes_ids'].'" 
+                          data-madurez="'.$row['madurez'].'" 
+                          data-codigo="'.$row['codigo'].'" 
+                          data-titulo="'.$row['titulo'].'" 
+                          data-descripcion="'.$row['descripcion'].'" 
+                          data-implementacion="'.$row['implementacion'].'" 
+                          data-evidencia="'.$row['evidencia'].'" 
+                          data-usuario="'.$user.'" 
+                          title="Editar datos" class="modal-abm-iso27k-btn-edit btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                        // echo '<a data-id="'.$row['id_item_iso27k'].'" data-codigo="'.$row['codigo'].'" title="Borrar datos" class="btn btn-danger btn-sm modal-abm-iso27k-btn-baja';
+                        // if ($rq_sec['edicion']=='0'){
+                        //   echo 'disabled';
+                        // }
+                        // echo '"><i class="glyphicon glyphicon-trash" ></i></a>
+                      echo '</td>';
+                    }
+                    echo '</tr>';
+                    $no++;
+                  }
+                  ?>
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th width="1">Ver</th>
-				  <th width="2">Codigo</th>
-                  <th>Titulo</th>
-                  <th>Descripcion</th>
-                  <th>Referente</th>
-				  <th>Madurez</th>
-                  <th>Implementación</th>
-                  <th width="110px">Acciones</th>
-                </tr>
-                </tfoot>
               </table>
             </div>
             <!-- /.box-body -->
@@ -428,6 +292,9 @@ desired effect
           <!-- /.box -->
         </div>
         <!-- /.col -->
+        <?php
+            include_once('./modals/abmiso27k.php');
+        ?>        
       </div>
       <!-- /.row -->
     </section>
@@ -461,23 +328,35 @@ desired effect
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- export -->
 <script src="../bower_components/datatables.net/js/dataTables.buttons.min.js"></script>
+<script src="../bower_components/datatables.net/js/dataTables.rowGroup.min.js"></script>
 <script src="../bower_components/datatables.net/js/buttons.flash.min.js"></script>
 <script src="../bower_components/datatables.net/js/jszip.min.js"></script>
 <script src="../bower_components/datatables.net/js/buttons.html5.min.js"></script>
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
+<script src="../js/bootstrap-select.min.js"></script>
+<script src="./modals/abmiso27k.js"></script>  
       
 <script>
   $(function () {
     $('#iso27k').DataTable({
+      'language': { 'emptyTable': 'No hay datos' },
       'paging'      : true,
       'pageLength': 20,
       'lengthChange': false,
       'searching'   : true,
-      'ordering'    : true,
+      'ordering'    : false,
       'info'        : true,
       'autoWidth'   : true,
+      'order': [[0, 'asc'], [1, 'asc']],
+        'rowGroup': {
+            'dataSrc': [ 0, 1 ]
+        },
+        'columnDefs': [ {
+            'targets': [ 0, 1 ],
+            'visible': false
+        } ],
       'dom'         : 'frtipB',
       'buttons'     : [{
                   extend: 'pdfHtml5',
@@ -490,33 +369,21 @@ desired effect
             text: 'Excel',
             }]
 
-    })
-  })
-</script>
-<script>
-    window.onload = function() {
-        history.replaceState("", "", "iso27k.php");
-    }
-</script>
-<script>
-$(function(){
-  $(".ver-itemDialog").click(function(){
-    $('#itemId').val($(this).data('id'));
-	$('#codigo').val($(this).data('codigo'));
-    $('#titulo').val($(this).data('titulo'));
-	$('#descripcion').val($(this).data('descripcion'));
-	$('#responsable').val($(this).data('responsable'));
-	$('#nivel').val($(this).data('nivel'));
-	$('#implementacion').val($(this).data('implementacion'));
-	$('#evidencia').val($(this).data('evidencia'));
-	
-	$("#ver-itemDialog").modal("show");
-	
+    });
+
+    $('#versionselector').on('change', function() {
+      window.location.href = "iso27k.php?version=".concat(this.value);
+    });    
+
+    // let tableISO = $('#iso27k').dataTable();
+    // tableISO.$('.edititem').click( function () {
+    //   let data = tableISO.fnGetData( $(this).parents('tr') );
+    //   console.log(data);
+    //   data[3] = 'changed';
+    //   tableISO.fnUpdate(data,$(this).parents('tr'),undefined,false);
+    // });
   });
-});
 </script>
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. -->
+
 </body>
 </html>

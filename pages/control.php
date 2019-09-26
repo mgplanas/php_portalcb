@@ -89,7 +89,9 @@ if(isset($_GET['aksi']) == 'delete'){
  			var colors = [];
  			var colorMap = {
  				'Controlado': '#5cb85c',
- 				'Pendiente': '#d9534f'
+ 				'Pendiente': '#d9534f',
+ 				'Controlado con obs alta': '#f39c12',
+ 				'Controlado con obs baja': '#f37c00'
  			}
  			for (var i = 0; i < data.getNumberOfRows(); i++) {
  				colors.push(colorMap[data.getValue(i, 0)]);
@@ -123,7 +125,9 @@ if(isset($_GET['aksi']) == 'delete'){
  			var colors = [];
  			var colorMap = {
  				'Controlado': '#5cb85c',
- 				'Pendiente': '#d9534f'
+ 				'Pendiente': '#d9534f',
+ 				'Controlado con obs alta': '#f39c12',
+ 				'Controlado con obs baja': '#f37c00'
  			}
  			for (var i = 0; i < data.getNumberOfRows(); i++) {
  				colors.push(colorMap[data.getValue(i, 0)]);
@@ -189,6 +193,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     .example-modal .modal {
       background: transparent !important;
+    }
+
+    .label-obs-baja {
+      background-color: #f37c00
     }
   </style>
 </head>
@@ -511,6 +519,12 @@ desired effect
                     }
                     else if ($row['status'] == '2' ){
                         echo '<span class="label label-danger">Pendiente</span>';
+                    }
+                    else if ($row['status'] == '3' ){
+                        echo '<span class="label label-warning">Controlado con obs alta</span>';
+                    }
+                    else if ($row['status'] == '4' ){
+                        echo '<span class="label label-obs-baja">Controlado con obs baja</span>';
                     }
                     
                     $id_controlador = $row['controlador'];

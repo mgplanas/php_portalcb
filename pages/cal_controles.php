@@ -140,7 +140,7 @@ desired effect
         <div class="content-wrapper">
             <section class="content-header">
                 <h1>
-                    Gestión de Controles
+                    Calendario de controles
                     <small>General</small>
                 </h1>
             </section>
@@ -150,270 +150,408 @@ desired effect
                 | Your Page Content Here |
                 -------------------------->
                 <section class="content">
+
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="box">
-                                <div class="box-header">
-                                    <div class="col-sm-6" style="text-align:left">
-                                        <h2 class="box-title">Calendario de Controles</h2>
-                                    </div>
-                                    <div class="col-sm-6" style="text-align:right;">
-                                    </div>
-                                </div>
-                                <!-- MODAL CONTROL -->
-                                <div id="ver-itemDialog" class="modal fade">
-                                    <div class="modal-dialog" style="width:900px;">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span></button>
-                                                    <button type="button" id="criticidad" class="btn"></button>
-                                                
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="box box-primary">
-                                                        <div class="box-body">
-                                                            <div class="form-group">
-                                                                <div class="row">
-                                                                <div class="col-md-9">
-                                                                    <label for="titulo"> Título</label>
-                                                                    <input type="text" class="form-control" name="titulo" id="titulo" value="" readonly>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <label for="periodicidad"> Periodicidad</label>
-                                                                    <input type="text" class="form-control" name="periodicidad" id="periodicidad" value="" readonly>
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="contenido"> Contenido</label>
-                                                                <textarea class="form-control" rows="2" id="contenido" value="" readonly></textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="responsable"><i class="glyphicon glyphicon-user"></i> Responsable</label>
-                                                                <input type="text" class="form-control" name="responsable" id="responsable" value="" readonly>
-                                                            </div>
-                                                        </div>
+                            <div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab_1" data-toggle="tab">Por control</a></li>
+                                    <li><a href="#tab_2" data-toggle="tab">Acumulado por gerencia</a></li>
 
-                                                    </div>
+                                </ul>
+                                <div class="tab-content">
+                                    <!-- TAB POR CONTROL -->
+                                    <div class="tab-pane active" id="tab_1">
+                                        <div class="box">
+                                            <div class="box-header">
+                                                <div class="col-sm-6" style="text-align:left">
+                                                    <h2 class="box-title">Calendario de Controles</h2>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="box box-primary">
-                                                        <div class="box-body">
-                                                            <div class="form-group">
-                                                                <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <label for="estatus"> Estado</label>
-                                                                    <input type="text" class="form-control" name="estatus" id="estatus" value="" readonly>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <label for="controlador"><i class="glyphicon glyphicon-user"></i>Controlador</label>
-                                                                    <input type="text" class="form-control" name="controlador" id="controlador" value="" readonly>
-                                                                </div>
-                                                                </div>
-                                                            </div>  
-                                                            <div class="form-group" id="divaccion">
-                                                                <label for="accion"><i class="glyphicon glyphicon-flash"></i> Acción</label>
-                                                                <textarea class="form-control" rows="2" id="accion" value="" readonly></textarea>
-                                                            </div>
-                                                            <div class="form-group" id="divobservacion">
-                                                                <label for="observacion"><i class="glyphicon glyphicon-eye-open"></i> Observación</label>
-                                                                <textarea class="form-control" rows="2" id="observacion" value="" readonly></textarea>
-                                                            </div>
-                                                            <div class="form-group" id="divevidencia">
-                                                                <label for="evidencia"><i class="glyphicon glyphicon-list-alt"></i> Evidencia</label>
-                                                                <textarea class="form-control" rows="2" id="evidencia" value="" readonly></textarea>
-                                                            </div>                                                                                                                  
-                                                        </div>
-                                                    </div>
+                                                <div class="col-sm-6" style="text-align:right;">
                                                 </div>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
+                                            <!-- MODAL CONTROL -->
+                                            <div id="ver-itemDialog" class="modal fade">
+                                                <div class="modal-dialog" style="width:900px;">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span></button>
+                                                                <button type="button" id="criticidad" class="btn"></button>
+                                                            
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="box box-primary">
+                                                                    <div class="box-body">
+                                                                        <div class="form-group">
+                                                                            <div class="row">
+                                                                            <div class="col-md-9">
+                                                                                <label for="titulo"> Título</label>
+                                                                                <input type="text" class="form-control" name="titulo" id="titulo" value="" readonly>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <label for="periodicidad"> Periodicidad</label>
+                                                                                <input type="text" class="form-control" name="periodicidad" id="periodicidad" value="" readonly>
+                                                                            </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="contenido"> Contenido</label>
+                                                                            <textarea class="form-control" rows="2" id="contenido" value="" readonly></textarea>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="responsable"><i class="glyphicon glyphicon-user"></i> Responsable</label>
+                                                                            <input type="text" class="form-control" name="responsable" id="responsable" value="" readonly>
+                                                                        </div>
+                                                                    </div>
+    
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="box box-primary">
+                                                                    <div class="box-body">
+                                                                        <div class="form-group">
+                                                                            <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <label for="estatus"> Estado</label>
+                                                                                <input type="text" class="form-control" name="estatus" id="estatus" value="" readonly>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label for="controlador"><i class="glyphicon glyphicon-user"></i>Controlador</label>
+                                                                                <input type="text" class="form-control" name="controlador" id="controlador" value="" readonly>
+                                                                            </div>
+                                                                            </div>
+                                                                        </div>  
+                                                                        <div class="form-group" id="divaccion">
+                                                                            <label for="accion"><i class="glyphicon glyphicon-flash"></i> Acción</label>
+                                                                            <textarea class="form-control" rows="2" id="accion" value="" readonly></textarea>
+                                                                        </div>
+                                                                        <div class="form-group" id="divobservacion">
+                                                                            <label for="observacion"><i class="glyphicon glyphicon-eye-open"></i> Observación</label>
+                                                                            <textarea class="form-control" rows="2" id="observacion" value="" readonly></textarea>
+                                                                        </div>
+                                                                        <div class="form-group" id="divevidencia">
+                                                                            <label for="evidencia"><i class="glyphicon glyphicon-list-alt"></i> Evidencia</label>
+                                                                            <textarea class="form-control" rows="2" id="evidencia" value="" readonly></textarea>
+                                                                        </div>                                                                                                                  
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
                                             </div>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                </div>
-                                <!-- FIN MODAL CONTROL -->
-                                <!-- /.box-header -->
-                                <div class="box-body">
-                                    <table id="controles" class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                            <?php
-                                            $mActual = date('m');
-                                                echo '<th width="1">C</th>';
-                                                echo '<th>Control</th>';
-                                                echo '<th ' . (1==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Enero</th>';
-                                                echo '<th ' . (2==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Febrero</th>';
-                                                echo '<th ' . (3==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Marzo</th>';
-                                                echo '<th ' . (4==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Abril</th>';
-                                                echo '<th ' . (5==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Mayo</th>';
-                                                echo '<th ' . (6==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Junio</th>';
-                                                echo '<th ' . (7==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Julio</th>';
-                                                echo '<th ' . (8==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Agosto</th>';
-                                                echo '<th ' . (9==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Septiembre</th>';
-                                                echo '<th ' . (10==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Octubre</th>';
-                                                echo '<th ' . (11==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Novimebre</th>';
-                                                echo '<th ' . (12==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Diciembre</th>';
-                                                echo '<th>Total</th>';
-                                            ?>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                                $query = "SELECT CON.id_control, 
-                                                                CON.titulo, 
-                                                                CON.contenido, 
-                                                                CON.status, 
-                                                                CON.ano, 
-                                                                CON.responsable, 
-                                                                CONCAT(RES.apellido, ', ', RES.nombre) as responsableNombre,
-                                                                CON.periodo, 
-                                                                CON.borrado, 
-                                                                CON.tipo, 
-                                                                CON.mesinicio, 
-                                                                CON.criticidad, 
-                                                                REF.id_referencia, 
-                                                                REF.accion, 
-                                                                REF.observacion, 
-                                                                REF.evidencia, 
-                                                                REF.mes, 
-                                                                REF.ano, 
-                                                                REF.nro_referencia, 
-                                                                REF.status as estadoControl, 
-                                                                REF.controlador,
-                                                                GER.nombre as gerencia,
-                                                                CONCAT(CLD.apellido , ', ' , CLD.nombre) as controladorNombre
-                                                        FROM referencias as REF
-                                                        INNER JOIN controles as CON ON REF.id_control = CON.id_control
-                                                        LEFT JOIN persona AS RES ON CON.responsable = RES.id_persona
-                                                        LEFT JOIN gerencia AS GER ON RES.gerencia = GER.id_gerencia
-                                                        LEFT JOIN persona AS CLD ON REF.controlador = CLD.id_persona
-                                                        WHERE CON.ano = YEAR(NOW())
-                                                        AND REF.borrado = 0
-                                                        AND CON.borrado = 0 ";
-                                                // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
-                                                // if ( $per_id_gerencia != 1) {
-                                                //     $query = $query . " AND p.gerencia = $per_id_gerencia ";
-                                                // }
-                                                $sql = mysqli_query($con, $query.' ORDER BY CON.criticidad, CON.id_control,  REF.mes');
-                                                $allRows = mysqli_num_rows($sql);
-                                                if($allRows == 0) {
-                                                    echo '<tr><td colspan="8">No hay datos.</td></tr>';
-                                                } else {
-                                                    $nRow = 1;
-                                                    $mesActual = date('m');
+                                            <!-- FIN MODAL CONTROL -->
+                                            <!-- /.box-header -->
+                                            <div class="box-body">
+                                                <table id="controles" class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                        <?php
+                                                        $mActual = date('m');
+                                                            echo '<th width="1">C</th>';
+                                                            echo '<th>Control</th>';
+                                                            echo '<th ' . (1==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Enero</th>';
+                                                            echo '<th ' . (2==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Febrero</th>';
+                                                            echo '<th ' . (3==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Marzo</th>';
+                                                            echo '<th ' . (4==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Abril</th>';
+                                                            echo '<th ' . (5==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Mayo</th>';
+                                                            echo '<th ' . (6==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Junio</th>';
+                                                            echo '<th ' . (7==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Julio</th>';
+                                                            echo '<th ' . (8==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Agosto</th>';
+                                                            echo '<th ' . (9==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Septiembre</th>';
+                                                            echo '<th ' . (10==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Octubre</th>';
+                                                            echo '<th ' . (11==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Novimebre</th>';
+                                                            echo '<th ' . (12==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Diciembre</th>';
+                                                            echo '<th>Total</th>';
+                                                        ?>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                            $query = "SELECT CON.id_control, 
+                                                                            CON.titulo, 
+                                                                            CON.contenido, 
+                                                                            CON.status, 
+                                                                            CON.ano, 
+                                                                            CON.responsable, 
+                                                                            CONCAT(RES.apellido, ', ', RES.nombre) as responsableNombre,
+                                                                            CON.periodo, 
+                                                                            CON.borrado, 
+                                                                            CON.tipo, 
+                                                                            CON.mesinicio, 
+                                                                            CON.criticidad, 
+                                                                            REF.id_referencia, 
+                                                                            REF.accion, 
+                                                                            REF.observacion, 
+                                                                            REF.evidencia, 
+                                                                            REF.mes, 
+                                                                            REF.ano, 
+                                                                            REF.nro_referencia, 
+                                                                            REF.status as estadoControl, 
+                                                                            REF.controlador,
+                                                                            GER.nombre as gerencia,
+                                                                            EST.estado as nombreEstado,
+                                                                            CONCAT(CLD.apellido , ', ' , CLD.nombre) as controladorNombre
+                                                                    FROM referencias as REF
+                                                                    INNER JOIN controles as CON ON REF.id_control = CON.id_control
+                                                                    LEFT JOIN persona AS RES ON CON.responsable = RES.id_persona
+                                                                    LEFT JOIN gerencia AS GER ON RES.gerencia = GER.id_gerencia
+                                                                    LEFT JOIN persona AS CLD ON REF.controlador = CLD.id_persona
+                                                                    LEFT JOIN estados AS EST ON REF.status = EST.id_estado
+                                                                    WHERE CON.ano = YEAR(NOW())
+                                                                    AND REF.borrado = 0
+                                                                    AND CON.borrado = 0 
+                                                                    AND ( 1 = $per_id_gerencia OR  RES.gerencia = $per_id_gerencia )";
+                                                            // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
+                                                            // if ( $per_id_gerencia != 1) {
+                                                            //     $query = $query . " AND p.gerencia = $per_id_gerencia ";
+                                                            // }
+                                                            $sql = mysqli_query($con, $query.' ORDER BY CON.criticidad, CON.id_control,  REF.mes');
+                                                            $allRows = mysqli_num_rows($sql);
+                                                            if($allRows == 0) {
+                                                                echo '<tr><td colspan="8">No hay datos.</td></tr>';
+                                                            } else {
+                                                                $nRow = 1;
+                                                                $mesActual = date('m');
+    
+                                                                $idControlActual = -1;
+                                                                $row = mysqli_fetch_assoc($sql);
+                                                                while($nRow <= $allRows) {
+    
+                                                                    $idControlActual = $row['id_control'];
+                                                                    echo '<tr>';
+                                                                    $criticidadColor = '';
+                                                                    $criticidadTitulo = 'title="No crítico"';
+                                                                    if ($row['criticidad'] == 0) {
+                                                                        $criticidadColor = 'color: red;';
+                                                                        $criticidadTitulo = 'title="Crítico"';
+                                                                    }
+                                                                    if ($row['criticidad'] == 1) {
+                                                                        $criticidadColor = 'color: #f0ad4e;';
+                                                                        $criticidadTitulo = 'title="Semi Crítico"';
+                                                                    }
+                                                                    // Celda de ver control
+                                                                    echo '<td><a ' . $criticidadTitulo . ' <i class="glyphicon glyphicon-tag" style="' . $criticidadColor. ' font-size: 20px;"></i></a></td>';                                                        
+                                                                    echo '<td>' . $row['titulo'] . '</td>';
+                                                                    
+                                                                    $mesControl = 1;
+                                                                    $totalControles = 0;
+                                                                    while ($nRow <= $allRows && $row['id_control'] == $idControlActual) {
+                                                                        
+                                                                        // Formo el calendario mes a mes creado las celdas vacias hasat el mes del control
+                                                                        // de 1-12 y marcando las que vienen por DB
+                                                                        for ($i = $mesControl; $i < $row['mes']; $i++) {
+                                                                            echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
+                                                                        }
+                                                                        
+                                                                        //----------------------------
+                                                                        //En esta celda hay un control
+                                                                        //----------------------------
+                                                                        echo '<td ' . ($row['mes']==$mesActual ? 'class="mesactual"' : ''  ) . '>';
+                                                                        // Cambio el ícono si está pendiente o no
+                                                                        // Controlado/Obs Altas y bajas
+                                                                        if ($row['estadoControl']!=2) {
+                                                                            $color = 'green';
+                                                                            if ($row['estadoControl'] == 3) { $color = '#f39c12'; }
+                                                                            if ($row['estadoControl'] == 4) { $color = '#f37c00'; }
 
-                                                    $idControlActual = -1;
-                                                    $row = mysqli_fetch_assoc($sql);
-                                                    while($nRow <= $allRows) {
-
-                                                        $idControlActual = $row['id_control'];
-                                                        echo '<tr>';
-                                                        $criticidadColor = '';
-                                                        $criticidadTitulo = 'title="No crítico"';
-                                                        if ($row['criticidad'] == 0) {
-                                                            $criticidadColor = 'color: red;';
-                                                            $criticidadTitulo = 'title="Crítico"';
-                                                        }
-                                                        if ($row['criticidad'] == 1) {
-                                                            $criticidadColor = 'color: #f0ad4e;';
-                                                            $criticidadTitulo = 'title="Semi Crítico"';
-                                                        }
-                                                        // Celda de ver control
-                                                        echo '<td><a ' . $criticidadTitulo . ' <i class="glyphicon glyphicon-tag" style="' . $criticidadColor. ' font-size: 20px;"></i></a></td>';                                                        
-                                                        echo '<td>' . $row['titulo'] . '</td>';
-                                                        
-                                                        $mesControl = 1;
-                                                        $totalControles = 0;
-                                                        while ($nRow <= $allRows && $row['id_control'] == $idControlActual) {
-                                                            
-                                                            // Formo el calendario mes a mes creado las celdas vacias hasat el mes del control
-                                                            // de 1-12 y marcando las que vienen por DB
-                                                            for ($i = $mesControl; $i < $row['mes']; $i++) {
-                                                                echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
-                                                            }
-                                                            
-                                                            //----------------------------
-                                                            //En esta celda hay un control
-                                                            //----------------------------
-                                                            echo '<td ' . ($row['mes']==$mesActual ? 'class="mesactual"' : ''  ) . '>';
-                                                            // Cambio el ícono si está pendiente o no
-                                                            if ($row['estadoControl']==1) {
-                                                                echo '<a  data-idref="'.$row['id_referencia'].'"
-                                                                    data-criticidad="'.$row['criticidad'].'" 
-                                                                    data-titulo="'.$row['titulo'].'" 
-                                                                    data-periodicidad="'.$row['periodo'].'" 
-                                                                    data-contenido="'.$row['contenido'].'" 
-                                                                    data-responsable="'.$row['responsableNombre'].'" 
-                                                                    data-gerencia="'.$row['gerencia'].'" 
-                                                                    data-estatus="'.$row['estadoControl'].'" 
-                                                                    data-controlador="'.$row['controladorNombre'].'" 
-                                                                    data-accion="'.$row['accion'].'" 
-                                                                    data-observacion="'.$row['observacion'].'" 
-                                                                    data-evidencia="'.$row['evidencia'].'" 
-                                                                    data-mes="'.$row['mes'].'" 
-                                                                    title="Controlado - [' . $row['controladorNombre'] . ']" class="ver-itemDialog btn"><i class="glyphicon glyphicon-ok-sign" style="color:green; font-size: 20px;"></i></a>';
-                                                                } else {
-                                                                    // Si está pendiente me fijo si está atrazado con respecto al mes en curso
-                                                                if ($mesActual > $row['mes']) {
-                                                                    echo '<a 
-                                                                    data-idref="'.$row['id_referencia'].'"
-                                                                    data-criticidad="'.$row['criticidad'].'" 
-                                                                    data-titulo="'.$row['titulo'].'"
-                                                                    data-periodicidad="'.$row['periodo'].'" 
-                                                                    data-contenido="'.$row['contenido'].'" 
-                                                                    data-responsable="'.$row['responsableNombre'].'" 
-                                                                    data-gerencia="'.$row['gerencia'].'" 
-                                                                    data-estatus="'.$row['estadoControl'].'"  
-                                                                    data-mes="'.$row['mes'].'" 
-                                                                    title="Vencido" class="ver-itemDialog btn"><i class="glyphicon glyphicon-remove-sign" style="color:red; font-size: 20px;"></i></a>';
-                                                                } else {
-                                                                    echo '<a  
-                                                                        data-idref="'.$row['id_referencia'].'"
-                                                                        data-criticidad="'.$row['criticidad'].'" 
-                                                                        data-titulo="'.$row['titulo'].'" 
-                                                                        data-periodicidad="'.$row['periodo'].'" 
-                                                                        data-contenido="'.$row['contenido'].'" 
-                                                                        data-responsable="'.$row['responsableNombre'].'" 
-                                                                        data-gerencia="'.$row['gerencia'].'" 
-                                                                        data-estatus="'.$row['estadoControl'].'" 
-                                                                        data-mes="'.$row['mes'].'" 
-                                                                        title="Pendiente" class="ver-itemDialog btn"><i class="glyphicon glyphicon-record" style="font-size: 20px;"></i></a>';
+                                                                            echo '<a  data-idref="'.$row['id_referencia'].'"
+                                                                                data-criticidad="'.$row['criticidad'].'" 
+                                                                                data-titulo="'.$row['titulo'].'" 
+                                                                                data-periodicidad="'.$row['periodo'].'" 
+                                                                                data-contenido="'.$row['contenido'].'" 
+                                                                                data-responsable="'.$row['responsableNombre'].'" 
+                                                                                data-gerencia="'.$row['gerencia'].'" 
+                                                                                data-estatus="'.$row['estadoControl'].'" 
+                                                                                data-nombreestado="'.$row['nombreEstado'].'" 
+                                                                                data-controlador="'.$row['controladorNombre'].'" 
+                                                                                data-accion="'.$row['accion'].'" 
+                                                                                data-observacion="'.$row['observacion'].'" 
+                                                                                data-evidencia="'.$row['evidencia'].'" 
+                                                                                data-mes="'.$row['mes'].'" 
+                                                                                title="'. $row['nombreEstado']. ' - [' . $row['controladorNombre'] . ']" class="ver-itemDialog btn"><i class="glyphicon glyphicon-ok-sign" style="color:' . $color . '; font-size: 20px;"></i></a>';
+                                                                        } else {
+                                                                                // Si está pendiente me fijo si está atrazado con respecto al mes en curso
+                                                                            if ($mesActual > $row['mes']) {
+                                                                                echo '<a 
+                                                                                data-idref="'.$row['id_referencia'].'"
+                                                                                data-criticidad="'.$row['criticidad'].'" 
+                                                                                data-titulo="'.$row['titulo'].'"
+                                                                                data-periodicidad="'.$row['periodo'].'" 
+                                                                                data-contenido="'.$row['contenido'].'" 
+                                                                                data-responsable="'.$row['responsableNombre'].'" 
+                                                                                data-gerencia="'.$row['gerencia'].'" 
+                                                                                data-estatus="'.$row['estadoControl'].'"  
+                                                                                data-mes="'.$row['mes'].'" 
+                                                                                title="Vencido" class="ver-itemDialog btn"><i class="glyphicon glyphicon-remove-sign" style="color:red; font-size: 20px;"></i></a>';
+                                                                            } else {
+                                                                                echo '<a  
+                                                                                    data-idref="'.$row['id_referencia'].'"
+                                                                                    data-criticidad="'.$row['criticidad'].'" 
+                                                                                    data-titulo="'.$row['titulo'].'" 
+                                                                                    data-periodicidad="'.$row['periodo'].'" 
+                                                                                    data-contenido="'.$row['contenido'].'" 
+                                                                                    data-responsable="'.$row['responsableNombre'].'" 
+                                                                                    data-gerencia="'.$row['gerencia'].'" 
+                                                                                    data-estatus="'.$row['estadoControl'].'" 
+                                                                                    data-mes="'.$row['mes'].'" 
+                                                                                    title="Pendiente" class="ver-itemDialog btn"><i class="glyphicon glyphicon-record" style="font-size: 20px;"></i></a>';
+                                                                            }
+                                                                        }
+                                                                        echo '</td>';
+                                                                        //----------------------------
+    
+                                                                        //Incremento el mes para generar celdas hasta el próximo mes 
+                                                                        $mesControl = $row['mes'] + 1;
+                                                                        
+                                                                        $row = mysqli_fetch_assoc($sql);
+                                                                        $nRow++;
+                                                                        $totalControles++;
+                                                                    }
+                                                                    
+                                                                    // relleno los meses que faltan
+                                                                    for ($i = $mesControl; $i <= 12; $i++) {
+                                                                        echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
+                                                                    }
+                                                                    // Celda total (cuenta de controles)
+                                                                    echo '<td>' . $totalControles . '</td>';
+                                                                    echo '</tr>';
                                                                 }
                                                             }
-                                                            echo '</td>';
-                                                            //----------------------------
+                                                        ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                    </div>            
+                                    <!-- TAB POR CONTROL -->
+                                    <!-- TAB ACUMULADO POR GERENCIA -->
+                                    <div class="tab-pane" id="tab_2">
+                                        <div class="box">
+                                            <div class="box-header">
+                                                <div class="col-sm-6" style="text-align:left">
+                                                    <h2 class="box-title">Calendario de Controles acumulados por gerencia</h2>
+                                                </div>
+                                                <div class="col-sm-6" style="text-align:right;">
+                                                <span class="badge bg-red" style="font-size: 14px;">Existen controles vencidos</span>
+                                                <span class="badge bg-green" style="font-size: 14px;">Completos</span>
+                                                </div>
+                                            </div>
+                                            <!-- /.box-header -->
+                                            <div class="box-body">
+                                                <table id="riesgos" class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                        <?php
+                                                        $mActual = date('m');
+                                                            echo '<th>Gerencia</th>';
+                                                            echo '<th ' . (1==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Enero</th>';
+                                                            echo '<th ' . (2==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Febrero</th>';
+                                                            echo '<th ' . (3==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Marzo</th>';
+                                                            echo '<th ' . (4==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Abril</th>';
+                                                            echo '<th ' . (5==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Mayo</th>';
+                                                            echo '<th ' . (6==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Junio</th>';
+                                                            echo '<th ' . (7==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Julio</th>';
+                                                            echo '<th ' . (8==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Agosto</th>';
+                                                            echo '<th ' . (9==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Septiembre</th>';
+                                                            echo '<th ' . (10==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Octubre</th>';
+                                                            echo '<th ' . (11==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Novimebre</th>';
+                                                            echo '<th ' . (12==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Diciembre</th>';
+                                                        ?>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                            $query = "SELECT  GER.nombre as nombre,
+                                                                            REF.mes,
+                                                                            COUNT(1) as cuenta,
+                                                                            MIN(REF.status) as estadoControl
+                                                                    FROM referencias as REF
+                                                                    INNER JOIN controles as CON ON REF.id_control = CON.id_control
+                                                                    LEFT JOIN persona AS RES ON CON.responsable = RES.id_persona
+                                                                    LEFT JOIN gerencia AS GER ON RES.gerencia = GER.id_gerencia
+                                                                    WHERE CON.ano = YEAR(NOW())
+                                                                    AND REF.borrado = 0
+                                                                    AND CON.borrado = 0 
+                                                                    AND ( 1 = $per_id_gerencia OR  RES.gerencia = $per_id_gerencia )
+                                                                    GROUP BY GER.nombre, REF.mes";
+                                                            $sql = mysqli_query($con, $query);
+                                                            $allRows = mysqli_num_rows($sql);
+                                                            if($allRows == 0) {
+                                                                echo '<tr><td colspan="13">No hay datos.</td></tr>';
+                                                            } else {
+                                                                $nRow = 1;
+                                                                $mesActual = date('m');
 
-                                                            //Incremento el mes para generar celdas hasta el próximo mes 
-                                                            $mesControl = $row['mes'] + 1;
-                                                            
-                                                            $row = mysqli_fetch_assoc($sql);
-                                                            $nRow++;
-                                                            $totalControles++;
-                                                        }
-                                                        
-                                                        // relleno los meses que faltan
-                                                        for ($i = $mesControl; $i <= 12; $i++) {
-                                                            echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
-                                                        }
-                                                        // Celda total (cuenta de controles)
-                                                        echo '<td>' . $totalControles . '</td>';
-                                                        echo '</tr>';
-                                                    }
-                                                  }
-                                              ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                            <!-- /.box -->
+                                                                $gerencia_actual = '';
+                                                                $row = mysqli_fetch_assoc($sql);
+                                                                while($nRow <= $allRows) {
 
-                            <!-- /.box -->
+                                                                    $gerencia_actual = $row['nombre'];
+                                                                    echo '<tr>';
+                                                                    // Celda de ver control
+                                                                    echo '<td>' . $row['nombre'] . '</td>';
+                                                                    
+                                                                    $mesControl = 1;
+                                                                    while ($nRow <= $allRows && $row['nombre'] == $gerencia_actual) {
+                                                                        
+                                                                        // Formo el calendario mes a mes creado las celdas vacias hasat el mes del control
+                                                                        // de 1-12 y marcando las que vienen por DB
+                                                                        for ($i = $mesControl; $i < $row['mes']; $i++) {
+                                                                            echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
+                                                                        }
+                                                                        
+                                                                        //----------------------------
+                                                                        //En esta celda hay riesgos
+                                                                        //----------------------------
+                                                                        echo '<td class="text-center ' . ($row['mes']==$mesActual ? 'mesactual"' : '"'  ) . '>';
+                                                                        // Cambio el ícono si está pendiente o no
+                                                                        // Si está pendiente me fijo si está atrazado con respecto al mes en curso
+                                                                        if ($row['estadoControl']==1) {
+                                                                            echo '<span class="badge bg-green" style="font-size: 15px;">' . $row['cuenta'] . '</span>';
+                                                                        } else {
+
+                                                                            if ($mesActual > $row['mes']) {
+                                                                                echo '<a title="Existen controles vencidos"><span class="badge bg-red" style="font-size: 15px;">' . $row['cuenta'] . '</span></a>';
+                                                                            } else {
+                                                                                echo '<span class="badge bg-yellow" style="font-size: 15px;">' . $row['cuenta'] . '</span>';
+                                                                            }
+
+                                                                        }
+                                                                        echo '</td>';
+                                                                        //----------------------------
+
+                                                                        //Incremento el mes para generar celdas hasta el próximo mes 
+                                                                        $mesControl = $row['mes'] + 1;
+                                                                        
+                                                                        $row = mysqli_fetch_assoc($sql);
+                                                                        $nRow++;
+                                                                    }
+                                                                    
+                                                                    // relleno los meses que faltan
+                                                                    for ($i = $mesControl; $i <= 12; $i++) {
+                                                                        echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
+                                                                    }
+                                                                    echo '</tr>';
+                                                                }
+                                                            }
+                                                        ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>                                        
+                                    </div>         
+                                    <!-- TAB ACUMULADO POR GERENCIA -->   
+                                </div>    
+                            </div>    
                         </div>
                         <!-- /.col -->
                     </div>
@@ -532,8 +670,8 @@ desired effect
                 $('#divaccion').hide();
                 $('#divobservacion').hide();
                 $('#divevidencia').hide();
-                if ($(this).data('estatus') == 1) {
-                    $('#estatus').val('Completado');
+                if ($(this).data('estatus') != 2) {
+                    $('#estatus').val($(this).data('nombreestado'));
                     $('#controlador').val($(this).data('controlador'));
                     $('#divaccion').show();
                     $('#divobservacion').show();
