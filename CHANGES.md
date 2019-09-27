@@ -10,6 +10,8 @@ Correcciones POST Producción
     - Se agrega un script al final de cada una de las páginas que hace que se mantenga en menú del side bar correspondiente abierto
     -[sdc_hosting/housing]
     -[cdc_cliente/organismo]
+    - housing refrescar la pagina al guardar o modiciar
+    M[modals/sdc_abmhousing.js]
 
 
 ## FEAT-SIDEBAR
