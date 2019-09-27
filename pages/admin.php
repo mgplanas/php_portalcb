@@ -207,6 +207,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
                                                 <th width="1">Cli. DC</th>
+                                                <th width="1">Admin CDC</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>
@@ -265,6 +266,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 </div></td>'; 
                                                   echo '<td>
                                                           <div class="checkbox">
+                                                            <label><input name="adminclidc" type="checkbox" onclick="updatePerm(9, '.$row['id_permiso'].');" value="1"'; if($row['admin_cli_dc'] == '1'){ echo 'checked'; } echo'></label>
+                                                                </div></td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
                                                             <label><input name="edicion" type="checkbox" onclick="updatePerm(4, '.$row['id_permiso'].');" value="1"'; if($row['edicion'] == '1'){ echo 'checked'; } echo'></label>
                                                           </div></td>'; 
                                                   echo '<td align="center">
@@ -292,6 +297,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
                                                 <th width="1">Cli. DC</th>
+                                                <th width="1">Admin CDC</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>

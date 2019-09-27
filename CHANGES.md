@@ -1,5 +1,22 @@
 # CHANGES
 
+## FEAT-CLI-DC2
+
+Correcciones y mejoras POST Producción
+*Fecha:* 2019-09-27
+*Cambios:*
+    - Agregar permiso para permitir el borrado
+        ALTER TABLE controls.permisos
+        ADD admin_cli_dc INT DEFAULT '0' AFTER cli_dc;
+        - Modificar grilla de permisos y asignación
+        M[pages/admin.php]
+        M[pages/setPermiso.php]
+    - Agregar opcion de borrado en todas las grillas (menos hosting)
+    - al importar borrar todo antes
+    - Corregir tema de desaparicion de menu en firefox
+    - Agregar el refresco de la página al actualizar info en todas las paginas
+
+
 ## FIX-CLI-DC
 
 Correcciones POST Producción
