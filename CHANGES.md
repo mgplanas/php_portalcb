@@ -57,7 +57,9 @@ Dashboad CLientes
         M[tareas.php]               OK
         M[topologia.php]            OK
         M[site.php]                 OK
+        M[index.html]               OK
         
+
 
 
 ## FIX-CLI-DC
