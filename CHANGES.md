@@ -7,6 +7,9 @@ Correcciones POST Producción
 *Cambios:*
     - Se corrige el menú lateral del inicio (Se saca la opción de dashboard en modulo de clientes)
     M[site.php]
+    - Se agrega un script al final de cada una de las páginas que hace que se mantenga en menú del side bar correspondiente abierto
+    -[sdc_hosting/housing]
+    -[cdc_cliente/organismo]
 
 
 ## FEAT-SIDEBAR
