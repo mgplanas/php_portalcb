@@ -23,8 +23,8 @@
     <li class="header">MENU</li>
     <!-- Optionally, you can add icons to the links -->
     <li><a href="../site.php"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
-    <li><a href="activos.php"><i class="fa fa-archive"></i> <span>Activos</span></a></li>
     <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
+      <li><a href="activos.php"><i class="fa fa-archive"></i> <span>Activos</span></a></li>
       <li><a href="controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
       <li><a href="iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
       <li><a href="iso9k.php"><i class="fa fa-crosshairs"></i> <span>ISO 9001</span></a></li>

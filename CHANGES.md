@@ -1,5 +1,14 @@
 # CHANGES
 
+## FEAT-RAUL
+
+Dashboad CLientes
+*Fecha:* 2019-09-28
+*Cambios:*
+    - Pasar el módulo de activos dentro de los permisos de compliance
+    M[pages/site_sidebar.php]
+    M[site.php]
+
 ## FIX-CLI-DC
 
 Correcciones POST Producción
