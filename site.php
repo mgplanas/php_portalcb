@@ -396,7 +396,6 @@ desired effect
                 </span>
               </a>
               <ul class="treeview-menu">
-                <li><a href="./pages/cdc_dashboard.php"><i class="fa fa-pie-chart"></i> Dashboard</a></li>
                 <li><a href="./pages/cdc_organismo.php"><i class="fa fa-building"></i> Organismos</a></li>
                 <li><a href="./pages/cdc_cliente.php"><i class="fa fa-user"></i> Clientes</a></li>
                 <li class="treeview">

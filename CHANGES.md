@@ -1,5 +1,14 @@
 # CHANGES
 
+## FIX-CLI-DC
+
+Correcciones POST Producción
+*Fecha:* 2019-09-27
+*Cambios:*
+    - Se corrige el menú lateral del inicio (Se saca la opción de dashboard en modulo de clientes)
+    M[site.php]
+
+
 ## FEAT-SIDEBAR
 
 Modificaciones post produccion
