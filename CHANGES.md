@@ -6,8 +6,59 @@ Dashboad CLientes
 *Fecha:* 2019-09-28
 *Cambios:*
     - Pasar el módulo de activos dentro de los permisos de compliance
-    M[pages/site_sidebar.php]
-    M[site.php]
+        M[pages/site_sidebar.php]
+        M[site.php]
+    - Cambio SI por GITyS en header, footer y login
+    - Header -incluyo el logo en el header
+        M[pages/site_header.php]
+    - cambio en todas las páginas eso y tag de TITLE GITyS-ARSAT[$page_tile] 
+        $page_title="Activos"; 
+        <title>GITyS-ARSAT[<?=$page_title?>]</title>
+        extraigo footer a site_footer.php: 
+        <?php include_once('./site_footer.php'); ?>
+        N[site_footer.php]          OK  
+        M[activos.php]              OK
+        M[admin.php]                OK
+        M[calendario.php]           OK
+        M[calendario_guardias.php]  OK
+        M[cal_controles.php]        OK
+        M[cal_riesgos.php]          OK
+        M[cdc_cliente.php]          OK
+        M[cdc_organismo.php]        OK
+        M[clean_content.php]        OK
+        M[control.php]              OK
+        M[controles.php]            OK
+        M[controlfw.php]            OK
+        M[edit_activo.php]          OK
+        M[edit_conexion.php]        OK
+        M[edit_control.php]         OK
+        M[edit_dispositivo.php]     OK
+        M[edit_iso27k.php]          OK
+        M[edit_mejora.php]          OK
+        M[edit_persona.php]         OK
+        M[edit_proyecto.php]        OK
+        M[edit_referencia.php]      OK
+        M[edit_riesgo.php]          OK
+        M[inventario.php]           OK
+        M[iso27k.php]               OK
+        M[iso9k.php]                OK
+        M[mejoras.php]              OK
+        M[metricas.php]             OK
+        M[met_activos.php]          OK
+        M[met_controles.php]        OK
+        M[met_iso27k.php]           OK
+        M[met_mejoras.php]          OK
+        M[met_riesgos.php]          OK
+        M[novedades.php]            OK
+        M[proyectos.php]            OK
+        M[riesgos.php]              OK
+        M[sdc_hosting.php]          OK
+        M[sdc_housing.php]          OK
+        M[tareas.php]               OK
+        M[topologia.php]            OK
+        M[site.php]                 OK
+        
+
 
 ## FIX-CLI-DC
 

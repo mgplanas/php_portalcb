@@ -9,6 +9,7 @@ if (!isset($_SESSION['usuario'])){
 }
 
 //Alert icons data on top bar
+$page_title="Topología"; 
 $user=$_SESSION['usuario'];
 
 //Get user query
@@ -37,7 +38,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SI-ARSAT</title>
+  <title>GITyS-ARSAT[<?=$page_title?>]</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
@@ -94,14 +95,6 @@ desired effect
 
   <!-- Main Header -->
   <header class="main-header">
-
-    <!-- Logo -->
-    <a href="../site.php" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini">SI</span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>SI</b>-ARSAT</span>
-    </a>
 
     <!-- Header Navbar -->
     <?php include_once('./site_header.php'); ?>
@@ -228,14 +221,7 @@ desired effect
     <!-- /.content -->
   </div>
   <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="pull-right hidden-xs">
-      Portal de Gestión
-    </div>
-    <!-- Default to the left -->
-    <strong>Seguridad Informática  - <a href="../site.php">ARSAT S.A.</a></strong>
-  </footer>
+  <?php include_once('./site_footer.php'); ?>
 
 <!-- REQUIRED JS SCRIPTS -->
 
