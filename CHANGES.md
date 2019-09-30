@@ -1,6 +1,5 @@
 # CHANGES
 
-<<<<<<< HEAD
 ## FEAT-RAUL
 
 Dashboad CLientes
@@ -59,9 +58,11 @@ Dashboad CLientes
         M[topologia.php]            OK
         M[site.php]                 OK
         M[index.html]               OK
-        
+    - Agrego página de dashboard en CLI-DC
+        M[site.php]
+        M[pages/site_sidebar.php]
+        M[pages/cdc_dashboard.php]
 
-=======
 ## FEAT-CLI-DC2
 
 Correcciones y mejoras POST Producción
