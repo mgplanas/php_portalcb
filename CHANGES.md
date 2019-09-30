@@ -19,9 +19,13 @@ Correcciones y mejoras POST Producción
         M[pages/sdc_housing.php]
         M[pages/cdc_cliente.php]
         M[pages/cdc_organismo.php]
+    - Agregar el refresco de la página al actualizar info en todas las paginas
+        M[pages/modals/sdc_ambhousing.js]
+        M[pages/modals/sdc_ambcliente.js]
+        M[pages/modals/sdc_amborgnaismo.js]
     - al importar borrar todo antes
     - Corregir tema de desaparicion de menu en firefox
-    - Agregar el refresco de la página al actualizar info en todas las paginas
+        Problema específico en máquina de Tissera
 
 
 ## FIX-CLI-DC
