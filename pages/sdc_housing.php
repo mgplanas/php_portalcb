@@ -148,7 +148,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Alta</th>
                     <th>Evidencia</th>
                     <th>Observaciones</th>
-                    <th>Acciones</th>
+                    <th width="100">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -192,7 +192,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   data-observaciones="' . $row['observaciones'] . '" 
                   data-cliente="' . $row['id_cliente'] . '" 
                   title="Editar Servicio" class="modal-abm-housing-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-                <a href="sdc_housing.php?aksi=delete&nik='.$row['id'].'" title="Borrar Servicio" onclick="return confirm(\'Esta seguro de borrar el servicio de Housing?\')" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                <a href="sdc_housing.php?aksi=delete&nik='.$row['id'].'" title="Borrar Servicio" onclick="return confirm(\'Esta seguro de borrar el servicio de Housing?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
               }
               echo '</td>
               </tr>';
