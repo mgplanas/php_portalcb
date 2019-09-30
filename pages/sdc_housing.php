@@ -108,8 +108,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<div class="col-sm-6" style="text-align:left">
 					<h2 class="box-title">Listado de Servicios</h2>
 				</div>
- 				<div class="col-sm-6" style="text-align:right;">
-					<button type="button" id="modal-abm-housing-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-home"></i> Nuevo Servicio de Housing</button>
+         <div class="col-sm-6" style="text-align:right;">
+          <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
+          <button type="button" id="modal-abm-housing-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-home"></i> Nuevo Servicio de Housing</button>
+          <?php } ?>
 				</div>
             </div>
 
@@ -159,21 +161,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td align="center">'. $row['fecha_alta'].'</td>';
 							echo '<td align="center">'. $row['evidencia'].'</td>';
 							echo '<td align="center">'. $row['observaciones'].'</td>';
-              echo '
-              <td align="center">
-              <a 
-                data-id="' . $row['id'] . '" 
-                data-m2="' . $row['m2'] . '" 
-                data-sala="' . $row['sala'] . '" 
-                data-fila="' . $row['fila'] . '" 
-                data-rack="' . $row['rack'] . '" 
-                data-evidencia="' . $row['evidencia'] . '" 
-                data-alta="' . $row['fecha_alta'] . '" 
-                data-energia="' . $row['energia'] . '" 
-                data-observaciones="' . $row['observaciones'] . '" 
-                data-cliente="' . $row['id_cliente'] . '" 
-                title="Editar Servicio" class="modal-abm-housing-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-              </td>
+              echo '<td align="center">';
+              if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ 
+                echo '<a 
+                  data-id="' . $row['id'] . '" 
+                  data-m2="' . $row['m2'] . '" 
+                  data-sala="' . $row['sala'] . '" 
+                  data-fila="' . $row['fila'] . '" 
+                  data-rack="' . $row['rack'] . '" 
+                  data-evidencia="' . $row['evidencia'] . '" 
+                  data-alta="' . $row['fecha_alta'] . '" 
+                  data-energia="' . $row['energia'] . '" 
+                  data-observaciones="' . $row['observaciones'] . '" 
+                  data-cliente="' . $row['id_cliente'] . '" 
+                  title="Editar Servicio" class="modal-abm-housing-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+              }
+              echo '</td>
               </tr>';
 						}
 					}
