@@ -1,5 +1,6 @@
 # CHANGES
 
+<<<<<<< HEAD
 ## FEAT-RAUL
 
 Dashboad CLientes
@@ -60,6 +61,58 @@ Dashboad CLientes
         M[index.html]               OK
         
 
+=======
+## FEAT-CLI-DC2
+
+Correcciones y mejoras POST Producción
+*Fecha:* 2019-09-27
+*Cambios:*
+    - Agregar permiso para permitir el borrado
+        ALTER TABLE controls.permisos
+        ADD admin_cli_dc INT DEFAULT '0' AFTER cli_dc;
+        - Modificar grilla de permisos y asignación
+        M[pages/admin.php]
+        M[pages/setPermiso.php]
+    - Limitar la edicion solo para admin_cli_dc
+        M[pages/cdc_cliente.php]
+        M[pages/cdc_organismo.php]
+        M[pages/sdc_housing.php]
+    - Agregar opcion de borrado en todas las grillas (menos hosting)
+        M[pages/sdc_housing.php]
+        M[pages/cdc_cliente.php]
+        M[pages/cdc_organismo.php]
+    - Agregar el refresco de la página al actualizar info en todas las paginas
+        M[pages/modals/sdc_ambhousing.js]
+        M[pages/modals/sdc_ambcliente.js]
+        M[pages/modals/sdc_amborgnaismo.js]
+    - al importar borrar todo antes
+        M[pages/helpers/sdc_importhosting.php]
+        M[pages/modals/sdc_importhosting.js]
+
+        DUPLICAR ESTRUCTURA DE TABLA HOSTING A SDC_HOSTING_BCK SIN CONSTRAINS
+        CREATE TABLE `sdc_hosting_bck` (
+        `id` int(11),
+        `id_cliente` int(11) NOT NULL,
+        `tipo` varchar(20) DEFAULT NULL,
+        `nombre` varchar(255) DEFAULT NULL,
+        `displayName` varchar(255) DEFAULT NULL,
+        `proyecto` varchar(255) DEFAULT NULL,
+        `datacenter` varchar(255) DEFAULT NULL,
+        `fecha` datetime DEFAULT NULL,
+        `hipervisor` varchar(255) DEFAULT NULL,
+        `hostname` varchar(255) DEFAULT NULL,
+        `pool` varchar(255) DEFAULT NULL,
+        `uuid` varchar(255) DEFAULT NULL,
+        `VCPU` double DEFAULT NULL,
+        `RAM` double DEFAULT NULL,
+        `storage` double DEFAULT NULL,
+        `SO` varchar(255) DEFAULT NULL,
+        `borrado` int(11) NOT NULL DEFAULT '0'
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+    - Corregir tema de desaparicion de menu en firefox
+        Problema específico en máquina de Tissera
+>>>>>>> devel
 
 
 ## FIX-CLI-DC

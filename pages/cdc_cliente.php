@@ -10,8 +10,23 @@ if (!isset($_SESSION['usuario'])){
 $page_title="Clientes DC";
 $user=$_SESSION['usuario'];
 
+/// BORRADO DE CLIENTE (SOLO SI NO TIEN SERVICIOS ASOCIADOS)
+if(isset($_GET['aksi']) == 'delete'){
+	// escaping, additionally removing everything that could be (html/javascript-) code
+	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+  //Elimino Control
+  
+  $delete_control = mysqli_query($con, "UPDATE cdc_cliente SET borrado='1' WHERE id='$nik'");
+  
+  //$delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+  //                  VALUES ('3', '5', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
+  if(!$delete_control){
+    $_SESSION['formSubmitted'] = 9;
+  }
+}
+
 //Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'  AND borrado = 0");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
 
@@ -107,8 +122,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<div class="col-sm-6" style="text-align:left">
 					<h2 class="box-title">Listado de Clientes</h2>
 				</div>
- 				<div class="col-sm-6" style="text-align:right;">
-					<button type="button" id="modal-abm-cliente-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-user"></i> Nuevo Cliente</button>
+         <div class="col-sm-6" style="text-align:right;">
+          <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
+            <button type="button" id="modal-abm-cliente-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-user"></i> Nuevo Cliente</button>
+          <?php } ?>
 				</div>
             </div>
 
@@ -161,17 +178,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicios de Hosting" class="modal-abm-hosting-view btn">' . $row['hosting'] . '</a>';
               }
               echo '</td>';
-							echo '
-              <td align="center">
-              <a 
-                data-id="' . $row['id'] . '" 
-                data-nombre="' . $row['razon_social'] . '" 
-                data-sigla="' . $row['nombre_corto'] . '" 
-                data-cuit="' . $row['cuit'] . '" 
-                data-organismo="' . $row['id_organismo'] . '" 
-                data-sector="' . $row['sector'] . '" 
-                title="Editar Cliente" class="modal-abm-cliente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-							</td>
+							echo '<td align="center">';
+              if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
+                echo '<a 
+                  data-id="' . $row['id'] . '" 
+                  data-nombre="' . $row['razon_social'] . '" 
+                  data-sigla="' . $row['nombre_corto'] . '" 
+                  data-cuit="' . $row['cuit'] . '" 
+                  data-organismo="' . $row['id_organismo'] . '" 
+                  data-sector="' . $row['sector'] . '" 
+                  title="Editar Cliente" class="modal-abm-cliente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                  if ($row['housing'] == 0 AND $row['hosting'] == 0) {
+                    echo '<a href="cdc_cliente.php?aksi=delete&nik='.$row['id'].'" title="Borrar Cliente" onclick="return confirm(\'Esta seguro de borrar el cliente '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                  }
+              }
+              echo '</td>
 							</tr>
 							';
 						}

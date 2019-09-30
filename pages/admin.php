@@ -59,7 +59,7 @@ $id_rowp = $rowp['id_persona'];
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);
 
-if ($rq_sec['admin']=='0'){
+if ($rq_sec['admin_per']=='0' AND $rq_sec['admin']=='0' ){
 	header('Location: ../site.php');
 }
 
@@ -199,6 +199,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
                                                 <th width="1">Cli. DC</th>
+                                                <th width="1">Admin CDC</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>
@@ -257,6 +258,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 </div></td>'; 
                                                   echo '<td>
                                                           <div class="checkbox">
+                                                            <label><input name="adminclidc" type="checkbox" onclick="updatePerm(9, '.$row['id_permiso'].');" value="1"'; if($row['admin_cli_dc'] == '1'){ echo 'checked'; } echo'></label>
+                                                                </div></td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
                                                             <label><input name="edicion" type="checkbox" onclick="updatePerm(4, '.$row['id_permiso'].');" value="1"'; if($row['edicion'] == '1'){ echo 'checked'; } echo'></label>
                                                           </div></td>'; 
                                                   echo '<td align="center">
@@ -284,6 +289,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
                                                 <th width="1">Cli. DC</th>
+                                                <th width="1">Admin CDC</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>

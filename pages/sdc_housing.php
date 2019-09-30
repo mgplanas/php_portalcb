@@ -10,8 +10,25 @@ if (!isset($_SESSION['usuario'])){
 $page_title="Housing"; 
 $user=$_SESSION['usuario'];
 
+
+/// BORRADO DE SERVICIO DE HOUSING
+if(isset($_GET['aksi']) == 'delete'){
+	// escaping, additionally removing everything that could be (html/javascript-) code
+	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+  //Elimino Control
+  
+  $delete_control = mysqli_query($con, "UPDATE sdc_housing SET borrado='1' WHERE id='$nik'");
+  
+  //$delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+  //                  VALUES ('3', '5', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
+  if(!$delete_control){
+    $_SESSION['formSubmitted'] = 9;
+  }
+}
+
+
 //Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'  AND borrado = 0");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
 
@@ -99,8 +116,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<div class="col-sm-6" style="text-align:left">
 					<h2 class="box-title">Listado de Servicios</h2>
 				</div>
- 				<div class="col-sm-6" style="text-align:right;">
-					<button type="button" id="modal-abm-housing-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-home"></i> Nuevo Servicio de Housing</button>
+         <div class="col-sm-6" style="text-align:right;">
+          <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
+          <button type="button" id="modal-abm-housing-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-home"></i> Nuevo Servicio de Housing</button>
+          <?php } ?>
 				</div>
             </div>
 
@@ -120,7 +139,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Alta</th>
                     <th>Evidencia</th>
                     <th>Observaciones</th>
-                    <th>Acciones</th>
+                    <th width="100">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -150,21 +169,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td align="center">'. $row['fecha_alta'].'</td>';
 							echo '<td align="center">'. $row['evidencia'].'</td>';
 							echo '<td align="center">'. $row['observaciones'].'</td>';
-              echo '
-              <td align="center">
-              <a 
-                data-id="' . $row['id'] . '" 
-                data-m2="' . $row['m2'] . '" 
-                data-sala="' . $row['sala'] . '" 
-                data-fila="' . $row['fila'] . '" 
-                data-rack="' . $row['rack'] . '" 
-                data-evidencia="' . $row['evidencia'] . '" 
-                data-alta="' . $row['fecha_alta'] . '" 
-                data-energia="' . $row['energia'] . '" 
-                data-observaciones="' . $row['observaciones'] . '" 
-                data-cliente="' . $row['id_cliente'] . '" 
-                title="Editar Servicio" class="modal-abm-housing-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-              </td>
+              echo '<td align="center">';
+              if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ 
+                echo '<a 
+                  data-id="' . $row['id'] . '" 
+                  data-m2="' . $row['m2'] . '" 
+                  data-sala="' . $row['sala'] . '" 
+                  data-fila="' . $row['fila'] . '" 
+                  data-rack="' . $row['rack'] . '" 
+                  data-evidencia="' . $row['evidencia'] . '" 
+                  data-alta="' . $row['fecha_alta'] . '" 
+                  data-energia="' . $row['energia'] . '" 
+                  data-observaciones="' . $row['observaciones'] . '" 
+                  data-cliente="' . $row['id_cliente'] . '" 
+                  title="Editar Servicio" class="modal-abm-housing-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                <a href="sdc_housing.php?aksi=delete&nik='.$row['id'].'" title="Borrar Servicio" onclick="return confirm(\'Esta seguro de borrar el servicio de Housing?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+              }
+              echo '</td>
               </tr>';
 						}
 					}

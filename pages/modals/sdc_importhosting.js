@@ -59,7 +59,7 @@ $(function() {
                             .append('<p>Se debe solucionar todos los inconvenientes reportados antes de continuar la importación</p>');
                     }
                 } else {
-                    if (confirm('Se actualizarán ' + data.tot_toBeUpdated + ' registros e insertarán ' + data.tot_toBeInserted + '\n ¿Desea continuar?')) {
+                    if (confirm('Se importarán ' + data.tot_toBeInserted + '\n ¿Desea continuar?')) {
                         btn.button('loading');
                         $.ajax({
                             type: 'POST',
@@ -70,6 +70,7 @@ $(function() {
                                 btn.button('reset');
                                 alert('Se ha realizado la importación de registros con éxito.');
                                 $("#modal-import-hosting").modal('toggle');
+                                location.reload();
                             },
                             error: function(e) {
                                 alert(e);

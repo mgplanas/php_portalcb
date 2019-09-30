@@ -11,7 +11,7 @@ $page_title="Hosting";
 $user=$_SESSION['usuario'];
 
 //Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' AND borrado = 0");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
 
@@ -101,7 +101,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <h2 class="box-title">Listado de Servicios</h2>
               </div>
               <div class="col-sm-6" style="text-align:right;">
+              <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
                 <button type="button" id="modal-import-hosting-btn-import" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-upload"></i> Importar Servicios</button>
+              <?php } ?>
               </div>
             </div>
 
