@@ -28,7 +28,7 @@ if(isset($_GET['aksi']) == 'delete'){
 
 
 //Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'  AND borrado = 0");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
 
