@@ -18,6 +18,7 @@ Correcciones y mejoras POST Producción
     - Agregar opcion de borrado en todas las grillas (menos hosting)
         M[pages/sdc_housing.php]
         M[pages/cdc_cliente.php]
+        M[pages/cdc_organismo.php]
     - al importar borrar todo antes
     - Corregir tema de desaparicion de menu en firefox
     - Agregar el refresco de la página al actualizar info en todas las paginas

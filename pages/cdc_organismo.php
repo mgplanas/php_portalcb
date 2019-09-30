@@ -10,6 +10,21 @@ if (!isset($_SESSION['usuario'])){
 
 $user=$_SESSION['usuario'];
 
+/// BORRADO DE ORGANISMOS
+if(isset($_GET['aksi']) == 'delete'){
+	// escaping, additionally removing everything that could be (html/javascript-) code
+	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+  //Elimino Control
+  
+  $delete_control = mysqli_query($con, "UPDATE cdc_organismo SET borrado='1' WHERE id='$nik'");
+  
+  //$delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+  //                  VALUES ('3', '5', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
+  if(!$delete_control){
+    $_SESSION['formSubmitted'] = 9;
+  }
+}
+
 //Get user query
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
 $rowp = mysqli_fetch_assoc($persona);
@@ -125,15 +140,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <th>Alias</th>
                   <th>CUIT</th>
                   <th>Sector</th>
+                  <th style="text-align: center;"><i class="fa fa-users" title="Cantidad de clientes" style="font-size: 20px;"></i></th>
                   <th width="110px">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT id, razon_social, cuit, nombre_corto, sector 
-                              FROM cdc_organismo 
-                              WHERE borrado = 0 
-                              ORDER BY sector desc, razon_social";
+					$query = "SELECT O.id, O.razon_social, O.cuit, O.nombre_corto, O.sector , (SELECT COUNT(*) FROM cdc_cliente AS C WHERE C.id_organismo = O.id) AS clientes
+                  FROM cdc_organismo AS O
+                  WHERE O.borrado = 0 
+                  ORDER BY O.sector desc, O.razon_social;";
 					
 					$sql = mysqli_query($con, $query);
 
@@ -148,6 +164,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td align="center">'. $row['nombre_corto'].'</td>';
 							echo '<td align="center">'. $row['cuit'].'</td>';
 							echo '<td align="center">'. $row['sector'].'</td>';
+							echo '<td align="center">'. $row['clientes'].'</td>';
               echo '<td align="center">';
               if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
               echo '<a 
@@ -157,6 +174,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 data-cuit="' . $row['cuit'] . '" 
                 data-sector="' . $row['sector'] . '" 
                 title="Editar Organismo" class="modal-abm-organismo-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                if ($row['clientes'] == 0) {
+                  echo '<a href="cdc_organismo.php?aksi=delete&nik='.$row['id'].'" title="Borrar Organismo" onclick="return confirm(\'Esta seguro de borrar el organismo '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                }                
               }
               echo '</td></tr>';
 						}
@@ -169,6 +189,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Alias</th>
                     <th>CUIT</th>
                     <th>Sector</th>
+                    <th style="text-align: center;"><i class="fa fa-users" title="Cantidad de clientes" style="font-size: 20px;"></i></th>
                     <th width="110px">Acciones</th>
                 </tr>
                 </tfoot>
