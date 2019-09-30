@@ -11,6 +11,8 @@ Correcciones y mejoras POST Producción
         - Modificar grilla de permisos y asignación
         M[pages/admin.php]
         M[pages/setPermiso.php]
+    - Limitar la edicion solo para admin_cli_dc
+        M[pages/cdc_cliente.php]
     - Agregar opcion de borrado en todas las grillas (menos hosting)
     - al importar borrar todo antes
     - Corregir tema de desaparicion de menu en firefox

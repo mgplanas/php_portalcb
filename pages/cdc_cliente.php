@@ -11,7 +11,7 @@ if (!isset($_SESSION['usuario'])){
 $user=$_SESSION['usuario'];
 
 //Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'  AND borrado = 0");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
 
@@ -170,17 +170,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicios de Hosting" class="modal-abm-hosting-view btn">' . $row['hosting'] . '</a>';
               }
               echo '</td>';
-							echo '
-              <td align="center">
-              <a 
-                data-id="' . $row['id'] . '" 
-                data-nombre="' . $row['razon_social'] . '" 
-                data-sigla="' . $row['nombre_corto'] . '" 
-                data-cuit="' . $row['cuit'] . '" 
-                data-organismo="' . $row['id_organismo'] . '" 
-                data-sector="' . $row['sector'] . '" 
-                title="Editar Cliente" class="modal-abm-cliente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-							</td>
+							echo '<td align="center">';
+              if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
+                echo '<a 
+                  data-id="' . $row['id'] . '" 
+                  data-nombre="' . $row['razon_social'] . '" 
+                  data-sigla="' . $row['nombre_corto'] . '" 
+                  data-cuit="' . $row['cuit'] . '" 
+                  data-organismo="' . $row['id_organismo'] . '" 
+                  data-sector="' . $row['sector'] . '" 
+                  title="Editar Cliente" class="modal-abm-cliente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+              }
+              echo '</td>
 							</tr>
 							';
 						}
