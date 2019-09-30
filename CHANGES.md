@@ -13,6 +13,7 @@ Correcciones y mejoras POST Producción
         M[pages/setPermiso.php]
     - Limitar la edicion solo para admin_cli_dc
         M[pages/cdc_cliente.php]
+        M[pages/cdc_organismo.php]
     - Agregar opcion de borrado en todas las grillas (menos hosting)
     - al importar borrar todo antes
     - Corregir tema de desaparicion de menu en firefox

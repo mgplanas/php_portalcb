@@ -108,8 +108,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<div class="col-sm-6" style="text-align:left">
 					<h2 class="box-title">Listado de Organismos</h2>
 				</div>
- 				<div class="col-sm-6" style="text-align:right;">
-					<button type="button" id="modal-abm-organismo-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-building"></i> Nuevo Organismo</button>
+         <div class="col-sm-6" style="text-align:right;">
+          <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
+          <button type="button" id="modal-abm-organismo-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-building"></i> Nuevo Organismo</button>
+          <?php } ?>
 				</div>
             </div>
 
@@ -146,18 +148,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td align="center">'. $row['nombre_corto'].'</td>';
 							echo '<td align="center">'. $row['cuit'].'</td>';
 							echo '<td align="center">'. $row['sector'].'</td>';
-							echo '
-							<td align="center">
-              <a 
+              echo '<td align="center">';
+              if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
+              echo '<a 
                 data-id="' . $row['id'] . '" 
                 data-nombre="' . $row['razon_social'] . '" 
                 data-sigla="' . $row['nombre_corto'] . '" 
                 data-cuit="' . $row['cuit'] . '" 
                 data-sector="' . $row['sector'] . '" 
-                title="Editar Organismo" class="modal-abm-organismo-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-              </td>
-							</tr>
-							';
+                title="Editar Organismo" class="modal-abm-organismo-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+              }
+              echo '</td></tr>';
 						}
 					}
 					?>
