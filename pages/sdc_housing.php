@@ -10,6 +10,23 @@ if (!isset($_SESSION['usuario'])){
 
 $user=$_SESSION['usuario'];
 
+
+/// BORRADO DE SERVICIO DE HOUSING
+if(isset($_GET['aksi']) == 'delete'){
+	// escaping, additionally removing everything that could be (html/javascript-) code
+	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+  //Elimino Control
+  
+  $delete_control = mysqli_query($con, "UPDATE sdc_housing SET borrado='1' WHERE id='$nik'");
+  
+  //$delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+  //                  VALUES ('3', '5', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
+  if(!$delete_control){
+    $_SESSION['formSubmitted'] = 9;
+  }
+}
+
+
 //Get user query
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
 $rowp = mysqli_fetch_assoc($persona);
@@ -174,7 +191,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   data-energia="' . $row['energia'] . '" 
                   data-observaciones="' . $row['observaciones'] . '" 
                   data-cliente="' . $row['id_cliente'] . '" 
-                  title="Editar Servicio" class="modal-abm-housing-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                  title="Editar Servicio" class="modal-abm-housing-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                <a href="sdc_housing.php?aksi=delete&nik='.$row['id'].'" title="Borrar Servicio" onclick="return confirm(\'Esta seguro de borrar el servicio de Housing?\')" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
               }
               echo '</td>
               </tr>';
