@@ -10,6 +10,21 @@ if (!isset($_SESSION['usuario'])){
 
 $user=$_SESSION['usuario'];
 
+/// BORRADO DE CLIENTE (SOLO SI NO TIEN SERVICIOS ASOCIADOS)
+if(isset($_GET['aksi']) == 'delete'){
+	// escaping, additionally removing everything that could be (html/javascript-) code
+	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+  //Elimino Control
+  
+  $delete_control = mysqli_query($con, "UPDATE cdc_cliente SET borrado='1' WHERE id='$nik'");
+  
+  //$delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+  //                  VALUES ('3', '5', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
+  if(!$delete_control){
+    $_SESSION['formSubmitted'] = 9;
+  }
+}
+
 //Get user query
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'  AND borrado = 0");
 $rowp = mysqli_fetch_assoc($persona);
@@ -182,6 +197,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   data-organismo="' . $row['id_organismo'] . '" 
                   data-sector="' . $row['sector'] . '" 
                   title="Editar Cliente" class="modal-abm-cliente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                  if ($row['housing'] == 0 AND $row['hosting'] == 0) {
+                    echo '<a href="cdc_cliente.php?aksi=delete&nik='.$row['id'].'" title="Borrar Cliente" onclick="return confirm(\'Esta seguro de borrar el cliente '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                  }
               }
               echo '</td>
 							</tr>
