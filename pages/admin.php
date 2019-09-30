@@ -58,7 +58,7 @@ $id_rowp = $rowp['id_persona'];
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);
 
-if ($rq_sec['admin']=='0'){
+if ($rq_sec['admin_per']=='0' AND $rq_sec['admin']=='0' ){
 	header('Location: ../site.php');
 }
 
