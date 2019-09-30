@@ -70,6 +70,7 @@ $(function() {
                                 btn.button('reset');
                                 alert('Se ha realizado la importación de registros con éxito.');
                                 $("#modal-import-hosting").modal('toggle');
+                                location.reload();
                             },
                             error: function(e) {
                                 alert(e);
