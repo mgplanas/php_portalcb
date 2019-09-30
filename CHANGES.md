@@ -24,6 +24,30 @@ Correcciones y mejoras POST Producción
         M[pages/modals/sdc_ambcliente.js]
         M[pages/modals/sdc_amborgnaismo.js]
     - al importar borrar todo antes
+        M[pages/helpers/sdc_importhosting.php]
+        M[pages/modals/sdc_importhosting.js]
+
+        DUPLICAR ESTRUCTURA DE TABLA HOSTING A SDC_HOSTING_BCK SIN CONSTRAINS
+        CREATE TABLE `sdc_hosting_bck` (
+        `id` int(11),
+        `id_cliente` int(11) NOT NULL,
+        `tipo` varchar(20) DEFAULT NULL,
+        `nombre` varchar(255) DEFAULT NULL,
+        `displayName` varchar(255) DEFAULT NULL,
+        `proyecto` varchar(255) DEFAULT NULL,
+        `datacenter` varchar(255) DEFAULT NULL,
+        `fecha` datetime DEFAULT NULL,
+        `hipervisor` varchar(255) DEFAULT NULL,
+        `hostname` varchar(255) DEFAULT NULL,
+        `pool` varchar(255) DEFAULT NULL,
+        `uuid` varchar(255) DEFAULT NULL,
+        `VCPU` double DEFAULT NULL,
+        `RAM` double DEFAULT NULL,
+        `storage` double DEFAULT NULL,
+        `SO` varchar(255) DEFAULT NULL,
+        `borrado` int(11) NOT NULL DEFAULT '0'
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
     - Corregir tema de desaparicion de menu en firefox
         Problema específico en máquina de Tissera
 

@@ -79,28 +79,26 @@
                     //     if ($row['id_cliente']<>'' && $row['id_cliente'] <> 'id_cliente') array_push($newClients, $row['id_cliente']);
                     // }
                     
-                    $result->state = 'SERVIOS A SER ACTUALIZADOS';
-                    // cruzo los datos importados con los reales.
-                    $sql = 'SELECT count(1) as cuenta 
-                            FROM sdc_hosting_temp AS T
-                            INNER JOIN sdc_hosting AS S ON T.uuid = S.uuid
-                            INNER JOIN cdc_cliente AS C ON T.id_cliente = C.cuit';  
-                    $sqlRes = mysqli_query($con, $sql);
-                    $row = mysqli_fetch_assoc($sqlRes);
-                    $toBeUpdated = $row['cuenta']; 
+                    // $result->state = 'SERVIOS A SER ACTUALIZADOS';
+                    // // cruzo los datos importados con los reales.
+                    // $sql = 'SELECT count(1) as cuenta 
+                    //         FROM sdc_hosting_temp AS T
+                    //         INNER JOIN sdc_hosting AS S ON T.uuid = S.uuid
+                    //         INNER JOIN cdc_cliente AS C ON T.id_cliente = C.cuit';  
+                    // $sqlRes = mysqli_query($con, $sql);
+                    // $row = mysqli_fetch_assoc($sqlRes);
+                    // $toBeUpdated = $row['cuenta']; 
 
                     $result->state = 'SERVIOS A SER AGREGADOS';
                     // cruzo los datos importados con los reales.
                     $sql = 'SELECT count(1) as cuenta 
-                            FROM sdc_hosting_temp AS T
-                            INNER JOIN cdc_cliente AS C ON T.id_cliente = C.cuit 
-                            WHERE T.uuid NOT IN (SELECT S.uuid FROM sdc_hosting AS S)';  
+                            FROM sdc_hosting_temp AS T';  
                     $sqlRes = mysqli_query($con, $sql);
                     $row = mysqli_fetch_assoc($sqlRes);
                     $toBeInserted = $row['cuenta']; 
 
                     $result->tot_toBeInserted = $toBeInserted;
-                    $result->tot_toBeUpdated = $toBeUpdated;
+                    // $result->tot_toBeUpdated = $toBeUpdated;
                     $result->tot_emptyClients = $servicesWithoutClient;
                     $result->tot_newClients = $newClients;
                     // $result->tot_newClients = $newClients;
@@ -116,32 +114,47 @@
     }
     else if ($_POST['op'] == 'APPLY') {
 
-        $result->state = 'ACTUALIZACION DE REGISTROS IMPORTADOS';
-        // cruzo los datos importados con los reales.
-        $sql = 'UPDATE sdc_hosting AS S
-                INNER JOIN sdc_hosting_temp AS T ON T.uuid = S.uuid
-                INNER JOIN cdc_cliente AS C ON T.id_cliente = C.cuit
-                SET 
-                S.fecha = T.Fecha,
-                S.VCPU = T.VCPU,
-                S.RAM = T.RAM,
-                S.storage = T.Storage,
-                S.id_cliente = C.id,
-                S.tipo = T.Tipo,
-                S.nombre = T.Nombre,
-                S.displayName = T.`Display Name`,
-                S.proyecto = T.Proyecto,
-                S.datacenter = T.Datacenter,
-                S.hipervisor = T.Hipervisor,
-                S.hostname = T.Hostname,
-                S.pool = T.Pool,
-                S.SO = T.`Sistema Operativo`';  
+        // $result->state = 'ACTUALIZACION DE REGISTROS IMPORTADOS';
+        // // cruzo los datos importados con los reales.
+        // $sql = 'UPDATE sdc_hosting AS S
+        //         INNER JOIN sdc_hosting_temp AS T ON T.uuid = S.uuid
+        //         INNER JOIN cdc_cliente AS C ON T.id_cliente = C.cuit
+        //         SET 
+        //         S.fecha = T.Fecha,
+        //         S.VCPU = T.VCPU,
+        //         S.RAM = T.RAM,
+        //         S.storage = T.Storage,
+        //         S.id_cliente = C.id,
+        //         S.tipo = T.Tipo,
+        //         S.nombre = T.Nombre,
+        //         S.displayName = T.`Display Name`,
+        //         S.proyecto = T.Proyecto,
+        //         S.datacenter = T.Datacenter,
+        //         S.hipervisor = T.Hipervisor,
+        //         S.hostname = T.Hostname,
+        //         S.pool = T.Pool,
+        //         S.SO = T.`Sistema Operativo`';  
+        // $sqlRes = mysqli_query($con, $sql);
+        // if(!isset($sqlRes)){
+        //     $result->error = mysqli_error($con); 
+        //     return;
+        // }
+
+
+        $result->state = 'BACKUP CURRENT DATA';
+        //Borro la temporal de Backup
+        $sqlRes = mysqli_query($con, 'TRUNCATE TABLE sdc_hosting_bck;');
+
+        // Hago backup de la informacion.
+        $sql = 'INSERT INTO sdc_hosting_bck SELECT * FROM sdc_hosting;';  
         $sqlRes = mysqli_query($con, $sql);
         if(!isset($sqlRes)){
             $result->error = mysqli_error($con); 
             return;
         }
         
+        //Borro la SCD_HOSTING
+        $sqlRes = mysqli_query($con, 'TRUNCATE TABLE sdc_hosting;');
 
         $result->state = 'INGRESO DE NUEVOS DE REGISTROS IMPORTADOS';
         // cruzo los datos importados con los reales.
@@ -178,8 +191,7 @@
                         T.uuid,
                         T.`Sistema Operativo`
                         FROM sdc_hosting_temp AS T
-                        INNER JOIN cdc_cliente AS C ON T.id_cliente = C.cuit 
-                        WHERE T.uuid NOT IN (SELECT S.uuid FROM sdc_hosting AS S)';
+                        INNER JOIN cdc_cliente AS C ON T.id_cliente = C.cuit';
         $sqlRes = mysqli_query($con, $sql);
         if(!isset($sqlRes)){
             $result->error = mysqli_error($con); 
