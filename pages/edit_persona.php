@@ -232,7 +232,7 @@ desired effect
               <li class="header">Tienes <?php echo $rowcp; ?> proyectos asignados</li>
               
               <li class="footer">
-                <a href="controles.php">Gestionar proyectos</a>
+                <a href="proyectos.php">Gestionar proyectos</a>
               </li>
             </ul>
           </li>

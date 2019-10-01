@@ -53,6 +53,19 @@ Correcciones y mejoras POST Producción
 
     - Se corrige el cáculo de fechas de vto en proyectos
         M[pages/proyectos.php]
+    -Arreglo links de gestion de proyectos
+        M[pages/calendario_guardias.php]
+        M[pages/controlfw.php]
+        M[pages/edit_activo.php]
+        M[pages/edit_conexion.php]
+        M[pages/edit_control.php]
+        M[pages/edit_dispositivo.php]
+        M[pages/edit_iso27k.php]
+        M[pages/edit_mejora.php]
+        M[pages/edit_persona.php]
+        M[pages/edit_proyecto.php]
+        M[pages/edit_referencia.php]
+        M[pages/edit_riesgo.php]
 
 ## FIX-CLI-DC
 
