@@ -1,60 +1,95 @@
 # RELEASE NOTE FOR REL-
 
-## RELEASE NOTE FOR REL 0004
+## RELEASE NOTE FOR REL REL-0014
 
 ### Features
-- FEAT-CLI-DC2
+
+FEAT-RAUL
 
 ### Pasos
 
 - Entorno
 
-- BackUp DB                                                                     
-- Backup /pages                                                                 
-- Cambios en DB       
-        ALTER TABLE permisos
-        ADD admin_cli_dc INT DEFAULT '0' AFTER cli_dc;
+- BackUp DB
+- Backup /pages
+- Cambios en DB
+    # SCRIPT DE NORMALIZACION
+    # A) ENERGIA
+    # 1) Modificar el registro de Educar (cliente 14) y sacar el, 6PDU
+    UPDATE sdc_housing SET energia = "12" WHERE id = 9;
 
-        CREATE TABLE `sdc_hosting_bck` (
-        `id` int(11),
-        `id_cliente` int(11) NOT NULL,
-        `tipo` varchar(20) DEFAULT NULL,
-        `nombre` varchar(255) DEFAULT NULL,
-        `displayName` varchar(255) DEFAULT NULL,
-        `proyecto` varchar(255) DEFAULT NULL,
-        `datacenter` varchar(255) DEFAULT NULL,
-        `fecha` datetime DEFAULT NULL,
-        `hipervisor` varchar(255) DEFAULT NULL,
-        `hostname` varchar(255) DEFAULT NULL,
-        `pool` varchar(255) DEFAULT NULL,
-        `uuid` varchar(255) DEFAULT NULL,
-        `VCPU` double DEFAULT NULL,
-        `RAM` double DEFAULT NULL,
-        `storage` double DEFAULT NULL,
-        `SO` varchar(255) DEFAULT NULL,
-        `borrado` int(11) NOT NULL DEFAULT '0'
-        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+    #2) Actualizo los NULL a 0
+    UPDATE sdc_housing SET energia = 0 WHERE energia IS NULL OR energia = "";
+
+    #3) Saco la palabra KVA
+    UPDATE sdc_housing SET energia = REPLACE(energia, "KVA", "");
+
+    #4) Cambio el tipo de dato a INT DEFAULT 0
+
+
+
+    #B) M2
+    #1) Actualizo los NULL a 0
+    UPDATE sdc_housing SET m2 = 0 WHERE m2 IS NULL OR m2 = "";
+
+    #3) Convierto coma a punto
+    UPDATE sdc_housing SET m2 = REPLACE(m2, ",", ".");
+
+    #) Convierto el campo en DECIMAL(6,2)
+    #SELECT id_cliente, CAST(m2 AS DECIMAL(6,2)) as m2 FROM sdc_housing
+    ALTER TABLE controls.sdc_housing
+    CHANGE m2 m2 DECIMAL(8,2) DEFAULT '0';
 
 - Cambios en src  
-        M[pages/admin.php]
-        M[pages/setPermiso.php]
-        M[pages/cdc_cliente.php]
-        M[pages/cdc_organismo.php]
+        M[pages/site_sidebar.php]
+        M[site.php]
+        M[pages/site_header.php]
+        N[site_footer.php]          OK  
+        M[activos.php]              OK
+        M[admin.php]                OK
+        M[calendario.php]           OK
+        M[calendario_guardias.php]  OK
+        M[cal_controles.php]        OK
+        M[cal_riesgos.php]          OK
+        M[cdc_cliente.php]          OK
+        M[cdc_organismo.php]        OK
+        M[clean_content.php]        OK
+        M[control.php]              OK
+        M[controles.php]            OK
+        M[controlfw.php]            OK
+        M[edit_activo.php]          OK
+        M[edit_conexion.php]        OK
+        M[edit_control.php]         OK
+        M[edit_dispositivo.php]     OK
+        M[edit_iso27k.php]          OK
+        M[edit_mejora.php]          OK
+        M[edit_persona.php]         OK
+        M[edit_proyecto.php]        OK
+        M[edit_referencia.php]      OK
+        M[edit_riesgo.php]          OK
+        M[inventario.php]           OK
+        M[iso27k.php]               OK
+        M[iso9k.php]                OK
+        M[mejoras.php]              OK
+        M[metricas.php]             OK
+        M[met_activos.php]          OK
+        M[met_controles.php]        OK
+        M[met_iso27k.php]           OK
+        M[met_mejoras.php]          OK
+        M[met_riesgos.php]          OK
+        M[novedades.php]            OK
+        M[proyectos.php]            OK
+        M[riesgos.php]              OK
+        M[sdc_hosting.php]          OK
+        M[sdc_housing.php]          OK
+        M[tareas.php]               OK
+        M[topologia.php]            OK
+        M[site.php]                 OK
+        M[index.html]               OK
+        M[site.php]
+        M[pages/site_sidebar.php]
+        M[pages/cdc_dashboard.php]
+        M[pages/cdc_dashboard.php]
+        M[pages/cdc_dashboard]
         M[pages/sdc_housing.php]
-        M[pages/modals/sdc_ambhousing.js]
-        M[pages/modals/sdc_ambcliente.js]
-        M[pages/modals/sdc_amborgnaismo.js]
-        M[pages/helpers/sdc_importhosting.php]
-        M[pages/modals/sdc_importhosting.js]
-        M[pages/calendario_guardias.php]
-        M[pages/controlfw.php]
-        M[pages/edit_activo.php]
-        M[pages/edit_conexion.php]
-        M[pages/edit_control.php]
-        M[pages/edit_dispositivo.php]
-        M[pages/edit_iso27k.php]
-        M[pages/edit_mejora.php]
-        M[pages/edit_persona.php]
-        M[pages/edit_proyecto.php]
-        M[pages/edit_referencia.php]
-        M[pages/edit_riesgo.php]        
+        M[pages/modals/sdc_abmhousing.php]
