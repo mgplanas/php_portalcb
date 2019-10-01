@@ -60,6 +60,13 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
     .example-modal .modal {
       background: transparent !important;
     }
+
+    .bg-green-item {
+      background-color: #20c67a !important;
+    }
+    .bg-blue-item {
+      background-color: #2093d7 !important;
+    }
   </style>
 </head>
 
@@ -87,7 +94,7 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
       -------------------------->
       <section class="content">
         <div class="row">
-          <div class="col-lg-3 col-xs-6">
+          <div class="col-lg-4 col-xs-6">
                 <!-- small box -->
                 <div class="small-box bg-orange">
                 <div class="inner">
@@ -97,7 +104,7 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
                 <div class="icon"><i class="fa fa-users"></i></div>
                 </div>
             </div>
-          <div class="col-lg-3 col-xs-6">
+          <div class="col-lg-4 col-xs-6">
               <!-- small box -->
               <div class="small-box bg-green">
                   <div class="inner">
@@ -108,7 +115,7 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
               </div>
           </div>                        
 
-          <div class="col-lg-3 col-xs-6">
+          <div class="col-lg-4 col-xs-6">
               <!-- small box -->
               <div class="small-box bg-blue">
                   <div class="inner">
@@ -118,21 +125,11 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
                   <div class="icon"><i class="fa fa-home"></i></div>
               </div>
           </div>
-          <div class="col-lg-3 col-xs-6">
-              <!-- small box -->
-              <div class="small-box bg-red">
-                  <div class="inner">
-                      <h3 id='cdc_dashboard-qstorage2'>0</h3>
-                      <p>Total Storage (GB)</p>
-                  </div>
-                  <div class="icon"><i class="fa fa-database"></i></div>
-              </div>
-          </div>                        
           <!-- MODAL PLACE HOLDER -->
           <!-- FIN Housing -->        
         </div>
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-4">
             <!-- TORTA DISTRIBUCIÓN TIPO CLIENTE -->
             <div class="box box-success">
               <div class="box-header with-border">
@@ -149,9 +146,9 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
             </div>            
           </div>
           <!-- SERVICIOS HOSTING -->
-          <div class="col-md-3">
+          <div class="col-md-4">
               <!-- small box -->
-              <div class="small-box bg-green">
+              <div class="small-box bg-green bg-green-item">
                   <div class="inner">
                       <h3 id='cdc_dashboard-qcpu'>0</h3>
                       <p>Total CPU</p>
@@ -159,7 +156,7 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
                   <div class="icon"><i class="fa fa-cubes"></i></div>
               </div>
               <!-- small box -->
-              <div class="small-box bg-green">
+              <div class="small-box bg-green bg-green-item">
                   <div class="inner">
                       <h3 id='cdc_dashboard-qstorage'>0</h3>
                       <p>Total Storage (GB)</p>
@@ -167,7 +164,7 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
                   <div class="icon"><i class="fa fa-database"></i></div>
               </div>
               <!-- small box -->
-              <div class="small-box bg-green">
+              <div class="small-box bg-green bg-green-item">
                   <div class="inner">
                       <h3 id='cdc_dashboard-qram'>0</h3>
                       <p>Total RAM (GB)</p>
@@ -177,9 +174,9 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
 
           </div>          
           <!-- SERVICIOS HOUSING -->
-          <div class="col-md-3">
+          <div class="col-md-4">
               <!-- small box -->
-              <div class="small-box bg-blue">
+              <div class="small-box bg-blue bg-blue-item">
                   <div class="inner">
                       <h3 id='cdc_dashboard-qkva'>0</h3>
                       <p>Total Energía (KVA)</p>
@@ -187,22 +184,13 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
                   <div class="icon"><i class="fa fa-bolt"></i></div>
               </div>
               <!-- small box -->
-              <div class="small-box bg-blue">
+              <div class="small-box bg-blue bg-blue-item">
                   <div class="inner">
                       <h3 id='cdc_dashboard-qm2'>0</h3>
                       <p>Total M2</p>
                   </div>
                   <div class="icon"><i class="fa fa-th-large"></i></div>
               </div>
-              <!-- small box -->
-              <div class="small-box bg-blue">
-                  <div class="inner">
-                      <h3 id='cdc_dashboard-qracks'>0</h3>
-                      <p>Total Racks</p>
-                  </div>
-                  <div class="icon"><i class="fa fa-bars fa-rotate-90"></i></div>
-              </div>
-
           </div>          
         </div>
       </section>
@@ -267,26 +255,6 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
       });
 
     }
-    // TOTALES Servicios
-    function fn_show_tot_servicios() {
-      // consulta de datos
-      query = 'SELECT COUNT(1) as qservices FROM sdc_hosting where borrado = 0';
-      // Busco datos indicadores storage
-      $.ajax({
-          type: 'POST',
-          url: './helpers/getAsyncDataFromDB.php',
-          data: { query: query },
-          dataType: 'json',
-          success: function(json) {
-              let item = json.data[0];
-              $('#cdc_dashboard-qservices').html(item.qservices);
-          },
-          error: function(xhr, status, error) {
-              alert(xhr.responseText, error);
-          }
-      });
-
-    }
     // TOTALES Servicios Hosting
     function fn_show_tot_servicios_hosting() {
       // consulta de datos
@@ -299,10 +267,32 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
           dataType: 'json',
           success: function(json) {
               let item = json.data[0];
-              $('#cdc_dashboard-qvms').html(item.qvms);
+              $('#cdc_dashboard-qservices').html(item.qvms);
               $('#cdc_dashboard-qstorage').html(item.qstorage);
               $('#cdc_dashboard-qram').html(item.qram);
               $('#cdc_dashboard-qcpu').html(item.qvcpu);
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+
+    }
+    // TOTALES Servicios Housing
+    function fn_show_tot_servicios_housing() {
+      // consulta de datos
+      query = 'SELECT CONVERT(SUM(kva),UNSIGNED) as qkva, SUM(m2) as qm2, count(*) as qservicios FROM sdc_housing where borrado=0';
+      // Busco datos indicadores storage
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: query },
+          dataType: 'json',
+          success: function(json) {
+              let item = json.data[0];
+              $('#cdc_dashboard-qkva').html(item.qkva);
+              $('#cdc_dashboard-qm2').html(item.qm2);
+              $('#cdc_dashboard-qservicios').html(item.qservicios);
           },
           error: function(xhr, status, error) {
               alert(xhr.responseText, error);
@@ -347,8 +337,8 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
 
     fn_show_dist_cli();
     fn_show_tot_clientes();
-    fn_show_tot_servicios();
     fn_show_tot_servicios_hosting();
+    // fn_show_tot_servicios_housing();
   });
 </script>
 </body>
