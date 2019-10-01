@@ -96,6 +96,7 @@ Dashboad CLientes
     M[pages/cdc_dashboard]
     - Se adaptan los formularios de ABM para adaptarse a los nuevos cambios.
     M[pages/sdc_housing.php]
+    M[pages/modals/sdc_abmhousing.php]
 
         
 ## FEAT-CLI-DC2
