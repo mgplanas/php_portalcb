@@ -39,6 +39,11 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
+
+  <!-- ChartJS -->
+  <script src="../js/chart.js"></script>
+  <script src="../js/chart.min.js"></script>
+
    <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
@@ -82,11 +87,124 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
       -------------------------->
       <section class="content">
         <div class="row">
-          <!-- /.col -->
+          <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-orange">
+                <div class="inner">
+                    <h3 id='cdc_dashboard-qcustomer'>0</h3>
+                    <p>Total Clientes</p>
+                </div>
+                <div class="icon"><i class="fa fa-users"></i></div>
+                </div>
+            </div>
+          <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="small-box bg-green">
+                  <div class="inner">
+                      <h3 id='cdc_dashboard-qservices'>0</h3>
+                      <p>Total Servicios Hosting (VMs)</p>
+                  </div>
+                  <div class="icon"><i class="fa fa-server"></i></div>
+              </div>
+          </div>                        
+
+          <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="small-box bg-blue">
+                  <div class="inner">
+                      <h3 id='cdc_dashboard-qram2'>0</h3>
+                      <p>Total Servicios de Housing</p>
+                  </div>
+                  <div class="icon"><i class="fa fa-home"></i></div>
+              </div>
+          </div>
+          <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="small-box bg-red">
+                  <div class="inner">
+                      <h3 id='cdc_dashboard-qstorage2'>0</h3>
+                      <p>Total Storage (GB)</p>
+                  </div>
+                  <div class="icon"><i class="fa fa-database"></i></div>
+              </div>
+          </div>                        
           <!-- MODAL PLACE HOLDER -->
           <!-- FIN Housing -->        
         </div>
-        <!-- /.row -->
+        <div class="row">
+          <div class="col-md-3">
+            <!-- TORTA DISTRIBUCIÓN TIPO CLIENTE -->
+            <div class="box box-success">
+              <div class="box-header with-border">
+                <h3 class="box-title">Distribución de Clientes por sector</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+              </div>
+              <div class="box-body">
+                <canvas id="cdc_dashboard_dist_cli" height="250" style="display: block; height:250px"></canvas>
+              </div>
+              <!-- /.box-body -->
+            </div>            
+          </div>
+          <!-- SERVICIOS HOSTING -->
+          <div class="col-md-3">
+              <!-- small box -->
+              <div class="small-box bg-green">
+                  <div class="inner">
+                      <h3 id='cdc_dashboard-qcpu'>0</h3>
+                      <p>Total CPU</p>
+                  </div>
+                  <div class="icon"><i class="fa fa-cubes"></i></div>
+              </div>
+              <!-- small box -->
+              <div class="small-box bg-green">
+                  <div class="inner">
+                      <h3 id='cdc_dashboard-qstorage'>0</h3>
+                      <p>Total Storage (GB)</p>
+                  </div>
+                  <div class="icon"><i class="fa fa-database"></i></div>
+              </div>
+              <!-- small box -->
+              <div class="small-box bg-green">
+                  <div class="inner">
+                      <h3 id='cdc_dashboard-qram'>0</h3>
+                      <p>Total RAM (GB)</p>
+                  </div>
+                  <div class="icon"><i class="fa fa-microchip"></i></div>
+              </div>
+
+          </div>          
+          <!-- SERVICIOS HOUSING -->
+          <div class="col-md-3">
+              <!-- small box -->
+              <div class="small-box bg-blue">
+                  <div class="inner">
+                      <h3 id='cdc_dashboard-qkva'>0</h3>
+                      <p>Total Energía (KVA)</p>
+                  </div>
+                  <div class="icon"><i class="fa fa-bolt"></i></div>
+              </div>
+              <!-- small box -->
+              <div class="small-box bg-blue">
+                  <div class="inner">
+                      <h3 id='cdc_dashboard-qm2'>0</h3>
+                      <p>Total M2</p>
+                  </div>
+                  <div class="icon"><i class="fa fa-th-large"></i></div>
+              </div>
+              <!-- small box -->
+              <div class="small-box bg-blue">
+                  <div class="inner">
+                      <h3 id='cdc_dashboard-qracks'>0</h3>
+                      <p>Total Racks</p>
+                  </div>
+                  <div class="icon"><i class="fa fa-bars fa-rotate-90"></i></div>
+              </div>
+
+          </div>          
+        </div>
       </section>
     </section>
     <!-- /.content -->
@@ -110,11 +228,6 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
 <!-- export -->
 
 <script>
-    window.onload = function() {
-        history.replaceState("", "", "cdc_dashboard.php");
-    }
-</script>
-<script>
   $(function() {
       /** add active class and stay opened when selected */
       var url = window.location;
@@ -128,6 +241,114 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
       $('ul.treeview-menu a').filter(function() {
         return this.href == url;
       }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');    
+  });
+</script>
+<script>
+  $(function () {
+    var chart_dist_cli = null;
+
+    // TOTALES Clientes
+    function fn_show_tot_clientes() {
+      // consulta de datos
+      query = 'SELECT COUNT(1) as qcustomer FROM cdc_cliente where borrado = 0';
+      // Busco datos indicadores storage
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: query },
+          dataType: 'json',
+          success: function(json) {
+              let item = json.data[0];
+              $('#cdc_dashboard-qcustomer').html(item.qcustomer);
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+
+    }
+    // TOTALES Servicios
+    function fn_show_tot_servicios() {
+      // consulta de datos
+      query = 'SELECT COUNT(1) as qservices FROM sdc_hosting where borrado = 0';
+      // Busco datos indicadores storage
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: query },
+          dataType: 'json',
+          success: function(json) {
+              let item = json.data[0];
+              $('#cdc_dashboard-qservices').html(item.qservices);
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+
+    }
+    // TOTALES Servicios Hosting
+    function fn_show_tot_servicios_hosting() {
+      // consulta de datos
+      query = 'SELECT CONVERT(SUM(storage),UNSIGNED) as qstorage, SUM(vcpu) as qvcpu, CONVERT(SUM(ram),UNSIGNED) as qram, count(*) as qvms FROM sdc_hosting where borrado=0';
+      // Busco datos indicadores storage
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: query },
+          dataType: 'json',
+          success: function(json) {
+              let item = json.data[0];
+              $('#cdc_dashboard-qvms').html(item.qvms);
+              $('#cdc_dashboard-qstorage').html(item.qstorage);
+              $('#cdc_dashboard-qram').html(item.qram);
+              $('#cdc_dashboard-qcpu').html(item.qvcpu);
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+
+    }
+    // TOTALES ABIERTOS/CERRADOS AM
+    function fn_show_dist_cli() {
+      if (chart_dist_cli !=null) {
+        chart_dist_cli.destroy();
+      }
+      // consulta de datos
+      query = "SELECT COUNT(IF(sector='Publico',1,null)) as publicos, COUNT(IF(sector='Privado',1,null)) as privados FROM cdc_cliente where borrado = 0;";
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: query },
+          dataType: 'json',
+          success: function(json) {
+              console.log(json);
+              var publicos = json.data[0].publicos;
+              var privados = json.data[0].privados;
+              chart_dist_cli = new Chart($("#cdc_dashboard_dist_cli"),
+              {
+                "type":"doughnut",
+                "data":{
+                  "labels":["Públicos","Privados"],
+                  "datasets":[{
+                    "label":"My First Dataset",
+                    "data":[publicos, privados],
+                    "backgroundColor":["rgb(245, 105, 84)","rgb(0, 166, 90)"]
+                  }]
+                }
+              });              
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+    }
+
+    fn_show_dist_cli();
+    fn_show_tot_clientes();
+    fn_show_tot_servicios();
+    fn_show_tot_servicios_hosting();
   });
 </script>
 </body>
