@@ -92,6 +92,10 @@ Dashboad CLientes
     ALTER TABLE controls.sdc_housing
     CHANGE m2 m2 DECIMAL(8,2) DEFAULT '0';
 
+    - Se crean los totales para los servicios de Housing
+    M[pages/cdc_dashboard]
+    - Se adaptan los formularios de ABM para adaptarse a los nuevos cambios.
+    M[pages/sdc_housing.php]
 
         
 ## FEAT-CLI-DC2

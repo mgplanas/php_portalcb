@@ -131,7 +131,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <tr>
                     <th>Cliente</th>
                     <th>Organismo</th>
-                    <th>Energía</th>
+                    <th>Energía (KVA)</th>
                     <th>M2</th>
                     <th>Sala</th>
                     <th>Fila</th>
