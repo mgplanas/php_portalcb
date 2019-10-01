@@ -51,6 +51,8 @@ Correcciones y mejoras POST Producción
     - Corregir tema de desaparicion de menu en firefox
         Problema específico en máquina de Tissera
 
+    - Se corrige el cáculo de fechas de vto en proyectos
+        M[pages/proyectos.php]
 
 ## FIX-CLI-DC
 

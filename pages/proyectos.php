@@ -63,7 +63,27 @@ $rowtp = mysqli_num_rows($count_total_proyectos);
 $personas = mysqli_query($con, "SELECT * FROM persona");
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);				
-		
+
+
+// FUNCION DE FECHAS
+function validarVto($fecha) {
+
+  $now = new DateTime();
+  $now = $now->format('Y-m-d');
+  $interval = date_diff(date_create($fecha), date_create($now) );
+  $res = 0;
+  if ($interval->days != 0) {
+    if ($interval->invert == 0) {
+      $res = 0;
+    } else {
+      $res = 1;
+    }
+  } else {
+    $res=2;
+  }
+  return $res;
+}
+
 ?>
 <style>
 .dataTables_filter {
@@ -361,7 +381,8 @@ desired effect
                                   }
 
                                   echo '<td><span class="badge bg-';
-
+                                  $n_date = $due_y . "-" . $due_m . "-" . $due_d;
+                                  $ok = validarVto($n_date);
                                   if ($row['estado'] !== '4' ){
                                       if ($ok == '0'){
                                           echo 'red';
@@ -532,16 +553,18 @@ desired effect
                                     $dayofdue = (($due_m * 30)+($due_d));
 
                                     if ($due_y >= $year){
-                                        if ($dayofy < $dayofdue){
-                                            $ok=1;
-                                        }
-                                        else if ($dayofy == $dayofdue){
-                                            $ok=2;
-                                        }
+                                      if ($dayofy < $dayofdue){
+                                        $ok=1;
+                                      }
+                                      else if ($dayofy == $dayofdue){
+                                        $ok=2;
+                                      }
                                     }
-
+                                    
                                     echo '<td><span class="badge bg-';
-
+                                    
+                                    $n_date = $due_y . "-" . $due_m . "-" . $due_d;
+                                    $ok = validarVto($n_date);
                                     if ($row['estado'] !== '4' ){
                                         if ($ok == '0'){
                                             echo 'red';
@@ -718,21 +741,21 @@ desired effect
                                     $due_m = $due[1];
                                     $due_y = $due[2];
                                     $ok=0;
-
                                     $dayofy = (($month * 30)+($day));
                                     $dayofdue = (($due_m * 30)+($due_d));
-
+                                    
                                     if ($due_y >= $year){
-                                        if ($dayofy < $dayofdue){
-                                            $ok=1;
-                                        }
-                                        else if ($dayofy == $dayofdue){
-                                            $ok=2;
-                                        }
+                                      if ($dayofy < $dayofdue){
+                                        $ok=1;
+                                      }
+                                      else if ($dayofy == $dayofdue){
+                                        $ok=2;
+                                      }
                                     }
-
+                                    
                                     echo '<td><span class="badge bg-';
-
+                                    $n_date = $due_y . "-" . $due_m . "-" . $due_d;
+                                    $ok = validarVto($n_date);
                                     if ($row['estado'] !== '4' ){
                                         if ($ok == '0'){
                                             echo 'red';
@@ -909,6 +932,7 @@ desired effect
                                     $due_y = $due[2];
                                     $ok=0;
   
+
                                     $dayofy = (($month * 30)+($day));
                                     $dayofdue = (($due_m * 30)+($due_d));
   
