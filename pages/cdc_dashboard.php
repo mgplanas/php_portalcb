@@ -119,7 +119,7 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
               <!-- small box -->
               <div class="small-box bg-blue">
                   <div class="inner">
-                      <h3 id='cdc_dashboard-qram2'>0</h3>
+                      <h3 id='cdc_dashboard-qservicios'>0</h3>
                       <p>Total Servicios de Housing</p>
                   </div>
                   <div class="icon"><i class="fa fa-home"></i></div>
@@ -281,7 +281,7 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
     // TOTALES Servicios Housing
     function fn_show_tot_servicios_housing() {
       // consulta de datos
-      query = 'SELECT CONVERT(SUM(kva),UNSIGNED) as qkva, SUM(m2) as qm2, count(*) as qservicios FROM sdc_housing where borrado=0';
+      query = 'SELECT SUM(energia) as qkva, SUM(m2) as qm2, count(*) as qservicios FROM sdc_housing where borrado=0';
       // Busco datos indicadores storage
       $.ajax({
           type: 'POST',
@@ -338,7 +338,7 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
     fn_show_dist_cli();
     fn_show_tot_clientes();
     fn_show_tot_servicios_hosting();
-    // fn_show_tot_servicios_housing();
+    fn_show_tot_servicios_housing();
   });
 </script>
 </body>

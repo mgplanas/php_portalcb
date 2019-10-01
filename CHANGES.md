@@ -64,6 +64,35 @@ Dashboad CLientes
         M[pages/cdc_dashboard.php]
     - Agrego DB de totales: servicios, cpu, ram, storage, VMs, Clientes
         M[pages/cdc_dashboard.php]
+    - Normalizo DB sdc_Housing
+    # SCRIPT DE NORMALIZACION
+    # A) ENERGIA
+    # 1) Modificar el registro de Educar (cliente 14) y sacar el, 6PDU
+    UPDATE sdc_housing SET energia = "12" WHERE id = 9;
+
+    #2) Actualizo los NULL a 0
+    UPDATE sdc_housing SET energia = 0 WHERE energia IS NULL OR energia = "";
+
+    #3) Saco la palabra KVA
+    UPDATE sdc_housing SET energia = REPLACE(energia, "KVA", "");
+
+    #4) Cambio el tipo de dato a INT DEFAULT 0
+
+
+
+    #B) M2
+    #1) Actualizo los NULL a 0
+    UPDATE sdc_housing SET m2 = 0 WHERE m2 IS NULL OR m2 = "";
+
+    #3) Convierto coma a punto
+    UPDATE sdc_housing SET m2 = REPLACE(m2, ",", ".");
+
+    #) Convierto el campo en DECIMAL(6,2)
+    #SELECT id_cliente, CAST(m2 AS DECIMAL(6,2)) as m2 FROM sdc_housing
+    ALTER TABLE controls.sdc_housing
+    CHANGE m2 m2 DECIMAL(8,2) DEFAULT '0';
+
+
         
 ## FEAT-CLI-DC2
 
