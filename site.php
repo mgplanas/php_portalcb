@@ -360,8 +360,8 @@ desired effect
         <li class="header">MENU</li>
         <!-- Optionally, you can add icons to the links -->
         <li class="active"><a href="#"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
-        <li><a href="./pages/activos.php"><i class="fa fa-archive"></i> <span>Activos</span></a></li>
         <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
+          <li><a href="./pages/activos.php"><i class="fa fa-archive"></i> <span>Activos</span></a></li>
           <li><a href="./pages/controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
           <li><a href="./pages/iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
           <li><a href="./pages/iso9k.php"><i class="fa fa-crosshairs"></i> <span>ISO 9001</span></a></li>        
@@ -412,21 +412,23 @@ desired effect
               </ul>
             </li>    
             <?php } ?>
-            <li class="treeview">
-            <a href="#">
-              <i class="fa fa-pie-chart"></i><span>Métricas</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="./pages/met_activos.php"><i class="fa fa-archive"></i>Activos</a></li>
-              <li><a href="./pages/met_iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
-              <li><a href="./pages/met_riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
-              <li><a href="./pages/met_controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
-              <li><a href="./pages/met_mejoras.php"><i class="fa fa-refresh"></i> <span>Mejoras</span></a></li>
-            </ul>
-          </li>;
+            <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
+              <li class="treeview">
+                <a href="#">
+                  <i class="fa fa-pie-chart"></i><span>Métricas</span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu">
+                  <li><a href="./pages/met_activos.php"><i class="fa fa-archive"></i>Activos</a></li>
+                  <li><a href="./pages/met_iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
+                  <li><a href="./pages/met_riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
+                  <li><a href="./pages/met_controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
+                  <li><a href="./pages/met_mejoras.php"><i class="fa fa-refresh"></i> <span>Mejoras</span></a></li>
+                </ul>
+              </li>
+            <?php } ?>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
