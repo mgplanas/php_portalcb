@@ -804,6 +804,9 @@ desired effect
                         <th>Tipo</th>
                         <th>Categoría</th>
                         <th>Responsable</th>
+                        <?php if ($rq_sec['admin']=='1') { ?> 
+                            <th>Gerencia</th>
+                        <?php } ?>
                         <th>Prioridad</th>
                         <th>Estado</th>
                         <th>Avance</th>
@@ -814,8 +817,9 @@ desired effect
                       </thead>
                       <tbody>
                           <?php
-                          $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
+                          $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre, g.nombre as gerencia FROM proyecto as i 
                                     LEFT JOIN persona as p on i.responsable = p.id_persona
+                                    LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia
                                     LEFT JOIN tipo_proyecto as t on i.tipo = t.id
                                     WHERE i.borrado='0' AND i.estado='4' AND p.borrado = '0' ";
                             // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
@@ -824,7 +828,7 @@ desired effect
                               $query = $query . " AND p.gerencia = $per_id_gerencia ";
                             }                                         
 
-                          $sql = mysqli_query($con, $query . "ORDER BY id_proyecto ASC");
+                          $sql = mysqli_query($con, $query . "ORDER BY g.nombre, id_proyecto ASC");
 
                               while($row = mysqli_fetch_assoc($sql)){
 
@@ -866,6 +870,9 @@ desired effect
                                   echo '
                                   </td>
                                   <td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
+                                  if ($rq_sec['admin']=='1') {
+                                    echo '<td>' . $row['gerencia'] .'</td>';
+                                  }
 
 
                                   if($row['prioridad'] == '1'){
