@@ -4,5 +4,5 @@
       Portal de Gestión
     </div>
     <!-- Default to the left -->
-    <strong>Gerencia de Información, Tecnología y Seguridad  - <a href="../site.php">ARSAT S.A.</a></strong>
+    <strong>Gerencia de Infraestructura Tecnológica y Seguridad  - <a href="../site.php">ARSAT S.A.</a></strong>
   </footer>

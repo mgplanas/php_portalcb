@@ -188,6 +188,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
       background-color: #6495ED !important;
       color: #fff !important; 
     }
+    .bg-logo {
+      background-image: url('pages/logo_arsat.png');
+      background-repeat: no-repeat;
+      /* background-attachment: fixed; */
+      background-position: center center;
+      background-size: 500px;
+    }
   </style>
 </head>
 <!--
@@ -438,7 +445,7 @@ desired effect
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div id="main-content" class="content-wrapper bg-logo">
     <!-- Content Header (Page header) -->
     <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
     <section class="content-header">
@@ -680,6 +687,7 @@ desired effect
 <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
 <script>
   $(function () {
+    $("#main-content").toggleClass("bg-logo");
     /* ChartJS
      * -------
      * Here we will create a few charts using ChartJS
