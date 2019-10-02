@@ -41,9 +41,9 @@ FEAT-RAUL
     CHANGE m2 m2 DECIMAL(8,2) DEFAULT '0';
 
 - Cambios en src  
-        M[pages/site_sidebar.php]
-        M[site.php]
-        M[pages/site_header.php]
+        M[../site.php]                  OK
+        M[site_sidebar.php]
+        M[site_header.php]
         N[site_footer.php]          OK  
         M[activos.php]              OK
         M[admin.php]                OK
