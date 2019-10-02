@@ -732,46 +732,48 @@ desired effect
 
 
                                     echo '">'.$row['porcentaje'].' %</span></td>';
+                                    if ($row['due_date']) {
+                                      $day=date("d");
+                                      $month=date("m");
+                                      $year=date("Y");
 
-                                    $day=date("d");
-                                    $month=date("m");
-                                    $year=date("Y");
+                                      $due = explode("/", $row['due_date']);
+                                      $due_d = $due[0];
+                                      $due_m = $due[1];
+                                      $due_y = $due[2];
+                                      $ok=0;
+                                      $dayofy = (($month * 30)+($day));
+                                      $dayofdue = (($due_m * 30)+($due_d));
+                                      
+                                      if ($due_y >= $year){
+                                        if ($dayofy < $dayofdue){
+                                          $ok=1;
+                                        }
+                                        else if ($dayofy == $dayofdue){
+                                          $ok=2;
+                                        }
+                                      }
+                                      
+                                      echo '<td><span class="badge bg-';
+                                      $n_date = $due_y . "-" . $due_m . "-" . $due_d;
+                                      $ok = validarVto($n_date);
+                                      if ($row['estado'] !== '4' ){
+                                          if ($ok == '0'){
+                                              echo 'red';
+                                          }
 
-                                    $due = explode("/", $row['due_date']);
-                                    $due_d = $due[0];
-                                    $due_m = $due[1];
-                                    $due_y = $due[2];
-                                    $ok=0;
-                                    $dayofy = (($month * 30)+($day));
-                                    $dayofdue = (($due_m * 30)+($due_d));
-                                    
-                                    if ($due_y >= $year){
-                                      if ($dayofy < $dayofdue){
-                                        $ok=1;
-                                      }
-                                      else if ($dayofy == $dayofdue){
-                                        $ok=2;
-                                      }
+                                          else if ($ok == '1'){
+                                              echo 'green';
+                                          }
+                                          else if ($ok == '2'){
+                                              echo 'yellow';
+                                          }
+                                      } else {echo 'gray';}
+
+                                      echo '">'.$row['due_date'].'</span></td>';
+                                    } else {
+                                      echo '<td></td>';
                                     }
-                                    
-                                    echo '<td><span class="badge bg-';
-                                    $n_date = $due_y . "-" . $due_m . "-" . $due_d;
-                                    $ok = validarVto($n_date);
-                                    if ($row['estado'] !== '4' ){
-                                        if ($ok == '0'){
-                                            echo 'red';
-                                        }
-
-                                        else if ($ok == '1'){
-                                            echo 'green';
-                                        }
-                                        else if ($ok == '2'){
-                                            echo 'yellow';
-                                        }
-                                    } else {echo 'gray';}
-
-                                    echo '">'.$row['due_date'].'</span></td>';
-
                                     echo '
                                     <td align="center">
                                     <a href="edit_proyecto.php?nik='.$row['id_proyecto'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
