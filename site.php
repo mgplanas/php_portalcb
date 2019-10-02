@@ -452,7 +452,8 @@ desired effect
 		<!--------------------------
         | Your Page Content Here |
         -------------------------->
-		 <!-- Small boxes (Stat box) -->
+     <!-- Small boxes (Stat box) -->
+     <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
       <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -577,66 +578,48 @@ desired effect
         </div>
         <!-- ./col -->
       </div>
-	<div class="row">
-    <div class="col-lg-3 col-xs-6">
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Activos por tipo</h3>
+      <div class="row">
+        <div class="col-lg-3 col-xs-6">
+              <div class="box box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Activos por tipo</h3>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <canvas id="pieChartATipo" style="height:250px"></canvas>
+                </div>
+                <!-- /.box-body -->
               </div>
-            </div>
-            <div class="box-body">
-              <canvas id="pieChartATipo" style="height:250px"></canvas>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-    </div>
-    <div class="col-lg-3 col-xs-6">
-		  <!-- /.content ISO 27001-->
-			<div class="box box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">Madurez ítems ISO 27001</h3>
+              <!-- /.box -->
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- /.content ISO 27001-->
+          <div class="box box-success">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Madurez ítems ISO 27001</h3>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body">
-              <canvas id="pieChartISOM" style="height:250px"></canvas>
-            </div>
-            <!-- /.box-body -->
-      </div>
-		</div>
-		<div class="col-lg-3 col-xs-6">
-      <!-- /.content Riesgos-->
-      <div class="box box-warning">
-        <div class="box-header with-border">
-          <h3 class="box-title">Nivel de riesgo residual</h3>
-
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <canvas id="pieChartISOM" style="height:250px"></canvas>
+                </div>
+                <!-- /.box-body -->
           </div>
         </div>
-        <div class="box-body">
-          <canvas id="pieChartRR" style="height:250px"></canvas>
-        </div>
-        <!-- /.box-body -->
-      </div>
-		</div>
-		<div class="col-lg-3 col-xs-6">
-      <!-- /.content Controles-->
-      <div class="box box-danger">
+        <div class="col-lg-3 col-xs-6">
+          <!-- /.content Riesgos-->
+          <div class="box box-warning">
             <div class="box-header with-border">
-              <h3 class="box-title">Estado de controles</h3>
+              <h3 class="box-title">Nivel de riesgo residual</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -645,12 +628,31 @@ desired effect
               </div>
             </div>
             <div class="box-body">
-              <canvas id="pieChartC" style="height:250px"></canvas>
+              <canvas id="pieChartRR" style="height:250px"></canvas>
             </div>
             <!-- /.box-body -->
           </div>
-		</div>
-  </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- /.content Controles-->
+          <div class="box box-danger">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Estado de controles</h3>
+
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <canvas id="pieChartC" style="height:250px"></canvas>
+                </div>
+                <!-- /.box-body -->
+              </div>
+        </div>
+      </div>
+      <?php } ?>
   </section>
     <!-- /.content -->
   </div>
@@ -675,6 +677,7 @@ desired effect
 <!-- FastClick -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 
+<?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
 <script>
   $(function () {
     /* ChartJS
@@ -837,6 +840,7 @@ desired effect
 	pieChartC.Doughnut(PieData4, pieOptions)
   })
 </script>
+<?php } ?>
 <script>
 $(document).ready(function() {
   $('.rotate').css('height', $('.rotate').width());

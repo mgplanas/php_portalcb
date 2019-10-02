@@ -281,7 +281,8 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
     // TOTALES Servicios Housing
     function fn_show_tot_servicios_housing() {
       // consulta de datos
-      query = 'SELECT SUM(energia) as qkva, SUM(m2) as qm2, count(*) as qservicios FROM sdc_housing GROUP BY id_cliente where borrado=0';
+      // query = 'SELECT SUM(energia) as qkva, SUM(m2) as qm2, count(*) as qservicios FROM sdc_housing where borrado=0';
+      query = 'SELECT SUM(i.qkva) as qkva, SUM(i.qm2) as qm2, count(1) as qservices FROM (SELECT SUM(h.energia) as qkva, SUM(h.m2) as qm2, count(1) as cuenta FROM sdc_housing as h WHERE h.borrado = 0 GROUP BY h.id_cliente) as i';
       // Busco datos indicadores storage
       $.ajax({
           type: 'POST',
@@ -292,7 +293,7 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
               let item = json.data[0];
               $('#cdc_dashboard-qkva').html(item.qkva);
               $('#cdc_dashboard-qm2').html(item.qm2);
-              $('#cdc_dashboard-qservicios').html(item.qservicios);
+              $('#cdc_dashboard-qservicios').html(item.qservices);
           },
           error: function(xhr, status, error) {
               alert(xhr.responseText, error);

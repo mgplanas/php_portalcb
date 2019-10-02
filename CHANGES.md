@@ -98,6 +98,9 @@ Dashboad CLientes
     M[pages/sdc_housing.php]
     M[pages/modals/sdc_abmhousing.php]
 
+    - Aplico permisos de "compliance" a los tableros del inicio.
+    M[site.php]
+
         
 ## FEAT-CLI-DC2
 
