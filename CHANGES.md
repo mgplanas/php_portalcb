@@ -2,6 +2,14 @@
 
 ## FEAT-RAUL
 
+Vista para ver todos los proyectos
+*Fecha:* 2019-10-02
+*Cambios:*
+    - Se agrega la columna gerencia en el tab de proyectos si es Rol[admin]
+    M[proyetos.php]
+
+## FEAT-RAUL
+
 Dashboad CLientes
 *Fecha:* 2019-09-28
 *Cambios:*
