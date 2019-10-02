@@ -440,6 +440,7 @@ desired effect
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
+    <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
     <section class="content-header">
       <h1>
         Tablero de comando
@@ -453,7 +454,6 @@ desired effect
         | Your Page Content Here |
         -------------------------->
      <!-- Small boxes (Stat box) -->
-     <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
       <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -652,8 +652,8 @@ desired effect
               </div>
         </div>
       </div>
-      <?php } ?>
-  </section>
+    </section>
+    <?php } ?>
     <!-- /.content -->
   </div>
 
