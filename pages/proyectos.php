@@ -70,7 +70,8 @@ function validarVto($fecha) {
 
   $res = 0;
   try {
-    $now = new DateTime();
+    $gmtTimezone = new DateTimeZone('GMT');
+    $now = new DateTime("now", $gmtTimezone);
     $now = $now->format('Y-m-d');
     $interval = date_diff(date_create($fecha), date_create($now) );
     if ($interval->days != 0) {
@@ -1031,6 +1032,7 @@ desired effect
                                       $countv = 0;
                                 
                                       while($rowcv = mysqli_fetch_array($count_vencidas)){
+                                        if ($rowcv['due_date']) {
                                           $due = explode("/", $rowcv['due_date']);
                                           $due_d = $due[0];
                                           $due_m = $due[1];
@@ -1044,7 +1046,7 @@ desired effect
                                               if ($dayofy > $dayofdue){
                                                   $countv++; }
                                               }
-                                          
+                                        } 
                                       }
                                       echo '
                                       <td> ' . $countv . ' </td>
