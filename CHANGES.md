@@ -8,6 +8,8 @@
 *Cambios:*
     - Se agrega un nuevo calendario de riesgos para representar los cerrados
     M[pages/cal_riegos.php]
+    - Se corrige el calendario de acumulado de controles
+    M[pages/cal_controles.php]
 
 ## FEAT-RAUL
 

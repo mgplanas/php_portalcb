@@ -506,7 +506,7 @@ desired effect
                                                                         echo '<td class="text-center ' . ($row['mes']==$mesActual ? 'mesactual"' : '"'  ) . '>';
                                                                         // Cambio el ícono si está pendiente o no
                                                                         // Si está pendiente me fijo si está atrazado con respecto al mes en curso
-                                                                        if ($row['estadoControl']==1) {
+                                                                        if ($row['estadoControl']!=2) {
                                                                             echo '<span class="badge bg-green" style="font-size: 15px;">' . $row['cuenta'] . '</span>';
                                                                         } else {
 
