@@ -65,7 +65,7 @@ $(function() {
             dataType: 'json',
             success: function(json) {
                 $("#modal-abm-cliente").modal("hide");
-                // refreshGerencias();
+                location.reload();
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);

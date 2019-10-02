@@ -7,11 +7,11 @@ session_start();
 if (!isset($_SESSION['usuario'])){
 	header('Location: ../index.html');
 }
-
+$page_title="Hosting";
 $user=$_SESSION['usuario'];
 
 //Get user query
-$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'");
+$persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' AND borrado = 0");
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
 
@@ -36,7 +36,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SI-ARSAT</title>
+  <title>GITyS-ARSAT[<?=$page_title?>]</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -75,15 +75,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- Main Header -->
   <header class="main-header">
-
-    <!-- Logo -->
-    <a href="../site.php" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini">SI</span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>SI</b>-ARSAT</span>
-    </a>
-
     <!-- Header Navbar -->
     <?php include_once('./site_header.php'); ?>
 
@@ -110,7 +101,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <h2 class="box-title">Listado de Servicios</h2>
               </div>
               <div class="col-sm-6" style="text-align:right;">
+              <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
                 <button type="button" id="modal-import-hosting-btn-import" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-upload"></i> Importar Servicios</button>
+              <?php } ?>
               </div>
             </div>
 
@@ -157,14 +150,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- /.content -->
   </div>
   <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="pull-right hidden-xs">
-      Portal de Gestión
-    </div>
-    <!-- Default to the left -->
-    <strong>Seguridad Informática  - <a href="../site.php">ARSAT S.A.</a></strong>
-  </footer>
+  <?php include_once('./site_footer.php'); ?>
 
 <!-- REQUIRED JS SCRIPTS -->
 
@@ -258,6 +244,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
   //           }]
             
   //   })
+  });
+</script>
+<script>
+  $(function() {
+      /** add active class and stay opened when selected */
+      var url = window.location;
+
+      // for sidebar menu entirely but not cover treeview
+      $('ul.sidebar-menu a').filter(function() {
+        return this.href == url;
+      }).parent().addClass('active');
+
+      // for treeview
+      $('ul.treeview-menu a').filter(function() {
+        return this.href == url;
+      }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');    
   });
 </script>
 </body>

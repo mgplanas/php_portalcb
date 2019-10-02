@@ -7,7 +7,7 @@ session_start();
 if (!isset($_SESSION['usuario'])){
 	header('Location: ../index.html');
 }
-
+$page_title="Proyectos";
 $user=$_SESSION['usuario'];
 
 if(isset($_GET['aksi']) == 'delete'){
@@ -63,7 +63,32 @@ $rowtp = mysqli_num_rows($count_total_proyectos);
 $personas = mysqli_query($con, "SELECT * FROM persona");
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);				
-		
+
+
+// FUNCION DE FECHAS
+function validarVto($fecha) {
+
+  $res = 0;
+  try {
+    $gmtTimezone = new DateTimeZone('GMT');
+    $now = new DateTime("now", $gmtTimezone);
+    $now = $now->format('Y-m-d');
+    $interval = date_diff(date_create($fecha), date_create($now) );
+    if ($interval->days != 0) {
+      if ($interval->invert == 0) {
+        $res = 0;
+      } else {
+        $res = 1;
+      }
+    } else {
+      $res=2;
+    }
+  } catch (Exception $e) {
+    $res = 0;
+  }
+  return $res;
+}
+
 ?>
 <style>
 .dataTables_filter {
@@ -80,7 +105,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SI-ARSAT</title>
+  <title>GITyS-ARSAT[<?=$page_title?>]</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -157,15 +182,6 @@ desired effect
 
   <!-- Main Header -->
   <header class="main-header">
-
-    <!-- Logo -->
-    <a href="../site.php" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini">SI</span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>SI</b>-ARSAT</span>
-    </a>
-
     <!-- Header Navbar -->
     <?php include_once('./site_header.php'); ?>
   </header>
@@ -361,7 +377,8 @@ desired effect
                                   }
 
                                   echo '<td><span class="badge bg-';
-
+                                  $n_date = $due_y . "-" . $due_m . "-" . $due_d;
+                                  $ok = validarVto($n_date);
                                   if ($row['estado'] !== '4' ){
                                       if ($ok == '0'){
                                           echo 'red';
@@ -532,16 +549,18 @@ desired effect
                                     $dayofdue = (($due_m * 30)+($due_d));
 
                                     if ($due_y >= $year){
-                                        if ($dayofy < $dayofdue){
-                                            $ok=1;
-                                        }
-                                        else if ($dayofy == $dayofdue){
-                                            $ok=2;
-                                        }
+                                      if ($dayofy < $dayofdue){
+                                        $ok=1;
+                                      }
+                                      else if ($dayofy == $dayofdue){
+                                        $ok=2;
+                                      }
                                     }
-
+                                    
                                     echo '<td><span class="badge bg-';
-
+                                    
+                                    $n_date = $due_y . "-" . $due_m . "-" . $due_d;
+                                    $ok = validarVto($n_date);
                                     if ($row['estado'] !== '4' ){
                                         if ($ok == '0'){
                                             echo 'red';
@@ -594,6 +613,9 @@ desired effect
                           <th>Tipo</th>
                           <th>Categoría</th>
                           <th>Responsable</th>
+                          <?php if ($rq_sec['admin']=='1') { ?> 
+                            <th>Gerencia</th>
+                          <?php } ?>
                           <th>Prioridad</th>
                           <th>Estado</th>
                           <th>Avance</th>
@@ -604,15 +626,16 @@ desired effect
                         </thead>
                         <tbody>
                             <?php
-                            $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
+                            $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre, g.nombre as gerencia FROM proyecto as i 
                                       LEFT JOIN persona as p on i.responsable = p.id_persona
+                                      LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia
                                       LEFT JOIN tipo_proyecto as t on i.tipo = t.id
                                       WHERE i.borrado='0' AND i.estado!='4' AND p.borrado ='0' ";
                             // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
-                            // if ( $per_id_gerencia != 1) {
+                            if ($rq_sec['admin']=='0') {
                               $query = $query . " AND p.gerencia = $per_id_gerencia ";
-                            // }                                        
-                            $sql = mysqli_query($con, $query . " ORDER BY id_proyecto ASC;");
+                            }                                        
+                            $sql = mysqli_query($con, $query . " ORDER BY g.nombre, id_proyecto ASC;");
 
                                 while($row = mysqli_fetch_assoc($sql)){
 
@@ -653,7 +676,9 @@ desired effect
                                     echo '
                                     </td>
                                     <td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
-
+                                    if ($rq_sec['admin']=='1') {
+                                      echo '<td>' . $row['gerencia'] .'</td>';
+                                    }
 
                                     if($row['prioridad'] == '1'){
                                         echo '<td>Alta</td>';
@@ -708,46 +733,48 @@ desired effect
 
 
                                     echo '">'.$row['porcentaje'].' %</span></td>';
+                                    if ($row['due_date']) {
+                                      $day=date("d");
+                                      $month=date("m");
+                                      $year=date("Y");
 
-                                    $day=date("d");
-                                    $month=date("m");
-                                    $year=date("Y");
-
-                                    $due = explode("/", $row['due_date']);
-                                    $due_d = $due[0];
-                                    $due_m = $due[1];
-                                    $due_y = $due[2];
-                                    $ok=0;
-
-                                    $dayofy = (($month * 30)+($day));
-                                    $dayofdue = (($due_m * 30)+($due_d));
-
-                                    if ($due_y >= $year){
+                                      $due = explode("/", $row['due_date']);
+                                      $due_d = $due[0];
+                                      $due_m = $due[1];
+                                      $due_y = $due[2];
+                                      $ok=0;
+                                      $dayofy = (($month * 30)+($day));
+                                      $dayofdue = (($due_m * 30)+($due_d));
+                                      
+                                      if ($due_y >= $year){
                                         if ($dayofy < $dayofdue){
-                                            $ok=1;
+                                          $ok=1;
                                         }
                                         else if ($dayofy == $dayofdue){
-                                            $ok=2;
+                                          $ok=2;
                                         }
+                                      }
+                                      
+                                      echo '<td><span class="badge bg-';
+                                      $n_date = $due_y . "-" . $due_m . "-" . $due_d;
+                                      $ok = validarVto($n_date);
+                                      if ($row['estado'] !== '4' ){
+                                          if ($ok == '0'){
+                                              echo 'red';
+                                          }
+
+                                          else if ($ok == '1'){
+                                              echo 'green';
+                                          }
+                                          else if ($ok == '2'){
+                                              echo 'yellow';
+                                          }
+                                      } else {echo 'gray';}
+
+                                      echo '">'.$row['due_date'].'</span></td>';
+                                    } else {
+                                      echo '<td></td>';
                                     }
-
-                                    echo '<td><span class="badge bg-';
-
-                                    if ($row['estado'] !== '4' ){
-                                        if ($ok == '0'){
-                                            echo 'red';
-                                        }
-
-                                        else if ($ok == '1'){
-                                            echo 'green';
-                                        }
-                                        else if ($ok == '2'){
-                                            echo 'yellow';
-                                        }
-                                    } else {echo 'gray';}
-
-                                    echo '">'.$row['due_date'].'</span></td>';
-
                                     echo '
                                     <td align="center">
                                     <a href="edit_proyecto.php?nik='.$row['id_proyecto'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
@@ -780,6 +807,9 @@ desired effect
                         <th>Tipo</th>
                         <th>Categoría</th>
                         <th>Responsable</th>
+                        <?php if ($rq_sec['admin']=='1') { ?> 
+                            <th>Gerencia</th>
+                        <?php } ?>
                         <th>Prioridad</th>
                         <th>Estado</th>
                         <th>Avance</th>
@@ -790,16 +820,18 @@ desired effect
                       </thead>
                       <tbody>
                           <?php
-                          $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre FROM proyecto as i 
+                          $query = "SELECT i.*, p.nombre, p.apellido, t.nombre as tipo_nombre, g.nombre as gerencia FROM proyecto as i 
                                     LEFT JOIN persona as p on i.responsable = p.id_persona
+                                    LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia
                                     LEFT JOIN tipo_proyecto as t on i.tipo = t.id
                                     WHERE i.borrado='0' AND i.estado='4' AND p.borrado = '0' ";
                             // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
                             // if ( $per_id_gerencia != 1) {
+                            if ($rq_sec['admin']=='0') {
                               $query = $query . " AND p.gerencia = $per_id_gerencia ";
-                            // }                                         
+                            }                                         
 
-                          $sql = mysqli_query($con, $query . "ORDER BY id_proyecto ASC");
+                          $sql = mysqli_query($con, $query . "ORDER BY g.nombre, id_proyecto ASC");
 
                               while($row = mysqli_fetch_assoc($sql)){
 
@@ -841,6 +873,9 @@ desired effect
                                   echo '
                                   </td>
                                   <td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
+                                  if ($rq_sec['admin']=='1') {
+                                    echo '<td>' . $row['gerencia'] .'</td>';
+                                  }
 
 
                                   if($row['prioridad'] == '1'){
@@ -909,6 +944,7 @@ desired effect
                                     $due_y = $due[2];
                                     $ok=0;
   
+
                                     $dayofy = (($month * 30)+($day));
                                     $dayofdue = (($due_m * 30)+($due_d));
   
@@ -996,6 +1032,7 @@ desired effect
                                       $countv = 0;
                                 
                                       while($rowcv = mysqli_fetch_array($count_vencidas)){
+                                        if ($rowcv['due_date']) {
                                           $due = explode("/", $rowcv['due_date']);
                                           $due_d = $due[0];
                                           $due_m = $due[1];
@@ -1009,7 +1046,7 @@ desired effect
                                               if ($dayofy > $dayofdue){
                                                   $countv++; }
                                               }
-                                          
+                                        } 
                                       }
                                       echo '
                                       <td> ' . $countv . ' </td>
@@ -1524,14 +1561,7 @@ desired effect
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->	
   <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="pull-right hidden-xs">
-      Portal de Gestión
-    </div>
-    <!-- Default to the left -->
-    <strong>Seguridad Informática  - <a href="../site.php">ARSAT S.A.</a></strong>
-  </footer>
+  <?php include_once('./site_footer.php'); ?>
 
 <!-- REQUIRED JS SCRIPTS -->
 

@@ -20,7 +20,13 @@ $count_proyectos = mysqli_query($con, $query_proyectos);
 $rowcp = mysqli_num_rows($count_proyectos);
 
 ?>
-
+<!-- Logo -->
+<a href="../site.php" class="logo">
+    <!-- mini logo for sidebar mini 50x50 pixels -->
+    <span class="logo-mini">GITyS</span>
+    <!-- logo for regular state and mobile devices -->
+    <span class="logo-lg"><b>GITyS</b>-ARSAT</span>
+</a>
 <nav class="navbar navbar-static-top" role="navigation">
     <!-- Sidebar toggle button-->
     <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
