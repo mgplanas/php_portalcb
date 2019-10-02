@@ -68,18 +68,22 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
 // FUNCION DE FECHAS
 function validarVto($fecha) {
 
-  $now = new DateTime();
-  $now = $now->format('Y-m-d');
-  $interval = date_diff(date_create($fecha), date_create($now) );
   $res = 0;
-  if ($interval->days != 0) {
-    if ($interval->invert == 0) {
-      $res = 0;
+  try {
+    $now = new DateTime();
+    $now = $now->format('Y-m-d');
+    $interval = date_diff(date_create($fecha), date_create($now) );
+    if ($interval->days != 0) {
+      if ($interval->invert == 0) {
+        $res = 0;
+      } else {
+        $res = 1;
+      }
     } else {
-      $res = 1;
+      $res=2;
     }
-  } else {
-    $res=2;
+  } catch (Exception $e) {
+    $res = 0;
   }
   return $res;
 }
