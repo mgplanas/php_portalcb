@@ -281,7 +281,7 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
     // TOTALES Servicios Housing
     function fn_show_tot_servicios_housing() {
       // consulta de datos
-      query = 'SELECT SUM(energia) as qkva, SUM(m2) as qm2, count(*) as qservicios FROM sdc_housing where borrado=0';
+      query = 'SELECT SUM(energia) as qkva, SUM(m2) as qm2, count(*) as qservicios FROM sdc_housing GROUP BY id_cliente where borrado=0';
       // Busco datos indicadores storage
       $.ajax({
           type: 'POST',
