@@ -10,8 +10,12 @@
     M[pages/cal_riegos.php]
     - Se agregan las columnas de acumulado previo y posterior en el calendario de riesgos
     M[pages/cal_riegos.php]
+    - Se agregan las columnas de acumulado previo y posterior en el calendario de riesgos cerrados
+    M[pages/cal_riegos.php]
     - Se corrige el calendario de acumulado de controles
     M[pages/cal_controles.php]
+    - Cuando se cierra el riesgo mediante un avance planchar la fecha de vencimiento del riesgo
+    M[pages/edit_riesgo.php]
 
 ## FEAT-PROY-AVIEW
 
