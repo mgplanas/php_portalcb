@@ -8,6 +8,7 @@ if (!isset($_SESSION['usuario'])){
 	header('Location: ../index.html');
 }
 
+$page_title="Riesgos";
 $user=$_SESSION['usuario'];
 
 
@@ -36,7 +37,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SI-ARSAT</title>
+    <title>GITyS-ARSAT[<?=$page_title?>]</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -121,15 +122,6 @@ desired effect
 
         <!-- Main Header -->
         <header class="main-header">
-
-            <!-- Logo -->
-            <a href="../site.php" class="logo">
-                <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini">SI</span>
-                <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>SI</b>-ARSAT</span>
-            </a>
-
             <!-- Header Navbar -->
             <?php include_once('./site_header.php'); ?>
         </header>
@@ -170,6 +162,149 @@ desired effect
                                             <?php
                                             $mActual = date('m');
                                                 echo '<th>Gerencia</th>';
+                                                echo '<th class="mesactualHeader" style="text-align: center; "><i class="fa fa-reply" style="font-size: 15px;"></i></th>';
+                                                echo '<th ' . (1==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Enero</th>';
+                                                echo '<th ' . (2==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Febrero</th>';
+                                                echo '<th ' . (3==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Marzo</th>';
+                                                echo '<th ' . (4==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Abril</th>';
+                                                echo '<th ' . (5==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Mayo</th>';
+                                                echo '<th ' . (6==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Junio</th>';
+                                                echo '<th ' . (7==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Julio</th>';
+                                                echo '<th ' . (8==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Agosto</th>';
+                                                echo '<th ' . (9==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Septiembre</th>';
+                                                echo '<th ' . (10==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Octubre</th>';
+                                                echo '<th ' . (11==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Novimebre</th>';
+                                                echo '<th ' . (12==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Diciembre</th>';
+                                                echo '<th class="mesactualHeader" style="text-align: center; "><i class="fa fa-share" style="font-size: 15px;"></i></th>';
+                                            ?>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                $query = "SELECT nombre, mes, cuenta FROM (
+                                                            SELECT g.nombre, '00' as mes, COUNT(1) as cuenta
+                                                            FROM riesgo as r
+                                                            INNER JOIN persona as p ON r.responsable = p.id_persona
+                                                            LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
+                                                            WHERE r.borrado=0 AND r.estado='0'
+                                                            AND date_format(str_to_date(r.vencimiento, '%d/%m/%Y'), '%Y') < YEAR(NOW())
+                                                            AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )
+                                                            GROUP BY g.nombre
+                                                        UNION ALL
+                                                            SELECT g.nombre, date_format(str_to_date(r.vencimiento, '%d/%m/%Y'), '%m') as mes, COUNT(1) as cuenta
+                                                            FROM riesgo as r
+                                                            INNER JOIN persona as p ON r.responsable = p.id_persona
+                                                            LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
+                                                            WHERE r.borrado=0 AND r.estado='0'
+                                                            AND date_format(str_to_date(r.vencimiento, '%d/%m/%Y'), '%Y') = YEAR(NOW())
+                                                            AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )
+                                                            GROUP BY g.nombre, 
+                                                            date_format(str_to_date(r.vencimiento, '%d/%m/%Y'), '%m')
+                                                        UNION ALL
+                                                            SELECT g.nombre, '13' as mes, COUNT(1) as cuenta
+                                                            FROM riesgo as r
+                                                            INNER JOIN persona as p ON r.responsable = p.id_persona
+                                                            LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
+                                                            WHERE r.borrado=0 AND r.estado='0'
+                                                            AND date_format(str_to_date(r.vencimiento, '%d/%m/%Y'), '%Y') > YEAR(NOW())
+                                                            AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )
+                                                            GROUP BY g.nombre
+                                                        ) as calendario order by nombre, mes";
+                                                $sql = mysqli_query($con, $query);
+                                                $allRows = mysqli_num_rows($sql);
+                                                if($allRows == 0) {
+                                                    echo '<tr><td colspan="13">No hay datos.</td></tr>';
+                                                } else {
+                                                    $nRow = 1;
+                                                    $mesActual = date('m');
+
+                                                    $gerencia_actual = '';
+                                                    $row = mysqli_fetch_assoc($sql);
+                                                    while($nRow <= $allRows) {
+
+                                                        $gerencia_actual = $row['nombre'];
+                                                        echo '<tr>';
+                                                        // Celda de ver control
+                                                        echo '<td>' . $row['nombre'] . '</td>';
+                                                        
+                                                        $mesControl = 0;
+                                                        while ($nRow <= $allRows && $row['nombre'] == $gerencia_actual) {
+                                                            
+                                                            // Formo el calendario mes a mes creado las celdas vacias hasat el mes del control
+                                                            // de 0-13 y marcando las que vienen por DB
+                                                            for ($i = $mesControl; $i < $row['mes']; $i++) {
+                                                                if ($i==0 OR $i==13) {
+                                                                    echo '<td class="text-center mesactual">';
+                                                                } else {
+                                                                    echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
+                                                                }
+                                                            }
+                                                            
+                                                            //----------------------------
+                                                            //En esta celda hay riesgos
+                                                            //----------------------------
+                                                            if ($row['mes']=='00' OR $row['mes']=='13') {
+                                                                echo '<td class="text-center mesactual">';
+                                                            } else {
+                                                                echo '<td class="text-center ' . ($row['mes']==$mesActual ? 'mesactual"' : '"'  ) . '>';
+                                                            }
+                                                            // Cambio el ícono si está pendiente o no
+                                                                // Si está pendiente me fijo si está atrazado con respecto al mes en curso
+                                                            if ($mesActual > $row['mes']) {
+                                                                echo '<span class="badge bg-red" style="font-size: 15px;">' . $row['cuenta'] . '</span>';
+                                                            } else {
+                                                                echo '<span class="badge bg-green" style="font-size: 15px;">' . $row['cuenta'] . '</span>';
+                                                            }
+                                                            echo '</td>';
+                                                            //----------------------------
+
+                                                            //Incremento el mes para generar celdas hasta el próximo mes 
+                                                            $mesControl = $row['mes'] + 1;
+                                                            
+                                                            $row = mysqli_fetch_assoc($sql);
+                                                            $nRow++;
+                                                        }
+                                                        
+                                                        // relleno los meses que faltan
+                                                        for ($i = $mesControl; $i <= 13; $i++) {
+                                                            if ($i==0 OR $i==13) {
+                                                                echo '<td class="text-center mesactual">';
+                                                            } else {                                                            
+                                                                echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
+                                                            }
+                                                        }
+                                                        echo '</tr>';
+                                                    }
+                                                  }
+                                              ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <div class="box-header">
+                                    <div class="col-sm-6" style="text-align:left">
+                                        <h2 class="box-title">Calendario de Riesgos [Cerrados]</h2>
+                                    </div>
+                                    <div class="col-sm-6" style="text-align:right;">
+                                    <span class="badge bg-blue" style="font-size: 14px;">Cerrados</span>
+                                    </div>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <table id="riesgos_cerrados" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                            <?php
+                                            $mActual = date('m');
+                                                echo '<th>Gerencia</th>';
                                                 echo '<th ' . (1==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Enero</th>';
                                                 echo '<th ' . (2==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Febrero</th>';
                                                 echo '<th ' . (3==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Marzo</th>';
@@ -188,16 +323,16 @@ desired effect
                                         <tbody>
                                             <?php
                                                 $query = "SELECT g.nombre,
-                                                                date_format(str_to_date(r.vencimiento, '%d/%m/%Y'), '%m') as mes, 
+                                                                date_format(r.modificado, '%m') as mes, 
                                                                 COUNT(1) as cuenta
                                                             FROM riesgo as r
                                                             INNER JOIN persona as p ON r.responsable = p.id_persona
                                                             LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
-                                                            WHERE r.borrado=0 AND r.estado='0'
-                                                            AND date_format(str_to_date(r.vencimiento, '%d/%m/%Y'), '%Y') = YEAR(NOW())
+                                                            WHERE r.borrado=0 AND r.estado='1'
+                                                            AND date_format(r.modificado, '%Y') = YEAR(NOW())
                                                             AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )
                                                             GROUP BY g.nombre, 
-                                                            date_format(str_to_date(r.vencimiento, '%d/%m/%Y'), '%m')";
+                                                            date_format(r.modificado, '%m')";
                                                 $sql = mysqli_query($con, $query);
                                                 $allRows = mysqli_num_rows($sql);
                                                 if($allRows == 0) {
@@ -228,13 +363,7 @@ desired effect
                                                             //En esta celda hay riesgos
                                                             //----------------------------
                                                             echo '<td class="text-center ' . ($row['mes']==$mesActual ? 'mesactual"' : '"'  ) . '>';
-                                                            // Cambio el ícono si está pendiente o no
-                                                                // Si está pendiente me fijo si está atrazado con respecto al mes en curso
-                                                            if ($mesActual > $row['mes']) {
-                                                                echo '<span class="badge bg-red" style="font-size: 15px;">' . $row['cuenta'] . '</span>';
-                                                            } else {
-                                                                echo '<span class="badge bg-green" style="font-size: 15px;">' . $row['cuenta'] . '</span>';
-                                                            }
+                                                            echo '<span class="badge bg-blue" style="font-size: 15px;">' . $row['cuenta'] . '</span>';
                                                             echo '</td>';
                                                             //----------------------------
 
@@ -267,14 +396,7 @@ desired effect
                 <!-- /.content -->
         </div>
         <!-- Main Footer -->
-        <footer class="main-footer">
-            <!-- To the right -->
-            <div class="pull-right hidden-xs">
-                Portal de Gestión
-            </div>
-            <!-- Default to the left -->
-            <strong>Seguridad Informática - <a href="../site.php">ARSAT S.A.</a></strong>
-        </footer>
+        <?php include_once('./site_footer.php'); ?>
 
         <!-- REQUIRED JS SCRIPTS -->
 

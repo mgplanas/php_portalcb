@@ -1,20 +1,13 @@
 # RELEASE NOTE FOR REL-
 
-## RELEASE NOTE FOR REL 0004
+## RELEASE NOTE FOR REL REL-0014
 
 ### Features
-<<<<<<< HEAD
 - FEAT-CALENDAR
-=======
-- FEAT-CLI-DC
->>>>>>> devel
 
 ### Pasos
 
 - Entorno
-    /bower_components/datatables.net/css/jquery.dataTables.min.css
-    /bower_components/datatables.net/images
-    update php.ini set upload_max_filesize=8M
 
 - BackUp DB                                                                     
 - Backup /pages                                                                 

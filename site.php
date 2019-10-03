@@ -8,6 +8,7 @@ if (!isset($_SESSION['usuario'])){
 	header('Location: index.html');
 }
 //Alert icons data on top bar
+$page_title="Home";
 $user=$_SESSION['usuario'];
 
 //Get user query
@@ -156,7 +157,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SI-ARSAT</title>
+  <title>GITyS-ARSAT[<?=$page_title?>]</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -186,6 +187,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     .bg-semino {
       background-color: #6495ED !important;
       color: #fff !important; 
+    }
+    .bg-logo {
+      background-image: url('pages/logo_arsat.png');
+      background-repeat: no-repeat;
+      /* background-attachment: fixed; */
+      background-position: center center;
+      background-size: 500px;
     }
   </style>
 </head>
@@ -218,9 +226,9 @@ desired effect
     <!-- Logo -->
     <a href="site.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini">SI</span>
+      <span class="logo-mini">GITyS</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>SI</b>-ARSAT</span>
+      <span class="logo-lg"><b>GITyS</b>-ARSAT</span>
     </a>
 
     <!-- Header Navbar -->
@@ -360,8 +368,8 @@ desired effect
         <li class="header">MENU</li>
         <!-- Optionally, you can add icons to the links -->
         <li class="active"><a href="#"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
-        <li><a href="./pages/activos.php"><i class="fa fa-archive"></i> <span>Activos</span></a></li>
         <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
+          <li><a href="./pages/activos.php"><i class="fa fa-archive"></i> <span>Activos</span></a></li>
           <li><a href="./pages/controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
           <li><a href="./pages/iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
           <li><a href="./pages/iso9k.php"><i class="fa fa-crosshairs"></i> <span>ISO 9001</span></a></li>        
@@ -413,21 +421,23 @@ desired effect
               </ul>
             </li>    
             <?php } ?>
-            <li class="treeview">
-            <a href="#">
-              <i class="fa fa-pie-chart"></i><span>Métricas</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="./pages/met_activos.php"><i class="fa fa-archive"></i>Activos</a></li>
-              <li><a href="./pages/met_iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
-              <li><a href="./pages/met_riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
-              <li><a href="./pages/met_controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
-              <li><a href="./pages/met_mejoras.php"><i class="fa fa-refresh"></i> <span>Mejoras</span></a></li>
-            </ul>
-          </li>;
+            <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
+              <li class="treeview">
+                <a href="#">
+                  <i class="fa fa-pie-chart"></i><span>Métricas</span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu">
+                  <li><a href="./pages/met_activos.php"><i class="fa fa-archive"></i>Activos</a></li>
+                  <li><a href="./pages/met_iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
+                  <li><a href="./pages/met_riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
+                  <li><a href="./pages/met_controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
+                  <li><a href="./pages/met_mejoras.php"><i class="fa fa-refresh"></i> <span>Mejoras</span></a></li>
+                </ul>
+              </li>
+            <?php } ?>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -435,8 +445,9 @@ desired effect
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div id="main-content" class="content-wrapper bg-logo">
     <!-- Content Header (Page header) -->
+    <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
     <section class="content-header">
       <h1>
         Tablero de comando
@@ -449,7 +460,7 @@ desired effect
 		<!--------------------------
         | Your Page Content Here |
         -------------------------->
-		 <!-- Small boxes (Stat box) -->
+     <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -574,66 +585,48 @@ desired effect
         </div>
         <!-- ./col -->
       </div>
-	<div class="row">
-    <div class="col-lg-3 col-xs-6">
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Activos por tipo</h3>
+      <div class="row">
+        <div class="col-lg-3 col-xs-6">
+              <div class="box box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Activos por tipo</h3>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <canvas id="pieChartATipo" style="height:250px"></canvas>
+                </div>
+                <!-- /.box-body -->
               </div>
-            </div>
-            <div class="box-body">
-              <canvas id="pieChartATipo" style="height:250px"></canvas>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-    </div>
-    <div class="col-lg-3 col-xs-6">
-		  <!-- /.content ISO 27001-->
-			<div class="box box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">Madurez ítems ISO 27001</h3>
+              <!-- /.box -->
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- /.content ISO 27001-->
+          <div class="box box-success">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Madurez ítems ISO 27001</h3>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body">
-              <canvas id="pieChartISOM" style="height:250px"></canvas>
-            </div>
-            <!-- /.box-body -->
-      </div>
-		</div>
-		<div class="col-lg-3 col-xs-6">
-      <!-- /.content Riesgos-->
-      <div class="box box-warning">
-        <div class="box-header with-border">
-          <h3 class="box-title">Nivel de riesgo residual</h3>
-
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <canvas id="pieChartISOM" style="height:250px"></canvas>
+                </div>
+                <!-- /.box-body -->
           </div>
         </div>
-        <div class="box-body">
-          <canvas id="pieChartRR" style="height:250px"></canvas>
-        </div>
-        <!-- /.box-body -->
-      </div>
-		</div>
-		<div class="col-lg-3 col-xs-6">
-      <!-- /.content Controles-->
-      <div class="box box-danger">
+        <div class="col-lg-3 col-xs-6">
+          <!-- /.content Riesgos-->
+          <div class="box box-warning">
             <div class="box-header with-border">
-              <h3 class="box-title">Estado de controles</h3>
+              <h3 class="box-title">Nivel de riesgo residual</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -642,13 +635,32 @@ desired effect
               </div>
             </div>
             <div class="box-body">
-              <canvas id="pieChartC" style="height:250px"></canvas>
+              <canvas id="pieChartRR" style="height:250px"></canvas>
             </div>
             <!-- /.box-body -->
           </div>
-		</div>
-  </div>
-  </section>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <!-- /.content Controles-->
+          <div class="box box-danger">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Estado de controles</h3>
+
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <canvas id="pieChartC" style="height:250px"></canvas>
+                </div>
+                <!-- /.box-body -->
+              </div>
+        </div>
+      </div>
+    </section>
+    <?php } ?>
     <!-- /.content -->
   </div>
 
@@ -656,14 +668,7 @@ desired effect
   <!-- /.content-wrapper -->
 
   <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="pull-right hidden-xs">
-      Portal de Gestión
-    </div>
-    <!-- Default to the left -->
-    <strong>Seguridad Informática  - <a href="site.php">ARSAT S.A.</a></strong>
-  </footer>
+  <?php include_once('./pages/site_footer.php'); ?>
 
  
 <!-- REQUIRED JS SCRIPTS -->
@@ -679,8 +684,10 @@ desired effect
 <!-- FastClick -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 
+<?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
 <script>
   $(function () {
+    $("#main-content").toggleClass("bg-logo");
     /* ChartJS
      * -------
      * Here we will create a few charts using ChartJS
@@ -841,6 +848,7 @@ desired effect
 	pieChartC.Doughnut(PieData4, pieOptions)
   })
 </script>
+<?php } ?>
 <script>
 $(document).ready(function() {
   $('.rotate').css('height', $('.rotate').width());

@@ -27,11 +27,11 @@
                     </div>                    
                     <div class="form-group">
                         <label for="energia">Energia (KVA)</label>
-                        <input type="text" class="form-control" name="energia" placeholder="KVA" id='modal-abm-housing-energia'>
+                        <input type="number" min="0" step="1" class="form-control floatNumber" name="energia" placeholder="KVA" id='modal-abm-housing-energia'>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group floatNumber">
                         <label for="m2">M2</label>
-                        <input type="text" class="form-control" name="m2" placeholder="Metros cuadrados" id='modal-abm-housing-m2' required>
+                        <input type="number" min="0" class="form-control" name="m2" placeholder="Metros cuadrados" id='modal-abm-housing-m2' required>
                     </div>
                     <div class="form-group">
                         <label for="sala">Sala</label>
@@ -73,4 +73,10 @@
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
+    <script>
+        //integer value validation
+        $('input.floatNumber').on('input', function() {
+            this.value = this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g, '$1');
+        });
+    </script>
 </div>

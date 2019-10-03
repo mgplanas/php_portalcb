@@ -62,7 +62,7 @@ $(function() {
             dataType: 'json',
             success: function(json) {
                 $("#modal-abm-organismo").modal("hide");
-                // refreshGerencias();
+                location.reload();
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);

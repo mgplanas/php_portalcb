@@ -9,6 +9,7 @@ if (!isset($_SESSION['usuario'])){
 }
 
 //Alert icons data on top bar
+$page_title="Admin";
 $user=$_SESSION['usuario'];
 
 if(isset($_GET['aksi']) == 'delete'){
@@ -58,7 +59,7 @@ $id_rowp = $rowp['id_persona'];
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);
 
-if ($rq_sec['admin']=='0'){
+if ($rq_sec['admin_per']=='0' AND $rq_sec['admin']=='0' ){
 	header('Location: ../site.php');
 }
 
@@ -75,7 +76,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SI-ARSAT</title>
+    <title>GITyS-ARSAT[<?=$page_title?>]</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -148,15 +149,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <!-- Main Header -->
         <header class="main-header">
-
-            <!-- Logo -->
-            <a href="../site.php" class="logo">
-                <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini">SI</span>
-                <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>SI</b>-ARSAT</span>
-            </a>
-
             <!-- Header Navbar -->
             <?php include_once('./site_header.php'); ?>
         </header>
@@ -231,6 +223,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
                                                 <th width="1">Cli. DC</th>
+                                                <th width="1">Admin CDC</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>
@@ -289,6 +282,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 </div></td>'; 
                                                   echo '<td>
                                                           <div class="checkbox">
+                                                            <label><input name="adminclidc" type="checkbox" onclick="updatePerm(9, '.$row['id_permiso'].');" value="1"'; if($row['admin_cli_dc'] == '1'){ echo 'checked'; } echo'></label>
+                                                                </div></td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
                                                             <label><input name="edicion" type="checkbox" onclick="updatePerm(4, '.$row['id_permiso'].');" value="1"'; if($row['edicion'] == '1'){ echo 'checked'; } echo'></label>
                                                           </div></td>'; 
                                                   echo '<td align="center">
@@ -316,6 +313,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
                                                 <th width="1">Cli. DC</th>
+                                                <th width="1">Admin CDC</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>
@@ -683,14 +681,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.content -->
         </div>
     <!-- Main Footer -->
-    <footer class="main-footer">
-        <!-- To the right -->
-        <div class="pull-right hidden-xs">
-            Portal de Gestión
-        </div>
-        <!-- Default to the left -->
-        <strong>Seguridad Informática - <a href="../site.php">ARSAT S.A.</a></strong>
-    </footer>
+    <?php include_once('./site_footer.php'); ?>
 
     <!-- REQUIRED JS SCRIPTS -->
 
