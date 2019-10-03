@@ -8,10 +8,12 @@
 *Cambios:*
     - Se agrega un nuevo calendario de riesgos para representar los cerrados
     M[pages/cal_riegos.php]
+    - Se agregan las columnas de acumulado previo y posterior en el calendario de riesgos
+    M[pages/cal_riegos.php]
     - Se corrige el calendario de acumulado de controles
     M[pages/cal_controles.php]
 
-## FEAT-RAUL
+## FEAT-PROY-AVIEW
 
 Vista para ver todos los proyectos
 *Fecha:* 2019-10-02
