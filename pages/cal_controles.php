@@ -461,7 +461,7 @@ desired effect
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                            $query = "SELECT gerencia, mes, COUNT(1) as cuenta, MIN(estadoControl) as estadoControl
+                                                            $query = "SELECT gerencia as nombre, mes, COUNT(1) as cuenta, MIN(estadoControl) as estadoControl
                                                             FROM (
                                                               SELECT    REF.mes, 
                                                                 CASE WHEN REF.status <> 2 THEN 1 ELSE 2 END as estadoControl, 
