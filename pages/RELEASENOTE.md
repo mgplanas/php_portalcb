@@ -15,3 +15,5 @@ FEAT-PROY-AVIEW
 - Cambios en DB
 
 - Cambios en src  
+    M[pages/cal_riegos.php]
+    M[pages/cal_controles.php]
