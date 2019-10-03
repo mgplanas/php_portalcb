@@ -323,16 +323,16 @@ desired effect
                                         <tbody>
                                             <?php
                                                 $query = "SELECT g.nombre,
-                                                                date_format(r.vencimiento, '%m') as mes, 
+                                                                date_format(STR_TO_DATE(r.vencimiento, '%d/%m/%Y'), '%m') as mes, 
                                                                 COUNT(1) as cuenta
                                                             FROM riesgo as r
                                                             INNER JOIN persona as p ON r.responsable = p.id_persona
                                                             LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
                                                             WHERE r.borrado=0 AND r.estado='1'
-                                                            AND date_format(r.vencimiento, '%Y') = YEAR(NOW())
+                                                            AND date_format(STR_TO_DATE(r.vencimiento, '%d/%m/%Y'), '%Y') = YEAR(NOW())
                                                             AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )
                                                             GROUP BY g.nombre, 
-                                                            date_format(r.vencimiento, '%m')";
+                                                            date_format(STR_TO_DATE(r.vencimiento, '%d/%m/%Y'), '%m')";
                                                 $sql = mysqli_query($con, $query);
                                                 $allRows = mysqli_num_rows($sql);
                                                 if($allRows == 0) {
