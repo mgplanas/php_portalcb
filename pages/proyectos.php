@@ -1020,7 +1020,7 @@ desired effect
                         <div class="form-group" style="margin-right: 10px;">
                             <label for="ddlGerencias">Gerenecia:</label>
                             <select name="ddlGerencias" class="form-control" id="ddlGerencias">
-                              <option value="-1">Todas</option>
+                              <option value="0">Todas</option>
                             </select>
                         </div>
                       </form>
