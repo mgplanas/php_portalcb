@@ -1816,6 +1816,7 @@ if (selectedTab != null) {
       fn_update_metricas($("#ddlGerencias").val());
     });  
 
+    console.log($("#ddlGerencias").val());
     // Aplico el filtro de todos
     fn_update_metricas($("#ddlGerencias").val());
   });
