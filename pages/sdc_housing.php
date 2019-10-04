@@ -129,17 +129,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <table id="clientes" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th>Cliente</th>
-                    <th>Organismo</th>
-                    <th>Energía (KVA)</th>
-                    <th>M2</th>
-                    <th>Sala</th>
-                    <th>Fila</th>
-                    <th>Rack</th>
-                    <th>Alta</th>
-                    <th>Evidencia</th>
-                    <th>Observaciones</th>
-                    <th width="100">Acciones</th>
+                  <th>Organismo</th>
+                  <th>Cliente</th>
+                  <th>Energía (KVA)</th>
+                  <th>M2</th>
+                  <th>Sala</th>
+                  <th>Fila</th>
+                  <th>Rack</th>
+                  <th>Alta</th>
+                  <th>Evidencia</th>
+                  <th>Observaciones</th>
+                  <th width="100">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -159,8 +159,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						while($row = mysqli_fetch_assoc($sql)){
 							
 							echo '<tr>';
-							echo '<td>'. $row['cliente'].'</td>';
 							echo '<td>'. $row['organismo'].'</td>';
+							echo '<td>'. $row['cliente'].'</td>';
 							echo '<td align="center">'. $row['energia'].'</td>';
 							echo '<td align="center">'. $row['m2'].'</td>';
 							echo '<td align="center">'. $row['sala'].'</td>';

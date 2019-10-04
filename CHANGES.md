@@ -1,5 +1,14 @@
 # CHANGES
 
+## FIX-HOUSING
+
+### Se corrige orden de columnas servicios housing.
+
+*Fecha:* 2019-10-04
+*Cambios:*
+    - Se corrige orden de columnas servicios housing. Organismos->cliente
+    M[pages/sdc_housing.php]
+    
 ## FEAT-PROY-AIND
 
 ### Vista global de indicadores para proyectos.
