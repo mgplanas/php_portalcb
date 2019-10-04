@@ -1606,7 +1606,8 @@ if (selectedTab != null) {
       $.ajax({
           type: 'POST',
           url: './helpers/getAsyncDataFromDB.php',
-          data: { query: "select id_gerencia, nombre FROM gerencia where borrado = 0 ORDER BY nombre" },
+          // data: { query: "select id_gerencia, nombre FROM gerencia where borrado = 0 ORDER BY nombre" },
+          data: { query: "select g.id_gerencia, g.nombre FROM gerencia as g where g.borrado = 0 AND EXISTS (SELECT i.id_proyecto FROM proyecto as i LEFT JOIN persona as p on i.responsable = p.id_persona WHERE p.gerencia = g.id_gerencia) ORDER BY nombre" },
           dataType: 'json',
           success: function(json) {
               $("#ddlGerencias").empty().append('<option selected="selected" value="0">Todas</option>');
