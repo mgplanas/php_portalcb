@@ -4,7 +4,7 @@
 
 ### Features
 
-FEAT-PROY-AVIEW
+FEAT-PROY-AIND
 
 ### Pasos
 
@@ -15,6 +15,4 @@ FEAT-PROY-AVIEW
 - Cambios en DB
 
 - Cambios en src  
-    M[pages/cal_riegos.php]
-    M[pages/cal_controles.php]
-    M[pages/edit_riesgo.php]
+  M[pages/proyectos.php]

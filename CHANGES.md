@@ -1,5 +1,20 @@
 # CHANGES
 
+## FEAT-PROY-AIND
+
+### Vista global de indicadores para proyectos.
+
+*Fecha:* 2019-10-03
+*Cambios:*
+    - Un Combo para filtar los indicadores por gerencia si es admin.
+    M[pages/proyectos.php]
+    - Paso la generacion de gráficos a dinámito ajax.
+    M[pages/proyectos.php]
+    - Actualizo las consultas de los gráficos de asignacion y estado de proyectos para que tomen todas las gerencias (=0).
+    M[pages/getProyResp.php]
+    M[pages/getProyRespStat.php]
+
+
 ## FEAT-CAL-RIESGOS
 
 ### Nuevas funcionalidades en el calendario de Riesgos.
