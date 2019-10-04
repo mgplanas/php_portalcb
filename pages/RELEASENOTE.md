@@ -15,4 +15,6 @@ FEAT-PROY-AIND
 - Cambios en DB
 
 - Cambios en src  
-  M[pages/proyectos.php]
+    M[pages/proyectos.php]
+    M[pages/getProyResp.php]
+    M[pages/getProyRespStat.php]
