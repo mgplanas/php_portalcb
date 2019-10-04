@@ -13,6 +13,8 @@ FEAT-PROY-AIND
 - BackUp DB
 - Backup /pages
 - Cambios en DB
+        ALTER TABLE controls.gerencia
+ ADD borrado INT NOT NULL DEFAULT '0' AFTER sigla;
 
 - Cambios en src  
     M[pages/proyectos.php]
