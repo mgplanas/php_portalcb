@@ -471,7 +471,7 @@ desired effect
                                                 while($row = mysqli_fetch_assoc($sql)){
                                                   
                                                   echo '<tr><td><a href="control.php?nik='.$row['id_control'].'"><span class="fa fa-retweet" aria-hidden="true"></span></a></td>';
-                                                  echo '<td align="center">'.$no.'</td>';
+                                                  echo '<td align="center">'.$row['id_control'].'</td>';
 
                                                   if($row['periodo'] == '1'){
                                                     echo '<td>Mensual</td>';

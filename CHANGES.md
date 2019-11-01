@@ -5,6 +5,8 @@
 *Cambios:*
     - Sacar el botón de borrar en mejora
     M[pages/mejoras.php]
+    - Cambiar la numeración secuencial por el id en controles
+    M [pages/controles.php]
 
 ## FIX-HOUSING
 
