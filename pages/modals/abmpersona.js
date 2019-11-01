@@ -11,6 +11,7 @@ $(function() {
         ddlGerencias.empty();
         ddlSubGerencias.empty();
         ddlAreas.empty();
+        ddlGrupos.empty();
 
         //Populo las areas
         $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM gerencia WHERE borrado = 0' },
@@ -77,7 +78,7 @@ $(function() {
             $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM area WHERE id_subgerencia = ' + idSubGerencia },
                 function(response) {
                     $.each(response.data, function() {
-                        if (selectedValue && selectedValue == this.id_area) {
+                        if (selectedValue && selectedValue.toString() == this.id_area) {
                             ddlAreas.append($("<option />").val(this.id_area).text(this.nombre).attr('selected', 'selected'));
                         } else {
                             ddlAreas.append($("<option />").val(this.id_area).text(this.nombre));
@@ -92,21 +93,21 @@ $(function() {
         }
     }
     // refresh DDL
-    function refreshGrupos(selectedValue) {
+    function refreshGrupos(selectedValue, id_gerencia) {
         // Limpio combos
         ddlGrupos.empty();
 
         //Populo las areas
-        $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM grupo ORDER BY nombre' },
+        $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM grupo WHERE id_gerencia =' + id_gerencia + ' ORDER BY nombre ASC;' },
             function(response) {
                 $.each(response.data, function() {
-                    if (selectedValue && selectedValue == this.id_grupo) {
+                    if ((selectedValue === 0 && selectedValue.toString() == this.id_grupo) || (selectedValue && selectedValue.toString() == this.id_grupo)) {
                         ddlGrupos.append($("<option />").val(this.id_grupo).text(this.nombre).attr('selected', 'selected'));
                     } else {
                         ddlGrupos.append($("<option />").val(this.id_grupo).text(this.nombre));
                     }
                 });
-                if (!selectedValue) ddlGrupos.val('first').change();
+                if (!selectedValue && (selectedValue !== 0)) ddlGrupos.val('first').change();
             }
         ).fail(function(jqXHR, errorText) {
             console.log(jqXHR, errorText);
@@ -118,6 +119,7 @@ $(function() {
     ddlGerencias.on('change', function() {
         let idgerencia = $('option:selected', this).val();
         refreshSubGerencias(idgerencia);
+        refreshGrupos($(this).data('grupo'), idgerencia);
         // if (idgerencia == 1)
         //     $('#modal-abm-persona-grupo-div').show();
         // else
@@ -167,7 +169,7 @@ $(function() {
         refreshGerencias($(this).data('idgerencia'));
         refreshSubGerencias($(this).data('idgerencia'), $(this).data('idsubgerencia'));
         refreshAreas($(this).data('idsubgerencia'), $(this).data('idarea'));
-        refreshGrupos($(this).data('grupo'));
+        refreshGrupos($(this).data('grupo'), $(this).data('idgerencia'));
 
         $('#modal-abm-persona-submit').attr('name', 'M');
 
@@ -250,10 +252,10 @@ $(function() {
     refreshGerencias();
 
     //Seto el trigger si la gerencia cambia 
-    $('#modal-abm-persona-gerencia').on('change', function() {
-        populateGroups($("#modal-abm-persona-gerencia").val());
-    });
+    // $('#modal-abm-persona-gerencia').on('change', function() {
+    //     populateGroups($("#modal-abm-persona-gerencia").val());
+    // });
 
     // disparo el cambio en el load;
-    populateGroups($("#modal-abm-persona-gerencia").val());
+    //populateGroups($("#modal-abm-persona-gerencia").val());
 });
