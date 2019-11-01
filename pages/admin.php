@@ -64,8 +64,8 @@ if ($rq_sec['admin_per']=='0' AND $rq_sec['admin']=='0' ){
 }
 
 //Get Personas
-$personas = mysqli_query($con, "SELECT * FROM persona");
-
+$personas = mysqli_query($con, "SELECT * FROM persona where borrado = 0 ORDER BY apellido, nombre");
+$subgerencias = mysqli_query($con, "SELECT * FROM subgerencia ORDER BY nombre ASC");
 ?>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -91,9 +91,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect. -->
 
     <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
-    <!-- 
-  <link rel="stylesheet" href="../css/buttons.dataTables.min.css">
-  <link rel="stylesheet" href="../css/jquery.dataTables.min.css"> -->
+    <!-- <link rel="stylesheet" href="../css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">  -->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -118,6 +117,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
     .example-modal .modal {
         background: transparent !important;
     }
+
+    /* Seleccion de row en datatable */
+    .rowselected {
+        background-color: #acbad4;
+    }
+
+    table#tbgerencias.dataTable tbody tr:hover {
+        background-color: #acbad4;
+        cursor: pointer;
+    }
+
+    table#tbgerencias.dataTable tbody tr:hover > .sorting_1 {
+        background-color: #acbad4;
+        cursor: pointer;
+    }    
+    table#tbsubgerencias.dataTable tbody tr:hover {
+        background-color: #acbad4;
+        cursor: pointer;
+    }
+
+    table#tbsubgerencias.dataTable tbody tr:hover > .sorting_1 {
+        background-color: #acbad4;
+        cursor: pointer;
+    }  
     </style>
 </head>
 
@@ -173,6 +196,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                               <ul class="nav nav-tabs">
                                   <li class="active"><a href="#tab_1" data-toggle="tab">Permisos Usuarios</a></li>
                                   <li><a href="#tab_0" data-toggle="tab">Personas</a></li>
+                                  <li><a href="#tab_3" data-toggle="tab">Estructura</a></li>
                                   <li><a href="#tab_2" data-toggle="tab">Log Auditoría</a></li>
 
                               </ul>
@@ -416,7 +440,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="tab-pane" id="tab_0">
                                   <table id="personas" class="table table-bordered table-hover">
                                     <div class="col-sm-12" style="text-align:right;">
-                                      <button type="button" class="btn-sm btn-primary" data-toggle="modal"
+                                      <button id="modal-abm-persona-btn-alta" type="button" class="btn-sm btn-primary" data-toggle="modal"
                                               data-target="#modal-persona"><i
                                               class="glyphicon glyphicon-user"></i> Nueva Persona</button>
                                     </div>
@@ -433,7 +457,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </thead>
                                     <tbody>
                                       <?php
-                                        $query = "SELECT p.id_persona, p.nombre, p.apellido, p.legajo, p.email, p.cargo, g.id_gerencia, g.nombre as gerencia, u.nombre as grupo 
+                                        $query = "SELECT p.id_persona, p.nombre, p.apellido, p.legajo, p.email, p.contacto, p.cargo, g.id_gerencia, p.subgerencia, p.area, g.nombre as gerencia, u.nombre as grupo, u.id_grupo 
                                         FROM persona as p 
                                         LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia
                                         LEFT JOIN grupo as u on p.grupo = u.id_grupo
@@ -456,7 +480,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             data-cargo="'.$row['cargo'].'"
                                             data-gerencia="'.$row['gerencia'].'"
                                             data-idgerencia="'.$row['id_gerencia'].'"
-                                            data-grupo="'.$row['grupo'].'"
+                                            data-grupo="'.$row['id_grupo'].'"
                                             title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                                             </td>';
 
@@ -466,7 +490,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             echo '<td>'.$row['cargo'].'</td>'; 
                                             echo '<td>'.$row['gerencia'].'</td>'; 
                                             echo '<td align="center">
-                                                    <a href="edit_persona.php?nik='.$row['id_persona'].'" title="Editar persona" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                                                    <a data-id="'.$row['id_persona'].'" 
+                                                    data-legajo="'.$row['legajo'].'"
+                                                    data-nombre="'.$row['nombre'].'"
+                                                    data-apellido="'.$row['apellido'].'"
+                                                    data-email="'.$row['email'].'"
+                                                    data-contacto="'.$row['contacto'].'"
+                                                    data-cargo="'.$row['cargo'].'"
+                                                    data-gerencia="'.$row['gerencia'].'"
+                                                    data-idgerencia="'.$row['id_gerencia'].'"
+                                                    data-idsubgerencia="'.$row['subgerencia'].'"
+                                                    data-idarea="'.$row['area'].'"
+                                                    data-grupo="'.$row['id_grupo'].'"
+                                                    title="Editar persona" class="modal-abm-persona-btn-edit btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
                                                     <a href="admin.php?aksip=delete&nik='.$row['id_persona'].'" title="Borrar persona" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['apellido']. ' ' .$row['nombre'].'?\')" class="btn btn-danger btn-sm ';
                                             echo '"><i class="glyphicon glyphicon-trash"></i></a></td>';
                                             echo '</tr>';
@@ -489,184 +525,98 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
 
                                 <!-- MODAL ADD PERSONA -->
-                                <div class="modal fade" id="modal-persona">
-                                  <div class="modal-dialog">
-                                    <div class="modal-content">
-                                      <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal"
-                                              aria-label="Close">
-                                              <span aria-hidden="true">&times;</span></button>
-                                          <h2 class="modal-title">Nueva Persona</h2>
-                                          <?php
-                                            $gerencias = mysqli_query($con, "SELECT * FROM gerencia ORDER BY nombre ASC");
-                                            $grupos = mysqli_query($con, "SELECT * FROM grupo ORDER BY nombre ASC");
-                                            if(isset($_POST['AddPersona'])){
-                                              
-                                              $legajo = mysqli_real_escape_string($con,(strip_tags($_POST["legajo"],ENT_QUOTES)));//Escanpando caracteres
-                                              $nombre = mysqli_real_escape_string($con,(strip_tags($_POST["nombre"],ENT_QUOTES)));//Escanpando caracteres
-                                              $apellido = mysqli_real_escape_string($con,(strip_tags($_POST["apellido"],ENT_QUOTES)));//Escanpando caracteres 
-                                              $cargo = mysqli_real_escape_string($con,(strip_tags($_POST["cargo"],ENT_QUOTES)));//Escanpando caracteres 
-                                              $gerencia = mysqli_real_escape_string($con,(strip_tags($_POST["gerencia"],ENT_QUOTES)));//Escanpando caracteres 
-                                              $email = mysqli_real_escape_string($con,(strip_tags($_POST["email"],ENT_QUOTES)));//Escanpando caracteres 
-                                              $grupo = mysqli_real_escape_string($con,(strip_tags($_POST["grupo"],ENT_QUOTES)));//Escanpando caracteres 
-                                              $contacto = mysqli_real_escape_string($con,(strip_tags($_POST["contacto"],ENT_QUOTES)));//Escanpando caracteres 
-                                              
-                                              //Inserto Control
-                                              $insert_persona = mysqli_query($con, "INSERT INTO persona(legajo, nombre, apellido, cargo, gerencia, email, grupo, contacto, borrado) 
-                                                                                    VALUES ('$legajo','$nombre','$apellido', '$cargo', '$gerencia', '$email', '$grupo', '$contacto', 0)") or die(mysqli_error());	
-                                              $lastInsert = mysqli_insert_id($con);
-                                              $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-                                                            VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
-                                              unset($_POST);
-                                              if($insert_persona){
-                                                $_SESSION['formSubmitted'] = 3;
-                                                echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-                                              }else{
-                                                $_SESSION['formSubmitted'] = 9;
-                                                echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-                                              }				
-                                            }				
-                                            ?>
-                                      </div>
-                                      <div class="modal-body">
-                                          <!-- form start -->
-                                          <form method="post" role="form" action="">
-                                              <div class="box-body">
-                                                  <div class="form-group">
-                                                      <label for="legajo">Legajo</label>
-                                                      <input type="text" class="form-control" name="legajo"
-                                                          placeholder="Legajo">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="nombre">Nombre</label>
-                                                      <input type="text" class="form-control" name="nombre"
-                                                          placeholder="Nombre">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="apellido">Apellido</label>
-                                                      <input type="text" class="form-control" name="apellido"
-                                                          placeholder="Apellido">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="email">Dirección E-mail</label>
-                                                      <input type="text" class="form-control" name="email"
-                                                          placeholder="E-mail corporativo">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="contacto">Contacto</label>
-                                                      <input type="text" class="form-control" name="contacto"
-                                                          placeholder="Nro de contacto">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="cargo">Cargo</label>
-                                                      <input type="text" class="form-control" name="cargo"
-                                                          placeholder="Cargo">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label>Gerencia</label>
-                                                      <select name="gerencia" class="form-control" id="gerenciaselector">
-                                                          <?php
-                                                            while($rowg = mysqli_fetch_array($gerencias)){
-                                                                echo "<option value=". $rowg['id_gerencia'] . ">" .$rowg['nombre'] . "</option>";
-                                                                }
-                                                          ?>
-                                                      </select>
-                                                  </div>
-                                                  <div class="form-group" id="grupodiv">
-                                                      <label>Grupo</label>
-                                                      <select name="grupo" class="form-control" id="gruposelector">
-                                                          <?php
-                                                            while($rowg = mysqli_fetch_array($grupos)){
-                                                                echo "<option value=". $rowg['id_grupo'] . ">" .$rowg['nombre'] . "</option>";
-                                                                }
-                                                          ?>
-                                                      </select>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <div class="col-sm-3">
-                                                          <input type="submit" name="AddPersona"
-                                                              class="btn  btn-raised btn-success"
-                                                              value="Guardar datos">
-                                                      </div>
-                                                      <div class="col-sm-3">
-                                                          <button type="button"
-                                                              class="btn btn-default pull-left"
-                                                              data-dismiss="modal">Cancelar</button>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </form>
-                                      </div>
-                                    </div>
-                                      <!-- /.modal-content -->
-                                  </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
+                                <?php
+                                    include_once('./modals/abmpersona.php');
+                                ?>
+
                                 <!-- FIN MODAL PERSONA -->
                                 
-                                <!-- MODAL VER PERSONA -->
-                                <div class="modal fade" id="modal-ver-persona">
-                                  <div class="modal-dialog">
-                                    <div class="modal-content">
-                                      <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal"
-                                              aria-label="Close">
-                                              <span aria-hidden="true">&times;</span></button>
-                                          <h2 class="modal-title">Ver Persona</h2>
-                                      </div>
-                                      <div class="modal-body">
-                                          <!-- form start -->
-                                          <form method="post" role="form" action="">
-                                              <div class="box-body">
-                                                  <div class="form-group">
-                                                      <label for="id_persona">#</label>
-                                                      <input type="text" class="form-control" name="id_persona" id="txtid" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="legajo">Legajo</label>
-                                                      <input type="text" class="form-control" name="legajo" id="txtlegajo" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="nombre">Nombre</label>
-                                                      <input type="text" class="form-control" name="nombre" id="txtnombre" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="apellido">Apellido</label>
-                                                      <input type="text" class="form-control" name="apellido" id="txtapellido" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="email">Dirección E-mail</label>
-                                                      <input type="text" class="form-control" name="email" id="txtemail" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="contacto">Contacto</label>
-                                                      <input type="text" class="form-control" name="contacto" id="txtcontacto" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="cargo">Cargo</label>
-                                                      <input type="text" class="form-control" name="cargo" id="txtcargo" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label>Gerencia</label>
-                                                      <input type="text" class="form-control" name="gerencia" id="txtgerencia" value="" readonly>
-                                                  </div>
-                                                  <div class="form-group" id="grupoverdiv">
-                                                      <label>Grupo</label>
-                                                      <input type="text" class="form-control" name="grupo" id="txtgrupo" value="" readonly>
-                                                  </div>
-                                                  <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cerrar</button>
-                                                  </div>	
-                                              </div>
-                                          </form>
-                                      </div>
-                                    </div>
-                                      <!-- /.modal-content -->
-                                  </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
-                                <!-- FIN MODAL PERSONA -->
                                 <!-- FIN TAB PERSONA -->
+
+                                <!-- TAB ESTRUCTURA -->
+                                <div class="tab-pane" id="tab_3">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="box">
+                                                <div class="box-header">
+                                                    <h3 class="box-title">Gerencias</h3>
+                                                    <a class="btn text-right" id='modal-abm-gerencia-btn-alta'><i class="glyphicon glyphicon-plus-sign" title="Agregar gerencia"style="color:green; font-size: 20px;"></i></a>
+                                                </div>
+                                                <div class="box-body no-padding">
+                                                    <table class="table table-hover display" id="tbgerencias">
+                                                        <thead>
+                                                            <tr>
+                                                            <th>ID</th>
+                                                            <th>Sigla</th>
+                                                            <th>Responsable</th>
+                                                            <th>Nombre</th>
+                                                            <th>Gerente</th>
+                                                            <th style="width: 40px; text-align: center"><i class="glyphicon glyphicon-flash"></i></th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <!-- /.box-body -->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="box">
+                                                <div class="box-header">
+                                                    <h3 class="box-title">Sub Gerencias</h3>
+                                                    <a class="btn text-right" id="modal-abm-subgerencia-btn-alta"><i class="glyphicon glyphicon-plus-sign" title="Agregar gerencia"style="color:green; font-size: 20px;"></i></a>
+                                                </div>
+                                                <div class="box-body no-padding">
+                                                    <table class="table table-hover display" id="tbsubgerencias">
+                                                        <thead>
+                                                            <tr>
+                                                            <th>ID</th>
+                                                            <th>Sigla</th>
+                                                            <th>Responsable</th>
+                                                            <th>Nombre</th>
+                                                            <th>Sub Gerente</th>
+                                                            <th style="width: 40px; text-align: center"><i class="glyphicon glyphicon-flash"></i></th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <!-- /.box-body -->
+                                            </div>                                            
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="box">
+                                                <div class="box-header">
+                                                    <h3 class="box-title">Areas</h3>
+                                                    <a class="btn text-right" id="modal-abm-area-btn-alta"><i class="glyphicon glyphicon-plus-sign" title="Agregar área"style="color:green; font-size: 20px;"></i></a>
+                                                </div>
+                                                <div class="box-body no-padding">
+                                                    <table class="table table-hover display" id="tbareas">
+                                                        <thead>
+                                                            <tr>
+                                                            <th>ID</th>
+                                                            <th>Sigla</th>
+                                                            <th>Responsable</th>
+                                                            <th>Nombre</th>
+                                                            <th>Responsable</th>
+                                                            <th style="width: 40px; text-align: center"><i class="glyphicon glyphicon-flash"></i></th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <!-- /.box-body -->
+                                            </div>                                            
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- MODAL ABM GERENCIA -->
+                                <?php 
+                                    include_once('./modals/abmgerencia.php'); 
+                                    include_once('./modals/abmsubgerencia.php'); 
+                                    include_once('./modals/abmarea.php'); 
+                                ?>
+                                <!-- FIN MODAL ABM GERENCIAS -->                                
+                                <!-- FIN TAB ESRUCTURA -->
 
                                 <!-- TAB LOG -->
                                 <div class="tab-pane" id="tab_2">
@@ -749,6 +699,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="../bower_components/fastclick/lib/fastclick.js"></script>
     <!-- AdminLTE App -->
     <script src="../dist/js/adminlte.min.js"></script>
+    <!-- MODAL ABM GERENCIAS  -->
+    <script src="./modals/abmestructura.js"></script>
+    <script src="./modals/abmpersona.js"></script>
 
     <!--
 <script src="../bower_components/datatables.net/js/jszip.min.js"></script>
@@ -759,8 +712,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/buttons.flash.min.js"></script>
 <script src="../bower_components/datatables.net/js/dataTables.buttons.min.js"></script>
  -->
-
-
+    
     <script>
     window.onload = function() {
         history.replaceState("", "", "admin.php");
@@ -802,44 +754,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         })
     })
     </script>
-<script>
-    $(function() {
-      function populateGroups(id_gerencia) {
-          //Limpio los grupos
-          $("#gruposelector").empty().append('<option selected="selected" value="0">Ninguno</option>');
-          //Populo los grupos
-          $.ajax({
-              type: 'POST',
-              url: './helpers/getAsyncDataFromDB.php',
-              data: { query: 'SELECT * FROM grupo WHERE id_gerencia =' + id_gerencia + ' ORDER BY nombre ASC;' },
-              dataType: 'json',
-              success: function(json) {
 
-                console.log(json)
-                console.log("data" in json)
-                if ("data" in json == true) {
-                    // Use jQuery's each to iterate over the opts value
-                    $.each(json.data, function(i, d) {
-                        // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
-                        $('#gruposelector').append('<option value="' + d.id_grupo + '">' + d.nombre + '</option>');
-                    });
-                }
-              },
-              error: function(xhr, status, error) {
-                  alert(xhr.responseText, error);
-              }
-          });
-      }
-
-      //Seto el trigger si la gerencia cambia 
-      $('#gerenciaselector').on('change', function() {
-        populateGroups($("#gerenciaselector").val());
-      });      
-
-      // disparo el cambio en el load;
-      populateGroups($("#gerenciaselector").val());
-    });
-</script>
 
     <script>
         $(function(){
@@ -863,6 +778,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
 </script>
     <script>
+
     function updatePerm(perm, id_permiso) {
 
         var datap = perm;
@@ -886,6 +802,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
-</body>
+    </body>
 
 </html>

@@ -9,6 +9,27 @@
     - Se corrige orden de columnas servicios housing. Organismos->cliente
     M[pages/sdc_housing.php]
     
+## FEAT-CALENDAR
+
+### Adaptación caliendario de guardias para nuevas gerencias/areas
+
+*Fecha:* 2019-05-20
+*Cambios:*
+- Corrigo seleccion personas filtro borrado
+    - M[pages/calendario.php]
+- Agrego ABM de estructura de gerencia, subgerencia y área a la DB y personas
+    - M[pages/admin.php]
+    - N[helpers/*.php]
+    - N[modals/*.php]
+
+- Agrego los campos id_subgerencia, id_area a tabla de Persona. Modifico ABM
+
+
+- TODO BAJA Estructura (Ver si posee personas asociadas)
+    - Poner cantidad de subelementos en la grilla
+    - Poner boton de baja en grillas
+    - Mostar aviso de resultado de operación al cerrar el modal
+    - Ver tema de auditoría
 ## FEAT-PROY-AIND
 
 ### Vista global de indicadores para proyectos.
@@ -610,6 +631,7 @@ En vez de por área por responsable
 
 >>>>>>> devel
 ## FIX-PROD
+>>>>>>> devel
 - Se crea página para mostrar el calendario anual de los cntroles
     N[cal_controles.php]
 - Agrego el link en controles.php
