@@ -730,13 +730,13 @@ desired effect
                           
                           echo '
                           <td align="center">
-                          <a href="edit_mejora.php?nik='.$row['id_mejora'].'&ref='.$no.'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-                          <a href="mejoras.php?aksi=delete&nik='.$row['id_mejora'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['descripcion'].'?\')" class="btn btn-danger btn-sm ';
-                                        if ($rq_sec['edicion']=='0'){
-                                                echo 'disabled';
-                                        }
-                                        echo '"><i class="glyphicon glyphicon-trash"></i></a>
-                          </td>
+                          <a href="edit_mejora.php?nik='.$row['id_mejora'].'&ref='.$no.'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                          // <a href="mejoras.php?aksi=delete&nik='.$row['id_mejora'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['descripcion'].'?\')" class="btn btn-danger btn-sm ';
+                          //               if ($rq_sec['edicion']=='0'){
+                          //                       echo 'disabled';
+                          //               }
+                          //               echo '"><i class="glyphicon glyphicon-trash"></i></a>
+                          echo '</td>
                           </tr>
                           ';
                           $no++;

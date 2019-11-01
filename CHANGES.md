@@ -1,5 +1,11 @@
 # CHANGES
 
+## FIX-VARIAS
+*Fecha:* 2019-11-01
+*Cambios:*
+    - Sacar el botón de borrar en mejora
+    M[pages/mejoras.php]
+
 ## FIX-HOUSING
 
 ### Se corrige orden de columnas servicios housing.
