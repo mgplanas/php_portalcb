@@ -1,5 +1,14 @@
 # CHANGES
 
+## FEAT-PROY-MEJORAS
+
+### Cambios a proyectos solicitados por DC.
+
+*Fecha:* 2019-11-04
+*Cambios:*
+    - Agregar estado Cancelado
+
+
 ## FIX-HOUSING
 
 ### Se corrige orden de columnas servicios housing.

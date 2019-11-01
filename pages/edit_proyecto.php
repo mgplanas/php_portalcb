@@ -317,6 +317,9 @@ desired effect
                                     else if ($row['estado'] == '4' ){
                                         echo '<input type="text" readonly class="form-control" name="porcentaje" value="Completada">';
                                     } 
+                                    else if ($row['estado'] == '5' ){
+                                        echo '<input type="text" readonly class="form-control" name="porcentaje" value="Cancelada">';
+                                    } 
                                 ?>
                             </div>
                          </div>
@@ -448,6 +451,7 @@ desired effect
                                     <option value='2'<?php if($rowmp['estado'] == '2'){ echo 'selected'; } ?>>En Curso</option>
                                     <option value='3'<?php if($rowmp['estado'] == '3'){ echo 'selected'; } ?>>Aplazada</option>
                                     <option value='4'<?php if($rowmp['estado'] == '4'){ echo 'selected'; } ?>>Completada</option>
+                                    <option value='5'<?php if($rowmp['estado'] == '5'){ echo 'selected'; } ?>>Cancelada</option>
                                 </select>
                             </div>
                          </div>

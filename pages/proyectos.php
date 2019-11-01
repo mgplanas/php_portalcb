@@ -322,6 +322,9 @@ desired effect
                                   else if ($row['estado'] == '4' ){
                                       echo '<td><span class="label label-success">Completada</span></td>';
                                   } 
+                                  else if ($row['estado'] == '5' ){
+                                      echo '<td><span class="label label-danger">Cancelada</span></td>';
+                                  } 
 
                                   echo '<td>
                                       <div class="progress progress-xs">
@@ -502,7 +505,9 @@ desired effect
                                     else if ($row['estado'] == '4' ){
                                         echo '<td><span class="label label-success">Completada</span></td>';
                                     } 
-
+                                    else if ($row['estado'] == '5' ){
+                                      echo '<td><span class="label label-danger">Cancelada</span></td>';
+                                    } 
                                     echo '<td>
                                         <div class="progress progress-xs">
                                             <div class="progress-bar progress-bar-';
@@ -702,7 +707,9 @@ desired effect
                                     else if ($row['estado'] == '4' ){
                                         echo '<td><span class="label label-success">Completada</span></td>';
                                     } 
-
+                                    else if ($row['estado'] == '5' ){
+                                      echo '<td><span class="label label-danger">Cancelada</span></td>';
+                                    } 
                                     echo '<td>
                                         <div class="progress progress-xs">
                                             <div class="progress-bar progress-bar-';
@@ -900,7 +907,9 @@ desired effect
                                   else if ($row['estado'] == '4' ){
                                       echo '<td><span class="label label-success">Completada</span></td>';
                                   } 
-
+                                  else if ($row['estado'] == '5' ){
+                                    echo '<td><span class="label label-danger">Cancelada</span></td>';
+                                  } 
                                   echo '<td>
                                       <div class="progress progress-xs">
                                           <div class="progress-bar progress-bar-';
