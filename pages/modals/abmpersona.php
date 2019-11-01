@@ -90,7 +90,7 @@
                     </div>
                     <div class="form-group" id="modal-abm-persona-grupo-div">
                         <label>Grupo</label>
-                        <select id="modal-abm-persona-grupo" name="grupo" class="form-control" id="gruposelector">
+                        <select id="modal-abm-persona-grupo" name="grupo" class="form-control">
                         </select>
                     </div>
                     <div class="form-group">

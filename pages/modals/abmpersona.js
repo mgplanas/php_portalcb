@@ -18,11 +18,11 @@ $(function() {
                 $.each(response.data, function() {
                     if (selectedValue && selectedValue == this.id_gerencia) {
                         ddlGerencias.append($("<option />").val(this.id_gerencia).text(this.nombre).attr('selected', 'selected'));
-                        if (idgerencia == 1) {
-                            $('#modal-abm-persona-grupo-div').show();
-                        } else {
-                            $('#modal-abm-persona-grupo-div').hide();
-                        }
+                        // if (idgerencia == 1) {
+                        //     $('#modal-abm-persona-grupo-div').show();
+                        // } else {
+                        //     $('#modal-abm-persona-grupo-div').hide();
+                        // }
                     } else {
                         ddlGerencias.append($("<option />").val(this.id_gerencia).text(this.nombre));
                     }
@@ -118,10 +118,10 @@ $(function() {
     ddlGerencias.on('change', function() {
         let idgerencia = $('option:selected', this).val();
         refreshSubGerencias(idgerencia);
-        if (idgerencia == 1)
-            $('#modal-abm-persona-grupo-div').show();
-        else
-            $('#modal-abm-persona-grupo-div').hide();
+        // if (idgerencia == 1)
+        //     $('#modal-abm-persona-grupo-div').show();
+        // else
+        //     $('#modal-abm-persona-grupo-div').hide();
     });
     ddlSubGerencias.on('change', function() {
         refreshAreas($('option:selected', this).val());
@@ -135,7 +135,7 @@ $(function() {
         $('#modal-abm-persona-email').val('');
         $('#modal-abm-persona-contacto').val('');
         $('#modal-abm-persona-cargo').val('');
-        $('#modal-abm-persona-grupo-div').hide();
+        // $('#modal-abm-persona-grupo-div').hide();
 
         ddlGerencias.val('first').change();
     }
@@ -170,6 +170,40 @@ $(function() {
         $("#modal-abm-persona").modal("show");
     });
 
+    function populateGroups(id_gerencia) {
+        //Limpio los grupos
+        $("#modal-abm-persona-grupo").empty().append('<option selected="selected" value="0">Ninguno</option>');
+        //Populo los grupos
+        $.ajax({
+            type: 'POST',
+            url: './helpers/getAsyncDataFromDB.php',
+            data: { query: 'SELECT * FROM grupo WHERE id_gerencia =' + id_gerencia + ' ORDER BY nombre ASC;' },
+            dataType: 'json',
+            success: function(json) {
+
+                console.log(json)
+                console.log("data" in json)
+                if ("data" in json == true) {
+                    // Use jQuery's each to iterate over the opts value
+                    $.each(json.data, function(i, d) {
+                        // You will need to alter the below to get the right values from your json object.  Guessing that d.id / d.modelName are columns in your carModels data
+                        $('#modal-abm-persona-grupo').append('<option value="' + d.id_grupo + '">' + d.nombre + '</option>');
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                alert(xhr.responseText, error);
+            }
+        });
+    }
+
+    //Seto el trigger si la gerencia cambia 
+    $('#modal-abm-persona-gerencia').on('change', function() {
+        populateGroups($("#modal-abm-persona-gerencia").val());
+    });
+
+    // disparo el cambio en el load;
+    populateGroups($("#modal-abm-persona-gerencia").val());
 
     refreshGerencias();
 });
