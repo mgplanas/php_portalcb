@@ -1013,334 +1013,117 @@ desired effect
                 <!-- /.box -->
               </div>
               <div class="tab-pane" id="tab_5">
+                <?php if ($rq_sec['admin']=='1'){ ?>
                   <div class="row">
-                      <div class="col-lg-3 col-xs-6">
-                        <!-- small box -->
-                        <div class="small-box bg-red">
-                          <div class="inner">
-                            <h3><?php
-                                      $query_count_vencidas = "SELECT y.due_date FROM proyecto as y
-                                                              INNER JOIN persona as p ON y.responsable = p.id_persona
-                                                              WHERE y.borrado='0' AND (y.estado='1' OR y.estado='2') AND p.borrado = '0'
-                                                              AND ( p.gerencia = $per_id_gerencia )";
-                                                              // AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
-                                      $count_vencidas = mysqli_query($con, $query_count_vencidas);
-                                
-                                      $day=date("d");
-                                      $month=date("m");
-                                      $year=date("Y");
-                                      $countv = 0;
-                                
-                                      while($rowcv = mysqli_fetch_array($count_vencidas)){
-                                        if ($rowcv['due_date']) {
-                                          $due = explode("/", $rowcv['due_date']);
-                                          $due_d = $due[0];
-                                          $due_m = $due[1];
-                                          $due_y = $due[2];
-                                          
-
-                                          $dayofy = (($month * 30)+($day));
-                                          $dayofdue = (($due_m * 30)+($due_d));
-                                          
-                                            if ($due_y <= $year){
-                                              if ($dayofy > $dayofdue){
-                                                  $countv++; }
-                                              }
-                                        } 
-                                      }
-                                      echo '
-                                      <td> ' . $countv . ' </td>
-                                      <td>';
-                                      ?></h3>
-
-                            <p>Proyectos vencidos</p>
-                          </div>
-                          <div class="icon">
-                            <i class="fa fa-thumbs-down"></i>
-                          </div>
-                          <a class="small-box-footer"><?php $pv=($rowtp > 0 ? round((($countv) * 100) / ($rowtp), PHP_ROUND_HALF_UP): 0); echo $pv . " % del total de los proyectos"; ?></a>
+                    <div class="col-md-12">
+                      <form role="form" class="form-inline">
+                        <div class="form-group" style="margin-right: 10px;">
+                            <label for="ddlGerencias">Gerenecia:</label>
+                            <select name="ddlGerencias" class="form-control" id="ddlGerencias">
+                              <option value="0">Todas</option>
+                            </select>
                         </div>
-                      </div>
+                      </form>
+                      <br>
+                    </div>
+                  </div>
+                <?php } else { ?>
+                  <input type="hidden" id="ddlGerencias" name="ddlGerencias" value="<?=$per_id_gerencia ?>">
+                <?php } ?>
+              <div class="row">
                     <div class="col-lg-3 col-xs-6">
                       <!-- small box -->
-                      <div class="small-box bg-orange">
+                      <div class="small-box bg-red">
                         <div class="inner">
-                          <h3><?php
-                                    $query_count_no = "SELECT 1 as total 
-                                                      FROM proyecto as y
-                                                      INNER JOIN persona as p ON y.responsable = p.id_persona
-                                                      WHERE y.borrado='0' AND p.borrado = '0'
-                                                      AND y.estado='1' 
-                                                      AND ( p.gerencia = $per_id_gerencia )";
-                                                      // AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
-                                    $count_no = mysqli_query($con, $query_count_no);
-
-                                    echo '
-                                    <td> ' . mysqli_num_rows($count_no) . ' </td>
-                                    <td>';
-                                    ?></h3>
-
-                          <p>Proyectos NO iniciados</p>
+                          <h3 id="pry_tot_vencidos">0</h3>
+                          <p>Proyectos vencidos</p>
                         </div>
                         <div class="icon">
                           <i class="fa fa-thumbs-down"></i>
                         </div>
-                      <a class="small-box-footer"><?php $pno=($rowtp > 0 ? round((((mysqli_num_rows($count_no)) * 100) / $rowtp), PHP_ROUND_HALF_UP):0); echo $pno . " % del total de los proyectos"; ?></a>
+                        <a class="small-box-footer" id="pry_tot_vencidos_per">0 % del total de los proyectos</a>
                       </div>
                     </div>
-                    <div class="col-lg-3 col-xs-6">
-                      <!-- small box -->
-                      <div class="small-box bg-blue">
-                        <div class="inner">
-                          <h3><?php
-                                    $query_count_si = "SELECT 1 as total 
-                                    FROM proyecto as y 
-                                    INNER JOIN persona as p ON y.responsable = p.id_persona
-                                    WHERE y.borrado='0' AND p.borrado = '0'
-                                    AND y.estado='2' 
-                                    AND ( p.gerencia = $per_id_gerencia )";
-                                    // AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
-                                    $count_si = mysqli_query($con, $query_count_si);
-
-                                    echo '
-                                    <td> ' . mysqli_num_rows($count_si) . ' </td>
-                                    <td>';
-                                    ?></h3>
-
-                          <p>Proyectos en curso</p>
-                        </div>
-                        <div class="icon">
-                          <i class="fa fa-gears"></i>
-                        </div>
-                      <a class="small-box-footer"><?php $psi=($rowtp > 0 ? round(((mysqli_num_rows($count_si)) * 100) / ($rowtp), PHP_ROUND_HALF_UP):0); echo $psi . " % del total de los proyectos"; ?></a>
+                  <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-orange">
+                      <div class="inner">
+                        <h3 id="pry_tot_no_iniciados">0</h3>
+                        <p>Proyectos NO iniciados</p>
                       </div>
-                    </div>
-                    <div class="col-lg-3 col-xs-6">
-                      <!-- small box -->
-                      <div class="small-box bg-green">
-                        <div class="inner">
-                          <h3><?php
-                                    $query_count_comp = "SELECT 1 as total 
-                                                          FROM proyecto as y 
-                                                          INNER JOIN persona as p ON y.responsable = p.id_persona
-                                                          WHERE y.borrado='0' AND estado='4' AND p.borrado = '0' 
-                                                          AND ( p.gerencia = $per_id_gerencia )";
-                                                          // AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )";
-                                    $count_comp = mysqli_query($con, $query_count_comp);
-
-                                    echo '
-                                    <td> ' . mysqli_num_rows($count_comp) . ' </td>
-                                    <td>';
-                                    ?></h3>
-                        <p>Proyectos Completados</p>
-                        </div>
-                        <div class="icon">
-                          <i class="fa fa-thumbs-up"></i>
-                        </div>
-                      <a class="small-box-footer"><?php $psi=($rowtp > 0 ? round(((mysqli_num_rows($count_comp)) * 100) / ($rowtp), PHP_ROUND_HALF_UP):0); echo $psi . " % del total de los proyectos"; ?></a>
+                      <div class="icon">
+                        <i class="fa fa-thumbs-down"></i>
                       </div>
+                    <a class="small-box-footer" id="pry_tot_no_iniciados_per">0 % del total de los proyectos</a>
                     </div>
                   </div>
-                  <div class="row">
-                      <div class="col-md-6 col-xs-6">
-                          <div class="box box-primary">
-                              <div class="box-header with-border">
-                                <h3 class="box-title">Asignación de proyectos</h3>
-
-                                <div class="box-tools pull-right">
-                                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                  </button>
-                                  
-                                </div>
-                              </div>
-                              <div class="box-body">
-                                <div class="chart">
-                                  <canvas id="graphCanvas1" style="height:300px"></canvas>
-                                  <script>
-                                      $(document).ready(function () {
-                                          showGraph1();
-                                      });
-
-
-                                      function showGraph1()
-                                      {
-                                          {
-                                              $.post("getProyResp.php", {id_gerencia: "<?=$per_id_gerencia ?>"},
-                                              function (data1)
-                                              {
-                                                  var name1 = [];
-                                                  var marks = [];
-                                                  
-                                                  parsedData1 = JSON.parse(data1);
-                                                  
-                                                  for (var i in parsedData1) {
-                                                      name1.push(parsedData1[i].persona);
-                                                      marks.push(parsedData1[i].total);
-                                                  }
-                                                  console.log(name1);
-                                                  
-                                                  var chartdata1 = {
-                                                      labels: name1,
-                                                      datasets: [
-                                                          {
-                                                              label: 'Proyectos',
-                                                              backgroundColor: '#003366',
-                                                              borderColor: '#003366',
-                                                              hoverBackgroundColor: '#CCCCCC',
-                                                              hoverBorderColor: '#666666',
-                                                              data: marks
-                                                          }
-                                                      ]
-                                                  };
-                                                  
-                                                  var options1 = {
-                                                      responsive: true,
-                                                      title: {
-                                                          display: false,
-                                                          position: "top",
-                                                          text: "Bar Graph",
-                                                          fontSize: 18,
-                                                          fontColor: "#111"
-                                                      },
-                                                      legend: {
-                                                          display: false,
-                                                          position: "bottom",
-                                                          labels: {
-                                                              fontColor: "#333",
-                                                              fontSize: 16
-                                                          }
-                                                      },
-                                                      scales: {
-                                                          yAxes: [{
-                                                              ticks: {
-                                                                  min: 0
-                                                              }
-                                                          }]
-                                                      }
-                                                  };
-
-                                                  var graphTarget1 = $("#graphCanvas1");
-
-                                                  var barGraph1 = new Chart(graphTarget1, {
-                                                      type: 'bar',
-                                                      data: chartdata1,
-                                                      options: options1
-                                                  });
-                                              });
-                                          }
-                                      } 
-                                  </script>  
-                              </div>
-                              </div>
-                      
-                          </div> 
+                  <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-blue">
+                      <div class="inner">
+                        <h3 id="pry_tot_en_curso">0</h3>
+                        <p>Proyectos en curso</p>
                       </div>
-                      <div class="col-md-6 col-xs-6">
-                          <div class="box box-primary">
-                              <div class="box-header with-border">
-                                <h3 class="box-title">Estado de proyectos</h3>
-
-                                <div class="box-tools pull-right">
-                                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                  </button>
-                                  
-                                </div>
-                              </div>
-                              <div class="box-body">
-                                <div class="chart">
-                                  <canvas id="graphCanvas2" style="height:300px"></canvas>
-                                  <script>
-                                      $(document).ready(function () {
-                                          showGraph();
-                                      });
-
-
-                                      function showGraph()
-                                      {
-                                          {
-                                              $.post("getProyRespStat.php", {id_gerencia: "<?=$per_id_gerencia ?>"},
-                                              function (data)
-                                              {
-                                                  var name = [];
-                                                  var data1 = [];
-                                                  var data2 = [];
-                                                  var data3 = [];
-                                                  var data4 = [];
-                                                  
-                                                  parsedData = JSON.parse(data);
-                                                  
-                                                  for (var i in parsedData) {
-                                                      name.push(parsedData[i].persona);
-                                                      data1.push(parsedData[i].completado);
-                                                      data2.push(parsedData[i].aplazado);
-                                                      data3.push(parsedData[i].en_curso);
-                                                      data4.push(parsedData[i].no_iniciado);
-                                                  }
-                                                  var chartdata = {
-                                                      labels: name,
-                                                      datasets: [
-                                                        {
-                                                              label: 'Completado',
-                                                              data: data1,
-                                                              backgroundColor: '#009933'
-                                                            },
-                                                          {
-                                                              label: 'En Curso',
-                                                              data: data3,
-                                                              backgroundColor: '#3366ff'
-                                                          },
-                                                          {
-                                                              label: 'Aplazado',
-                                                              data: data2,
-                                                              backgroundColor: '#cc0000'
-                                                          },
-                                                          {
-                                                              label: 'No Iniciado',
-                                                              data: data4,
-                                                              backgroundColor: '#ff9900'
-                                                          }
-                                                      ]
-                                                  };
-                                                  var options = {
-                                                      responsive: true,
-                                                      title: {
-                                                          display: false,
-                                                          position: "top",
-                                                          text: "Bar Graph",
-                                                          fontSize: 18,
-                                                          fontColor: "#111"
-                                                      },
-                                                      legend: {
-                                                          display: true,
-                                                          position: "top",
-                                                          labels: {
-                                                              fontColor: "#333",
-                                                              fontSize: 16
-                                                          }
-                                                      },
-                                                      scales: {
-                                                              xAxes: [{ stacked: true }],
-                                                              yAxes: [{ stacked: true }]
-                                                            }
-                                                  };
-
-                                                  var graphTarget = $("#graphCanvas2");
-
-                                                  var barGraph = new Chart(graphTarget, {
-                                                      type: 'bar',
-                                                      data: chartdata,
-                                                      options: options
-                                                  });
-                                              });
-                                          }
-                                      } 
-                                  </script>  
-                              </div>
-                              </div>
-                      
-                          </div> 
+                      <div class="icon">
+                        <i class="fa fa-gears"></i>
                       </div>
+                    <a class="small-box-footer" id="pry_tot_en_curso_per">0 % del total de los proyectos</a>
+                    </div>
                   </div>
+                  <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                      <div class="inner">
+                        <h3 id="pry_tot_completos">0</h3>
+                      <p>Proyectos Completados</p>
+                      </div>
+                      <div class="icon">
+                        <i class="fa fa-thumbs-up"></i>
+                      </div>
+                    <a class="small-box-footer" id="pry_tot_completos_per">0 % del total de los proyectos</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xs-6">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                              <h3 class="box-title">Asignación de proyectos</h3>
+
+                              <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                
+                              </div>
+                            </div>
+                            <div class="box-body">
+                              <div class="chart">
+                                <canvas id="chart_asignacion" style="height:300px"></canvas>
+                            </div>
+                            </div>
+                    
+                        </div> 
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                              <h3 class="box-title">Estado de proyectos</h3>
+
+                              <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                
+                              </div>
+                            </div>
+                            <div class="box-body">
+                              <div class="chart">
+                                <canvas id="chart_estado" style="height:300px"></canvas>
+                            </div>
+                            </div>
+                    
+                        </div> 
+                    </div>
+                </div>
               </div>
           <!-- /.box -->
         </div>
@@ -1811,6 +1594,233 @@ if (selectedTab != null) {
     $('a[data-toggle="tab"][href="' + selectedTab + '"]').tab('show');
 }
 </script>
+<script>
+  $(function () {
 
+    var chart_asignacion = null;
+    var chart_estado = null;
+
+    // Populo gerencias
+    function fn_popular_gerencias(){
+      // Busco el servicio
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          // data: { query: "select id_gerencia, nombre FROM gerencia where borrado = 0 ORDER BY nombre" },
+          data: { query: "select g.id_gerencia, g.nombre FROM gerencia as g where g.borrado = 0 AND EXISTS (SELECT i.id_proyecto FROM proyecto as i LEFT JOIN persona as p on i.responsable = p.id_persona WHERE p.gerencia = g.id_gerencia) ORDER BY nombre" },
+          dataType: 'json',
+          success: function(json) {
+              $("#ddlGerencias").empty().append('<option selected="selected" value="0">Todas</option>');
+              if ("data" in json == true) {
+                  $.each(json.data, function(i, d) {
+                    $('#ddlGerencias').append('<option value="' + d.id_gerencia + '">' + d.nombre + '</option>');
+                  });
+                  //fn_update_metricas($('#ddlFechaApertura').val(), $('#ddlAnio').val())   
+              }
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+      });
+    }
+
+    // Funcion que actualiza todos los gráficos
+    function fn_update_metricas(gerencia){
+      console.log(gerencia);
+      fn_ShowKPI_totales(gerencia);
+      fn_ShowKPI_asignacion(gerencia);
+      fn_ShowKPI_estado(gerencia);
+    }
+    
+    function fn_ShowKPI_totales(gerencia){
+      // consulta de datos
+      query = "SELECT COUNT(IF( (y.estado='1' OR y.estado='2') AND (DATEDIFF(str_to_date(y.due_date, '%d/%m/%Y'),NOW())<0) ,1,null)) as vencidos ";
+      query = query + ",COUNT(IF( y.estado='1',1,null)) as no_iniciados ";
+      query = query + ",COUNT(IF( y.estado='2',1,null)) as en_curso ";
+      query = query + ",COUNT(IF( y.estado='4',1,null)) as completos";
+      query = query + ",COUNT(1) as total ";
+      query = query + "FROM proyecto as y INNER JOIN persona as p ON y.responsable = p.id_persona WHERE y.borrado='0' AND p.borrado = '0' AND ( 0 = " + gerencia + " OR p.gerencia = " + gerencia + " );";
+ 
+      // Busco datos indicadores storage
+      $.ajax({
+          type: 'POST',
+          url: './helpers/getAsyncDataFromDB.php',
+          data: { query: query },
+          dataType: 'json',
+          success: function(json) {
+              let item = json.data[0];
+              console.log(item);
+              $('#pry_tot_vencidos').html(item.vencidos);
+              $('#pry_tot_vencidos_per').html((item.total>0 ? (item.vencidos / item.total * 100).toFixed(2) + " % del total de los proyectos": 0));
+              $('#pry_tot_no_iniciados').html(item.no_iniciados);
+              $('#pry_tot_no_iniciados_per').html((item.total>0 ? (item.no_iniciados / item.total * 100).toFixed(2) + " % del total de los proyectos": 0));
+              $('#pry_tot_en_curso').html(item.en_curso);
+              $('#pry_tot_en_curso_per').html((item.total>0 ? (item.en_curso / item.total * 100).toFixed(2) + " % del total de los proyectos": 0));
+              $('#pry_tot_completos').html(item.completos);
+              $('#pry_tot_completos_per').html((item.total>0 ? (item.completos / item.total * 100).toFixed(2) + " % del total de los proyectos": 0));
+          },
+          error: function(xhr, status, error) {
+              alert(xhr.responseText, error);
+          }
+
+       });
+    }
+    // GRAFICO Asigandos
+    function fn_ShowKPI_asignacion(gerencia) {
+      if (chart_asignacion !=null) {
+        chart_asignacion.destroy();
+      }      
+      $.post("getProyResp.php", {id_gerencia: gerencia}, function (data1) {
+          var name1 = [];
+          var marks = [];
+          
+          parsedData1 = JSON.parse(data1);
+          
+          for (var i in parsedData1) {
+              name1.push(parsedData1[i].persona);
+              marks.push(parsedData1[i].total);
+          }
+          
+          var chartdata1 = {
+              labels: name1,
+              datasets: [
+                  {
+                      label: 'Proyectos',
+                      backgroundColor: '#003366',
+                      borderColor: '#003366',
+                      hoverBackgroundColor: '#CCCCCC',
+                      hoverBorderColor: '#666666',
+                      data: marks
+                  }
+              ]
+          };
+          
+          var options1 = {
+              responsive: true,
+              title: {
+                  display: false,
+                  position: "top",
+                  text: "Bar Graph",
+                  fontSize: 18,
+                  fontColor: "#111"
+              },
+              legend: {
+                  display: false,
+                  position: "bottom",
+                  labels: {
+                      fontColor: "#333",
+                      fontSize: 16
+                  }
+              },
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          min: 0
+                      }
+                  }]
+              }
+          };
+
+          var graphTarget1 = $("#chart_asignacion");
+
+          chart_asignacion = new Chart(graphTarget1, {
+              type: 'bar',
+              data: chartdata1,
+              options: options1
+          });
+      });
+    } 
+    // GRAFICO Estado
+    function fn_ShowKPI_estado(gerencia) {
+      if (chart_estado !=null) {
+        chart_estado.destroy();
+      }      
+      $.post("getProyRespStat.php", {id_gerencia: gerencia}, function (data) {
+          var name = [];
+          var data1 = [];
+          var data2 = [];
+          var data3 = [];
+          var data4 = [];
+          
+          parsedData = JSON.parse(data);
+          
+          for (var i in parsedData) {
+              name.push(parsedData[i].persona);
+              data1.push(parsedData[i].completado);
+              data2.push(parsedData[i].aplazado);
+              data3.push(parsedData[i].en_curso);
+              data4.push(parsedData[i].no_iniciado);
+          }
+          var chartdata = {
+              labels: name,
+              datasets: [
+                {
+                      label: 'Completado',
+                      data: data1,
+                      backgroundColor: '#009933'
+                    },
+                  {
+                      label: 'En Curso',
+                      data: data3,
+                      backgroundColor: '#3366ff'
+                  },
+                  {
+                      label: 'Aplazado',
+                      data: data2,
+                      backgroundColor: '#cc0000'
+                  },
+                  {
+                      label: 'No Iniciado',
+                      data: data4,
+                      backgroundColor: '#ff9900'
+                  }
+              ]
+          };
+          var options = {
+              responsive: true,
+              title: {
+                  display: false,
+                  position: "top",
+                  text: "Bar Graph",
+                  fontSize: 18,
+                  fontColor: "#111"
+              },
+              legend: {
+                  display: true,
+                  position: "top",
+                  labels: {
+                      fontColor: "#333",
+                      fontSize: 16
+                  }
+              },
+              scales: {
+                      xAxes: [{ stacked: true }],
+                      yAxes: [{ stacked: true }]
+                    }
+          };
+
+          var graphTarget = $("#chart_estado");
+
+          chart_estado = new Chart(graphTarget, {
+              type: 'bar',
+              data: chartdata,
+              options: options
+          });
+      });
+    }
+
+    // Cargo los años
+    fn_popular_gerencias(); 
+    
+    //Seto el trigger si la el anio cambia 
+    $('#ddlGerencias').on('change', function() {
+      fn_update_metricas($("#ddlGerencias").val());
+    });  
+
+    console.log($("#ddlGerencias").val());
+    // Aplico el filtro de todos
+    fn_update_metricas($("#ddlGerencias").val());
+  });
+</script>
 </body>
 </html>

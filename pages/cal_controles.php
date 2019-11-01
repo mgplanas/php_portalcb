@@ -461,19 +461,21 @@ desired effect
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                            $query = "SELECT  GER.nombre as nombre,
-                                                                            REF.mes,
-                                                                            COUNT(1) as cuenta,
-                                                                            MIN(REF.status) as estadoControl
-                                                                    FROM referencias as REF
-                                                                    INNER JOIN controles as CON ON REF.id_control = CON.id_control
-                                                                    LEFT JOIN persona AS RES ON CON.responsable = RES.id_persona
-                                                                    LEFT JOIN gerencia AS GER ON RES.gerencia = GER.id_gerencia
-                                                                    WHERE CON.ano = YEAR(NOW())
-                                                                    AND REF.borrado = 0
-                                                                    AND CON.borrado = 0 
-                                                                    AND ( 1 = $per_id_gerencia OR  RES.gerencia = $per_id_gerencia )
-                                                                    GROUP BY GER.nombre, REF.mes";
+                                                            $query = "SELECT gerencia as nombre, mes, COUNT(1) as cuenta, MAX(estadoControl) as estadoControl
+                                                            FROM (
+                                                              SELECT    REF.mes, 
+                                                                CASE WHEN REF.status <> 2 THEN 1 ELSE 2 END as estadoControl, 
+                                                                GER.nombre as gerencia
+                                                              FROM referencias as REF
+                                                              INNER JOIN controles as CON ON REF.id_control = CON.id_control
+                                                              LEFT JOIN persona AS RES ON CON.responsable = RES.id_persona
+                                                              LEFT JOIN gerencia AS GER ON RES.gerencia = GER.id_gerencia
+                                                              WHERE CON.ano = YEAR(NOW())
+                                                              AND REF.borrado = 0
+                                                              AND CON.borrado = 0 
+                                                              AND ( 1 = $per_id_gerencia OR  RES.gerencia = $per_id_gerencia )
+                                                              ) AS controles
+                                                            GROUP BY gerencia, mes";
                                                             $sql = mysqli_query($con, $query);
                                                             $allRows = mysqli_num_rows($sql);
                                                             if($allRows == 0) {

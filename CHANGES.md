@@ -21,6 +21,20 @@
     - Poner boton de baja en grillas
     - Mostar aviso de resultado de operación al cerrar el modal
     - Ver tema de auditoría
+## FEAT-PROY-AIND
+
+### Vista global de indicadores para proyectos.
+
+*Fecha:* 2019-10-03
+*Cambios:*
+    - Un Combo para filtar los indicadores por gerencia si es admin.
+    M[pages/proyectos.php]
+    - Paso la generacion de gráficos a dinámito ajax.
+    M[pages/proyectos.php]
+    - Actualizo las consultas de los gráficos de asignacion y estado de proyectos para que tomen todas las gerencias (=0).
+    M[pages/getProyResp.php]
+    M[pages/getProyRespStat.php]
+
 
 ## FEAT-CAL-RIESGOS
 
@@ -32,8 +46,12 @@
     M[pages/cal_riegos.php]
     - Se agregan las columnas de acumulado previo y posterior en el calendario de riesgos
     M[pages/cal_riegos.php]
+    - Se agregan las columnas de acumulado previo y posterior en el calendario de riesgos cerrados
+    M[pages/cal_riegos.php]
     - Se corrige el calendario de acumulado de controles
     M[pages/cal_controles.php]
+    - Cuando se cierra el riesgo mediante un avance planchar la fecha de vencimiento del riesgo
+    M[pages/edit_riesgo.php]
 
 ## FEAT-PROY-AVIEW
 

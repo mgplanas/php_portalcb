@@ -745,12 +745,13 @@ desired effect
                     if ($estado=="0") {
                       $justificacion = "";
                     }
-                    $update_riesgo = mysqli_query($con, "UPDATE riesgo 
-                                                         SET estado='$estado', 
-                                                             avance='$avance', 
-                                                             modificado=NOW() ,
-                                                             justificacion_cierre = '$justificacion' 
-										                                     WHERE id_riesgo='$nik'") or die(mysqli_error());	
+                    $query_upd_riesgo = "UPDATE riesgo SET estado='$estado', avance='$avance', modificado=NOW() , justificacion_cierre = '$justificacion'";
+                    if ($estado == "1") {
+                      $query_upd_riesgo = $query_upd_riesgo . ", vencimiento = DATE_FORMAT(NOW(), '%d/%m/%Y') ";
+                    } 
+                    $query_upd_riesgo = $query_upd_riesgo . "WHERE id_riesgo='$nik'";
+
+                    $update_riesgo = mysqli_query($con, $query_upd_riesgo) or die(mysqli_error());	
                     
                     
                     $lastInsert = mysqli_insert_id($con);
@@ -837,7 +838,11 @@ desired effect
                     if ($estado=="0") {
                       $justificacion = "";
                     }
-                    $upsSQL = "UPDATE riesgo SET estado=$estado, avance=$avance, modificado=NOW(), justificacion_cierre = '$justificacion'  WHERE id_riesgo=$nik";
+                    $upsSQL = "UPDATE riesgo SET estado=$estado, avance=$avance, modificado=NOW(), justificacion_cierre = '$justificacion'";
+                    if ($estado=="1"){
+                      $upsSQL = $upsSQL . ", vencimiento = DATE_FORMAT(NOW(), '%d/%m/%Y') ";
+                    }
+                    $upsSQL = $upsSQL . "WHERE id_riesgo=$nik";
                     $update_riesgo = mysqli_query($con, $upsSQL) or die(mysqli_error());	
                     
                     

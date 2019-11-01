@@ -305,6 +305,7 @@ desired effect
                                             <?php
                                             $mActual = date('m');
                                                 echo '<th>Gerencia</th>';
+                                                echo '<th class="mesactualHeader" style="text-align: center; "><i class="fa fa-reply" style="font-size: 15px;"></i></th>';
                                                 echo '<th ' . (1==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Enero</th>';
                                                 echo '<th ' . (2==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Febrero</th>';
                                                 echo '<th ' . (3==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Marzo</th>';
@@ -317,22 +318,41 @@ desired effect
                                                 echo '<th ' . (10==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Octubre</th>';
                                                 echo '<th ' . (11==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Novimebre</th>';
                                                 echo '<th ' . (12==$mActual ? 'class="mesactualHeader"' : ''  ) . '>Diciembre</th>';
+                                                echo '<th class="mesactualHeader" style="text-align: center; "><i class="fa fa-share" style="font-size: 15px;"></i></th>';
                                             ?>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                                $query = "SELECT g.nombre,
-                                                                date_format(r.modificado, '%m') as mes, 
-                                                                COUNT(1) as cuenta
+                                                $query = "SELECT nombre, mes, cuenta FROM (
+                                                            SELECT g.nombre, '00' as mes, COUNT(1) as cuenta
                                                             FROM riesgo as r
                                                             INNER JOIN persona as p ON r.responsable = p.id_persona
                                                             LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
                                                             WHERE r.borrado=0 AND r.estado='1'
-                                                            AND date_format(r.modificado, '%Y') = YEAR(NOW())
+                                                            AND date_format(STR_TO_DATE(r.vencimiento, '%d/%m/%Y'), '%Y') < YEAR(NOW())
+                                                            AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )
+                                                            GROUP BY g.nombre
+                                                        UNION ALL
+                                                            SELECT g.nombre, date_format(STR_TO_DATE(r.vencimiento, '%d/%m/%Y'), '%m') as mes, COUNT(1) as cuenta
+                                                            FROM riesgo as r
+                                                            INNER JOIN persona as p ON r.responsable = p.id_persona
+                                                            LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
+                                                            WHERE r.borrado=0 AND r.estado='1'
+                                                            AND date_format(STR_TO_DATE(r.vencimiento, '%d/%m/%Y'), '%Y') = YEAR(NOW())
                                                             AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )
                                                             GROUP BY g.nombre, 
-                                                            date_format(r.modificado, '%m')";
+                                                            date_format(STR_TO_DATE(r.vencimiento, '%d/%m/%Y'), '%m')
+                                                        UNION ALL
+                                                        SELECT g.nombre, '13' as mes, COUNT(1) as cuenta
+                                                            FROM riesgo as r
+                                                            INNER JOIN persona as p ON r.responsable = p.id_persona
+                                                            LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
+                                                            WHERE r.borrado=0 AND r.estado='1'
+                                                            AND date_format(STR_TO_DATE(r.vencimiento, '%d/%m/%Y'), '%Y') > YEAR(NOW())
+                                                            AND ( 1 = $per_id_gerencia OR  p.gerencia = $per_id_gerencia )
+                                                            GROUP BY g.nombre                                                        
+                                                        ) as calendario order by nombre, mes";
                                                 $sql = mysqli_query($con, $query);
                                                 $allRows = mysqli_num_rows($sql);
                                                 if($allRows == 0) {
@@ -350,19 +370,28 @@ desired effect
                                                         // Celda de ver control
                                                         echo '<td>' . $row['nombre'] . '</td>';
                                                         
-                                                        $mesControl = 1;
+                                                        $mesControl = 0;
                                                         while ($nRow <= $allRows && $row['nombre'] == $gerencia_actual) {
                                                             
                                                             // Formo el calendario mes a mes creado las celdas vacias hasat el mes del control
-                                                            // de 1-12 y marcando las que vienen por DB
+                                                            // de 0-12 y marcando las que vienen por DB                                                            
                                                             for ($i = $mesControl; $i < $row['mes']; $i++) {
-                                                                echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
+                                                                if ($i==0 OR $i==13) {
+                                                                    echo '<td class="text-center mesactual">';
+                                                                } else {
+                                                                    echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
+                                                                }
                                                             }
                                                             
                                                             //----------------------------
                                                             //En esta celda hay riesgos
                                                             //----------------------------
-                                                            echo '<td class="text-center ' . ($row['mes']==$mesActual ? 'mesactual"' : '"'  ) . '>';
+                                                            if ($row['mes']=='00' OR $row['mes']=='13') {
+                                                                echo '<td class="text-center mesactual">';
+                                                            } else {
+                                                                echo '<td class="text-center ' . ($row['mes']==$mesActual ? 'mesactual"' : '"'  ) . '>';
+                                                            }
+
                                                             echo '<span class="badge bg-blue" style="font-size: 15px;">' . $row['cuenta'] . '</span>';
                                                             echo '</td>';
                                                             //----------------------------
@@ -375,8 +404,12 @@ desired effect
                                                         }
                                                         
                                                         // relleno los meses que faltan
-                                                        for ($i = $mesControl; $i <= 12; $i++) {
-                                                            echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
+                                                        for ($i = $mesControl; $i <= 13; $i++) {
+                                                            if ($i==0 OR $i==13) {
+                                                                echo '<td class="text-center mesactual">';
+                                                            } else {
+                                                                echo '<td ' . ($i==$mesActual ? 'class="mesactual"' : ''  ) . '></td>';
+                                                            }
                                                         }
                                                         echo '</tr>';
                                                     }
