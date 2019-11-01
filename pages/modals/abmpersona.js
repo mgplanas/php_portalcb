@@ -201,13 +201,7 @@ $(function() {
         });
     }
 
-    //Seto el trigger si la gerencia cambia 
-    $('#modal-abm-persona-gerencia').on('change', function() {
-        populateGroups($("#modal-abm-persona-gerencia").val());
-    });
 
-    // disparo el cambio en el load;
-    populateGroups($("#modal-abm-persona-gerencia").val());
 
     $('#modal-abm-persona-submit').click(function() {
         // Recupero datos del formulario
@@ -254,4 +248,12 @@ $(function() {
 
 
     refreshGerencias();
+
+    //Seto el trigger si la gerencia cambia 
+    $('#modal-abm-persona-gerencia').on('change', function() {
+        populateGroups($("#modal-abm-persona-gerencia").val());
+    });
+
+    // disparo el cambio en el load;
+    populateGroups($("#modal-abm-persona-gerencia").val());
 });
