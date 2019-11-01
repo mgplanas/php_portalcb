@@ -206,9 +206,13 @@ desired effect
 				<div class="form-group">
                   <label>Tipo</label>
                   <select name="tipo" class="form-control">
-                    <option value='1'<?php if($row['tipo'] == '1'){ echo 'selected'; } ?>>Activo de Información</option>
-                    <option value='2'<?php if($row['tipo'] == '2'){ echo 'selected'; } ?>>Infraestructura</option>
-                    <option value='3'<?php if($row['tipo'] == '3'){ echo 'selected'; } ?>>Servicio</option>
+                    <option value='1'<?php if($row['tipo'] == '1'){ echo 'selected'; } ?>>Datos/Información</option>
+                    <option value='2'<?php if($row['tipo'] == '2'){ echo 'selected'; } ?>>Equipamiento</option>
+                    <option value='3'<?php if($row['tipo'] == '3'){ echo 'selected'; } ?>>Instalaciones</option>
+                    <option value='3'<?php if($row['tipo'] == '4'){ echo 'selected'; } ?>>Personal</option>
+                    <option value='3'<?php if($row['tipo'] == '5'){ echo 'selected'; } ?>>Servicio</option>
+                    <option value='3'<?php if($row['tipo'] == '6'){ echo 'selected'; } ?>>Software</option>
+                    <option value='3'<?php if($row['tipo'] == '7'){ echo 'selected'; } ?>>Suministros</option>
                    </select>
                 </div>
 				<div class="form-group">

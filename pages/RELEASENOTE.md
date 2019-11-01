@@ -17,4 +17,5 @@
 - Cambios en src
   - M[pages/mejoras.php]
   - M[pages/controles.php]
+  - M[pages/edit_activos.php]
   

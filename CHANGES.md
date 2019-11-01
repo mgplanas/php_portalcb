@@ -7,6 +7,8 @@
     M[pages/mejoras.php]
     - Cambiar la numeración secuencial por el id en controles
     M [pages/controles.php]
+    - En la edicion de activos el combo de tipos no muestra todos los registros. Sí lo hace en el alta
+    M [pages/edit_activos.php]
 
 ## FIX-HOUSING
 
