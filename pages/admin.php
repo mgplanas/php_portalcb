@@ -457,7 +457,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </thead>
                                     <tbody>
                                       <?php
-                                        $query = "SELECT p.id_persona, p.nombre, p.apellido, p.legajo, p.email, p.contacto, p.cargo, g.id_gerencia, p.subgerencia, p.area, g.nombre as gerencia, u.nombre as grupo 
+                                        $query = "SELECT p.id_persona, p.nombre, p.apellido, p.legajo, p.email, p.contacto, p.cargo, g.id_gerencia, p.subgerencia, p.area, g.nombre as gerencia, u.nombre as grupo, u.id_grupo 
                                         FROM persona as p 
                                         LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia
                                         LEFT JOIN grupo as u on p.grupo = u.id_grupo
@@ -480,7 +480,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             data-cargo="'.$row['cargo'].'"
                                             data-gerencia="'.$row['gerencia'].'"
                                             data-idgerencia="'.$row['id_gerencia'].'"
-                                            data-grupo="'.$row['grupo'].'"
+                                            data-grupo="'.$row['id_grupo'].'"
                                             title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                                             </td>';
 
@@ -501,7 +501,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     data-idgerencia="'.$row['id_gerencia'].'"
                                                     data-idsubgerencia="'.$row['subgerencia'].'"
                                                     data-idarea="'.$row['area'].'"
-                                                    data-grupo="'.$row['grupo'].'"
+                                                    data-grupo="'.$row['id_grupo'].'"
                                                     title="Editar persona" class="modal-abm-persona-btn-edit btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
                                                     <a href="admin.php?aksip=delete&nik='.$row['id_persona'].'" title="Borrar persona" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['apellido']. ' ' .$row['nombre'].'?\')" class="btn btn-danger btn-sm ';
                                             echo '"><i class="glyphicon glyphicon-trash"></i></a></td>';

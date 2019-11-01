@@ -10,36 +10,7 @@
             <?php
             $gerencias = mysqli_query($con, "SELECT * FROM gerencia ORDER BY nombre ASC");
             $grupos = mysqli_query($con, "SELECT * FROM grupo ORDER BY nombre ASC");
-            if(isset($_POST['AddPersona'])){
-                
-                $legajo = mysqli_real_escape_string($con,(strip_tags($_POST["legajo"],ENT_QUOTES)));//Escanpando caracteres
-                $nombre = mysqli_real_escape_string($con,(strip_tags($_POST["nombre"],ENT_QUOTES)));//Escanpando caracteres
-                $apellido = mysqli_real_escape_string($con,(strip_tags($_POST["apellido"],ENT_QUOTES)));//Escanpando caracteres 
-                $cargo = mysqli_real_escape_string($con,(strip_tags($_POST["cargo"],ENT_QUOTES)));//Escanpando caracteres 
-                $gerencia = mysqli_real_escape_string($con,(strip_tags($_POST["gerencia"],ENT_QUOTES)));//Escanpando caracteres 
-                $email = mysqli_real_escape_string($con,(strip_tags($_POST["email"],ENT_QUOTES)));//Escanpando caracteres 
-                $grupo = mysqli_real_escape_string($con,(strip_tags($_POST["grupo"],ENT_QUOTES)));//Escanpando caracteres 
-                $contacto = mysqli_real_escape_string($con,(strip_tags($_POST["contacto"],ENT_QUOTES)));//Escanpando caracteres 
-                
-                // Si la gerencia no es ciberseguridad limpio el valor del grupo
-                if ($gerencia != 1) {
-                    $grupo = 0;
-                }
-                //Inserto Control
-                $insert_persona = mysqli_query($con, "INSERT INTO persona(legajo, nombre, apellido, cargo, gerencia, email, grupo, contacto, borrado) 
-                                                    VALUES ('$legajo','$nombre','$apellido', '$cargo', '$gerencia', '$email', '$grupo', '$contacto', 0)") or die(mysqli_error());	
-                $lastInsert = mysqli_insert_id($con);
-                $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-                            VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
-                unset($_POST);
-                if($insert_persona){
-                $_SESSION['formSubmitted'] = 3;
-                echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-                }else{
-                $_SESSION['formSubmitted'] = 9;
-                echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-                }				
-            }				
+
             ?>
         </div>
         <div class="modal-body">

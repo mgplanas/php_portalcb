@@ -153,13 +153,17 @@ $(function() {
         $('#modal-abm-persona-title').html('Editar Persona');
         modalAbmPersonaLimpiarCampos();
 
-        //$('#modal-abm-persona-id').val($(this).data('id'));
+        $('#modal-abm-persona-id').val($(this).data('id'));
         $('#modal-abm-persona-legajo').val($(this).data('legajo'));
         $('#modal-abm-persona-nombre').val($(this).data('nombre'));
         $('#modal-abm-persona-apellido').val($(this).data('apellido'));
         $('#modal-abm-persona-email').val($(this).data('email'));
         $('#modal-abm-persona-contacto').val($(this).data('contacto'));
         $('#modal-abm-persona-cargo').val($(this).data('cargo'));
+        $('#modal-abm-persona-gerencia').val($(this).data('idgerencia'));
+        $('#modal-abm-persona-subgerencia').val($(this).data('idsubgerencia'));
+        $('#modal-abm-persona-area').val($(this).data('idarea'));
+        $('#modal-abm-persona-grupo').val($(this).data('grupo'));
         refreshGerencias($(this).data('idgerencia'));
         refreshSubGerencias($(this).data('idgerencia'), $(this).data('idsubgerencia'));
         refreshAreas($(this).data('idsubgerencia'), $(this).data('idarea'));
@@ -204,6 +208,50 @@ $(function() {
 
     // disparo el cambio en el load;
     populateGroups($("#modal-abm-persona-gerencia").val());
+
+    $('#modal-abm-persona-submit').click(function() {
+        // Recupero datos del formulario
+        let op = $(this).attr('name');
+        let id_persona = $('#modal-abm-persona-id').val();
+        let legajo = $('#modal-abm-persona-legajo').val();
+        let nombre = $('#modal-abm-persona-nombre').val();
+        let apellido = $('#modal-abm-persona-apellido').val();
+        let cargo = $('#modal-abm-persona-cargo').val();
+        let gerencia = $('#modal-abm-persona-gerencia').val();
+        let subgerencia = $('#modal-abm-persona-subgerencia').val();
+        let area = $('#modal-abm-persona-area').val();
+        let email = $('#modal-abm-persona-email').val();
+        let grupo = $('#modal-abm-persona-grupo').val();
+        let contacto = $('#modal-abm-persona-contacto').val();
+
+        // Ejecuto
+        $.ajax({
+            type: 'POST',
+            url: './helpers/abmpersonadb.php',
+            data: {
+                operacion: op,
+                id: id_persona,
+                legajo: legajo,
+                nombre: nombre,
+                apellido: apellido,
+                cargo: cargo,
+                gerencia: gerencia,
+                subgerencia: subgerencia,
+                area: area,
+                email: email,
+                grupo: grupo,
+                contacto: contacto
+            },
+            dataType: 'json',
+            success: function(json) {
+                $("#modal-abm-persona").modal("hide");
+            },
+            error: function(xhr, status, error) {
+                alert(xhr.responseText, error);
+            }
+        });
+    });
+
 
     refreshGerencias();
 });
