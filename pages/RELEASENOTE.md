@@ -15,4 +15,5 @@
 - Cambios en DB
 
 - Cambios en src
-  - M[pages/.php]
+  - M [pages/edit_proyecto]
+  - M [pages/proyectos]

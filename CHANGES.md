@@ -7,6 +7,12 @@
 *Fecha:* 2019-11-04
 *Cambios:*
     - Agregar estado Cancelado
+    - Se agregan las más categorias en el avance. Se reutiliza el campo "reunion"
+        0) Avance
+        1) Reunión
+        2) Riesgo
+        3) Problema 
+    M [pages/edit_proyecto]
 
 
 ## FIX-HOUSING
