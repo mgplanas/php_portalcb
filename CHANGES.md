@@ -9,6 +9,8 @@
     M [pages/controles.php]
     - En la edicion de activos el combo de tipos no muestra todos los registros. Sí lo hace en el alta
     M [pages/edit_activos.php]
+    - Riegos: Sacar los campos en la grilla de Categoría, Riesgo y Acción e Incluir Referente y Fecha Alta
+    M [pages/riesgos.php]
 
 ## FIX-HOUSING
 

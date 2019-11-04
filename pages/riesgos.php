@@ -47,26 +47,29 @@ if(isset($_GET['aksi']) == 'filter'){
   $t=$_GET["t"];      //0=inherente;1=residual
   
   if($t == 0){
-  $query = "SELECT i.*, p.nombre, p.apellido, c.tipo, g.nombre as gerencia 
+  $query = "SELECT i.*, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido, c.tipo, g.nombre as gerencia 
             FROM riesgo as i 
             LEFT JOIN categoria as c on i.categoria = c.id_categoria 
             LEFT JOIN persona as p on i.responsable = p.id_persona
+            LEFT JOIN persona as ref on i.referente = ref.id_persona
             LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia 
             WHERE i.borrado='0' AND probabilidad=$p AND i_result=$i ";
 	}else if($t == 1){
-		$query = "SELECT i.*, p.nombre, p.apellido, c.tipo, g.nombre as gerencia
+		$query = "SELECT i.*, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido,c.tipo, g.nombre as gerencia
               FROM riesgo as i 
 		          LEFT JOIN categoria as c on i.categoria = c.id_categoria 
               LEFT JOIN persona as p on i.responsable = p.id_persona
+              LEFT JOIN persona as ref on i.referente = ref.id_persona
               LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia 
               WHERE i.borrado='0' AND p_resid=$p AND i_resid=$i ";
 		}
 	
 }else{
-    $query = "SELECT i.*, p.nombre, p.apellido, c.tipo, g.nombre as gerencia 
+    $query = "SELECT i.*, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido,c.tipo, g.nombre as gerencia 
               FROM riesgo as i 
               LEFT JOIN categoria as c on i.categoria = c.id_categoria 
-				      LEFT JOIN persona as p on i.responsable = p.id_persona 
+				      LEFT JOIN persona as p on i.responsable = p.id_persona
+                      LEFT JOIN persona as ref on i.referente = ref.id_persona 
               LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia
               WHERE i.borrado='0' ";
 }
@@ -1561,11 +1564,13 @@ desired effect
                                                 <th>Vulnerabilidad</th>
                                                 <th>Amenaza</th>
                                                 <th>Responsable</th>
+                                                <th>Referente</th>
                                                 <th>Gerencia</th>
+                                                <th>F.Alta</th>
                                                 <!--<th>Activos</th> -->
-                                                <th>Categoría</th>
-                                                <th>Riesgo</th>
-                                                <th>Acción</th>
+                                                <!-- <th>Categoría</th> -->
+                                                <!-- <th>Riesgo</th> -->
+                                                <!-- <th>Acción</th> -->
                                                 <th>Valoración</th>
                                                 <th>Estado</th>
                                                 <th>Incidente</th>
@@ -1602,9 +1607,11 @@ desired effect
                                                   echo '<td>'.$row['vulnerabilidad'].'</td>';
                                                   echo '<td>'.$row['amenaza'].'</td>';
                                                   echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
+                                                  echo '<td>'.$row['ref_apellido'].' '.$row['ref_nombre']. '</td>'; 
                                                   echo '<td>'.$row['gerencia'].'</td>'; 
-                                                  echo '<td>'.$row['tipo'].'</td>';
-                                                  echo '<td>'.$row['n_riesgo'].'</td>';
+                                                  echo '<td>'.$row['alta'].'</td>'; 
+                                                //   echo '<td>'.$row['tipo'].'</td>';
+                                                //   echo '<td>'.$row['n_riesgo'].'</td>';
                                                   echo '<td>'.$row['valoracion'].'</td>';
                                                   echo '<td>'.$row['v_inicial'].'</td>';
                                                   
@@ -1689,11 +1696,13 @@ desired effect
                                                 <th>Vulnerabilidad</th>
                                                 <th>Amenaza</th>
                                                 <th>Responsable</th>
+                                                <th>Referente</th>
                                                 <th>Gerencia</th>
+                                                <th>F.Alta</th>
                                                 <!--<th>Activos</th>-->
-                                                <th>Categoría</th>
-                                                <th>Riesgo</th>
-                                                <th>Acción</th>
+                                                <!-- <th>Categoría</th> -->
+                                                <!-- <th>Riesgo</th> -->
+                                                <!-- <th>Acción</th> -->
                                                 <th>Valoración</th>
                                                 <th>Estado</th>
                                                 <th>Incidente</th>
