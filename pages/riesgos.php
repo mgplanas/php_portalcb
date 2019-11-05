@@ -1612,7 +1612,7 @@ desired effect
                                                   echo '<td>'.$row['alta'].'</td>'; 
                                                 //   echo '<td>'.$row['tipo'].'</td>';
                                                 //   echo '<td>'.$row['n_riesgo'].'</td>';
-                                                  echo '<td>'.$row['valoracion'].'</td>';
+                                                //   echo '<td>'.$row['valoracion'].'</td>';
                                                   echo '<td>'.$row['v_inicial'].'</td>';
                                                   
                                                   if($row['estado'] == '0'){
