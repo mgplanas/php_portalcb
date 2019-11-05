@@ -26,12 +26,14 @@ if(isset($_POST['save'])){
 	$descripcion = mysqli_real_escape_string($con,(strip_tags($_POST["descripcion"],ENT_QUOTES)));
 	$responsable = mysqli_real_escape_string($con,(strip_tags($_POST["responsable"],ENT_QUOTES)));
 	$clasificacion = mysqli_real_escape_string($con,(strip_tags($_POST["clasificacion"],ENT_QUOTES)));
-	$pdp = mysqli_real_escape_string($con,(strip_tags($_POST["pdp"],ENT_QUOTES)));
 	$tipo = mysqli_real_escape_string($con,(strip_tags($_POST["tipo"],ENT_QUOTES)));
 	$ubicacion = mysqli_real_escape_string($con,(strip_tags($_POST["ubicacion"],ENT_QUOTES)));
 	$soporte = mysqli_real_escape_string($con,(strip_tags($_POST["soporte"],ENT_QUOTES)));
 	$direccion = mysqli_real_escape_string($con,(strip_tags($_POST["direccion"],ENT_QUOTES)));
-	
+  $pdp ="0";
+  if ($_POST["pdp"]) {
+    $pdp = mysqli_real_escape_string($con,(strip_tags($_POST["pdp"],ENT_QUOTES)));
+  }
 	$update_activo = mysqli_query($con, "UPDATE activo SET descripcion='$descripcion', responsable='$responsable', clasificacion='$clasificacion', pdp='$pdp', tipo='$tipo', ubicacion='$ubicacion', soporte='$soporte', direccion='$direccion', modificado=NOW() 
 										 WHERE id_activo='$nik'") or die(mysqli_error());	
 	$insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
@@ -209,10 +211,10 @@ desired effect
                     <option value='1'<?php if($row['tipo'] == '1'){ echo 'selected'; } ?>>Datos/Información</option>
                     <option value='2'<?php if($row['tipo'] == '2'){ echo 'selected'; } ?>>Equipamiento</option>
                     <option value='3'<?php if($row['tipo'] == '3'){ echo 'selected'; } ?>>Instalaciones</option>
-                    <option value='3'<?php if($row['tipo'] == '4'){ echo 'selected'; } ?>>Personal</option>
-                    <option value='3'<?php if($row['tipo'] == '5'){ echo 'selected'; } ?>>Servicio</option>
-                    <option value='3'<?php if($row['tipo'] == '6'){ echo 'selected'; } ?>>Software</option>
-                    <option value='3'<?php if($row['tipo'] == '7'){ echo 'selected'; } ?>>Suministros</option>
+                    <option value='4'<?php if($row['tipo'] == '4'){ echo 'selected'; } ?>>Personal</option>
+                    <option value='5'<?php if($row['tipo'] == '5'){ echo 'selected'; } ?>>Servicio</option>
+                    <option value='6'<?php if($row['tipo'] == '6'){ echo 'selected'; } ?>>Software</option>
+                    <option value='7'<?php if($row['tipo'] == '7'){ echo 'selected'; } ?>>Suministros</option>
                    </select>
                 </div>
 				<div class="form-group">
@@ -249,13 +251,14 @@ desired effect
 							<option value='3'<?php if($row['clasificacion'] == '3'){ echo 'selected'; } ?>>Confidencial</option>
 						</select>
 					</div>
-                <label for="Ley_PDP">Ley 25.326 PDP</label>
-				<div class="checkbox">
-                  <label>
-					<input name="pdp" type="checkbox" value="1"  <?php if($row['pdp'] == '1'){ echo 'checked'; } ?>> Contiene datos Personales?
-				  </label>
-                </div>
-                    </div>
+          <div class="form-group">
+            <label for="Ley_PDP">Ley 25.326 PDP</label>
+				      <div class="checkbox">
+                <label>
+					        <input name="pdp" type="checkbox" value="1"  <?php if($row['pdp'] == '1'){ echo 'checked'; } ?>> Contiene datos Personales?
+				        </label>
+              </div>
+          </div>
                   </div>
                 </div>
 				
