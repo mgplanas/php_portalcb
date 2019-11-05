@@ -317,13 +317,22 @@ desired effect
                                     else if ($row['estado'] == '4' ){
                                         echo '<input type="text" readonly class="form-control" name="porcentaje" value="Completada">';
                                     } 
+                                    else if ($row['estado'] == '5' ){
+                                        echo '<input type="text" readonly class="form-control" name="porcentaje" value="Cancelada">';
+                                    } 
                                 ?>
                             </div>
                          </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                              <div class="form-group">
-                              <label for="porcentaje">Porcentaje de avance</label>
+                              <label for="porcentaje">Porcentaje de avance (Real)</label>
                               <input type="text" readonly class="form-control" name="porcentaje" value="<?php echo $row ['porcentaje']; ?> %">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                             <div class="form-group">
+                              <label for="porcentaje_estimado">Porcentaje de avance (Estimado)</label>
+                              <input type="text" readonly class="form-control" name="porcentaje_estimado" value="<?php echo $row ['porcentaje_estimado']; ?> %">
                             </div>
                         </div>
                 </div>
@@ -345,7 +354,7 @@ desired effect
                 <tr>
                   <th width="1">Ver</th>
                   <th style="width: 10px">#</th>
-                  <th>R</th>
+                  <th style="text-align: center;width: 10px;">T</th>
                   <th>Detalle</th>
                   <th style="width: 150px">Fecha</th>
                 </tr>
@@ -372,7 +381,13 @@ desired effect
                             </td>';
                             echo '<td align="center">'.$row['id_avance'].'</td>';
                             if ($row['reunion']==1) {
-                              echo '<td><i title="Reunion de ' .$row['tiempo'].' minutos" class="fa fa-users" style="font-size: 20px;"></i></td>';
+                              echo '<td style="text-align: center;"><i title="Reunion de ' .$row['tiempo'].' minutos" class="fa fa-users" style="font-size: 20px;"></i></td>';
+                            } elseif ($row['reunion']==0) {
+                              echo '<td style="text-align: center;"><i title="Avance" class="fa fa-arrow-circle-right" style="font-size: 20px;"></i></td>';
+                            } elseif ($row['reunion']==2) {
+                              echo '<td style="text-align: center;"><i title="Riesgo" class="fa fa-flash" style="font-size: 20px;"></i></td>';
+                            } elseif ($row['reunion']==3) {
+                              echo '<td style="text-align: center;"><i title="Problema" class="fa fa-exclamation-triangle" style="font-size: 20px;"></i></td>';
                             } else {
                               echo '<td></td>';
                             }
@@ -413,13 +428,14 @@ desired effect
                     $detalle = mysqli_real_escape_string($con,(strip_tags($_POST["detalle"],ENT_QUOTES)));//Escanpando caracteres
                     $estado = mysqli_real_escape_string($con,(strip_tags($_POST["estado"],ENT_QUOTES)));//Escanpando caracteres
                     $porcentaje = mysqli_real_escape_string($con,(strip_tags($_POST["porcentaje"],ENT_QUOTES)));//Escanpando caracteres
-                    $esReunion = (mysqli_real_escape_string($con,(strip_tags($_POST["reunion"],ENT_QUOTES)))=="on" ? 1 : 0 );//Escanpando caracteres
+                    $porcentaje_estimado = mysqli_real_escape_string($con,(strip_tags($_POST["porcentaje_estimado"],ENT_QUOTES)));//Escanpando caracteres
+                    $categoria = mysqli_real_escape_string($con,(strip_tags($_POST["categoria"],ENT_QUOTES)));//Escanpando caracteres
                     $tiempo = mysqli_real_escape_string($con,(strip_tags($_POST["tiempo"],ENT_QUOTES)));//Escanpando caracteres
                     
                     $insert_avance = mysqli_query($con, "INSERT INTO avance (id_proyecto, detalle, fecha, user, reunion, tiempo) 
-                                                         VALUES ('$nik', '$detalle', now(), '$user', '$esReunion', '$tiempo')") or die(mysqli_error());
+                                                         VALUES ('$nik', '$detalle', now(), '$user', '$categoria', '$tiempo')") or die(mysqli_error());
                     
-                    $update_proyecto = mysqli_query($con, "UPDATE proyecto SET estado='$estado', porcentaje='$porcentaje', modificado=NOW() 
+                    $update_proyecto = mysqli_query($con, "UPDATE proyecto SET estado='$estado', porcentaje='$porcentaje', porcentaje_estimado='$porcentaje_estimado', modificado=NOW() 
 										 WHERE id_proyecto='$nik'") or die(mysqli_error());	
                     
                     
@@ -439,37 +455,42 @@ desired effect
               <label for="legajo">Detalle del avance</label>
               <textarea class="form-control" rows="5" name="detalle" id="detalle" value=""></textarea>
             </div>
-            <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Estado</label>
-                                <select name="estado" class="form-control">
-                                    <option value='1'<?php if($rowmp['estado'] == '1'){ echo 'selected'; } ?>>No Iniciada</option>
-                                    <option value='2'<?php if($rowmp['estado'] == '2'){ echo 'selected'; } ?>>En Curso</option>
-                                    <option value='3'<?php if($rowmp['estado'] == '3'){ echo 'selected'; } ?>>Aplazada</option>
-                                    <option value='4'<?php if($rowmp['estado'] == '4'){ echo 'selected'; } ?>>Completada</option>
-                                </select>
-                            </div>
-                         </div>
-                        <div class="col-sm-6">
-                             <div class="form-group">
-                              <label for="porcentaje">Porcentaje de avance</label>
-                              <input type="text" class="form-control" name="porcentaje" value="<?php echo $rowmp['porcentaje']; ?>">
-                            </div>
-                        </div>
+              <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select name="estado" class="form-control">
+                            <option value='1'<?php if($rowmp['estado'] == '1'){ echo 'selected'; } ?>>No Iniciada</option>
+                            <option value='2'<?php if($rowmp['estado'] == '2'){ echo 'selected'; } ?>>En Curso</option>
+                            <option value='3'<?php if($rowmp['estado'] == '3'){ echo 'selected'; } ?>>Aplazada</option>
+                            <option value='4'<?php if($rowmp['estado'] == '4'){ echo 'selected'; } ?>>Completada</option>
+                            <option value='5'<?php if($rowmp['estado'] == '5'){ echo 'selected'; } ?>>Cancelada</option>
+                        </select>
+                    </div>
+                  </div>
+                <div class="col-sm-4">
+                      <div class="form-group">
+                      <label for="porcentaje">% Avance real</label>
+                      <input type="text" class="form-control" name="porcentaje" value="<?php echo $rowmp['porcentaje']; ?>">
+                    </div>
                 </div>
-            <div class="row">
-                        <div class="col-sm-3 text-right">
+                <div class="col-sm-4">
+                      <div class="form-group">
+                      <label for="porcentaje_estimado">% Avance estimado</label>
+                      <input type="text" class="form-control" name="porcentaje_estimado" value="<?php echo $rowmp['porcentaje_estimado']; ?>">
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                        <div class="col-sm-3">
                             <div class="form-group">
-                                <label> </label>
-                                <div class="i-checks">
-                                  <label class=""> 
-                                    <div class="icheckbox_square-green" style="position: relative;">
-                                      <input name="reunion" id="esreunion" type="checkbox" style="position: absolute; opacity: 0;">
-                                      <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
-                                    </div><i></i> &nbsp; Reunión 
-                                  </label>
-                                </div>                              
+                                <label for="categoria">Categoría</label>
+                                <select name="categoria" class="form-control" id="ddlcategoria">
+                                    <option value='0' selected>Avance</option>
+                                    <option value='1' >Reunión</option>
+                                    <option value='2' >Riesgo</option>
+                                    <option value='3' >Problema</option>
+                                </select>                            
                             </div>
                          </div>
                         <div class="col-sm-3">
@@ -556,7 +577,7 @@ desired effect
 <!-- bootstrap datepicker -->
 <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- ICHECKS -->
-<script src="../plugins/iCheck/icheck.min.js"></script>
+<!-- <script src="../plugins/iCheck/icheck.min.js"></script> -->
       
 <script type="text/javascript">
   $(function () {
@@ -624,24 +645,14 @@ $(function(){
 <script>
     $(document).ready(function () {
 
-      $('.i-checks').on('ifCreated ifClicked ifChanged ifChecked ifUnchecked ifDisabled ifEnabled ifDestroyed check ', function(event){                
-        if(event.type ==="ifChecked"){
-            $(this).trigger('click');  
-            $('.i-checks').iCheck('update');
-            $('#tiempo').show();
+      //Seto el trigger si la el anio cambia 
+      $('#ddlcategoria').on('change', function() {
+        // Si elige la reunión muestro el div de timer
+        if ($(this).val() == "1") {
+          $('#tiempo').show();
+        } else {
+          $('#tiempo').hide();
         }
-        if(event.type ==="ifUnchecked"){
-            $(this).trigger('click');  
-            $('.i-checks').iCheck('update');
-            $('#tiempo').hide();
-        }       
-        if(event.type ==="ifDisabled"){
-            console.log($(this).attr('id')+'dis');  
-            $('.i-checks').iCheck('update');
-        }                                
-      }).iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
       });
 
       $('#tiempo').hide();

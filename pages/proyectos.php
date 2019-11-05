@@ -69,22 +69,24 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
 function validarVto($fecha) {
 
   $res = 0;
-  try {
-    $gmtTimezone = new DateTimeZone('GMT');
-    $now = new DateTime("now", $gmtTimezone);
-    $now = $now->format('Y-m-d');
-    $interval = date_diff(date_create($fecha), date_create($now) );
-    if ($interval->days != 0) {
-      if ($interval->invert == 0) {
-        $res = 0;
+  if ($fecha) {
+    try {
+      $gmtTimezone = new DateTimeZone('GMT');
+      $now = new DateTime("now", $gmtTimezone);
+      $now = $now->format('Y-m-d');
+      $interval = date_diff(date_create($fecha), date_create($now) );
+      if ($interval->days != 0) {
+        if ($interval->invert == 0) {
+          $res = 0;
+        } else {
+          $res = 1;
+        }
       } else {
-        $res = 1;
+        $res=2;
       }
-    } else {
-      $res=2;
+    } catch (Exception $e) {
+      $res = 0;
     }
-  } catch (Exception $e) {
-    $res = 0;
   }
   return $res;
 }
@@ -253,8 +255,8 @@ desired effect
                             <th>Responsable</th>
                             <th>Prioridad</th>
                             <th>Estado</th>
-                            <th>Avance</th>
-                            <th>Porcentaje</th>
+                            <th>Avance real (%)</th>
+                            <th>Avance Est. (%)</th>
                             <th width="2">Vencimiento</th>
                             <th width="110px">Acciones</th>
                         </thead>
@@ -281,6 +283,7 @@ desired effect
                                         data-due_date="'.$row['due_date'].'"
                                         data-estado="'.$row['estado'].'"
                                         data-porcentaje="'.$row['porcentaje'].'"
+                                        data-porcentaje_estimado="'.$row['porcentaje_estimado'].'"
                                         data-avance="'.$row['avance'].'"
                                         title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                                   </td>';
@@ -322,25 +325,11 @@ desired effect
                                   else if ($row['estado'] == '4' ){
                                       echo '<td><span class="label label-success">Completada</span></td>';
                                   } 
+                                  else if ($row['estado'] == '5' ){
+                                      echo '<td><span class="label label-danger">Cancelada</span></td>';
+                                  } 
 
-                                  echo '<td>
-                                      <div class="progress progress-xs">
-                                        <div class="progress-bar progress-bar-';
-                                          if ($row['porcentaje']<='33'){
-                                              echo 'danger';
-                                          }
-                                          else if ($row['porcentaje']<='66' && $row['porcentaje']>'33'){
-                                              echo 'yellow';
-                                          }
-                                          else if ($row['porcentaje']>='66'){
-                                              echo 'green';
-                                          }
-                                          echo '" style="width: '.$row['porcentaje'].'%">
-                                        </div>
-                                      </div>
-                                  </td>
-                                  <td><span class="badge bg-';
-
+                                  echo '<td style="text-align: center;"><span class="badge bg-';
                                     if ($row['porcentaje']<='33'){
                                         echo 'red';
                                     }
@@ -350,49 +339,63 @@ desired effect
                                     else if ($row['porcentaje']>='66'){
                                         echo 'green';
                                     }
-
-
                                   echo '">'.$row['porcentaje'].' %</span></td>';
+
+                                  if ($row['porcentaje_estimado']) {
+                                    echo '<td style="text-align: center;"><span class="badge bg-';
+                                    if ($row['porcentaje_estimado']<='33'){
+                                        echo 'red';
+                                    }
+                                    else if ($row['porcentaje_estimado']<='66' && $row['porcentaje_estimado']>'33'){
+                                        echo 'yellow';
+                                    }
+                                    else if ($row['porcentaje_estimado']>='66'){
+                                        echo 'green';
+                                    }
+                                    echo '">'.$row['porcentaje_estimado'].' %</span></td>'; 
+                                  } else {
+                                    echo '<td></td>';
+                                  }   
 
                                   $day=date("d");
                                   $month=date("m");
                                   $year=date("Y");
+                                  if ($row['due_date']) {
+                                    $due = explode("/", $row['due_date']);
+                                    $due_d = $due[0];
+                                    $due_m = $due[1];
+                                    $due_y = $due[2];
+                                    $ok=0;
 
-                                  $due = explode("/", $row['due_date']);
-                                  $due_d = $due[0];
-                                  $due_m = $due[1];
-                                  $due_y = $due[2];
-                                  $ok=0;
+                                    $dayofy = (($month * 30)+($day));
+                                    $dayofdue = (($due_m * 30)+($due_d));
 
-                                  $dayofy = (($month * 30)+($day));
-                                  $dayofdue = (($due_m * 30)+($due_d));
+                                    if ($due_y >= $year){
+                                        if ($dayofy < $dayofdue){
+                                            $ok=1;
+                                        }
+                                        else if ($dayofy == $dayofdue){
+                                            $ok=2;
+                                        }
+                                    }
 
-                                  if ($due_y >= $year){
-                                      if ($dayofy < $dayofdue){
-                                          $ok=1;
-                                      }
-                                      else if ($dayofy == $dayofdue){
-                                          $ok=2;
-                                      }
-                                  }
+                                    echo '<td><span class="badge bg-';
+                                    $n_date = $due_y . "-" . $due_m . "-" . $due_d;
+                                    $ok = validarVto($n_date);
+                                    if ($row['estado'] !== '4' ){
+                                        if ($ok == '0'){
+                                            echo 'red';
+                                        }
+                                        else if ($ok == '1'){
+                                            echo 'green';
+                                        }
+                                        else if ($ok == '2'){
+                                            echo 'yellow';
+                                        }
+                                    } else {echo 'gray';}
 
-                                  echo '<td><span class="badge bg-';
-                                  $n_date = $due_y . "-" . $due_m . "-" . $due_d;
-                                  $ok = validarVto($n_date);
-                                  if ($row['estado'] !== '4' ){
-                                      if ($ok == '0'){
-                                          echo 'red';
-                                      }
-                                      else if ($ok == '1'){
-                                          echo 'green';
-                                      }
-                                      else if ($ok == '2'){
-                                          echo 'yellow';
-                                      }
-                                  } else {echo 'gray';}
-
-                                  echo '">'.$row['due_date'].'</span></td>';
-
+                                    echo '">'.$row['due_date'].'</span></td>';
+                                  } else { echo '<td></td>'; }
                                   echo '
                                   <td align="center">
                                     <a href="edit_proyecto.php?nik='.$row['id_proyecto'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
@@ -431,8 +434,8 @@ desired effect
                           <th>Responsable</th>
                           <th>Prioridad</th>
                           <th>Estado</th>
-                          <th>Avance</th>
-                          <th>Porcentaje</th>
+                          <th>Avance real (%)</th>
+                          <th>Avance Est. (%)</th>
                           <th width="2">Vencimiento</th>
                           <th width="110px">Acciones</th>
                         </tr>
@@ -461,6 +464,7 @@ desired effect
                                         data-due_date="'.$row['due_date'].'"
                                         data-estado="'.$row['estado'].'"
                                         data-porcentaje="'.$row['porcentaje'].'"
+                                        data-porcentaje_estimado="'.$row['porcentaje_estimado'].'"
                                         data-avance="'.$row['avance'].'"
                                         title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                                     </td>';
@@ -502,25 +506,11 @@ desired effect
                                     else if ($row['estado'] == '4' ){
                                         echo '<td><span class="label label-success">Completada</span></td>';
                                     } 
+                                    else if ($row['estado'] == '5' ){
+                                      echo '<td><span class="label label-danger">Cancelada</span></td>';
+                                    } 
 
-                                    echo '<td>
-                                        <div class="progress progress-xs">
-                                            <div class="progress-bar progress-bar-';
-                                        if ($row['porcentaje']<='33'){
-                                            echo 'danger';
-                                        }
-                                        else if ($row['porcentaje']<='66' && $row['porcentaje']>'33'){
-                                            echo 'yellow';
-                                        }
-                                        else if ($row['porcentaje']>='66'){
-                                            echo 'green';
-                                        }
-
-                                    echo '" style="width: '.$row['porcentaje'].'%"></div>
-                                        </div>
-                                        </td>';
-
-                                    echo '<td><span class="badge bg-';
+                                    echo '<td style="text-align: center;"><span class="badge bg-';
 
                                     if ($row['porcentaje']<='33'){
                                             echo 'red';
@@ -534,48 +524,63 @@ desired effect
 
 
                                     echo '">'.$row['porcentaje'].' %</span></td>';
-
-                                    $day=date("d");
-                                    $month=date("m");
-                                    $year=date("Y");
-
-                                    $due = explode("/", $row['due_date']);
-                                    $due_d = $due[0];
-                                    $due_m = $due[1];
-                                    $due_y = $due[2];
-                                    $ok=0;
-
-                                    $dayofy = (($month * 30)+($day));
-                                    $dayofdue = (($due_m * 30)+($due_d));
-
-                                    if ($due_y >= $year){
-                                      if ($dayofy < $dayofdue){
-                                        $ok=1;
+                                    if ($row['porcentaje_estimado']) {
+                                      echo '<td style="text-align: center;"><span class="badge bg-';
+                                      if ($row['porcentaje_estimado']<='33'){
+                                          echo 'red';
                                       }
-                                      else if ($dayofy == $dayofdue){
-                                        $ok=2;
+                                      else if ($row['porcentaje_estimado']<='66' && $row['porcentaje_estimado']>'33'){
+                                          echo 'yellow';
                                       }
-                                    }
-                                    
-                                    echo '<td><span class="badge bg-';
-                                    
-                                    $n_date = $due_y . "-" . $due_m . "-" . $due_d;
-                                    $ok = validarVto($n_date);
-                                    if ($row['estado'] !== '4' ){
-                                        if ($ok == '0'){
-                                            echo 'red';
-                                        }
+                                      else if ($row['porcentaje_estimado']>='66'){
+                                          echo 'green';
+                                      }
+                                      echo '">'.$row['porcentaje_estimado'].' %</span></td>'; 
+                                    } else {
+                                      echo '<td></td>';
+                                    }   
+                                    if ($row['due_date']) {
+                                      $day=date("d");
+                                      $month=date("m");
+                                      $year=date("Y");
 
-                                        else if ($ok == '1'){
-                                            echo 'green';
-                                        }
-                                        else if ($ok == '2'){
-                                            echo 'yellow';
-                                        }
-                                    } else {echo 'gray';}
+                                      $due = explode("/", $row['due_date']);
+                                      $due_d = $due[0];
+                                      $due_m = $due[1];
+                                      $due_y = $due[2];
+                                      $ok=0;
 
-                                    echo '">'.$row['due_date'].'</span></td>';
+                                      $dayofy = (($month * 30)+($day));
+                                      $dayofdue = (($due_m * 30)+($due_d));
 
+                                      if ($due_y >= $year){
+                                        if ($dayofy < $dayofdue){
+                                          $ok=1;
+                                        }
+                                        else if ($dayofy == $dayofdue){
+                                          $ok=2;
+                                        }
+                                      }
+                                      
+                                      echo '<td><span class="badge bg-';
+                                      
+                                      $n_date = $due_y . "-" . $due_m . "-" . $due_d;
+                                      $ok = validarVto($n_date);
+                                      if ($row['estado'] !== '4' ){
+                                          if ($ok == '0'){
+                                              echo 'red';
+                                          }
+
+                                          else if ($ok == '1'){
+                                              echo 'green';
+                                          }
+                                          else if ($ok == '2'){
+                                              echo 'yellow';
+                                          }
+                                      } else {echo 'gray';}
+
+                                      echo '">'.$row['due_date'].'</span></td>';
+                                    } else { echo '<td></td>'; }
                                     echo '<td align="center">
                                     <a href="edit_proyecto.php?nik='.$row['id_proyecto'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
                                     <a href="proyectos.php?aksi=delete&nik='.$row['id_proyecto'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
@@ -618,8 +623,8 @@ desired effect
                           <?php } ?>
                           <th>Prioridad</th>
                           <th>Estado</th>
-                          <th>Avance</th>
-                          <th>Porcentaje</th>
+                          <th>Avance real (%)</th>
+                          <th>Avance Est. (%)</th>
                           <th width="2">Vencimiento</th>
                           <th width="110px">Acciones</th>
                         </tr>
@@ -652,6 +657,7 @@ desired effect
                                         data-due_date="'.$row['due_date'].'"
                                         data-estado="'.$row['estado'].'"
                                         data-porcentaje="'.$row['porcentaje'].'"
+                                        data-porcentaje_estimado="'.$row['porcentaje_estimado'].'"
                                         data-avance="'.$row['avance'].'"
                                         title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                                     </td>';
@@ -702,25 +708,10 @@ desired effect
                                     else if ($row['estado'] == '4' ){
                                         echo '<td><span class="label label-success">Completada</span></td>';
                                     } 
-
-                                    echo '<td>
-                                        <div class="progress progress-xs">
-                                            <div class="progress-bar progress-bar-';
-                                        if ($row['porcentaje']<='33'){
-                                            echo 'danger';
-                                        }
-                                        else if ($row['porcentaje']<='66' && $row['porcentaje']>'33'){
-                                            echo 'yellow';
-                                        }
-                                        else if ($row['porcentaje']>='66'){
-                                            echo 'green';
-                                        }
-
-                                    echo '" style="width: '.$row['porcentaje'].'%"></div>
-                                        </div>
-                                        </td>
-                                        <td><span class="badge bg-';
-
+                                    else if ($row['estado'] == '5' ){
+                                      echo '<td><span class="label label-danger">Cancelada</span></td>';
+                                    } 
+                                    echo '<td style="text-align: center;"><span class="badge bg-';
                                     if ($row['porcentaje']<='33'){
                                             echo 'red';
                                         }
@@ -730,9 +721,22 @@ desired effect
                                         else if ($row['porcentaje']>='66'){
                                             echo 'green';
                                         }
-
-
                                     echo '">'.$row['porcentaje'].' %</span></td>';
+                                    if ($row['porcentaje_estimado']) {
+                                      echo '<td style="text-align: center;"><span class="badge bg-';
+                                      if ($row['porcentaje_estimado']<='33'){
+                                          echo 'red';
+                                      }
+                                      else if ($row['porcentaje_estimado']<='66' && $row['porcentaje_estimado']>'33'){
+                                          echo 'yellow';
+                                      }
+                                      else if ($row['porcentaje_estimado']>='66'){
+                                          echo 'green';
+                                      }
+                                      echo '">'.$row['porcentaje_estimado'].' %</span></td>'; 
+                                    } else {
+                                      echo '<td></td>';
+                                    }                                     
                                     if ($row['due_date']) {
                                       $day=date("d");
                                       $month=date("m");
@@ -812,8 +816,8 @@ desired effect
                         <?php } ?>
                         <th>Prioridad</th>
                         <th>Estado</th>
-                        <th>Avance</th>
-                        <th>Porcentaje</th>
+                        <th>Avance real (%)</th>
+                        <th>Avance Est. (%)</th>
                         <th width="2">Vencimiento</th>
                         <th width="110px">Acciones</th>
                       </tr>
@@ -849,6 +853,7 @@ desired effect
                                       data-due_date="'.$row['due_date'].'"
                                       data-estado="'.$row['estado'].'"
                                       data-porcentaje="'.$row['porcentaje'].'"
+                                      data-porcentaje_estimado="'.$row['porcentaje_estimado'].'"
                                       data-avance="'.$row['avance'].'"
                                       title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                                   </td>';
@@ -900,24 +905,10 @@ desired effect
                                   else if ($row['estado'] == '4' ){
                                       echo '<td><span class="label label-success">Completada</span></td>';
                                   } 
-
-                                  echo '<td>
-                                      <div class="progress progress-xs">
-                                          <div class="progress-bar progress-bar-';
-                                      if ($row['porcentaje']<='33'){
-                                          echo 'danger';
-                                      }
-                                      else if ($row['porcentaje']<='66' && $row['porcentaje']>'33'){
-                                          echo 'yellow';
-                                      }
-                                      else if ($row['porcentaje']>='66'){
-                                          echo 'green';
-                                      }
-
-                                  echo '" style="width: '.$row['porcentaje'].'%"></div>
-                                      </div>
-                                      </td>
-                                      <td><span class="badge bg-';
+                                  else if ($row['estado'] == '5' ){
+                                    echo '<td><span class="label label-danger">Cancelada</span></td>';
+                                  } 
+                                  echo '<td style="text-align: center;"><span class="badge bg-';
 
                                   if ($row['porcentaje']<='33'){
                                           echo 'red';
@@ -931,7 +922,21 @@ desired effect
 
 
                                   echo '">'.$row['porcentaje'].' %</span></td>';
-                                  
+                                  if ($row['porcentaje_estimado']) {
+                                    echo '<td style="text-align: center;"><span class="badge bg-';
+                                      if ($row['porcentaje_estimado']<='33'){
+                                          echo 'red';
+                                      }
+                                      else if ($row['porcentaje_estimado']<='66' && $row['porcentaje_estimado']>'33'){
+                                          echo 'yellow';
+                                      }
+                                      else if ($row['porcentaje_estimado']>='66'){
+                                          echo 'green';
+                                      }
+                                    echo '">'.$row['porcentaje_estimado'].' %</span></td>'; 
+                                  } else {
+                                    echo '<td></td>';
+                                  }                                 
                                   if ($row['due_date']) {
 
                                     $day=date("d");
@@ -991,21 +996,6 @@ desired effect
                               }
                           ?>
                       </tbody>
-                      <tfoot>
-                      <tr>
-                        <th width="1">Ver</th>
-                        <th width="2">Nro</th>
-                        <th>Titulo</th>
-                        <th>Categoría</th>
-                        <th>Responsable</th>
-                        <th>Prioridad</th>
-                        <th>Estado</th>
-                        <th>Avance</th>
-                        <th>Porcentaje</th>
-                        <th>Vencimiento</th>
-                        <th width="110px">Acciones</th>
-                      </tr>
-                      </tfoot>
                     </table>
                   </div>
                   <!-- /.box-body -->
@@ -1320,13 +1310,17 @@ desired effect
                     </div>
                     <div class="container" >
                       <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <label for="estado">Estado</label>
                             <input type="text" class="form-control" name="estado" id="estado" value="" readonly>
                          </div>
-                        <div class="col-sm-3">
-                            <label for="porcentaje">Porcentaje de avance</label>
+                        <div class="col-sm-2">
+                            <label for="porcentaje">Avance Real</label>
                             <input type="text" class="form-control" name="porcentaje" id="porcentaje" value="" readonly>
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="porcentaje_estimado">Avance Estimado</label>
+                            <input type="text" class="form-control" name="porcentaje_estimado" id="porcentaje_estimado" value="" readonly>
                         </div>
                       </div>
                     </div><br>
@@ -1476,6 +1470,7 @@ $(function(){
     $('#inicio').val($(this).data('inicio'));
     $('#due_date').val($(this).data('due_date'));
     $('#porcentaje').val($(this).data('porcentaje')+" %");
+    $('#porcentaje_estimado').val($(this).data('porcentaje_estimado')+" %");
     $('#avance').val($(this).data('avance'));
    
 

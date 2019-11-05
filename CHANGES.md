@@ -11,6 +11,25 @@
     M [pages/edit_activos.php]
     - Riegos: Sacar los campos en la grilla de Categoría, Riesgo y Acción e Incluir Referente y Fecha Alta
     M [pages/riesgos.php]
+## FEAT-PROY-MEJORAS
+
+### Cambios a proyectos solicitados por DC.
+
+*Fecha:* 2019-11-04
+*Cambios:*
+    - Agregar estado Cancelado
+    - Se agregan las más categorias en el avance. Se reutiliza el campo "reunion"
+        0) Avance
+        1) Reunión
+        2) Riesgo
+        3) Problema 
+    M [pages/edit_proyecto]
+    - Cambio campo Porcentaje de Avance a "porcentaje de avance real"
+    - Agrego campo Porcentaje de avance estimado
+    - Quito columna "avance"
+    M [pages/edit_proyecto]
+    M [pages/proyectos]
+
 
 ## FIX-HOUSING
 
