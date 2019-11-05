@@ -323,10 +323,16 @@ desired effect
                                 ?>
                             </div>
                          </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                              <div class="form-group">
-                              <label for="porcentaje">Porcentaje de avance</label>
+                              <label for="porcentaje">Porcentaje de avance (Real)</label>
                               <input type="text" readonly class="form-control" name="porcentaje" value="<?php echo $row ['porcentaje']; ?> %">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                             <div class="form-group">
+                              <label for="porcentaje_estimado">Porcentaje de avance (Estimado)</label>
+                              <input type="text" readonly class="form-control" name="porcentaje_estimado" value="<?php echo $row ['porcentaje_estimado']; ?> %">
                             </div>
                         </div>
                 </div>
@@ -422,13 +428,14 @@ desired effect
                     $detalle = mysqli_real_escape_string($con,(strip_tags($_POST["detalle"],ENT_QUOTES)));//Escanpando caracteres
                     $estado = mysqli_real_escape_string($con,(strip_tags($_POST["estado"],ENT_QUOTES)));//Escanpando caracteres
                     $porcentaje = mysqli_real_escape_string($con,(strip_tags($_POST["porcentaje"],ENT_QUOTES)));//Escanpando caracteres
+                    $porcentaje_estimado = mysqli_real_escape_string($con,(strip_tags($_POST["porcentaje_estimado"],ENT_QUOTES)));//Escanpando caracteres
                     $categoria = mysqli_real_escape_string($con,(strip_tags($_POST["categoria"],ENT_QUOTES)));//Escanpando caracteres
                     $tiempo = mysqli_real_escape_string($con,(strip_tags($_POST["tiempo"],ENT_QUOTES)));//Escanpando caracteres
                     
                     $insert_avance = mysqli_query($con, "INSERT INTO avance (id_proyecto, detalle, fecha, user, reunion, tiempo) 
                                                          VALUES ('$nik', '$detalle', now(), '$user', '$categoria', '$tiempo')") or die(mysqli_error());
                     
-                    $update_proyecto = mysqli_query($con, "UPDATE proyecto SET estado='$estado', porcentaje='$porcentaje', modificado=NOW() 
+                    $update_proyecto = mysqli_query($con, "UPDATE proyecto SET estado='$estado', porcentaje='$porcentaje', porcentaje_estimado='$porcentaje_estimado', modificado=NOW() 
 										 WHERE id_proyecto='$nik'") or die(mysqli_error());	
                     
                     
@@ -448,27 +455,33 @@ desired effect
               <label for="legajo">Detalle del avance</label>
               <textarea class="form-control" rows="5" name="detalle" id="detalle" value=""></textarea>
             </div>
-            <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Estado</label>
-                                <select name="estado" class="form-control">
-                                    <option value='1'<?php if($rowmp['estado'] == '1'){ echo 'selected'; } ?>>No Iniciada</option>
-                                    <option value='2'<?php if($rowmp['estado'] == '2'){ echo 'selected'; } ?>>En Curso</option>
-                                    <option value='3'<?php if($rowmp['estado'] == '3'){ echo 'selected'; } ?>>Aplazada</option>
-                                    <option value='4'<?php if($rowmp['estado'] == '4'){ echo 'selected'; } ?>>Completada</option>
-                                    <option value='5'<?php if($rowmp['estado'] == '5'){ echo 'selected'; } ?>>Cancelada</option>
-                                </select>
-                            </div>
-                         </div>
-                        <div class="col-sm-6">
-                             <div class="form-group">
-                              <label for="porcentaje">Porcentaje de avance</label>
-                              <input type="text" class="form-control" name="porcentaje" value="<?php echo $rowmp['porcentaje']; ?>">
-                            </div>
-                        </div>
+              <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select name="estado" class="form-control">
+                            <option value='1'<?php if($rowmp['estado'] == '1'){ echo 'selected'; } ?>>No Iniciada</option>
+                            <option value='2'<?php if($rowmp['estado'] == '2'){ echo 'selected'; } ?>>En Curso</option>
+                            <option value='3'<?php if($rowmp['estado'] == '3'){ echo 'selected'; } ?>>Aplazada</option>
+                            <option value='4'<?php if($rowmp['estado'] == '4'){ echo 'selected'; } ?>>Completada</option>
+                            <option value='5'<?php if($rowmp['estado'] == '5'){ echo 'selected'; } ?>>Cancelada</option>
+                        </select>
+                    </div>
+                  </div>
+                <div class="col-sm-4">
+                      <div class="form-group">
+                      <label for="porcentaje">% Avance real</label>
+                      <input type="text" class="form-control" name="porcentaje" value="<?php echo $rowmp['porcentaje']; ?>">
+                    </div>
                 </div>
-            <div class="row">
+                <div class="col-sm-4">
+                      <div class="form-group">
+                      <label for="porcentaje_estimado">% Avance estimado</label>
+                      <input type="text" class="form-control" name="porcentaje_estimado" value="<?php echo $rowmp['porcentaje_estimado']; ?>">
+                    </div>
+                </div>
+              </div>
+              <div class="row">
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="categoria">Categoría</label>

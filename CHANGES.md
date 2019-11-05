@@ -13,6 +13,11 @@
         2) Riesgo
         3) Problema 
     M [pages/edit_proyecto]
+    - Cambio campo Porcentaje de Avance a "porcentaje de avance real"
+    - Agrego campo Porcentaje de avance estimado
+    - Quito columna "avance"
+    M [pages/edit_proyecto]
+    M [pages/proyectos]
 
 
 ## FIX-HOUSING

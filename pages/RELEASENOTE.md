@@ -11,6 +11,11 @@
 - Entorno
 
 - BackUp DB
+
+ALTER TABLE controls.proyecto
+ ADD porcentaje_estimado INT(11) AFTER tipo;
+
+ 
 - Backup /pages
 - Cambios en DB
 
