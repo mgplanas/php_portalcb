@@ -1,5 +1,13 @@
 # CHANGES
 
+## FEAT-COMPRAS
+Se agrega el módulo de administración y seguimiento de compras
+*Fecha:* 2019-11-05
+*Cambios:*
+    - Se agrega el perfil compras y admin_compras para el acceso y administración del módulo de compras.
+    M [pages/admin.php]
+    M [pages/setPermiso.php]
+
 ## FIX-VARIAS
 *Fecha:* 2019-11-01
 *Cambios:*

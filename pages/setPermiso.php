@@ -104,16 +104,37 @@
     }
     }
     else if ($f=='9'){
-    $admin = $check['admin_cli_dc'];
-    
-    if ($admin == '0'){
-        $sel="update permisos set admin_cli_dc='1' where id_permiso='$s'";
-        $sel1=mysqli_query($con, $sel);
-    }
-    else{
-        $sel="update permisos set admin_cli_dc='0' where id_permiso='$s'";
-        $sel1=mysqli_query($con, $sel);
-    }
+        $admin = $check['admin_cli_dc'];
+        if ($admin == '0'){
+            $sel="update permisos set admin_cli_dc='1' where id_permiso='$s'";
+            $sel1=mysqli_query($con, $sel);
+        }
+        else{
+            $sel="update permisos set admin_cli_dc='0' where id_permiso='$s'";
+            $sel1=mysqli_query($con, $sel);
+        }
+    }    
+    else if ($f=='10'){
+        $admin = $check['compras'];
+        if ($admin == '0'){
+            $sel="update permisos set compras='1' where id_permiso='$s'";
+            $sel1=mysqli_query($con, $sel);
+        }
+        else{
+            $sel="update permisos set compras='0' where id_permiso='$s'";
+            $sel1=mysqli_query($con, $sel);
+        }
+    }    
+    else if ($f=='11'){
+        $admin = $check['admin_compras'];
+        if ($admin == '0'){
+            $sel="update permisos set admin_compras='1' where id_permiso='$s'";
+            $sel1=mysqli_query($con, $sel);
+        }
+        else{
+            $sel="update permisos set admin_compras='0' where id_permiso='$s'";
+            $sel1=mysqli_query($con, $sel);
+        }
     }    
     
 ?>

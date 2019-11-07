@@ -224,6 +224,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">Compliance</th>
                                                 <th width="1">Cli. DC</th>
                                                 <th width="1">Admin CDC</th>
+                                                <th width="1">Compras</th>
+                                                <th width="1">Admin Compras</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>
@@ -286,6 +288,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 </div></td>'; 
                                                   echo '<td>
                                                           <div class="checkbox">
+                                                            <label><input name="compras" type="checkbox" onclick="updatePerm(10, '.$row['id_permiso'].');" value="1"'; if($row['compras'] == '1'){ echo 'checked'; } echo'></label>
+                                                                </div></td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
+                                                            <label><input name="admin_compras" type="checkbox" onclick="updatePerm(11, '.$row['id_permiso'].');" value="1"'; if($row['admin_compras'] == '1'){ echo 'checked'; } echo'></label>
+                                                                </div></td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
                                                             <label><input name="edicion" type="checkbox" onclick="updatePerm(4, '.$row['id_permiso'].');" value="1"'; if($row['edicion'] == '1'){ echo 'checked'; } echo'></label>
                                                           </div></td>'; 
                                                   echo '<td align="center">
@@ -314,6 +324,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">Compliance</th>
                                                 <th width="1">Cli. DC</th>
                                                 <th width="1">Admin CDC</th>
+                                                <th width="1">Compras</th>
+                                                <th width="1">Admin Compras</th>                                                
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>
@@ -338,8 +350,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     $proy = mysqli_real_escape_string($con,(strip_tags($_POST["proy"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $admin_proy = mysqli_real_escape_string($con,(strip_tags($_POST["admin_proy"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $clidc = mysqli_real_escape_string($con,(strip_tags($_POST["clidc"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $compras = mysqli_real_escape_string($con,(strip_tags($_POST["compras"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $admin_compras = mysqli_real_escape_string($con,(strip_tags($_POST["admin_compras"],ENT_QUOTES)));//Escanpando caracteres 
                                                     //Inserto Control
-                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy, cli_dc) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy', '$clidc')") or die(mysqli_error());	
+                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy, cli_dc,compras, admin_compras) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy', '$clidc', '$compras', '$admin_compras')") or die(mysqli_error());	
                                                     $lastInsert = mysqli_insert_id($con);
                                                     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                                   VALUES ('1', '16', '$lastInsert', now(), '$user')") or die(mysqli_error());
@@ -409,6 +423,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <div class="checkbox">
                                                             <label>
                                                                 <input name="clidc" type="checkbox" value="1"> Clientes DC
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="compras" type="checkbox" value="1"> Compras
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="admin_compras" type="checkbox" value="1"> Admin. Compras
                                                             </label>
                                                         </div>
 
