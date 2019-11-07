@@ -7,6 +7,10 @@ Se agrega el módulo de administración y seguimiento de compras
     - Se agrega el perfil compras y admin_compras para el acceso y administración del módulo de compras.
     M [pages/admin.php]
     M [pages/setPermiso.php]
+    - Se agrega el menú lateral
+    M [site.php]
+    M [pages/site_sidebar.php]
+    N [pages/compras.php]
 
 ## FIX-VARIAS
 *Fecha:* 2019-11-01

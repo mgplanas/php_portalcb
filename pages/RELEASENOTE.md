@@ -91,7 +91,11 @@
         ALTER TABLE controls.permisos
         ADD compras INT(11) DEFAULT '0' AFTER admin_cli_dc,
         ADD admin_compras INT(11) DEFAULT '0';
-        
+
 
 - Cambios en src
-  - M [pages/]
+    M [pages/admin.php]
+    M [pages/setPermiso.php]
+    M [site.php]
+    M [pages/site_sidebar.php]
+    N [pages/compras.php]

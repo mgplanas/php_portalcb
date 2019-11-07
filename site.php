@@ -368,6 +368,21 @@ desired effect
         <li class="header">MENU</li>
         <!-- Optionally, you can add icons to the links -->
         <li class="active"><a href="#"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
+        <?php if ($rq_sec['admin']=='1' OR $rq_sec['compras']=='1'){ ?>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-edit"></i><span>Administración</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <?php if ($rq_sec['admin']=='1' OR $rq_sec['compras']=='1'){ ?>
+                <li><a href="./pages/compras.php"><i class="fa fa-cart-plus"></i>Compras</a></li>
+              <?php } ?>
+            </ul>
+          </li>
+        <?php } ?>        
         <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
           <li><a href="./pages/activos.php"><i class="fa fa-archive"></i> <span>Activos</span></a></li>
           <li><a href="./pages/controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
