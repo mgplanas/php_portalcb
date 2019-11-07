@@ -86,6 +86,19 @@
                 PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+        # Comentarios
+        CREATE TABLE `adm_compras_comments` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `id_compra` int(11) NOT NULL,
+        `id_tipo` int(11) DEFAULT '1',
+        `comentario` varchar(500) DEFAULT NULL,
+        `fecha` datetime DEFAULT NULL,
+        `id_persona` int(11) NOT NULL,
+        `borrado` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+
 
         # PERMISOS
         ALTER TABLE controls.permisos
