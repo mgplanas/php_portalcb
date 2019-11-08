@@ -397,12 +397,12 @@ desired effect
         let id = datarow[0];
 
         // efecto visual de seleccionar la fila
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
-        } else {
+        // if ( $(this).hasClass('selected') ) {
+        //     $(this).removeClass('selected');
+        // } else {
           tb.$('tr.selected').removeClass('selected');
           $(this).addClass('selected');
-        }
+        // }
         $("#popover-add-comment-icon").css('color: green;');
         // seteo el id de la fila seleccionada para que lo use el commentario
         $('#compra-selected-id').val(id);

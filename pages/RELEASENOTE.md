@@ -112,3 +112,10 @@
     M [site.php]
     M [pages/site_sidebar.php]
     N [pages/compras.php]
+
+ADD bower_components/bootstrap/dist/js/bootstrap.bundle.min.js
+ADD bower_components/popper/popper.min.js
+M [pages/helpers/abmcompracommentdb.php]
+M [pages/helpers/abmcompradb.php]
+M [pages/modals/abmcompra.js]
+M [pages/modals/abmcompra.php]

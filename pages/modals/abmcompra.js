@@ -156,15 +156,18 @@ $(function() {
 
     function modalAbmComprasLimpiarCampos() {
         $('#modal-abm-compra-id').val(0);
-        $('#modal-abm-compra-legajo').val('');
-        $('#modal-abm-compra-nombre').val('');
-        $('#modal-abm-compra-apellido').val('');
-        $('#modal-abm-compra-email').val('');
-        $('#modal-abm-compra-contacto').val('');
-        $('#modal-abm-compra-cargo').val('');
+        $('#modal-abm-compra-fecha-sol').val('');
+        $('#modal-abm-compra-solicitud').val('');
+        $('#modal-abm-compra-concepto').val('');
+        $('#modal-abm-compra-presupuesto').val('');
+        $('#modal-abm-compra-plazo').val('');
         // $('#modal-abm-compra-grupo-div').hide();
 
         ddlGerencias.val('first').change();
+        ddlSolicitante.val('first').change();
+        ddlMonedasPresupuesto.val('first').change();
+        ddlCapexOpex.val('first').change();
+        ddlPlazoUnidad.val('first').change();
     }
     // ALTA
     // seteo boton trigger para el alta de gerencia
@@ -203,35 +206,37 @@ $(function() {
     $('#modal-abm-compra-submit').click(function() {
         // Recupero datos del formulario
         let op = $(this).attr('name');
-        let id_persona = $('#modal-abm-compra-id').val();
-        let legajo = $('#modal-abm-compra-legajo').val();
-        let nombre = $('#modal-abm-compra-nombre').val();
-        let apellido = $('#modal-abm-compra-apellido').val();
-        let cargo = $('#modal-abm-compra-cargo').val();
+        let id = $('#modal-abm-compra-id').val();
+        let fecha = $('#modal-abm-compra-fecha-sol').val();
+        let solicitud = $('#modal-abm-compra-solicitud').val();
+        let concepto = $('#modal-abm-compra-concepto').val();
+        let presupuesto = $('#modal-abm-compra-presupuesto').val();
+        let plazo = $('#modal-abm-compra-plazo').val();
         let gerencia = $('#modal-abm-compra-gerencia').val();
         let subgerencia = $('#modal-abm-compra-subgerencia').val();
-        let area = $('#modal-abm-compra-area').val();
-        let email = $('#modal-abm-compra-email').val();
-        let grupo = $('#modal-abm-compra-grupo').val();
-        let contacto = $('#modal-abm-compra-contacto').val();
+        let solicitante = $('#modal-abm-compra-solicitante').val();
+        let moneda = $('#modal-abm-compra-moneda').val();
+        let capexopex = $('#modal-abm-compra-capex-opex').val();
+        let plazo_unidad = $('#modal-abm-compra-plazo-unidad').val();
 
         // Ejecuto
         $.ajax({
             type: 'POST',
-            url: './helpers/abmpersonadb.php',
+            url: './helpers/abmcompradb.php',
             data: {
                 operacion: op,
-                id: id_persona,
-                legajo: legajo,
-                nombre: nombre,
-                apellido: apellido,
-                cargo: cargo,
+                id: id,
+                fecha: fecha,
+                solicitud: solicitud,
+                concepto: concepto,
+                presupuesto: presupuesto,
+                plazo: plazo,
                 gerencia: gerencia,
                 subgerencia: subgerencia,
-                area: area,
-                email: email,
-                grupo: grupo,
-                contacto: contacto
+                solicitante: solicitante,
+                moneda: moneda,
+                capexopex: capexopex,
+                plazo_unidad: plazo_unidad
             },
             dataType: 'json',
             success: function(json) {

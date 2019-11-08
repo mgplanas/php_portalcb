@@ -46,7 +46,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="nrosolicitud">Nro. Solicitud</label>
-                                <input type="text" id="modal-abm-compra-nombre" class="form-control" name="nrosolicitud" placeholder="SC-000000000">
+                                <input type="text" id="modal-abm-compra-solicitud" class="form-control" name="nrosolicitud" placeholder="SC-000000000">
                             </div>
                         </div>
                         <div class="col-md-4">
