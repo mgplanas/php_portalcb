@@ -11,6 +11,15 @@ Se agrega el módulo de administración y seguimiento de compras
     M [site.php]
     M [pages/site_sidebar.php]
     N [pages/compras.php]
+    - ABM Compras modal
+    N [pages/modals/abmcompra.php]
+    N [pages/modals/abmcompra.js]
+    N [pages/helpers/abmcompradb.php]
+    - ABM Comentrios
+    N [pages/compras.php]
+    N [pages/helpers/abmcompracomentariodb.php]
+
+
 
 ## FIX-VARIAS
 *Fecha:* 2019-11-01
