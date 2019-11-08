@@ -383,9 +383,10 @@ desired effect
     $('#tbEnProceso').DataTable({
       'language': { 'emptyTable': 'No hay proyectos' },
       'paging'      : true,
+      'pageLength': 5,
       'lengthChange': false,
       'searching'   : true,
-      'ordering'    : false,
+      'ordering'    : true,
       'info'        : true,
       'autoWidth'   : true,
     });
