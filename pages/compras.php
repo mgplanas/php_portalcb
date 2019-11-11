@@ -117,6 +117,23 @@ desired effect
 -->
 <body class="hold-transition skin-blue sidebar-mini">
 <script>
+  var flagShowComments = true;
+  function toggleComments() {
+    if (flagShowComments) {
+      $('#div_comentarios').hide();
+      $('#div_compras_enproceso').removeClass('col-md-10');
+      $('#div_compras_enproceso').addClass('col-md-12');
+      $('#tbEnProceso').css("width","100%");
+      flagShowComments = false;
+    } else {
+      $('#div_compras_enproceso').removeClass('col-md-12');
+      $('#div_compras_enproceso').addClass('col-md-10');
+      $('#div_comentarios').show();
+      $('#tbEnProceso').css("width","100%");
+      flagShowComments = true;
+    }
+  }    
+
     // Populo gerencias
     function fn_popular_comentarios(id_compra){
       // Busco el servicio
@@ -229,6 +246,7 @@ desired effect
                         <!-- BOTON -->
                         <div class="pull-right" style="margin: 10px;">
                           <button id="modal-abm-compra-btn-alta" type="button" class="btn btbn-block btn-primary btn-sm">Nueva Compra</button>
+                          <button id="btn-showhide-comments" type="button" class="btn" onclick="toggleComments()"><i class="fa fa-comments"></i>&nbsp;&nbsp;Comentarios</button>
                         </div>
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#tab_1" data-toggle="tab">En proceso</a></li>
@@ -240,10 +258,10 @@ desired effect
                                 <div class="row">
                                     <input type="hidden" class="form-control" name="id" id='compra-selected-id' >
                                     <!-- COMPRAS -->
-                                    <div class="col-md-10">
+                                    <div id="div_compras_enproceso" class="col-md-10">
                                         <div class="box">
                                             <div class="box-body">
-                                                <table id="tbEnProceso" class="display w-auto" witdh="70%">
+                                                <table id="tbEnProceso" class="display w-auto" witdh="100%">
                                                     <thead>
                                                     <tr>
                                                         <th width="1">#</i> </th>
@@ -254,12 +272,13 @@ desired effect
                                                         <th>PE</th>
                                                         <th>Paso actual</th>
                                                         <th>Siguiente</th>
-                                                        <th width="1"><i class="fa fa-bolt"></i> </th>
+                                                        <th width="30px" style="text-align: center;"><i class="fa fa-bolt"></i> </th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php
                                                             $query = "SELECT C.*, sub.nombre as subgerencia, mon.sigla as moneda, cur_step.descripcion as cur_step_desc, next_step.descripcion as next_step_desc
+                                                            , (SELECT COUNT(1) FROM adm_compras_comments as com WHERE C.id = com.id_compra) as comentarios
                                                             FROM adm_compras as C
                                                             LEFT JOIN subgerencia as sub ON C.id_subgerencia = sub.id_subgerencia
                                                             LEFT JOIN adm_monedas as mon ON C.pre_id_moneda = mon.id
@@ -286,8 +305,12 @@ desired effect
                                                                 echo '<td>'. $row['moneda'] .' ' . $row['pre_monto'] . '</td>';
                                                                 echo '<td>'. $row['cur_step_desc'] .'</td>';
                                                                 echo '<td>'. $row['next_step_desc'] .'</td>';
-                                                                echo '<td align="center"><a data-id="'.$row['id'].'" title="ver más info" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>';
-                                                                echo '<a data-id="'.$row['id'].'" title="editar" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-edit" style="color: red;"></i></a></td>';
+                                                                echo '<td align="center">';
+                                                                if ($row['comentarios']>0) {
+                                                                  echo '<a data-id="'.$row['id'].'" title="'.$row['comentarios'].' comentarios" style="padding: 2px;"><i class="fa fa-comments"></i></a>';
+                                                                }
+                                                                echo '<a data-id="'.$row['id'].'" title="Ver detalles" style="padding: 2px;"><i class="fa fa-eye"></i></a>';
+                                                                echo '<a data-id="'.$row['id'].'" title="editar" style="padding: 2px;"><i class="glyphicon glyphicon-edit" style="color: red;"></i></a></td>';
                                                                 echo '</tr>';
                                                             }
                                                         ?>
@@ -302,7 +325,7 @@ desired effect
                                         </div>  
                                     </div>
                                     <!-- COMMENTS -->
-                                    <div class="col-md-2">
+                                    <div id="div_comentarios" class="col-md-2">
                                         <div class="box box-success">
                                             <!-- <div class="pull-right"> -->
                                               <!-- </div> -->
@@ -376,14 +399,15 @@ desired effect
 
 
     $('#tbEnProceso').DataTable({
-      'language': { 'emptyTable': 'No hay proyectos' },
+      'language': { 'emptyTable': 'No hay compras' },
       'paging'      : true,
-      'pageLength': 5,
+      'pageLength': 10,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : true,
+      'columnDefs'  : [{'targets': [ 0 ], 'visible': false}]
     });
 
     $('#tbEnProceso tbody').on('click', 'tr', function(event){
@@ -484,6 +508,8 @@ desired effect
       $('#popover-comment').val('');
       $('#popover-comment').focus();
     });
+
+    toggleComments();
 });
 </script>
 </body>
