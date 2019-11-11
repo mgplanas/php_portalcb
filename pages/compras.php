@@ -386,30 +386,36 @@ desired effect
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : true,
-      'columnDefs'  : [{'targets': [ 0 , 1 ], 'visible': false}]
+      'columnDefs'  : [{'targets': [ 0 , 1 ], 'visible': false}],
+      'drawCallback': function(settings) {
+        $('#btn-showhide-comments').prop('disabled', 'true');
+      }
     });
 
     $('#tbEnProceso tbody').on('click', 'tr', function(event){
      
-        let tb = $('#tbEnProceso').dataTable();
-        let datarow = tb.fnGetData(this);
-        let id = datarow[0];
-        let comments = parseInt(datarow[1]);
+      let tb = $('#tbEnProceso').dataTable();
+      let datarow = tb.fnGetData(this);
+      let id = datarow[0];
+      let comments = parseInt(datarow[1]);
 
-        // efecto visual de seleccionar la fila
-        // if ( $(this).hasClass('selected') ) {
-        //     $(this).removeClass('selected');
-        // } else {
-          tb.$('tr.selected').removeClass('selected');
-          $(this).addClass('selected');
-        // }
-        // $("#popover-add-comment-icon").css('color: green;');
-        // seteo el id de la fila seleccionada para que lo use el commentario
-        $('#compra-selected-id').val(id);
-        fn_popular_comentarios(id);
-        // $("#popover-add-comment").popover('enable');
-      });
-      
+      // efecto visual de seleccionar la fila
+      // if ( $(this).hasClass('selected') ) {
+      //     $(this).removeClass('selected');
+      // } else {
+        tb.$('tr.selected').removeClass('selected');
+        $(this).addClass('selected');
+      // }
+      // $("#popover-add-comment-icon").css('color: green;');
+      // seteo el id de la fila seleccionada para que lo use el commentario
+      $('#compra-selected-id').val(id);
+      fn_popular_comentarios(id);
+      $('#btn-showhide-comments').removeAttr('disabled');
+      // $("#popover-add-comment").popover('enable');
+    });
+    // $('#tbEnProceso').on( 'page', function () {
+    //   $('#btn-showhide-comments').prop('disabled', 'true');
+    // } );        
     // $("#popover-add-comment").popover('disable');
     
     // $("#popover-add-comment-icon").css('color: gray;');
@@ -489,7 +495,7 @@ desired effect
     //   $('#popover-comment').focus();
     // });
 
-    // $('#btn-showhide-comments').hide();
+    $('#btn-showhide-comments').prop('disabled', 'true');
     // toggleComments();
 });
 </script>
