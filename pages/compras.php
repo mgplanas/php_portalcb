@@ -118,21 +118,24 @@ desired effect
 <body class="hold-transition skin-blue sidebar-mini">
 <script>
   var flagShowComments = true;
-  function toggleComments() {
-    if (flagShowComments) {
-      $('#div_comentarios').hide();
-      $('#div_compras_enproceso').removeClass('col-md-10');
-      $('#div_compras_enproceso').addClass('col-md-12');
-      $('#tbEnProceso').css("width","100%");
-      flagShowComments = false;
-    } else {
-      $('#div_compras_enproceso').removeClass('col-md-12');
-      $('#div_compras_enproceso').addClass('col-md-10');
-      $('#div_comentarios').show();
-      $('#tbEnProceso').css("width","100%");
-      flagShowComments = true;
-    }
+  function showComments() {
+      $('#modal-abm-compra-comments').modal('show');
   }    
+  // function toggleComments() {
+  //   if (flagShowComments) {
+  //     $('#div_comentarios').hide();
+  //     $('#div_compras_enproceso').removeClass('col-md-10');
+  //     $('#div_compras_enproceso').addClass('col-md-12');
+  //     $('#tbEnProceso').css("width","100%");
+  //     flagShowComments = false;
+  //   } else {
+  //     $('#div_compras_enproceso').removeClass('col-md-12');
+  //     $('#div_compras_enproceso').addClass('col-md-10');
+  //     $('#div_comentarios').show();
+  //     $('#tbEnProceso').css("width","100%");
+  //     flagShowComments = true;
+  //   }
+  // }    
 
     // Populo gerencias
     function fn_popular_comentarios(id_compra){
@@ -180,7 +183,7 @@ desired effect
             },
             dataType: 'json',
             success: function(json) {
-                $('#popover-add-comment').popover('hide'); 
+                // $('#popover-add-comment').popover('hide'); 
                 fn_popular_comentarios(id_compra);
             },
             error: function(xhr, status, error) {
@@ -239,14 +242,14 @@ desired effect
         
         <input type="hidden" class="form-control" name="id_persona" id='compra-id-persona' value="<?=$id_rowp ?>">
             <!-- CONTENIDO -->
-            <div class="row">
+            <div class="row">         
                 <div class="col-12">
                     <!-- Custom Tabs -->
                     <div class="nav-tabs-custom">
                         <!-- BOTON -->
                         <div class="pull-right" style="margin: 10px;">
+                            <button id="btn-showhide-comments" type="button" class="btn" onclick="showComments()"><i class="fa fa-comments"></i>&nbsp;&nbsp;Comentarios</button>
                           <button id="modal-abm-compra-btn-alta" type="button" class="btn btbn-block btn-primary btn-sm">Nueva Compra</button>
-                          <button id="btn-showhide-comments" type="button" class="btn" onclick="toggleComments()"><i class="fa fa-comments"></i>&nbsp;&nbsp;Comentarios</button>
                         </div>
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#tab_1" data-toggle="tab">En proceso</a></li>
@@ -258,13 +261,14 @@ desired effect
                                 <div class="row">
                                     <input type="hidden" class="form-control" name="id" id='compra-selected-id' >
                                     <!-- COMPRAS -->
-                                    <div id="div_compras_enproceso" class="col-md-10">
+                                    <div id="div_compras_enproceso" class="col-md-12">
                                         <div class="box">
                                             <div class="box-body">
                                                 <table id="tbEnProceso" class="display w-auto" witdh="100%">
                                                     <thead>
                                                     <tr>
                                                         <th width="1">#</i> </th>
+                                                        <th width="1">comentarios</i> </th>
                                                         <th>Subgerencia</th>
                                                         <th>Fecha</th>
                                                         <th>Nro</th>
@@ -298,6 +302,7 @@ desired effect
 
                                                                 echo '<tr>';
                                                                 echo '<td>'. $row['id'] .'</td>';
+                                                                echo '<td>'. $row['comentarios'] .'</td>';
                                                                 echo '<td>'. $row['subgerencia'] .'</td>';
                                                                 echo '<td>'. $row['fecha_solicitud'] .'</td>';
                                                                 echo '<td>'. $row['nro_solicitud'] .'</td>';
@@ -319,38 +324,12 @@ desired effect
                                                 <!-- MODAL ADD COMPRA -->
                                                 <?php
                                                     include_once('./modals/abmcompra.php');
+                                                    include_once('./modals/compracomments.php');
                                                 ?>                                                
                                             </div>
                                             <!-- /.box-body -->
                                         </div>  
                                     </div>
-                                    <!-- COMMENTS -->
-                                    <div id="div_comentarios" class="col-md-2">
-                                        <div class="box box-success">
-                                            <!-- <div class="pull-right"> -->
-                                              <!-- </div> -->
-                                              <div class="box-header">
-                                                <i class="fa fa-comments-o"></i>
-                                                <h3 class="box-title">Comentarios&nbsp;&nbsp;&nbsp;
-                                                    <a id="popover-add-comment" style="color: green; font-size:20px;" title="Agregar commentario" 
-                                                      tabindex="0" data-html="true" 
-                                                      data-Title="Agregar comentario" 
-                                                      data-container="body" 
-                                                      data-toggle="popover" 
-                                                      data-placement="left" 
-                                                      data-trigger="click"
-                                                      data-content='<div class="input-group"><input id="popover-comment" class="form-control">
-                                                      <div class="input-group-btn"><button id="popup-comment-submit" type="button" class="btn btn-success" onclick="addcomment();"><i class="fa fa-plus"></i></button></div>
-                                                      </div>'><i id="popover-add-comment-icon" class="fa fa-plus-circle"></i>
-                                                    </a>                                              
-
-                                                </h3>
-                                            </div>
-                                            <div class="box-body chat" id="chat-box">
-                                            <div class="box-footer">
-                                            </div>
-                                        </div>                                                
-                                    </div>                                        
                                 </div>
                               
                             </div>
@@ -407,7 +386,7 @@ desired effect
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : true,
-      'columnDefs'  : [{'targets': [ 0 ], 'visible': false}]
+      'columnDefs'  : [{'targets': [ 0 , 1 ], 'visible': false}]
     });
 
     $('#tbEnProceso tbody').on('click', 'tr', function(event){
@@ -415,6 +394,7 @@ desired effect
         let tb = $('#tbEnProceso').dataTable();
         let datarow = tb.fnGetData(this);
         let id = datarow[0];
+        let comments = parseInt(datarow[1]);
 
         // efecto visual de seleccionar la fila
         // if ( $(this).hasClass('selected') ) {
@@ -423,16 +403,16 @@ desired effect
           tb.$('tr.selected').removeClass('selected');
           $(this).addClass('selected');
         // }
-        $("#popover-add-comment-icon").css('color: green;');
+        // $("#popover-add-comment-icon").css('color: green;');
         // seteo el id de la fila seleccionada para que lo use el commentario
         $('#compra-selected-id').val(id);
         fn_popular_comentarios(id);
-        $("#popover-add-comment").popover('enable');
+        // $("#popover-add-comment").popover('enable');
       });
       
-    $("#popover-add-comment").popover('disable');
+    // $("#popover-add-comment").popover('disable');
     
-    $("#popover-add-comment-icon").css('color: gray;');
+    // $("#popover-add-comment-icon").css('color: gray;');
 
     /* jQueryKnob */
     $(".knob").knob({       
@@ -503,13 +483,14 @@ desired effect
     $("#knob_adjudicacion").attr('disabled','disabled');
 
     // Popper
-    $('[data-toggle="popover"]').popover();
-    $('#popover-add-comment').on('shown.bs.popover', function () {
-      $('#popover-comment').val('');
-      $('#popover-comment').focus();
-    });
+    // $('[data-toggle="popover"]').popover();
+    // $('#popover-add-comment').on('shown.bs.popover', function () {
+    //   $('#popover-comment').val('');
+    //   $('#popover-comment').focus();
+    // });
 
-    toggleComments();
+    // $('#btn-showhide-comments').hide();
+    // toggleComments();
 });
 </script>
 </body>
