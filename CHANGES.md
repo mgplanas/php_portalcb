@@ -18,6 +18,8 @@ Se agrega el módulo de administración y seguimiento de compras
     - ABM Comentrios
     N [pages/compras.php]
     N [pages/helpers/abmcompracomentariodb.php]
+    - Indicadores
+    N [pages/compras.php]
 
 
 

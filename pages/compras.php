@@ -19,19 +19,17 @@ $per_id_gerencia = $rowp['gerencia'];
 // PUEDE VER TODO
 
 // INDICADORES
-// $sqlTmpISO27k = "SELECT 1 as total 
-//                 FROM controls.item_iso27k 
-//                 INNER JOIN persona as p ON item_iso27k.responsable = p.id_persona
-//                 WHERE item_iso27k.madurez=:madurez 
-//                 AND item_iso27k.version = (SELECT id FROM iso27k_version WHERE borrado = 0 ORDER BY modificacion desc LIMIT 1) 
-//                 AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )";
-// $qiso_def = mysqli_query($con, strtr($sqlTmpISO27k, array(':madurez' => '1', ':per_id_gerencia' => $per_id_gerencia)));
-// $iso_def = mysqli_num_rows($qiso_def);
-// $qiso_exc = mysqli_query($con, strtr($sqlTmpISO27k, array(':madurez' => '2', ':per_id_gerencia' => $per_id_gerencia)));
-// $iso_exc = mysqli_num_rows($qiso_exc);
-// $qiso_perf = mysqli_query($con, strtr($sqlTmpISO27k, array(':madurez' => '3', ':per_id_gerencia' => $per_id_gerencia)));
-// $iso_perf = mysqli_num_rows($qiso_perf);
-
+$sqlindicadores = "SELECT COUNT(IF( c.id_paso_actual='1',1,null)) as adjudicacion ";
+$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='2',1,null)) as Ofertas ";
+$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='3',1,null)) as Dictamen ";
+$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='4',1,null)) as EnvioSC ";
+$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='5',1,null)) as PET ";
+$sqlindicadores = $sqlindicadores . ",COUNT(1) as total ";
+$sqlindicadores = $sqlindicadores . "FROM adm_compras as c  ";
+$sqlindicadores = $sqlindicadores . "WHERE c.borrado='0' AND c.id_estado = 1  ";
+$sqlindicadores = $sqlindicadores . "AND ( 0 = " . $per_id_gerencia . " OR c.id_gerencia = " . $per_id_gerencia . " ); ";
+$q_indicadores = mysqli_query($con, $sqlindicadores);
+$rq_indicadores = mysqli_fetch_assoc($q_indicadores);	
 
 
 //Get Personas
@@ -191,29 +189,26 @@ desired effect
       <!-- INDICADORES -->
       <div class="row">
         <!-- /.box-header -->
-          <div class="col-xs-12 col-md-8"><h1>Gestión de Compras</h1></div>
+          <div class="col-xs-12 col-md-7"><h1>Gestión de Compras &nbsp;&nbsp;<small>Total de compras en proceso:&nbsp;<?=$rq_indicadores['total'] ?></small></h1></div>
           <div class="col-xs-6 col-md-1 text-center">
-            <input type="text" class="knob" value="30" data-width="60" data-height="60" data-fgColor="#3c8dbc">
-            <div class="knob-label">New Visitors</div>
+            <input id="knob_pet" type="text" class="knob" value="<?= (int)($rq_indicadores['PET']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
+            <div class="knob-label">PET</div>
           </div>
-          <!-- ./col -->
           <div class="col-xs-6 col-md-1 text-center">
-            <input type="text" class="knob" value="70" data-width="60" data-height="60" data-fgColor="#f56954">
-
-            <div class="knob-label">Bounce Rate</div>
+            <input id="knob_ofertas" type="text" class="knob" value="<?= (int)($rq_indicadores['Ofertas']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
+            <div class="knob-label">Ofertas</div>
           </div>
-          <!-- ./col -->
           <div class="col-xs-6 col-md-1 text-center">
-            <input type="text" class="knob" value="-80" data-min="-150" data-max="150" data-width="60" data-height="60" data-fgColor="#00a65a">
-
-            <div class="knob-label">Server Load</div>
+            <input id="knob_enviosc" type="text" class="knob" value="<?= (int)($rq_indicadores['EnvioSC']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
+            <div class="knob-label">Envío SC</div>
           </div>
-          <!-- ./col -->
           <div class="col-xs-6 col-md-1 text-center">
-            <input type="text" class="knob" value="40" data-width="60" data-height="60" data-fgColor="#00c0ef">
-
-            <div class="knob-label">Disk Space</div>
-            <!-- /.row -->
+            <input id="knob_dictamen" type="text" class="knob" value="<?= (int)($rq_indicadores['Dictamen']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
+            <div class="knob-label">Dictamen</div>
+          </div>
+          <div class="col-xs-6 col-md-1 text-center">
+            <input id="knob_adjudicacion" type="text" class="knob" value="<?= (int)($rq_indicadores['adjudicacion']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
+            <div class="knob-label">Adjudicación</div>
           </div>
         <!-- /.box-body -->
       </div>             
@@ -298,7 +293,7 @@ desired effect
                                                         ?>
                                                     </tbody>
                                                 </table>
-                                                <!-- MODAL ADD PERSONA -->
+                                                <!-- MODAL ADD COMPRA -->
                                                 <?php
                                                     include_once('./modals/abmcompra.php');
                                                 ?>                                                
@@ -416,16 +411,16 @@ desired effect
     $("#popover-add-comment-icon").css('color: gray;');
 
     /* jQueryKnob */
-    $(".knob").knob({
-      /*change : function (value) {
-       //console.log("change : " + value);
-       },
-       release : function (value) {
-       console.log("release : " + value);
-       },
-       cancel : function () {
-       console.log("cancel : " + this.value);
-       },*/
+    $(".knob").knob({       
+      //  release : function (value) {
+      //  console.log("release : " + value);
+      //  },
+      //  cancel : function () {
+      //  },
+      "readOnly": true,
+      "cursor": false,
+      "bgColor": "#FFFFFF",
+      "skin": "tron",
       draw: function () {
 
         // "tron" case
@@ -470,6 +465,18 @@ desired effect
         }
       }
     });
+
+    // SET TEXT
+    $('#knob_pet').val(<?=$rq_indicadores['PET'] ?>);
+    $("#knob_pet").attr('disabled','disabled');
+    $('#knob_ofertas').val(<?=$rq_indicadores['Ofertas'] ?>);
+    $("#knob_ofertas").attr('disabled','disabled');
+    $('#knob_enviosc').val(<?=$rq_indicadores['EnvioSC'] ?>);
+    $("#knob_enviosc").attr('disabled','disabled');
+    $('#knob_dictamen').val(<?=$rq_indicadores['Dictamen'] ?>);
+    $("#knob_dictamen").attr('disabled','disabled');
+    $('#knob_adjudicacion').val(<?=$rq_indicadores['adjudicacion'] ?>);
+    $("#knob_adjudicacion").attr('disabled','disabled');
 
     // Popper
     $('[data-toggle="popover"]').popover();
