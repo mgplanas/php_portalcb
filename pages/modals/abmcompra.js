@@ -45,7 +45,7 @@ $(function() {
             ddlCapexOpex.append($("<option />").val('O').text('OPEX'));
         }
         if (!selectedValue) {
-            ddlCapexOpex.val('first').change();
+            ddlCapexOpex.val('C').change();
         }
     }
     // refresh DDL
@@ -189,9 +189,9 @@ $(function() {
 
         ddlGerencias.val('first').change();
         ddlSolicitante.val('first').change();
-        ddlMonedasPresupuesto.val('first').change();
-        ddlCapexOpex.val('first').change();
-        ddlPlazoUnidad.val('first').change();
+        ddlMonedasPresupuesto.val(1).change();
+        ddlCapexOpex.val('C').change();
+        ddlPlazoUnidad.val(1).change();
     }
     // ALTA
     // seteo boton trigger para el alta de gerencia
