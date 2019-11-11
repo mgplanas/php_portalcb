@@ -68,6 +68,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
   <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/rowGroup.dataTables.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -249,7 +250,8 @@ desired effect
                         <!-- BOTON -->
                         <div class="pull-right" style="margin: 10px;">
                             <button id="btn-showhide-comments" type="button" class="btn" onclick="showComments()"><i class="fa fa-comments"></i>&nbsp;&nbsp;Comentarios</button>
-                          <button id="modal-abm-compra-btn-alta" type="button" class="btn btbn-block btn-primary btn-sm">Nueva Compra</button>
+                            <!-- <button id="btn-group-table" type="button" class="btn"><i class="fa fa-fa-outdent"></i>&nbsp;&nbsp;Agrupar</button> -->
+                            <button id="modal-abm-compra-btn-alta" type="button" class="btn btbn-block btn-primary btn-sm">Nueva Compra</button>
                         </div>
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#tab_1" data-toggle="tab">En proceso</a></li>
@@ -360,6 +362,7 @@ desired effect
 <!-- DataTables -->
 <script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="../bower_components/datatables.net/js/dataTables.rowGroup.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- ChartJS
@@ -389,7 +392,10 @@ desired effect
       'columnDefs'  : [{'targets': [ 0 , 1 ], 'visible': false}],
       'drawCallback': function(settings) {
         $('#btn-showhide-comments').prop('disabled', 'true');
-      }
+      },
+      // 'rowGroup': {
+      //       'dataSrc': [ 2 ]
+      //   },
     });
 
     $('#tbEnProceso tbody').on('click', 'tr', function(event){
@@ -496,6 +502,7 @@ desired effect
     // });
 
     $('#btn-showhide-comments').prop('disabled', 'true');
+
     // toggleComments();
 });
 </script>
