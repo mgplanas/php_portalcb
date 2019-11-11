@@ -105,6 +105,16 @@
         ADD compras INT(11) DEFAULT '0' AFTER admin_cli_dc,
         ADD admin_compras INT(11) DEFAULT '0';
 
+        #Historial de pases
+        CREATE TABLE controls.adm_compras_pasos_hist (
+        id INT(11) AUTO_INCREMENT NOT NULL,
+        id_compra INT(11) NOT NULL,
+        id_paso INT(11) NOT NULL,
+        fecha DATETIME NOT NULL,
+        id_persona INT(11) NOT NULL,
+        borrado INT NOT NULL DEFAULT '0',
+        PRIMARY KEY (id)
+        ) ENGINE = InnoDB ROW_FORMAT = DEFAULT;
 
 - Cambios en src
     M [pages/admin.php]
@@ -119,3 +129,4 @@ M [pages/helpers/abmcompracommentdb.php]
 M [pages/helpers/abmcompradb.php]
 M [pages/modals/abmcompra.js]
 M [pages/modals/abmcompra.php]
+M [pages/modals/abmcompracommentdb.php]

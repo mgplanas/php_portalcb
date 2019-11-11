@@ -309,9 +309,9 @@ desired effect
                                                                 echo '<td>'. $row['fecha_solicitud'] .'</td>';
                                                                 echo '<td>'. $row['nro_solicitud'] .'</td>';
                                                                 echo '<td>'. $row['concepto'] .'</td>';
-                                                                echo '<td>'. $row['moneda'] .' ' . $row['pre_monto'] . '</td>';
-                                                                echo '<td>'. $row['cur_step_desc'] .'</td>';
-                                                                echo '<td>'. $row['next_step_desc'] .'</td>';
+                                                                echo '<td align="right">'. $row['moneda'] .' ' . $row['pre_monto'] . '</td>';
+                                                                echo '<td align="center">'. $row['cur_step_desc'] .'</td>';
+                                                                echo '<td align="center">'. $row['next_step_desc'] .'</td>';
                                                                 echo '<td align="center">';
                                                                 if ($row['comentarios']>0) {
                                                                   echo '<a data-id="'.$row['id'].'" title="'.$row['comentarios'].' comentarios" style="padding: 2px;"><i class="fa fa-comments"></i></a>';
@@ -365,6 +365,15 @@ desired effect
 <script src="../bower_components/datatables.net/js/dataTables.rowGroup.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
+<!-- InputMask -->
+<script src="../plugins/input-mask/jquery.inputmask.js"></script>
+<script src="../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="../plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- date-range-picker -->
+<script src="../bower_components/moment/min/moment.min.js"></script>
+<script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap datepicker -->
+<script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- ChartJS
 <script src="../bower_components/chart.js/Chart.js"></script> -->
 <!-- FastClick -->

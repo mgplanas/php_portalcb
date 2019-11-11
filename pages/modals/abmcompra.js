@@ -3,6 +3,7 @@ $(function() {
     let ddlGerencias = $('#modal-abm-compra-gerencia');
     let ddlSubGerencias = $('#modal-abm-compra-subgerencia');
     let ddlMonedasPresupuesto = $('#modal-abm-compra-moneda');
+    let ddlMonedasOC = $('#modal-abm-compra-moneda-oc');
     let ddlSolicitante = $('#modal-abm-compra-solicitante');
     let ddlPlazoUnidad = $('#modal-abm-compra-plazo-unidad');
     let ddlCapexOpex = $('#modal-abm-compra-capex-opex');
@@ -87,6 +88,29 @@ $(function() {
                 });
                 if (!selectedValue) {
                     ddlMonedasPresupuesto.val('first').change();
+                }
+            }
+        ).fail(function(jqXHR, errorText) {
+            console.log(errorText);
+        });
+    }
+    // refresh DDL
+    function refreshMonedaOC(selectedValue) {
+        // Limpio combos
+        ddlMonedasOC.empty();
+
+        //Populo las areas
+        $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM adm_monedas WHERE borrado = 0' },
+            function(response) {
+                $.each(response.data, function() {
+                    if (selectedValue && selectedValue == this.id) {
+                        ddlMonedasOC.append($("<option />").val(this.id).text(this.sigla).attr('selected', 'selected'));
+                    } else {
+                        ddlMonedasOC.append($("<option />").val(this.id).text(this.sigla));
+                    }
+                });
+                if (!selectedValue) {
+                    ddlMonedasOC.val('first').change();
                 }
             }
         ).fail(function(jqXHR, errorText) {
@@ -254,4 +278,13 @@ $(function() {
     refreshSolicitante();
     refreshPlazoUnidad();
     refreshCapexOpex();
+    refreshMonedaOC();
+
+    //Datepicker
+    $('#modal-abm-compra-fecha-sol').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        todayHighlight: true,
+        daysOfWeekDisabled: [0, 6]
+    });
 });
