@@ -26,7 +26,7 @@
     $oc_id_moneda= $_POST['oc_id_moneda'];
     $id_proveedor= $_POST['id_proveedor'];
     $id_proceso= $_POST['id_proceso'];
-    $tags= $_POST['tags'];
+    // $tags= $_POST['tags'];
 
 
 
@@ -64,9 +64,9 @@
         
         case 'M':
             //UPDATE
+            // SET tags = '$tags'
             $sql ="UPDATE adm_compras 
-            SET tags = '$tags'
-                ,pre_monto = '$presupuesto'
+            SET pre_monto = '$presupuesto'
                 ,pre_id_moneda = '$moneda'
                 ,plazo_valor = '$plazo'
                 ,plazo_unidad = '$plazo_unidad'
@@ -85,7 +85,7 @@
                 ,id_gerencia = '$gerencia'
                 ,id_estado = '$id_estado'
                 ,fecha_solicitud = '$fecha'
-                ,fecha_oc = " . ($fecha_oc ? '$fecha_oc' : 'null') . "
+                ,fecha_oc = " . ($fecha_oc ? $fecha_oc : 'null') . "
                 ,concepto = '$concepto'
                 ,capex_opex = '$capexopex' 
                 WHERE id='$id'";

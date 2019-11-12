@@ -117,6 +117,8 @@ desired effect
 |---------------------------------------------------------|
 -->
 <body class="hold-transition skin-blue sidebar-mini">
+<script src="../bower_components/moment/min/moment.min.js"></script>
+<script src="../bower_components/moment/locale/es.js" charset="UTF-8"></script>
 <script>
   var flagShowComments = true;
   function showComments() {
@@ -147,12 +149,13 @@ desired effect
           data: { query: "select c.*, p.nombre, p.apellido FROM adm_compras_comments as c INNER JOIN persona as p ON c.id_persona = p.id_persona WHERE c.id_compra = " + id_compra + " AND c.borrado = 0 ORDER BY c.id DESC" },
           dataType: 'json',
           success: function(json) {
+                moment.locale('es');
                 $('#chat-box').empty();
                 if ("data" in json == true) {
                     $.each(json.data, function(i, d) {
                         $('#chat-box').append('<div class="item">')
-                        $('#chat-box').append('<i class="fa fa-info-circle" style="font-size:16px;"></i>');
-                        $('#chat-box').append('<a href="#" class="name"><small class="text-muted pull-right"><i class="fa fa-clock-o"></i> ' + d.fecha + '</small>&nbsp;' + d.apellido + ', ' + d.nombre + '</a>');
+                        $('#chat-box').append('<i class="fa fa-user" style="color: rgb(60, 141, 188); font-size:16px;"></i>');
+                        $('#chat-box').append('<span class="text-muted pull-right"><i class="fa fa-clock-o"></i> ' + moment(d.fecha).fromNow() + '</span>&nbsp;<strong>' + d.apellido + ', ' + d.nombre + '</strong>');
                         $('#chat-box').append('<p>' + d.comentario + '</p>'); 
                         $('#chat-box').append('</div>'); 
                     });
@@ -255,91 +258,159 @@ desired effect
                             <button id="modal-abm-compra-btn-alta" type="button" class="btn btbn-block btn-primary btn-sm">Nueva Compra</button>
                         </div>
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#tab_1" data-toggle="tab">En proceso</a></li>
-                            <li><a href="#tab_2" data-toggle="tab">Adjudicadas</a></li>
+                            <li class="active"><a href="#tab_1" data-toggle="tab"><i class="fa fa-gears"></i>&nbsp; En proceso</a></li>
+                            <li><a href="#tab_2" data-toggle="tab"><i class="fa fa-handshake-o"></i>&nbsp;Adjudicadas</a></li>
                         </ul>
                         <div class="tab-content">
-                            <!-- En proceso -->
-                            <div class="tab-pane active" id="tab_1">
-                                <div class="row">
-                                    <input type="hidden" class="form-control" name="id" id='compra-selected-id' >
-                                    <!-- COMPRAS -->
-                                    <div id="div_compras_enproceso" class="col-md-12">
-                                        <div class="box">
-                                            <div class="box-body">
-                                                <table id="tbEnProceso" class="display w-auto" witdh="100%">
-                                                    <thead>
-                                                    <tr>
-                                                        <th width="1">#</i> </th>
-                                                        <th width="1">comentarios</i> </th>
-                                                        <th>Subgerencia</th>
-                                                        <th>Fecha</th>
-                                                        <th>Nro</th>
-                                                        <th>Concepto</th>
-                                                        <th>PE</th>
-                                                        <th>Paso actual</th>
-                                                        <th>Siguiente</th>
-                                                        <th width="30px" style="text-align: center;"><i class="fa fa-bolt"></i> </th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                            $query = "SELECT C.*, sub.nombre as subgerencia, mon.sigla as moneda, cur_step.descripcion as cur_step_desc, next_step.descripcion as next_step_desc
-                                                            , (SELECT COUNT(1) FROM adm_compras_comments as com WHERE C.id = com.id_compra) as comentarios
-                                                            FROM adm_compras as C
-                                                            LEFT JOIN subgerencia as sub ON C.id_subgerencia = sub.id_subgerencia
-                                                            LEFT JOIN adm_monedas as mon ON C.pre_id_moneda = mon.id
-                                                            LEFT JOIN adm_com_pasos as cur_step ON C.id_paso_actual = cur_step.id
-                                                            LEFT JOIN adm_com_pasos as next_step ON C.id_siguiente_paso = next_step.id
-                                                            WHERE C.borrado = 0
-                                                            AND C.id_estado = 1 ";
-                                                            // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
-                                                            // if ( $per_id_gerencia != 1) {
-                                                            if ($rq_sec['admin']=='0') {
-                                                                $query = $query . " AND C.id_gerencia = $per_id_gerencia ";
-                                                            }                                         
+                          <input type="hidden" class="form-control" name="id" id='compra-selected-id' >
+                          <!-- En proceso -->
+                          <div class="tab-pane active" id="tab_1">
+                              <div class="row">
+                                  <!-- COMPRAS -->
+                                  <div id="div_compras_enproceso" class="col-md-12">
+                                      <div class="box">
+                                          <div class="box-body">
+                                              <table id="tbEnProceso" class="display w-auto" witdh="100%">
+                                                  <thead>
+                                                  <tr>
+                                                      <th width="1">#</i> </th>
+                                                      <th width="1">comentarios</i> </th>
+                                                      <th>Subgerencia</th>
+                                                      <th>Fecha</th>
+                                                      <th>Nro</th>
+                                                      <th>Concepto</th>
+                                                      <th>PE</th>
+                                                      <th>Paso actual</th>
+                                                      <th>Siguiente</th>
+                                                      <th width="30px" style="text-align: center;"><i class="fa fa-bolt"></i> </th>
+                                                  </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                      <?php
+                                                          $query = "SELECT C.*, sub.nombre as subgerencia, mon.sigla as moneda, cur_step.descripcion as cur_step_desc, next_step.descripcion as next_step_desc
+                                                          , (SELECT COUNT(1) FROM adm_compras_comments as com WHERE C.id = com.id_compra) as comentarios
+                                                          FROM adm_compras as C
+                                                          LEFT JOIN subgerencia as sub ON C.id_subgerencia = sub.id_subgerencia
+                                                          LEFT JOIN adm_monedas as mon ON C.pre_id_moneda = mon.id
+                                                          LEFT JOIN adm_com_pasos as cur_step ON C.id_paso_actual = cur_step.id
+                                                          LEFT JOIN adm_com_pasos as next_step ON C.id_siguiente_paso = next_step.id
+                                                          WHERE C.borrado = 0
+                                                          AND C.id_estado = 1 ";
+                                                          // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
+                                                          // if ( $per_id_gerencia != 1) {
+                                                          if ($rq_sec['admin']=='0') {
+                                                              $query = $query . " AND C.id_gerencia = $per_id_gerencia ";
+                                                          }                                         
 
-                                                            $sql = mysqli_query($con, $query . "ORDER BY C.id DESC");
+                                                          $sql = mysqli_query($con, $query . "ORDER BY C.id DESC");
 
-                                                            while($row = mysqli_fetch_assoc($sql)){
+                                                          while($row = mysqli_fetch_assoc($sql)){
 
-                                                                echo '<tr>';
-                                                                echo '<td>'. $row['id'] .'</td>';
-                                                                echo '<td>'. $row['comentarios'] .'</td>';
-                                                                echo '<td>'. $row['subgerencia'] .'</td>';
-                                                                echo '<td>'. $row['fecha_solicitud'] .'</td>';
-                                                                echo '<td>'. $row['nro_solicitud'] .'</td>';
-                                                                echo '<td>'. $row['concepto'] .'</td>';
-                                                                echo '<td align="right">'. $row['moneda'] .' ' . $row['pre_monto'] . '</td>';
-                                                                echo '<td align="center">'. $row['cur_step_desc'] .'</td>';
-                                                                echo '<td align="center">'. $row['next_step_desc'] .'</td>';
-                                                                echo '<td align="center">';
-                                                                if ($row['comentarios']>0) {
-                                                                  echo '<a data-id="'.$row['id'].'" class="btn" title="'.$row['comentarios'].' comentarios" style="padding: 2px;" onclick="showComments();"><i class="fa fa-comments"></i></a>';
-                                                                }
-                                                                echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
-                                                                echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-compra-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" style="color: red;"></i></a></td>';
-                                                                echo '</tr>';
-                                                            }
-                                                        ?>
-                                                    </tbody>
-                                                </table>
-                                                <!-- MODAL ADD COMPRA -->
-                                                <?php
-                                                    include_once('./modals/abmcompra.php');
-                                                    include_once('./modals/compracomments.php');
-                                                ?>                                                
-                                            </div>
-                                            <!-- /.box-body -->
-                                        </div>  
-                                    </div>
-                                </div>
-                              
-                            </div>
-                            <!-- Adjudicadas -->
-                            <div class="tab-pane" id="tab_2">
-                            </div>
-                        <!-- /.tab-pane -->
+                                                              echo '<tr>';
+                                                              echo '<td>'. $row['id'] .'</td>';
+                                                              echo '<td>'. $row['comentarios'] .'</td>';
+                                                              echo '<td>'. $row['subgerencia'] .'</td>';
+                                                              echo '<td>'. $row['fecha_solicitud'] .'</td>';
+                                                              echo '<td>'. $row['nro_solicitud'] .'</td>';
+                                                              echo '<td>'. $row['concepto'] .'</td>';
+                                                              echo '<td align="right">'. $row['moneda'] .' ' . $row['pre_monto'] . '</td>';
+                                                              echo '<td align="center">'. $row['cur_step_desc'] .'</td>';
+                                                              echo '<td align="center">'. $row['next_step_desc'] .'</td>';
+                                                              echo '<td align="center">';
+                                                              if ($row['comentarios']>0) {
+                                                                echo '<a data-id="'.$row['id'].'" class="btn" title="'.$row['comentarios'].' comentarios" style="padding: 2px;" onclick="showComments();"><i class="fa fa-comments"></i></a>';
+                                                              }
+                                                              echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
+                                                              echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-compra-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" style="color: red;"></i></a></td>';
+                                                              echo '</tr>';
+                                                          }
+                                                      ?>
+                                                  </tbody>
+                                              </table>                                            
+                                          </div>
+                                          <!-- /.box-body -->
+                                      </div>  
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- Adjudicadas -->
+                          <div class="tab-pane" id="tab_2">
+                            <div class="row">
+                              <!-- COMPRAS ADJUDICADAS -->
+                              <div id="div_compras_adjudicadas" class="col-md-12">
+                                  <div class="box">
+                                      <div class="box-body">
+                                          <table id="tbAdjudicadas" class="display w-auto" witdh="100%">
+                                              <thead>
+                                              <tr>
+                                                  <th style="text-align: center;" width="1">#</i> </th>
+                                                  <th style="text-align: center;" width="1">comentarios</i> </th>
+                                                  <th style="text-align: center;">Solicitud</th>
+                                                  <th style="text-align: center;">OC</th>
+                                                  <th style="text-align: center;">Fecha OC</th>
+                                                  <th style="text-align: center;">Descripción</th>
+                                                  <th style="text-align: center;">Proveedor</th>
+                                                  <th style="text-align: center;">Monto OC</th>
+                                                  <th style="text-align: center;">OPEX/CAPEX</th>
+                                                  <th style="text-align: center;">Proceso</th>
+                                                  <th width="30px" style="text-align: center;"><i class="fa fa-bolt"></i> </th>
+                                              </tr>
+                                              </thead>
+                                              <tbody>
+                                                  <?php
+                                                      $query = "SELECT C.*, sub.nombre as subgerencia, mon.sigla as moneda, prov.razon_social as proveedor, process.descripcion as proceso 
+                                                      , (SELECT COUNT(1) FROM adm_compras_comments as com WHERE C.id = com.id_compra) as comentarios
+                                                      FROM adm_compras as C
+                                                      LEFT JOIN subgerencia as sub ON C.id_subgerencia = sub.id_subgerencia
+                                                      LEFT JOIN adm_monedas as mon ON C.oc_id_moneda = mon.id
+                                                      LEFT JOIN adm_com_proveedores as prov ON C.id_proveedor = prov.id
+                                                      LEFT JOIN adm_com_procesos as process ON C.id_proceso = process.id
+                                                      WHERE C.borrado = 0
+                                                      AND C.id_estado = 2 ";
+                                                      // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
+                                                      // if ( $per_id_gerencia != 1) {
+                                                      if ($rq_sec['admin']=='0') {
+                                                          $query = $query . " AND C.id_gerencia = $per_id_gerencia ";
+                                                      }                                         
+
+                                                      $sql = mysqli_query($con, $query . "ORDER BY C.id DESC");
+
+                                                      while($row = mysqli_fetch_assoc($sql)){
+
+                                                          echo '<tr>';
+                                                          echo '<td>'. $row['id'] .'</td>';
+                                                          echo '<td>'. $row['comentarios'] .'</td>';
+                                                          echo '<td>'. $row['nro_solicitud'] .'</td>';
+                                                          echo '<td>'. $row['nro_oc'] .'</td>';
+                                                          echo '<td>'. $row['fecha_oc'] .'</td>';
+                                                          echo '<td>'. $row['concepto'] .'</td>';
+                                                          echo '<td>'. $row['proveedor'] .'</td>';
+                                                          echo '<td align="right">'. $row['moneda'] .' ' . $row['oc_monto'] . '</td>';
+                                                          echo '<td align="center">'. ($row['capexopex'] == 'C' ? 'Capex' : 'Opex') .'</td>';
+                                                          echo '<td align="center">'. $row['proceso'] .'</td>';
+                                                          echo '<td align="center">';
+                                                          if ($row['comentarios']>0) {
+                                                            echo '<a data-id="'.$row['id'].'" class="btn" title="'.$row['comentarios'].' comentarios" style="padding: 2px;" onclick="showComments();"><i class="fa fa-comments"></i></a>';
+                                                          }
+                                                          echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
+                                                          echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-compra-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" style="color: red;"></i></a></td>';
+                                                          echo '</tr>';
+                                                      }
+                                                  ?>
+                                              </tbody>
+                                          </table>                                            
+                                      </div>
+                                      <!-- /.box-body -->
+                                  </div>  
+                              </div>
+                            </div>                              
+                          </div>
+                          <!-- /.tab-pane -->
+                          <!-- MODAL ADD COMPRA -->
+                          <?php
+                              include_once('./modals/abmcompra.php');
+                              include_once('./modals/compracomments.php');
+                          ?>                                
                         </div>
                         <!-- /.tab-content -->
                     </div>
@@ -357,21 +428,21 @@ desired effect
 <!-- jQuery 3 -->
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Popper -->
-<script src="../bower_components/popper/popper.min.js"></script>
+<!-- <script src="../bower_components/popper/popper.min.js"></script> -->
 <!-- Bootstrap 3.3.7 -->
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- DataTables -->
 <script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<script src="../bower_components/datatables.net/js/dataTables.rowGroup.min.js"></script>
+<!-- <script src="../bower_components/datatables.net/js/dataTables.rowGroup.min.js"></script> -->
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- InputMask -->
-<script src="../plugins/input-mask/jquery.inputmask.js"></script>
+<!-- <script src="../plugins/input-mask/jquery.inputmask.js"></script>
 <script src="../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="../plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<script src="../plugins/input-mask/jquery.inputmask.extensions.js"></script> -->
 <!-- date-range-picker -->
-<script src="../bower_components/moment/min/moment.min.js"></script>
+<!-- <script src="../bower_components/moment/min/moment.min.js"></script> -->
 <script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
 <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
@@ -388,6 +459,43 @@ desired effect
 <script>
   $(function () {
 
+    $('#tbAdjudicadas').DataTable({
+      'language': { 'emptyTable': 'No hay compras' },
+      'paging'      : true,
+      'pageLength': 10,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false,
+      'columnDefs'  : [
+        {'targets': [ 0 , 1 ], 'visible': false},
+        {'targets': [2,3,4,7] , 'width': '10%' },
+        {'targets': [8,10], 'width': '7%' }
+      ],
+      'drawCallback': function(settings) {
+        $('#btn-showhide-comments').prop('disabled', 'true');
+      },
+      // 'rowGroup': {
+      //       'dataSrc': [ 2 ]
+      //   },
+    });
+
+    $('#tbAdjudicadas tbody').on('click', 'tr', function(event){
+     
+      let tb = $('#tbAdjudicadas').dataTable();
+      let datarow = tb.fnGetData(this);
+      let id = datarow[0];
+      let comments = parseInt(datarow[1]);
+
+      tb.$('tr.selected').removeClass('selected');
+      $(this).addClass('selected');
+      // seteo el id de la fila seleccionada para que lo use el commentario
+      $('#compra-selected-id').val(id);
+      fn_popular_comentarios(id);
+      $('#btn-showhide-comments').removeAttr('disabled');
+      // $("#popover-add-comment").popover('enable');
+    });
 
 
     $('#tbEnProceso').DataTable({
@@ -427,12 +535,6 @@ desired effect
       $('#btn-showhide-comments').removeAttr('disabled');
       // $("#popover-add-comment").popover('enable');
     });
-    // $('#tbEnProceso').on( 'page', function () {
-    //   $('#btn-showhide-comments').prop('disabled', 'true');
-    // } );        
-    // $("#popover-add-comment").popover('disable');
-    
-    // $("#popover-add-comment-icon").css('color: gray;');
 
     /* jQueryKnob */
     $(".knob").knob({       
