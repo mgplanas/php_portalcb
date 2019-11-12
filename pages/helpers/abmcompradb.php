@@ -16,6 +16,20 @@
     $capexopex = $_POST['capexopex'];
     $plazo_unidad = $_POST['plazo_unidad'];
 
+    // $fecha_limite= $_POST['fecha_limite'];
+    $id_estado= $_POST['id_estado'];
+    $id_paso_actual= $_POST['id_paso_actual'];
+    $id_siguiente_paso= $_POST['id_siguiente_paso'];
+    $fecha_oc= $_POST['fecha_oc'];
+    $nro_oc= $_POST['nro_oc'];
+    $oc_monto= $_POST['oc_monto'];
+    $oc_id_moneda= $_POST['oc_id_moneda'];
+    $id_proveedor= $_POST['id_proveedor'];
+    $id_proceso= $_POST['id_proceso'];
+    $tags= $_POST['tags'];
+
+
+
     $result = new stdClass();
     $result->ok = false;
 
@@ -50,18 +64,32 @@
         
         case 'M':
             //UPDATE
-            $update_gerencia = mysqli_query($con, "UPDATE persona 
-            SET legajo='$legajo', 
-            nombre='$nombre', 
-            apellido='$apellido', 
-            cargo='$cargo', 
-            gerencia='$gerencia', 
-            subgerencia='$subgerencia', 
-            area='$area', 
-            email='$email' ,
-            contacto='$contacto',
-            grupo= '$grupo'
-        WHERE id_persona='$id'") or die(mysqli_error());	
+            $sql ="UPDATE adm_compras 
+            SET tags = '$tags'
+                ,pre_monto = '$presupuesto'
+                ,pre_id_moneda = '$moneda'
+                ,plazo_valor = '$plazo'
+                ,plazo_unidad = '$plazo_unidad'
+                ,oc_monto = '$oc_monto'
+                ,oc_id_moneda = '$oc_id_moneda'
+                ,nro_solicitud = '$solicitud'
+                ,nro_oc = '$nro_oc'
+                ,modificado = now()
+                ,modif_user = 1
+                ,id_subgerencia = '$subgerencia'
+                ,id_solicitante = '$solicitante'
+                ,id_siguiente_paso = '$id_siguiente_paso'
+                ,id_proveedor = '$id_proveedor'
+                ,id_proceso = '$id_proceso'
+                ,id_paso_actual = '$id_paso_actual'
+                ,id_gerencia = '$gerencia'
+                ,id_estado = '$id_estado'
+                ,fecha_solicitud = '$fecha'
+                ,fecha_oc = " . ($fecha_oc ? '$fecha_oc' : 'null') . "
+                ,concepto = '$concepto'
+                ,capex_opex = '$capexopex' 
+                WHERE id='$id'";
+            $lastInsert = mysqli_query($con,$sql) or die(mysqli_error());	
             $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                 VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
             break;

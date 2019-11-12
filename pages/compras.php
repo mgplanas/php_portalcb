@@ -7,7 +7,7 @@ session_start();
 if (!isset($_SESSION['usuario'])){
 	header('Location: ../index.html');
 }
-$page_title="Métricas"; 
+$page_title="Compras"; 
 $user=$_SESSION['usuario'];
 
 //Get user query
@@ -242,6 +242,7 @@ desired effect
 	    <section class="content">
         
         <input type="hidden" class="form-control" name="id_persona" id='compra-id-persona' value="<?=$id_rowp ?>">
+        <input type="hidden" class="form-control" name="id_gerencia" id='compra-id-gerencia' value="<?=$per_id_gerencia ?>">
             <!-- CONTENIDO -->
             <div class="row">         
                 <div class="col-12">
@@ -314,10 +315,10 @@ desired effect
                                                                 echo '<td align="center">'. $row['next_step_desc'] .'</td>';
                                                                 echo '<td align="center">';
                                                                 if ($row['comentarios']>0) {
-                                                                  echo '<a data-id="'.$row['id'].'" title="'.$row['comentarios'].' comentarios" style="padding: 2px;"><i class="fa fa-comments"></i></a>';
+                                                                  echo '<a data-id="'.$row['id'].'" class="btn" title="'.$row['comentarios'].' comentarios" style="padding: 2px;" onclick="showComments();"><i class="fa fa-comments"></i></a>';
                                                                 }
-                                                                echo '<a data-id="'.$row['id'].'" title="Ver detalles" style="padding: 2px;"><i class="fa fa-eye"></i></a>';
-                                                                echo '<a data-id="'.$row['id'].'" title="editar" style="padding: 2px;"><i class="glyphicon glyphicon-edit" style="color: red;"></i></a></td>';
+                                                                echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
+                                                                echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-compra-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" style="color: red;"></i></a></td>';
                                                                 echo '</tr>';
                                                             }
                                                         ?>
@@ -397,8 +398,12 @@ desired effect
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : true,
-      'columnDefs'  : [{'targets': [ 0 , 1 ], 'visible': false}],
+      'autoWidth'   : false,
+      'columnDefs'  : [
+        {'targets': [ 0 , 1 ], 'visible': false},
+        {'targets': [2,3,4,6,7,8] , 'width': '10%' },
+        {'targets': [9], 'width': '7%' }
+      ],
       'drawCallback': function(settings) {
         $('#btn-showhide-comments').prop('disabled', 'true');
       },
@@ -414,14 +419,8 @@ desired effect
       let id = datarow[0];
       let comments = parseInt(datarow[1]);
 
-      // efecto visual de seleccionar la fila
-      // if ( $(this).hasClass('selected') ) {
-      //     $(this).removeClass('selected');
-      // } else {
-        tb.$('tr.selected').removeClass('selected');
-        $(this).addClass('selected');
-      // }
-      // $("#popover-add-comment-icon").css('color: green;');
+      tb.$('tr.selected').removeClass('selected');
+      $(this).addClass('selected');
       // seteo el id de la fila seleccionada para que lo use el commentario
       $('#compra-selected-id').val(id);
       fn_popular_comentarios(id);

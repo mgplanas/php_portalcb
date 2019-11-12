@@ -10,7 +10,7 @@
         </div>
         <div class="modal-body">
             <!-- form start -->
-            <form method="post" role="form" action="">
+            <form id="modal-abm-compra-form" method="post" role="form" action="" >
                 <div class="nav-tabs-custom">
                     <!-- BOTON -->
                     <div class="pull-right" style="margin: 10px;">
@@ -45,24 +45,24 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="FechaSol">Fecha de solicitud</label>
                                             <div class="input-group date" data-provide="modal-abm-compra-fecha-sol">
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
                                                 </div>
-                                                <input type="text" class="form-control pull-right" name="FechaSol" id="modal-abm-compra-fecha-sol">
+                                                <input type="text" class="form-control pull-right" required="required" name="FechaSol" id="modal-abm-compra-fecha-sol">
                                             </div>                        
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="nrosolicitud">Nro. Solicitud</label>
                                             <input type="text" id="modal-abm-compra-solicitud" class="form-control" name="nrosolicitud" placeholder="SC-000000000">
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Solicitante</label>
                                             <select id="modal-abm-compra-solicitante" name="solicitante" class="form-control">
@@ -112,7 +112,7 @@
 
                             </div>                            
                         </div>
-                        <div class="tab-pane active" id="tab_seg">
+                        <div class="tab-pane" id="tab_seg">
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -130,12 +130,21 @@
                                         </div>
                                     </div>                        
                                 </div>
-                            </div>                                                           
-                        </div>
-                        <div class="tab-pane active" id="tab_adjudicacion">
-                            <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Estado</label>
+                                            <select id="modal-abm-compra-estado" name="estado" class="form-control">
+                                            </select>
+                                        </div>
+                                    </div>   
+                                </div>                                
+                            </div>                                                           
+                        </div>
+                        <div class="tab-pane" id="tab_adjudicacion">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="FechaOC">Fecha de OC</label>
                                             <div class="input-group date" data-provide="modal-abm-compra-fecha-oc">
@@ -146,28 +155,13 @@
                                             </div>                        
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="nrooc">Nro. OC</label>
                                             <input type="text" id="modal-abm-compra-oc" class="form-control" name="nrooc" placeholder="OC-000000000">
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Proceso de Compra</label>
-                                            <select id="modal-abm-compra-proceso" name="proceso" class="form-control">
-                                            </select>
-                                        </div>
-                                    </div>                        
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-7">
-                                        <div class="form-group">
-                                            <label>Proveedor</label>
-                                            <select id="modal-abm-compra-proveedor" name="proveedor" class="form-control">
-                                            </select>
-                                        </div>
-                                    </div>                                      
+                                    <div class="col-md-2"></div>
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Moneda</label>
@@ -175,12 +169,29 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="montooc">Monto OC</label>
                                             <input type="number" id="modal-abm-compra-monto-oc" class="form-control" name="montooc" placeholder="0">
                                         </div>
-                                    </div>
+                                    </div>                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>Proveedor</label>
+                                            <select id="modal-abm-compra-proveedor" name="proveedor" class="form-control">
+                                            </select>
+                                        </div>
+                                    </div>                                      
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Proceso de Compra</label>
+                                            <select id="modal-abm-compra-proceso" name="proceso" class="form-control">
+                                            </select>
+                                        </div>
+                                    </div>                        
+
                                 </div>   
                             </div>                                                             
                         </div>
