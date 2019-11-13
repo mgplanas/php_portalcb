@@ -282,7 +282,7 @@ desired effect
                                                       <th>Concepto</th>
                                                       <th>PE</th>
                                                       <th>Paso actual</th>
-                                                      <th><i title="días de permanencia en el paso actual" class="fa fa-calendar"></i></th>
+                                                      <th><i title="días de permanencia en el paso actual" class="fa fa-clock-o"></i></th>
                                                       <th>Siguiente</th>
                                                       <th width="30px" style="text-align: center;"><i class="fa fa-bolt"></i> </th>
                                                   </tr>
