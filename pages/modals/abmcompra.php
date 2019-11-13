@@ -96,19 +96,6 @@
                                             </select>
                                         </div>                            
                                     </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label for="plazo">Plazo</label>
-                                            <input type="number" id="modal-abm-compra-plazo" class="form-control" name="plazo" placeholder="0">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Unidad</label>
-                                            <select id="modal-abm-compra-plazo-unidad" name="plazounidad" class="form-control">
-                                            </select>
-                                        </div>
-                                    </div>
                                 </div>                    
 
                             </div>                            
@@ -176,6 +163,33 @@
                                             <input type="number" id="modal-abm-compra-monto-oc" class="form-control" name="montooc" placeholder="0">
                                         </div>
                                     </div>                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="plazo">Plazo</label>
+                                            <input type="number" id="modal-abm-compra-plazo" class="form-control" name="plazo" placeholder="0">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Unidad</label>
+                                            <select id="modal-abm-compra-plazo-unidad" name="plazounidad" class="form-control">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="FechaFIN">Fecha Fin Contrato</label>
+                                            <div class="input-group date" data-provide="modal-abm-compra-fecha-fin">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input type="text" class="form-control pull-right" name="FechaFIN" id="modal-abm-compra-fecha-fin">
+                                            </div>                        
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-md-8">

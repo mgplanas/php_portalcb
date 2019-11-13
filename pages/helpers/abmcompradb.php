@@ -23,6 +23,7 @@
     $id_paso_actual_original= mysqli_real_escape_string($con,(strip_tags($_POST['id_paso_actual_original'],ENT_QUOTES)));
     $id_siguiente_paso= mysqli_real_escape_string($con,(strip_tags($_POST['id_siguiente_paso'],ENT_QUOTES)));
     $fecha_oc= mysqli_real_escape_string($con,(strip_tags($_POST['fecha_oc'],ENT_QUOTES)));
+    $fecha_fin_contrato= mysqli_real_escape_string($con,(strip_tags($_POST['fecha_fin_contrato'],ENT_QUOTES)));
     $nro_oc= mysqli_real_escape_string($con,(strip_tags($_POST['nro_oc'],ENT_QUOTES)));
     $oc_monto= mysqli_real_escape_string($con,(strip_tags($_POST['oc_monto'],ENT_QUOTES)));
     $oc_id_moneda= mysqli_real_escape_string($con,(strip_tags($_POST['oc_id_moneda'],ENT_QUOTES)));
@@ -31,6 +32,10 @@
     // $tags= mysqli_real_escape_string($con,(strip_tags($_POST['tags'],ENT_QUOTES)));
 
     $dtfechaSol = date('Y-m-d',strtotime(str_replace('/', '-', $fecha)));
+    if ($fecha_oc) { $fecha_oc = date('Y-m-d',strtotime(str_replace('/', '-', $fecha_oc))); };
+    if ($fecha_fin_contrato) { $fecha_fin_contrato = date('Y-m-d',strtotime(str_replace('/', '-', $fecha_fin_contrato))); };
+    
+    $dtfechaSol = date('Y-m-d',strtotime(str_replace('/', '-', $fecha)));
 
     $result = new stdClass();
     $result->ok = false;
@@ -38,7 +43,7 @@
     switch ($op) {
         case 'A':
             // INSERT
-            $sql = "INSERT INTO adm_compras(id_gerencia,id_subgerencia,nro_solicitud,concepto,pre_id_moneda,pre_monto,id_solicitante,fecha_solicitud,fecha_limite,capex_opex,modificado,modif_user,plazo_unidad,plazo_valor,id_estado,id_paso_actual,id_siguiente_paso,fecha_oc,nro_oc,oc_monto,oc_id_moneda,id_proveedor,id_proceso
+            $sql = "INSERT INTO adm_compras(id_gerencia,id_subgerencia,nro_solicitud,concepto,pre_id_moneda,pre_monto,id_solicitante,fecha_solicitud,fecha_limite,capex_opex,modificado,modif_user,plazo_unidad,plazo_valor,id_estado,id_paso_actual,id_siguiente_paso,fecha_oc,nro_oc,oc_monto,oc_id_moneda,id_proveedor,id_proceso, fecha_fin_contrato
              ) VALUES (
                 '$gerencia'
                 ,'$subgerencia'
@@ -63,6 +68,7 @@
                 ,'$oc_id_moneda'
                 ,'$id_proveedor'
                 ,'$id_proceso'                
+                ,'$fecha_fin_contrato'                
                 )";	
                 
             $insert_gerencia = mysqli_query($con, $sql) or die(mysqli_error());
@@ -107,6 +113,7 @@
                 ,fecha_oc = " . ($fecha_oc ? $fecha_oc : 'null') . "
                 ,concepto = '$concepto'
                 ,capex_opex = '$capexopex' 
+                ,fecha_fin_contrato = '$fecha_fin_contrato' 
                 WHERE id='$id'";
             $lastInsert = mysqli_query($con,$sql) or die(mysqli_error());	
 

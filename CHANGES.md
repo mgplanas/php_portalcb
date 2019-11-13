@@ -22,7 +22,9 @@ Se agrega el módulo de administración y seguimiento de compras
     N [pages/compras.php]
     - Adjudicadas
     N [pages/compras.php]
-
+    - Plazo en indicadores
+    N [pages/modals/abmcompra.php]
+        db: fecha_fin_contrato
 
 
 ## FIX-VARIAS

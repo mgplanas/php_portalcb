@@ -364,6 +364,7 @@ $(function() {
                 $('#modal-abm-compra-presupuesto').val(compra.pre_monto);
                 $('#modal-abm-compra-plazo').val(compra.plazo_valor);
                 $('#modal-abm-compra-fecha-oc').val(compra.fecha_oc);
+                $('#modal-abm-compra-fecha-fin').val(compra.fecha_fin_contrato);
                 $('#modal-abm-compra-nro-oc').val(compra.nro_oc);
                 $('#modal-abm-compra-monto-oc').val(compra.oc_monto);
                 $('#modal-abm-compra-paso-actual-id').val(compra.id_paso_actual);
@@ -420,6 +421,7 @@ $(function() {
         let id_paso_actual_original = $('#modal-abm-compra-paso-actual-id').val();
         let id_siguiente_paso = $('#modal-abm-compra-paso-sig').val();
         let fecha_oc = $('#modal-abm-compra-fecha-oc').val();
+        let fecha_fin_contrato = $('#modal-abm-compra-fecha-fin').val();
         let nro_oc = $('#modal-abm-compra-oc').val();
         let oc_monto = $('#modal-abm-compra-monto-oc').val();
         let oc_id_moneda = $('#modal-abm-compra-moneda-oc').val();
@@ -455,7 +457,8 @@ $(function() {
                 oc_id_moneda: oc_id_moneda,
                 id_proveedor: id_proveedor,
                 id_proceso: id_proceso,
-                tags: tags
+                tags: tags,
+                fecha_fin_contrato: fecha_fin_contrato
             },
             dataType: 'json',
             success: function(json) {
@@ -476,6 +479,12 @@ $(function() {
         daysOfWeekDisabled: [0, 6]
     });
     $('#modal-abm-compra-fecha-oc').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        todayHighlight: true,
+        daysOfWeekDisabled: [0, 6]
+    });
+    $('#modal-abm-compra-fecha-fin').datepicker({
         autoclose: true,
         format: 'dd/mm/yyyy',
         todayHighlight: true,
