@@ -1,34 +1,36 @@
 <?php
     include("../../conexion.php");
-
+    session_start();
+    $user=$_SESSION['id_usuario'];
     $op = $_POST['operacion'];
 
-    $id = $_POST['id'];
-    $fecha = $_POST['fecha'];
-    $solicitud = $_POST['solicitud'];
-    $concepto = $_POST['concepto'];
-    $presupuesto = $_POST['presupuesto'];
-    $plazo = $_POST['plazo'];
-    $gerencia = $_POST['gerencia'];
-    $subgerencia = $_POST['subgerencia'];
-    $solicitante = $_POST['solicitante'];
-    $moneda = $_POST['moneda'];
-    $capexopex = $_POST['capexopex'];
-    $plazo_unidad = $_POST['plazo_unidad'];
+    $id = mysqli_real_escape_string($con,(strip_tags($_POST['id'],ENT_QUOTES)));
+    $fecha = mysqli_real_escape_string($con,(strip_tags($_POST['fecha'],ENT_QUOTES)));
+    $solicitud = mysqli_real_escape_string($con,(strip_tags($_POST['solicitud'],ENT_QUOTES)));
+    $concepto = mysqli_real_escape_string($con,(strip_tags($_POST['concepto'],ENT_QUOTES)));
+    $presupuesto = mysqli_real_escape_string($con,(strip_tags($_POST['presupuesto'],ENT_QUOTES)));
+    $plazo = mysqli_real_escape_string($con,(strip_tags($_POST['plazo'],ENT_QUOTES)));
+    $gerencia = mysqli_real_escape_string($con,(strip_tags($_POST['gerencia'],ENT_QUOTES)));
+    $subgerencia = mysqli_real_escape_string($con,(strip_tags($_POST['subgerencia'],ENT_QUOTES)));
+    $solicitante = mysqli_real_escape_string($con,(strip_tags($_POST['solicitante'],ENT_QUOTES)));
+    $moneda = mysqli_real_escape_string($con,(strip_tags($_POST['moneda'],ENT_QUOTES)));
+    $capexopex = mysqli_real_escape_string($con,(strip_tags($_POST['capexopex'],ENT_QUOTES)));
+    $plazo_unidad = mysqli_real_escape_string($con,(strip_tags($_POST['plazo_unidad'],ENT_QUOTES)));
 
-    // $fecha_limite= $_POST['fecha_limite'];
-    $id_estado= $_POST['id_estado'];
-    $id_paso_actual= $_POST['id_paso_actual'];
-    $id_siguiente_paso= $_POST['id_siguiente_paso'];
-    $fecha_oc= $_POST['fecha_oc'];
-    $nro_oc= $_POST['nro_oc'];
-    $oc_monto= $_POST['oc_monto'];
-    $oc_id_moneda= $_POST['oc_id_moneda'];
-    $id_proveedor= $_POST['id_proveedor'];
-    $id_proceso= $_POST['id_proceso'];
-    // $tags= $_POST['tags'];
+    // $fecha_limite= mysqli_real_escape_string($con,(strip_tags($_POST['fecha_limite'],ENT_QUOTES)));
+    $id_estado= mysqli_real_escape_string($con,(strip_tags($_POST['id_estado'],ENT_QUOTES)));
+    $id_paso_actual= mysqli_real_escape_string($con,(strip_tags($_POST['id_paso_actual'],ENT_QUOTES)));
+    $id_paso_actual_original= mysqli_real_escape_string($con,(strip_tags($_POST['id_paso_actual_original'],ENT_QUOTES)));
+    $id_siguiente_paso= mysqli_real_escape_string($con,(strip_tags($_POST['id_siguiente_paso'],ENT_QUOTES)));
+    $fecha_oc= mysqli_real_escape_string($con,(strip_tags($_POST['fecha_oc'],ENT_QUOTES)));
+    $nro_oc= mysqli_real_escape_string($con,(strip_tags($_POST['nro_oc'],ENT_QUOTES)));
+    $oc_monto= mysqli_real_escape_string($con,(strip_tags($_POST['oc_monto'],ENT_QUOTES)));
+    $oc_id_moneda= mysqli_real_escape_string($con,(strip_tags($_POST['oc_id_moneda'],ENT_QUOTES)));
+    $id_proveedor= mysqli_real_escape_string($con,(strip_tags($_POST['id_proveedor'],ENT_QUOTES)));
+    $id_proceso= mysqli_real_escape_string($con,(strip_tags($_POST['id_proceso'],ENT_QUOTES)));
+    // $tags= mysqli_real_escape_string($con,(strip_tags($_POST['tags'],ENT_QUOTES)));
 
-
+    $dtfechaSol = date('Y-m-d',strtotime(str_replace('/', '-', $fecha)));
 
     $result = new stdClass();
     $result->ok = false;
@@ -36,27 +38,44 @@
     switch ($op) {
         case 'A':
             // INSERT
-            $sql = "INSERT INTO adm_compras(
-               id_gerencia
-               ,id_subgerencia
-               ,nro_solicitud
-               ,concepto
-               ,pre_id_moneda
-               ,pre_monto
-               ,id_solicitante
-               ,id_paso_actual
-               ,id_estado
-               ,fecha_solicitud
-               ,fecha_limite
-               ,capex_opex
-               ,modificado
-               ,modif_user
-               ,plazo_unidad
-               ,plazo_valor
-             ) VALUES ('$gerencia','$subgerencia','$solicitud', '$concepto', '$moneda', '$presupuesto', '$solicitante','1', '1', '$fecha', '$fecha', '$capexopex', now(), 1, '$plazo_unidad', '$plazo')";	
+            $sql = "INSERT INTO adm_compras(id_gerencia,id_subgerencia,nro_solicitud,concepto,pre_id_moneda,pre_monto,id_solicitante,fecha_solicitud,fecha_limite,capex_opex,modificado,modif_user,plazo_unidad,plazo_valor,id_estado,id_paso_actual,id_siguiente_paso,fecha_oc,nro_oc,oc_monto,oc_id_moneda,id_proveedor,id_proceso
+             ) VALUES (
+                '$gerencia'
+                ,'$subgerencia'
+                ,'$solicitud'
+                ,'$concepto'
+                ,'$moneda'
+                ,'$presupuesto'
+                ,'$solicitante'
+                ,'$dtfechaSol'
+                ,'$dtfechaSol'
+                ,'$capexopex'
+                , now()
+                , $user
+                ,'$plazo_unidad'
+                ,'$plazo'
+                ,'$id_estado'
+                ,'$id_paso_actual'
+                ,'$id_siguiente_paso'
+                ,'$fecha_oc'
+                ,'$nro_oc'
+                ,'$oc_monto'
+                ,'$oc_id_moneda'
+                ,'$id_proveedor'
+                ,'$id_proceso'                
+                )";	
                 
             $insert_gerencia = mysqli_query($con, $sql) or die(mysqli_error());
             $lastInsert = mysqli_insert_id($con);
+            
+            // agrego historico de pasos
+            $sql = "INSERT INTO adm_compras_pasos_hist(id_compra ,id_paso ,fecha ,id_persona
+                    ) VALUES ('$lastInsert'
+                    ,'$id_paso_actual'
+                    ,now()
+                    , $user)";
+            $insert_gerencia = mysqli_query($con, $sql) or die(mysqli_error());
+            
             $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                 VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
             $result->id = $lastInsert;
@@ -90,13 +109,24 @@
                 ,capex_opex = '$capexopex' 
                 WHERE id='$id'";
             $lastInsert = mysqli_query($con,$sql) or die(mysqli_error());	
+
+            if ($id_paso_actual != $id_paso_actual_original) {
+                // agrego historico de pasos
+                $sql = "INSERT INTO adm_compras_pasos_hist(id_compra ,id_paso ,fecha ,id_persona
+                        ) VALUES ('$lastInsert'
+                        ,'$id_paso_actual'
+                        ,now()
+                        , $user)";
+                $insert_gerencia = mysqli_query($con, $sql) or die(mysqli_error());                
+            }
+
             $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                 VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
             break;
 
         case 'B':
             //UPDATE
-            $update_gerencia = mysqli_query($con, "UPDATE persona SET borrado='1' WHERE id_persona='$id'") or die(mysqli_error());	
+            $update_gerencia = mysqli_query($con, "UPDATE adm_compras SET borrado='1' WHERE id='$id'") or die(mysqli_error());	
             $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                 VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
             break;

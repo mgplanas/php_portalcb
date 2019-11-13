@@ -20,6 +20,8 @@ Se agrega el módulo de administración y seguimiento de compras
     N [pages/helpers/abmcompracomentariodb.php]
     - Indicadores
     N [pages/compras.php]
+    - Adjudicadas
+    N [pages/compras.php]
 
 
 

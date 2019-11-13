@@ -68,7 +68,7 @@ $(function() {
                         ddlSolicitante.append($("<option />").val(this.id_persona).text(this.apellido + ', ' + this.nombre));
                     }
                 });
-                if (!selectedValue) {
+                if (!selectedValue || parseInt(selectedValue) == 0) {
                     ddlSolicitante.val('first').change();
                 }
             }
@@ -91,7 +91,7 @@ $(function() {
                         ddlMonedasPresupuesto.append($("<option />").val(this.id).text(this.sigla));
                     }
                 });
-                if (!selectedValue) {
+                if (!selectedValue || parseInt(selectedValue) == 0) {
                     ddlMonedasPresupuesto.val('first').change();
                 }
             }
@@ -114,7 +114,7 @@ $(function() {
                         ddlEstados.append($("<option />").val(this.id).text(this.descripcion));
                     }
                 });
-                if (!selectedValue) {
+                if (!selectedValue || parseInt(selectedValue) == 0) {
                     ddlEstados.val('first').change();
                 }
             }
@@ -137,7 +137,7 @@ $(function() {
                         ddlMonedasOC.append($("<option />").val(this.id).text(this.sigla));
                     }
                 });
-                if (!selectedValue) {
+                if (!selectedValue || parseInt(selectedValue) == 0) {
                     ddlMonedasOC.val('first').change();
                 }
             }
@@ -160,7 +160,7 @@ $(function() {
                         ddlProceso.append($("<option />").val(this.id).text(this.descripcion));
                     }
                 });
-                if (!selectedValue) {
+                if (!selectedValue || parseInt(selectedValue) == 0) {
                     ddlProceso.val('first').change();
                 }
             }
@@ -183,7 +183,7 @@ $(function() {
                         ddlProveedor.append($("<option />").val(this.id).text(this.razon_social));
                     }
                 });
-                if (!selectedValue) {
+                if (!selectedValue || parseInt(selectedValue) == 0) {
                     ddlProveedor.val('first').change();
                 }
             }
@@ -206,7 +206,7 @@ $(function() {
                         ddlPasoActual.append($("<option />").val(this.id).text(this.descripcion));
                     }
                 });
-                if (!selectedValue) {
+                if (!selectedValue || parseInt(selectedValue) == 0) {
                     ddlPasoActual.val('first').change();
                 }
             }
@@ -229,7 +229,7 @@ $(function() {
                         ddlPasoSiguiente.append($("<option />").val(this.id).text(this.descripcion));
                     }
                 });
-                if (!selectedValue) {
+                if (!selectedValue || parseInt(selectedValue) == 0) {
                     ddlPasoSiguiente.val('first').change();
                 }
             }
@@ -253,7 +253,7 @@ $(function() {
                         ddlGerencias.append($("<option />").val(this.id_gerencia).text(this.nombre));
                     }
                 });
-                if (!selectedValue) {
+                if (!selectedValue || parseInt(selectedValue) == 0) {
                     ddlGerencias.val('first').change();
                 }
             }
@@ -280,7 +280,7 @@ $(function() {
                             ddlSubGerencias.append($("<option />").val(this.id_subgerencia).text(this.nombre));
                         }
                     });
-                    if (!selectedValue) {
+                    if (!selectedValue || parseInt(selectedValue) == 0) {
                         ddlSubGerencias.val('first').change();
                     }
 
@@ -361,6 +361,7 @@ $(function() {
                 $('#modal-abm-compra-fecha-oc').val(compra.fecha_oc);
                 $('#modal-abm-compra-nro-oc').val(compra.nro_oc);
                 $('#modal-abm-compra-monto-oc').val(compra.oc_monto);
+                $('#modal-abm-compra-paso-actual-id').val(compra.id_paso_actual);
                 refreshProveedor(compra.id_proveedor);
                 refreshProceso(compra.id_proceso);
                 refreshPasoActual(compra.id_paso_actual);
@@ -411,6 +412,7 @@ $(function() {
         // $fecha_limite= $_POST['fecha_limite'];
         let id_estado = $('#modal-abm-compra-estado').val();
         let id_paso_actual = $('#modal-abm-compra-paso-actual').val();
+        let id_paso_actual_original = $('#modal-abm-compra-paso-actual-id').val();
         let id_siguiente_paso = $('#modal-abm-compra-paso-sig').val();
         let fecha_oc = $('#modal-abm-compra-fecha-oc').val();
         let nro_oc = $('#modal-abm-compra-oc').val();
@@ -440,6 +442,7 @@ $(function() {
                 plazo_unidad: plazo_unidad,
                 id_estado: id_estado,
                 id_paso_actual: id_paso_actual,
+                id_paso_actual_original: id_paso_actual_original,
                 id_siguiente_paso: id_siguiente_paso,
                 fecha_oc: fecha_oc,
                 nro_oc: nro_oc,
@@ -452,6 +455,7 @@ $(function() {
             dataType: 'json',
             success: function(json) {
                 $("#modal-abm-compra").modal("hide");
+                location.reload();
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);

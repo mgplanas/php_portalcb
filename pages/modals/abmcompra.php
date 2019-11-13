@@ -27,6 +27,7 @@
                         <!-- En proceso -->
                         <div class="tab-pane active" id="tab_compra">
                             <input type="hidden" class="form-control" name="id" id='modal-abm-compra-id' >
+                            <input type="hidden" class="form-control" name="pasoactual_id" id='modal-abm-compra-paso-actual-id' >
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-6">

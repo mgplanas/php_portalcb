@@ -15,6 +15,7 @@ $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' AND bor
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
 $per_id_gerencia = $rowp['gerencia'];
+$_SESSION['id_usuario'] = $id_rowp;
 // GERENCIA DE CIBER SEGURIDAD = 1 
 // PUEDE VER TODO
 
@@ -36,7 +37,7 @@ $rq_indicadores = mysqli_fetch_assoc($q_indicadores);
 $personas = mysqli_query($con, "SELECT * FROM persona");
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);				
-		
+
 ?>
 <style>
 .dataTables_filter {
@@ -281,6 +282,7 @@ desired effect
                                                       <th>Concepto</th>
                                                       <th>PE</th>
                                                       <th>Paso actual</th>
+                                                      <th><i title="días de permanencia en el paso actual" class="fa fa-calendar"></i></th>
                                                       <th>Siguiente</th>
                                                       <th width="30px" style="text-align: center;"><i class="fa fa-bolt"></i> </th>
                                                   </tr>
@@ -289,6 +291,7 @@ desired effect
                                                       <?php
                                                           $query = "SELECT C.*, sub.nombre as subgerencia, mon.sigla as moneda, cur_step.descripcion as cur_step_desc, next_step.descripcion as next_step_desc
                                                           , (SELECT COUNT(1) FROM adm_compras_comments as com WHERE C.id = com.id_compra) as comentarios
+                                                          , (SELECT datediff(MAX(hist.fecha), now()) FROM adm_compras_pasos_hist as hist WHERE hist.id_compra = C.id AND hist.id_paso = C.id_paso_actual) as dias
                                                           FROM adm_compras as C
                                                           LEFT JOIN subgerencia as sub ON C.id_subgerencia = sub.id_subgerencia
                                                           LEFT JOIN adm_monedas as mon ON C.pre_id_moneda = mon.id
@@ -315,13 +318,14 @@ desired effect
                                                               echo '<td>'. $row['concepto'] .'</td>';
                                                               echo '<td align="right">'. $row['moneda'] .' ' . $row['pre_monto'] . '</td>';
                                                               echo '<td align="center">'. $row['cur_step_desc'] .'</td>';
+                                                              echo '<td align="center">'. ($row['dias'] ? abs($row['dias']) : '0') .'</td>';
                                                               echo '<td align="center">'. $row['next_step_desc'] .'</td>';
                                                               echo '<td align="center">';
                                                               if ($row['comentarios']>0) {
                                                                 echo '<a data-id="'.$row['id'].'" class="btn" title="'.$row['comentarios'].' comentarios" style="padding: 2px;" onclick="showComments();"><i class="fa fa-comments"></i></a>';
                                                               }
                                                               echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
-                                                              echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-compra-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" style="color: red;"></i></a></td>';
+                                                              echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-compra-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a></td>';
                                                               echo '</tr>';
                                                           }
                                                       ?>
@@ -386,7 +390,7 @@ desired effect
                                                           echo '<td>'. $row['concepto'] .'</td>';
                                                           echo '<td>'. $row['proveedor'] .'</td>';
                                                           echo '<td align="right">'. $row['moneda'] .' ' . $row['oc_monto'] . '</td>';
-                                                          echo '<td align="center">'. ($row['capexopex'] == 'C' ? 'Capex' : 'Opex') .'</td>';
+                                                          echo '<td align="center">'. ($row['capex_opex'] == 'C' ? 'Capex' : 'Opex') .'</td>';
                                                           echo '<td align="center">'. $row['proceso'] .'</td>';
                                                           echo '<td align="center">';
                                                           if ($row['comentarios']>0) {
@@ -509,17 +513,23 @@ desired effect
       'autoWidth'   : false,
       'columnDefs'  : [
         {'targets': [ 0 , 1 ], 'visible': false},
-        {'targets': [2,3,4,6,7,8] , 'width': '10%' },
-        {'targets': [9], 'width': '7%' }
+        {'targets': [2,3,4,6,7,9] , 'width': '10%' },
+        {'targets': [10], 'width': '7%' }
       ],
       'drawCallback': function(settings) {
         $('#btn-showhide-comments').prop('disabled', 'true');
       },
+      keys: true
       // 'rowGroup': {
       //       'dataSrc': [ 2 ]
       //   },
     });
 
+    // $('#tbEnProceso').on( 'key', function ( e, datatable, key, cell, originalEvent ) {
+    //   if (key == 67) {
+    //     showComments();
+    //   }
+    // });
     $('#tbEnProceso tbody').on('click', 'tr', function(event){
      
       let tb = $('#tbEnProceso').dataTable();
