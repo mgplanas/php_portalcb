@@ -463,6 +463,14 @@ desired effect
 <script>
   $(function () {
 
+    $('#popover-comment').on('keypress', function(event){
+      if (event.which == 13) {
+        event.preventDefault();
+        addcomment();
+        $('#popover-comment').val('');
+        $('#popover-comment').focus();
+      }
+    });
     $('#tbAdjudicadas').DataTable({
       'language': { 'emptyTable': 'No hay compras' },
       'paging'      : true,
