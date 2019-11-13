@@ -284,7 +284,7 @@ desired effect
                                                       <th>Paso actual</th>
                                                       <th><i title="días de permanencia en el paso actual" class="fa fa-clock-o"></i></th>
                                                       <th>Siguiente</th>
-                                                      <th width="30px" style="text-align: center;"><i class="fa fa-bolt"></i> </th>
+                                                      <th width="30px" style="text-align: right;"><i class="fa fa-bolt"></i> </th>
                                                   </tr>
                                                   </thead>
                                                   <tbody>
@@ -320,11 +320,11 @@ desired effect
                                                               echo '<td align="center">'. $row['cur_step_desc'] .'</td>';
                                                               echo '<td align="center">'. ($row['dias'] ? abs($row['dias']) : '0') .'</td>';
                                                               echo '<td align="center">'. $row['next_step_desc'] .'</td>';
-                                                              echo '<td align="center">';
+                                                              echo '<td align="right">';
                                                               if ($row['comentarios']>0) {
                                                                 echo '<a data-id="'.$row['id'].'" class="btn" title="'.$row['comentarios'].' comentarios" style="padding: 2px;" onclick="showComments();"><i class="fa fa-comments"></i></a>';
                                                               }
-                                                              echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
+                                                              // echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="modal-abm-compra-btn-view btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
                                                               echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-compra-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a></td>';
                                                               echo '</tr>';
                                                           }
@@ -357,7 +357,7 @@ desired effect
                                                   <th style="text-align: center;">Monto OC</th>
                                                   <th style="text-align: center;">OPEX/CAPEX</th>
                                                   <th style="text-align: center;">Proceso</th>
-                                                  <th width="30px" style="text-align: center;"><i class="fa fa-bolt"></i> </th>
+                                                  <th width="30px" style="text-align: right;"><i class="fa fa-bolt"></i> </th>
                                               </tr>
                                               </thead>
                                               <tbody>
@@ -392,11 +392,11 @@ desired effect
                                                           echo '<td align="right">'. $row['moneda'] .' ' . $row['oc_monto'] . '</td>';
                                                           echo '<td align="center">'. ($row['capex_opex'] == 'C' ? 'Capex' : 'Opex') .'</td>';
                                                           echo '<td align="center">'. $row['proceso'] .'</td>';
-                                                          echo '<td align="center">';
+                                                          echo '<td align="right">';
                                                           if ($row['comentarios']>0) {
                                                             echo '<a data-id="'.$row['id'].'" class="btn" title="'.$row['comentarios'].' comentarios" style="padding: 2px;" onclick="showComments();"><i class="fa fa-comments"></i></a>';
                                                           }
-                                                          echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
+                                                          // echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
                                                           echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-compra-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" style="color: red;"></i></a></td>';
                                                           echo '</tr>';
                                                       }

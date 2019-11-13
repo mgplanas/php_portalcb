@@ -341,6 +341,11 @@ $(function() {
         $("#modal-abm-compra").modal("show");
     });
 
+    // $('.modal-abm-compra-btn-view').click(function() {
+    //     $('.modal-abm-compra-btn-edit').click();
+    //     $('#modal-abm-compra-submit').hide();
+    // });
+
     $('.modal-abm-compra-btn-edit').click(function() {
         $('#modal-abm-compra-title').html('Editar Compra');
         modalAbmComprasLimpiarCampos();
