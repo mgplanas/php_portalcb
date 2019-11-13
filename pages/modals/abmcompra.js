@@ -297,6 +297,10 @@ $(function() {
         let idgerencia = $('option:selected', this).val();
         refreshSubGerencias(idgerencia);
     });
+    ddlPasoActual.on('change', function() {
+        let idpaso = $('option:selected', this).val();
+        ddlPasoSiguiente.val(parseInt(idpaso) + 1).change();
+    });
 
     function modalAbmComprasLimpiarCampos() {
         $('#modal-abm-compra-id').val(0);
