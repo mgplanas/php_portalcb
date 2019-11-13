@@ -20,11 +20,11 @@ $_SESSION['id_usuario'] = $id_rowp;
 // PUEDE VER TODO
 
 // INDICADORES
-$sqlindicadores = "SELECT COUNT(IF( c.id_paso_actual='1',1,null)) as adjudicacion ";
-$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='2',1,null)) as Ofertas ";
-$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='3',1,null)) as Dictamen ";
-$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='4',1,null)) as EnvioSC ";
-$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='5',1,null)) as PET ";
+$sqlindicadores = "SELECT COUNT(IF( c.id_paso_actual='1',1,null)) as PET ";
+$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='2',1,null)) as EnvioSC ";
+$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='3',1,null)) as Ofertas ";
+$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='4',1,null)) as Dictamen ";
+$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='5',1,null)) as adjudicacion ";
 $sqlindicadores = $sqlindicadores . ",COUNT(1) as total ";
 $sqlindicadores = $sqlindicadores . "FROM adm_compras as c  ";
 $sqlindicadores = $sqlindicadores . "WHERE c.borrado='0' AND c.id_estado = 1  ";
@@ -220,12 +220,12 @@ desired effect
             <div class="knob-label">PET</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
-            <input id="knob_ofertas" type="text" class="knob" value="<?= (int)($rq_indicadores['Ofertas']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
-            <div class="knob-label">Ofertas</div>
-          </div>
-          <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_enviosc" type="text" class="knob" value="<?= (int)($rq_indicadores['EnvioSC']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
             <div class="knob-label">Envío SC</div>
+          </div>
+          <div class="col-xs-6 col-md-1 text-center">
+            <input id="knob_ofertas" type="text" class="knob" value="<?= (int)($rq_indicadores['Ofertas']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
+            <div class="knob-label">Ofertas</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_dictamen" type="text" class="knob" value="<?= (int)($rq_indicadores['Dictamen']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
@@ -280,10 +280,11 @@ desired effect
                                                       <th>Fecha</th>
                                                       <th>Nro</th>
                                                       <th>Concepto</th>
-                                                      <th>PE</th>
+                                                      <th>Moneda</th>
+                                                      <th>Presupuesto</th>
                                                       <th>Paso actual</th>
                                                       <th><i title="días de permanencia en el paso actual" class="fa fa-clock-o"></i></th>
-                                                      <th>Siguiente</th>
+                                                      <!-- <th>Siguiente</th> -->
                                                       <th width="30px" style="text-align: right;"><i class="fa fa-bolt"></i> </th>
                                                   </tr>
                                                   </thead>
@@ -316,10 +317,11 @@ desired effect
                                                               echo '<td>'. $row['fecha_solicitud'] .'</td>';
                                                               echo '<td>'. $row['nro_solicitud'] .'</td>';
                                                               echo '<td>'. $row['concepto'] .'</td>';
-                                                              echo '<td align="right">'. $row['moneda'] .' ' . $row['pre_monto'] . '</td>';
+                                                              echo '<td align="center">'. $row['moneda'] . '</td>';
+                                                              echo '<td align="right">' . $row['pre_monto'] . '</td>';
                                                               echo '<td align="center">'. $row['cur_step_desc'] .'</td>';
                                                               echo '<td align="center">'. ($row['dias'] ? abs($row['dias']) : '0') .'</td>';
-                                                              echo '<td align="center">'. $row['next_step_desc'] .'</td>';
+                                                              // echo '<td align="center">'. $row['next_step_desc'] .'</td>';
                                                               echo '<td align="right">';
                                                               if ($row['comentarios']>0) {
                                                                 echo '<a data-id="'.$row['id'].'" class="btn" title="'.$row['comentarios'].' comentarios" style="padding: 2px;" onclick="showComments();"><i class="fa fa-comments"></i></a>';
@@ -521,8 +523,8 @@ desired effect
       'autoWidth'   : false,
       'columnDefs'  : [
         {'targets': [ 0 , 1 ], 'visible': false},
-        {'targets': [2,3,4,6,7,9] , 'width': '10%' },
-        {'targets': [10], 'width': '7%' }
+        {'targets': [2,3,4,7,8] , 'width': '10%' },
+        {'targets': [6,9,10], 'width': '5%' }
       ],
       'drawCallback': function(settings) {
         $('#btn-showhide-comments').prop('disabled', 'true');

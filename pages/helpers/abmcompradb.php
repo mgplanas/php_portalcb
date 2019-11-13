@@ -33,7 +33,13 @@
 
     $dtfechaSol = date('Y-m-d',strtotime(str_replace('/', '-', $fecha)));
     if ($fecha_oc) { $fecha_oc = date('Y-m-d',strtotime(str_replace('/', '-', $fecha_oc))); };
-    if ($fecha_fin_contrato) { $fecha_fin_contrato = date('Y-m-d',strtotime(str_replace('/', '-', $fecha_fin_contrato))); };
+    if ($fecha_fin_contrato) { 
+        $fecha_fin_contrato = date('Y-m-d',strtotime(str_replace('/', '-', $fecha_fin_contrato))); 
+    } else {
+        $fecha_fin_contrato = new DateTime($fecha_oc);;
+        date_add($fecha_fin_contrato, date_interval_create_from_date_string($plazo . ' ' . ($plazo_unidad=='1' ? 'months' : 'years')));
+        $fecha_fin_contrato = $fecha_fin_contrato->format('Y-m-d');
+    };
     
     $dtfechaSol = date('Y-m-d',strtotime(str_replace('/', '-', $fecha)));
 
@@ -110,7 +116,7 @@
                 ,id_gerencia = '$gerencia'
                 ,id_estado = '$id_estado'
                 ,fecha_solicitud = '$fecha'
-                ,fecha_oc = " . ($fecha_oc ? $fecha_oc : 'null') . "
+                ,fecha_oc = '$fecha_oc'
                 ,concepto = '$concepto'
                 ,capex_opex = '$capexopex' 
                 ,fecha_fin_contrato = '$fecha_fin_contrato' 
