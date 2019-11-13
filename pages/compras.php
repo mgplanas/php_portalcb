@@ -32,6 +32,28 @@ $sqlindicadores = $sqlindicadores . "AND ( 0 = " . $per_id_gerencia . " OR c.id_
 $q_indicadores = mysqli_query($con, $sqlindicadores);
 $rq_indicadores = mysqli_fetch_assoc($q_indicadores);	
 
+$__LOW = 5;
+$__HIGH = 15;
+
+if ($rq_indicadores['PET'] <= $__LOW) {$i_pet_color = '#00a65a';}
+else if ($rq_indicadores['PET'] >= $__HIGH) {$i_pet_color = '#f56954';}
+else {$i_pet_color = '#f39c12';}
+
+if ($rq_indicadores['EnvioSC'] <= $__LOW) {$i_envio_color = '#00a65a';}
+else if ($rq_indicadores['EnvioSC'] >= $__HIGH) {$i_envio_color = '#f56954';}
+else {$i_envio_color = '#f39c12';}
+
+if ($rq_indicadores['Ofertas'] <= $__LOW) {$i_oferta_color = '#00a65a';}
+else if ($rq_indicadores['Ofertas'] >= $__HIGH) {$i_oferta_color = '#f56954';}
+else {$i_oferta_color = '#f39c12';}
+
+if ($rq_indicadores['Dictamen'] <= $__LOW) {$i_dictamen_color = '#00a65a';}
+else if ($rq_indicadores['Dictamen'] >= $__HIGH) {$i_dictamen_color = '#f56954';}
+else {$i_dictamen_color = '#f39c12';}
+
+if ($rq_indicadores['adjudicacion'] <= $__LOW) {$i_adjudicacion_color = '#00a65a';}
+else if ($rq_indicadores['adjudicacion'] >= $__HIGH) {$i_adjudicacion_color = '#f56954';}
+else {$i_adjudicacion_color = '#f39c12';}
 
 //Get Personas
 $personas = mysqli_query($con, "SELECT * FROM persona");
@@ -216,23 +238,23 @@ desired effect
         <!-- /.box-header -->
           <div class="col-xs-12 col-md-7"><h1>Gestión de Compras &nbsp;&nbsp;<small>Total de compras en proceso:&nbsp;<?=$rq_indicadores['total'] ?></small></h1></div>
           <div class="col-xs-6 col-md-1 text-center">
-            <input id="knob_pet" type="text" class="knob" value="<?= (int)($rq_indicadores['PET']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
+            <input id="knob_pet" type="text" class="knob" value="<?= (int)($rq_indicadores['PET']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_pet_color ?>">
             <div class="knob-label">PET</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
-            <input id="knob_enviosc" type="text" class="knob" value="<?= (int)($rq_indicadores['EnvioSC']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
+            <input id="knob_enviosc" type="text" class="knob" value="<?= (int)($rq_indicadores['EnvioSC']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_envio_color ?>">
             <div class="knob-label">Envío SC</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
-            <input id="knob_ofertas" type="text" class="knob" value="<?= (int)($rq_indicadores['Ofertas']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
+            <input id="knob_ofertas" type="text" class="knob" value="<?= (int)($rq_indicadores['Ofertas']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_oferta_color ?>">
             <div class="knob-label">Ofertas</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
-            <input id="knob_dictamen" type="text" class="knob" value="<?= (int)($rq_indicadores['Dictamen']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
+            <input id="knob_dictamen" type="text" class="knob" value="<?= (int)($rq_indicadores['Dictamen']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_dictamen_color ?>">
             <div class="knob-label">Dictamen</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
-            <input id="knob_adjudicacion" type="text" class="knob" value="<?= (int)($rq_indicadores['adjudicacion']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="#3c8dbc">
+            <input id="knob_adjudicacion" type="text" class="knob" value="<?= (int)($rq_indicadores['adjudicacion']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_adjudicacion_color ?>">
             <div class="knob-label">Adjudicación</div>
           </div>
         <!-- /.box-body -->
