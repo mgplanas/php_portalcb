@@ -326,6 +326,50 @@ $(function() {
             $('#modal-abm-compra-fecha-fin').val(ff);
         }
     });
+    // Alta de proveedor
+    $('#modal-abm-compra-proveedor-add').on('click', function() {
+        let razon_social = $('#modal-abm-compra-proveedor-add-text').val();
+        // Ejecuto
+        $.ajax({
+            type: 'POST',
+            url: './helpers/abmproveedordb.php',
+            data: {
+                operacion: 'A',
+                razon_social: razon_social
+            },
+            dataType: 'json',
+            success: function(json) {
+                $('#modal-abm-compra-proveedor-add-text').val('');
+                $('#modal-abm-compra-proveedor-add').attr('disabled', true);
+                refreshProveedor(json.id);
+            },
+            error: function(xhr, status, error) {
+                alert(xhr.responseText, error);
+            }
+        });
+
+    });
+    // Ingreso de proveedor
+    $('#modal-abm-compra-proveedor-add-text').on('input', function() {
+        let searchtext = $(this).val();
+        $('#modal-abm-compra-proveedor-add').attr('disabled', ($(this).val() == ''));
+        // busco en el combo así se selecciona automáticamente
+        if (searchtext !== '') {
+            let __founded = false;
+            $.each($("#modal-abm-compra-proveedor option"), function() {
+                let texto = $(this).text().toUpperCase();
+                let id = $(this).val();
+                if (texto.indexOf(searchtext.toUpperCase()) !== -1) {
+                    __founded = true;
+                    $("#modal-abm-compra-proveedor").val(id).change();
+                    return __founded;
+                }
+            });
+            if (!__founded) $("#modal-abm-compra-proveedor").val(0).change();
+        } else {
+            $("#modal-abm-compra-proveedor").val(0).change();
+        }
+    });
 
     // ==============================================================
     // LIMPIEZA DE CAMPOS 
@@ -371,7 +415,7 @@ $(function() {
         refreshEstados(1);
         modalAbmComprasLimpiarCampos();
 
-        $('#modal-abm-compra-submit').attr('name', 'A');
+        $('#modal-abm-compra-form').attr('name', 'A');
 
         $("#modal-abm-compra").modal("show");
     });
@@ -420,7 +464,7 @@ $(function() {
 
 
 
-        $('#modal-abm-compra-submit').attr('name', 'M');
+        $('#modal-abm-compra-form').attr('name', 'M');
 
         $("#modal-abm-compra").modal("show");
     });

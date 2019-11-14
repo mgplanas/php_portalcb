@@ -200,7 +200,14 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <label>Proveedor</label>
+                                            <label>Ingrese o seleccione un Proveedor</label>
+                                            <div class="input-group">
+                                                <!-- /btn-group -->
+                                                <input id="modal-abm-compra-proveedor-add-text" type="text" class="form-control" placeholder="Ingrese la razón social para dar de alta un proveedor nuevo">
+                                                <div class="input-group-btn">
+                                                    <button id="modal-abm-compra-proveedor-add" type="button" class="btn btn-success" disabled="disabled">Agregar Proveedor</button>
+                                                </div>
+                                            </div>                                            
                                             <select id="modal-abm-compra-proveedor" name="proveedor" class="form-control">
                                             </select>
                                         </div>

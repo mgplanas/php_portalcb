@@ -471,7 +471,7 @@ desired effect
 <script src="../plugins/input-mask/jquery.inputmask.extensions.js"></script> -->
 <!-- date-range-picker -->
 <!-- <script src="../bower_components/moment/min/moment.min.js"></script> -->
-<script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- <script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script> -->
 <!-- bootstrap datepicker -->
 <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- ChartJS
@@ -645,13 +645,6 @@ desired effect
     $("#knob_dictamen").attr('disabled','disabled');
     $('#knob_adjudicacion').val(<?=$rq_indicadores['adjudicacion'] ?>);
     $("#knob_adjudicacion").attr('disabled','disabled');
-
-    // Popper
-    // $('[data-toggle="popover"]').popover();
-    // $('#popover-add-comment').on('shown.bs.popover', function () {
-    //   $('#popover-comment').val('');
-    //   $('#popover-comment').focus();
-    // });
 
     $('#btn-showhide-comments').prop('disabled', 'true');
 
