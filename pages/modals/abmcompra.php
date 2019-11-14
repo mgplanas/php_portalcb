@@ -60,7 +60,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="nrosolicitud">Nro. Solicitud</label>
-                                            <input type="text" id="modal-abm-compra-solicitud" class="form-control" name="nrosolicitud" placeholder="SC-000000000">
+                                            <input type="text" id="modal-abm-compra-solicitud" class="form-control" name="nrosolicitud" placeholder="SC-000000000" required="required">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -73,7 +73,7 @@
                                 </div>                  
                                 <div class="form-group">
                                     <label for="concepto">Concepto</label>
-                                    <textarea class="form-control" rows="3" name="concepto" id="modal-abm-compra-concepto"></textarea>
+                                    <textarea class="form-control" rows="3" name="concepto" id="modal-abm-compra-concepto" required="required"></textarea>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-2">
@@ -168,7 +168,7 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="plazo">Plazo</label>
-                                            <input type="number" id="modal-abm-compra-plazo" class="form-control" name="plazo" placeholder="0">
+                                            <input type="number" id="modal-abm-compra-plazo" class="form-control" name="plazo" placeholder="0" min="1">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -176,6 +176,12 @@
                                             <label>Unidad</label>
                                             <select id="modal-abm-compra-plazo-unidad" name="plazounidad" class="form-control">
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <label style="color: white;">calcular</label>
+                                            <button id="modal-abm-compra-calc-ff" title="Calcular fecha de finalización del contrato en base al plazo" type="button"class="btn btn-success"><i class="fa fa-calculator" ></i></button>&nbsp;
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -216,7 +222,7 @@
                     <div class="form-group">
                         <div class="col-md-3 pull-right">
                             <button id="modal-abm-compra-cancel" type="button"class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>&nbsp;
-                            <input id="modal-abm-compra-submit" type="button" name="AddPersona" class="btn  btn-raised btn-success" value="Guardar datos">
+                            <input id="modal-abm-compra-submit" type="submit" name="AddPersona" class="btn  btn-raised btn-success" value="Guardar datos">
                         </div>
                     </div>
 

@@ -292,16 +292,44 @@ $(function() {
         }
     }
 
-    // EVENTOS DDL
+    // ==============================================================
+    // MANEJO DE EVENTOS DEL FORM
+    // ==============================================================
+    // Cargo subgerencias
     ddlGerencias.on('change', function() {
         let idgerencia = $('option:selected', this).val();
         refreshSubGerencias(idgerencia);
     });
+    // Cargo siguiente paso
     ddlPasoActual.on('change', function() {
         let idpaso = $('option:selected', this).val();
         ddlPasoSiguiente.val(parseInt(idpaso) + 1).change();
     });
+    // Activo validaciones de Adjudicacion
+    ddlEstados.on('change', function() {
+        let idEstado = $('option:selected', this).val();
 
+        $('#modal-abm-compra-fecha-oc').attr('required', (idEstado == '2'));
+        $('#modal-abm-compra-oc').attr('required', (idEstado == '2'));
+    });
+    // Calculo la fecha fin del contrato
+    $('#modal-abm-compra-calc-ff').on('click', function() {
+        let fechaoc = $('#modal-abm-compra-fecha-oc').val();
+        fechaoc = fechaoc.split("/").reverse().join("-");
+        if (fechaoc != '') {
+            let dtOC = new Date(fechaoc);
+            let plazo = parseInt($('#modal-abm-compra-plazo').val());
+            let unidad = parseInt($('#modal-abm-compra-plazo-unidad').val());
+            dtOC.setMonth(dtOC.getMonth() + (plazo * unidad));
+            let ff = dtOC.toISOString().split('T')[0];
+            ff = ff.split("-").reverse().join("/");
+            $('#modal-abm-compra-fecha-fin').val(ff);
+        }
+    });
+
+    // ==============================================================
+    // LIMPIEZA DE CAMPOS 
+    // ==============================================================
     function modalAbmComprasLimpiarCampos() {
         $('#modal-abm-compra-id').val(0);
         $('#modal-abm-compra-fecha-sol').val('');
@@ -323,8 +351,10 @@ $(function() {
         ddlProceso.val('first').change();
         ddlEstados.val('first').change();
     }
-    // ALTA
-    // seteo boton trigger para el alta de gerencia
+
+    // ==============================================================
+    // ALTA DE COMPRA
+    // ==============================================================
     $('#modal-abm-compra-btn-alta').click(function() {
         $('#modal-abm-compra-title').html('Nuevo Seguimiento de Compra');
         refreshGerencias($('#compra-id-gerencia').val());
@@ -340,16 +370,15 @@ $(function() {
         refreshProveedor();
         refreshEstados(1);
         modalAbmComprasLimpiarCampos();
+
         $('#modal-abm-compra-submit').attr('name', 'A');
 
         $("#modal-abm-compra").modal("show");
     });
 
-    // $('.modal-abm-compra-btn-view').click(function() {
-    //     $('.modal-abm-compra-btn-edit').click();
-    //     $('#modal-abm-compra-submit').hide();
-    // });
-
+    // ==============================================================
+    // EDITAR COMPRA
+    // ==============================================================
     $('.modal-abm-compra-btn-edit').click(function() {
         $('#modal-abm-compra-title').html('Editar Compra');
         modalAbmComprasLimpiarCampos();
@@ -396,15 +425,11 @@ $(function() {
         $("#modal-abm-compra").modal("show");
     });
 
+    // ==============================================================
+    // SUBMIT FORM
+    // ==============================================================
+    $('#modal-abm-compra-form').submit(function() {
 
-    $('#modal-abm-compra-submit').click(function() {
-
-        $('#modal-abm-compra-fecha-sol').attr('required', true);
-        if ($("#modal-abm-compra-fecha-sol").val() == '') {
-            // If the form is invalid, submit it. The form won't actually submit;
-            // this will just cause the browser to display the native HTML5 error messages.
-            $("#modal-abm-compra-form").submit();
-        }
         // Recupero datos del formulario
         let op = $(this).attr('name');
         let id = $('#modal-abm-compra-id').val();
@@ -475,7 +500,9 @@ $(function() {
         });
     });
 
-    //Datepicker
+    // ==============================================================
+    // CONFIG PLUGGINS
+    // ==============================================================
     $('#modal-abm-compra-fecha-sol').datepicker({
         autoclose: true,
         format: 'dd/mm/yyyy',
