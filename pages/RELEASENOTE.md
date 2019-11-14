@@ -13,120 +13,39 @@
 - Backup /pages
 - Cambios en DB
 
-        - Creacion adm_monedas
-        CREATE TABLE `adm_monedas` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `sigla` varchar(3) NOT NULL DEFAULT 'USD',
-                `descripcion` varchar(25) DEFAULT NULL,
-                `borrado` int(11) NOT NULL DEFAULT '0',
-                PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+    # Creacion adm_monedas
 
-        - Creacion pasos de compras
-        CREATE TABLE `adm_com_pasos` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `descripcion` varchar(25) DEFAULT NULL,
-                `borrado` int(11) NOT NULL DEFAULT '0',
-                PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+    # Creacion pasos de compras
 
-        - Creacion estados de Compras
-        CREATE TABLE `adm_com_estados` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `descripcion` varchar(25) DEFAULT NULL,
-                `borrado` int(11) NOT NULL DEFAULT '0',
-                PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;  
+    # Creacion estados de Compras
 
-        - Creacion proveedores
-        CREATE TABLE `adm_com_proveedores` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `razon_social` varchar(25) DEFAULT NULL,
-                `borrado` int(11) NOT NULL DEFAULT '0',
-                PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;      
-        
-        - Creacion procesos de compras
-        CREATE TABLE `adm_com_procesos` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                #`sigla` varchar(3) NOT NULL DEFAULT 'USD',
-                `descripcion` varchar(25) DEFAULT NULL,
-                `borrado` int(11) NOT NULL DEFAULT '0',
-                PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+    # Creacion proveedores
 
-        - Crear Compras
-        CREATE TABLE `adm_compras` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `id_gerencia` int(11) NOT NULL,
-                `id_subgerencia` int(11) DEFAULT NULL,
-                `nro_solicitud` varchar(20) NOT NULL,
-                `concepto` varchar(255) DEFAULT NULL,
-                `pre_id_moneda` int(11) DEFAULT NULL,
-                `pre_monto` float DEFAULT NULL,
-                `id_solicitante` int(11) DEFAULT NULL,
-                `id_paso_actual` int(11) DEFAULT NULL,
-                `id_siguiente_paso` int(11) DEFAULT NULL,
-                `id_estado` int(11) NOT NULL DEFAULT '1',
-                `id_proveedor` int(11) DEFAULT NULL,
-                `nro_oc` varchar(20) DEFAULT NULL,
-                `fecha_solicitud` date NOT NULL,
-                `fecha_oc` date DEFAULT NULL,
-                `fecha_limite` date DEFAULT NULL,
-                `oc_id_moneda` int(11) DEFAULT NULL,
-                `oc_monto` float DEFAULT NULL,
-                `capex_opex` varchar(1) DEFAULT 'O',
-                `id_proceso` int(11) DEFAULT NULL,
-                `tags` varchar(255) DEFAULT NULL,
-                `borrado` int(11) NOT NULL DEFAULT '0',
-                `modificado` int(11) DEFAULT NULL,
-                `modif_user` int(11) DEFAULT NULL,
-                `plazo_unidad` int(11) DEFAULT NULL,
-                `plazo_valor` int(11) DEFAULT NULL,
-                PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+    # Creacion procesos de compras
 
-        # Comentarios
-        CREATE TABLE `adm_compras_comments` (
-        `id` int(11) NOT NULL AUTO_INCREMENT,
-        `id_compra` int(11) NOT NULL,
-        `id_tipo` int(11) DEFAULT '1',
-        `comentario` varchar(500) DEFAULT NULL,
-        `fecha` datetime DEFAULT NULL,
-        `id_persona` int(11) NOT NULL,
-        `borrado` int(11) NOT NULL DEFAULT '0',
-        PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+    # Crear Compras
 
+    # Comentarios
 
-
-        # PERMISOS
+    # PERMISOS
         ALTER TABLE controls.permisos
         ADD compras INT(11) DEFAULT '0' AFTER admin_cli_dc,
         ADD admin_compras INT(11) DEFAULT '0';
 
-        #Historial de pases
-        CREATE TABLE controls.adm_compras_pasos_hist (
-        id INT(11) AUTO_INCREMENT NOT NULL,
-        id_compra INT(11) NOT NULL,
-        id_paso INT(11) NOT NULL,
-        fecha DATETIME NOT NULL,
-        id_persona INT(11) NOT NULL,
-        borrado INT NOT NULL DEFAULT '0',
-        PRIMARY KEY (id)
-        ) ENGINE = InnoDB ROW_FORMAT = DEFAULT;
+    # Historial de pases
 
 - Cambios en src
-    M [pages/admin.php]
-    M [pages/setPermiso.php]
-    M [site.php]
-    M [pages/site_sidebar.php]
-    N [pages/compras.php]
 
 ADD bower_components/bootstrap/dist/js/bootstrap.bundle.min.js
 ADD bower_components/popper/popper.min.js
-M [pages/helpers/abmcompracommentdb.php]
-M [pages/helpers/abmcompradb.php]
-M [pages/modals/abmcompra.js]
-M [pages/modals/abmcompra.php]
-M [pages/modals/abmcompracommentdb.php]
+
+M [pages/admin.php]
+M [pages/setPermiso.php]
+M [site.php]
+M [pages/site_sidebar.php]
+N [pages/compras.php]
+N [pages/modals/abmcompra.js]
+N [pages/modals/abmcompra.php]
+N [pages/helpers/abmcompradb.php]
+N [pages/helpers/abmcompracomentariodb.php]
+N [pages/helpers/abmproveedordb.php]
