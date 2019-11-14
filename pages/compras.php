@@ -91,8 +91,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
   <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
-  <link rel="stylesheet" href="../bower_components/datatables.net/css/rowGroup.dataTables.min.css">
-
+  <!-- <link rel="stylesheet" href="../bower_components/datatables.net/css/rowGroup.dataTables.min.css"> -->
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -480,7 +481,15 @@ desired effect
 <script src="../bower_components/fastclick/lib/fastclick.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="../bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
-
+<!-- export -->
+<script src="../bower_components/datatables.net/js/dataTables.buttons.min.js"></script>
+<script src="../bower_components/datatables.net/js/buttons.flash.min.js"></script>
+<script src="../bower_components/datatables.net/js/jszip.min.js"></script>
+<script src="../bower_components/datatables.net/js/buttons.html5.min.js"></script>
+<script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
+<script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
+<script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
+<script src="../bower_components/datatables.net/js/buttons.colVis.min.js"></script>
 <!-- MODALES -->
 <script src="./modals/abmcompra.js"></script>
 
@@ -504,6 +513,16 @@ desired effect
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : false,
+      'dom'         : 'frtpB',
+      'buttons'     : [{
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'A4'
+                     },
+                      {
+                        extend: 'excel',
+                        text: 'Excel',
+                      }],      
       'columnDefs'  : [
         {'targets': [ 0 , 1 ], 'visible': false},
         {'targets': [2,3,4,7] , 'width': '10%' },
@@ -543,6 +562,16 @@ desired effect
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : false,
+      'dom'         : 'frtpB',
+      'buttons'     : [{
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'A4'
+                     },
+                      {
+                        extend: 'excel',
+                        text: 'Excel',
+                      }],       
       'columnDefs'  : [
         {'targets': [ 0 , 1 ], 'visible': false},
         {'targets': [2,3,4,7,8] , 'width': '10%' },
