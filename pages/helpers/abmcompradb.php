@@ -31,6 +31,8 @@
     $id_proceso= mysqli_real_escape_string($con,(strip_tags($_POST['id_proceso'],ENT_QUOTES)));
     // $tags= mysqli_real_escape_string($con,(strip_tags($_POST['tags'],ENT_QUOTES)));
 
+    $gmtTimezone = new DateTimeZone('GMT');
+    date_default_timezone_set('America/Argentina/Buenos_Aires');
     $dtfechaSol = date('Y-m-d',strtotime(str_replace('/', '-', $fecha)));
     if ($fecha_oc) { $fecha_oc = date('Y-m-d',strtotime(str_replace('/', '-', $fecha_oc))); };
     if ($fecha_fin_contrato) { 
