@@ -380,7 +380,11 @@ $(function() {
         $('#modal-abm-compra-solicitud').val('');
         $('#modal-abm-compra-concepto').val('');
         $('#modal-abm-compra-presupuesto').val('');
-        $('#modal-abm-compra-plazo').val('');
+        $('#modal-abm-compra-plazo').val(1);
+        $('#modal-abm-compra-fecha-oc').val('');
+        $('#modal-abm-compra-fecha-fin').val('');
+        $('#modal-abm-compra-nro-oc').val('');
+        $('#modal-abm-compra-monto-oc').val('');
         // $('#modal-abm-compra-grupo-div').hide();
 
         ddlGerencias.val('first').change();
@@ -408,8 +412,7 @@ $(function() {
         refreshPlazoUnidad();
         refreshCapexOpex();
         refreshMonedaOC();
-        refreshPasoActual();
-        refreshPasoSiguiente();
+        refreshPasoActual(1);
         refreshProceso();
         refreshProveedor();
         refreshEstados(1);
@@ -440,8 +443,12 @@ $(function() {
                 $('#modal-abm-compra-concepto').val(compra.concepto);
                 $('#modal-abm-compra-presupuesto').val(compra.pre_monto);
                 $('#modal-abm-compra-plazo').val(compra.plazo_valor);
-                $('#modal-abm-compra-fecha-oc').val(compra.fecha_oc);
-                $('#modal-abm-compra-fecha-fin').val(compra.fecha_fin_contrato);
+                if (compra.fecha_oc) {
+                    $('#modal-abm-compra-fecha-oc').val(compra.fecha_oc);
+                }
+                if (compra.fecha_fin_contrato) {
+                    $('#modal-abm-compra-fecha-fin').val(compra.fecha_fin_contrato);
+                }
                 $('#modal-abm-compra-nro-oc').val(compra.nro_oc);
                 $('#modal-abm-compra-monto-oc').val(compra.oc_monto);
                 $('#modal-abm-compra-paso-actual-id').val(compra.id_paso_actual);
