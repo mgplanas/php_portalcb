@@ -443,10 +443,10 @@ $(function() {
                 $('#modal-abm-compra-concepto').val(compra.concepto);
                 $('#modal-abm-compra-presupuesto').val(compra.pre_monto);
                 $('#modal-abm-compra-plazo').val(compra.plazo_valor);
-                if (compra.fecha_oc) {
+                if (compra.fecha_oc && compra.fecha_oc !== '0000-00-00') {
                     $('#modal-abm-compra-fecha-oc').val(compra.fecha_oc);
                 }
-                if (compra.fecha_fin_contrato) {
+                if (compra.fecha_fin_contrato && compra.fecha_fin_contrato !== '0000-00-00') {
                     $('#modal-abm-compra-fecha-fin').val(compra.fecha_fin_contrato);
                 }
                 $('#modal-abm-compra-nro-oc').val(compra.nro_oc);
