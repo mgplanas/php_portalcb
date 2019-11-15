@@ -8,7 +8,6 @@ $(function() {
     let ddlPlazoUnidad = $('#modal-abm-compra-plazo-unidad');
     let ddlCapexOpex = $('#modal-abm-compra-capex-opex');
     let ddlPasoActual = $('#modal-abm-compra-paso-actual');
-    let ddlPasoSiguiente = $('#modal-abm-compra-paso-sig');
     let ddlProceso = $('#modal-abm-compra-proceso');
     let ddlProveedor = $('#modal-abm-compra-proveedor');
     let ddlEstados = $('#modal-abm-compra-estado');
@@ -215,28 +214,6 @@ $(function() {
         });
     }
 
-    function refreshPasoSiguiente(selectedValue) {
-        // Limpio combos
-        ddlPasoSiguiente.empty();
-
-        //Populo las areas
-        $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM adm_com_pasos WHERE borrado = 0' },
-            function(response) {
-                $.each(response.data, function() {
-                    if (selectedValue && selectedValue == this.id) {
-                        ddlPasoSiguiente.append($("<option />").val(this.id).text(this.descripcion).attr('selected', 'selected'));
-                    } else {
-                        ddlPasoSiguiente.append($("<option />").val(this.id).text(this.descripcion));
-                    }
-                });
-                if (!selectedValue || parseInt(selectedValue) == 0) {
-                    ddlPasoSiguiente.val('first').change();
-                }
-            }
-        ).fail(function(jqXHR, errorText) {
-            console.log(errorText);
-        });
-    }
     // refresh DDL
     function refreshGerencias(selectedValue) {
         // Limpio combos
@@ -299,11 +276,6 @@ $(function() {
     ddlGerencias.on('change', function() {
         let idgerencia = $('option:selected', this).val();
         refreshSubGerencias(idgerencia);
-    });
-    // Cargo siguiente paso
-    ddlPasoActual.on('change', function() {
-        let idpaso = $('option:selected', this).val();
-        ddlPasoSiguiente.val(parseInt(idpaso) + 1).change();
     });
     // Activo validaciones de Adjudicacion
     ddlEstados.on('change', function() {
@@ -393,7 +365,6 @@ $(function() {
         ddlCapexOpex.val('C').change();
         ddlPlazoUnidad.val(1).change();
         ddlPasoActual.val('first').change();
-        ddlPasoSiguiente.val('first').change();
         ddlMonedasOC.val(1).change();
         ddlProveedor.val('first').change();
         ddlProceso.val('first').change();
@@ -413,7 +384,6 @@ $(function() {
         refreshCapexOpex();
         refreshMonedaOC();
         refreshPasoActual(1);
-        refreshPasoSiguiente();
         refreshProceso();
         refreshProveedor();
         refreshEstados(1);
@@ -456,7 +426,6 @@ $(function() {
                 refreshProveedor(compra.id_proveedor);
                 refreshProceso(compra.id_proceso);
                 refreshPasoActual(compra.id_paso_actual);
-                refreshPasoSiguiente(compra.id_siguiente_paso);
                 refreshPlazoUnidad(compra.plazo_unidad);
                 refreshCapexOpex(compra.capex_opex);
                 refreshMonedaPresupuesto(compra.pre_id_moneda);
@@ -500,7 +469,6 @@ $(function() {
         let id_estado = $('#modal-abm-compra-estado').val();
         let id_paso_actual = $('#modal-abm-compra-paso-actual').val();
         let id_paso_actual_original = $('#modal-abm-compra-paso-actual-id').val();
-        let id_siguiente_paso = $('#modal-abm-compra-paso-sig').val();
         let fecha_oc = $('#modal-abm-compra-fecha-oc').val();
         let fecha_fin_contrato = $('#modal-abm-compra-fecha-fin').val();
         let nro_oc = $('#modal-abm-compra-oc').val();
@@ -531,7 +499,6 @@ $(function() {
                 id_estado: id_estado,
                 id_paso_actual: id_paso_actual,
                 id_paso_actual_original: id_paso_actual_original,
-                id_siguiente_paso: id_siguiente_paso,
                 fecha_oc: fecha_oc,
                 nro_oc: nro_oc,
                 oc_monto: oc_monto,

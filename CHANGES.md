@@ -27,6 +27,7 @@ Se agrega el módulo de administración y seguimiento de compras
         db: fecha_fin_contrato
     - Alta proveedores
     N [pages/helpers/abmroveedordb.php]
+    - Quito paso siguiente
 
 
 ## FIX-VARIAS

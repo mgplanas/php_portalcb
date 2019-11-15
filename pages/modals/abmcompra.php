@@ -109,14 +109,7 @@
                                             <select id="modal-abm-compra-paso-actual" name="pasoactual" class="form-control">
                                             </select>
                                         </div>
-                                    </div>                        
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Siguiente Paso</label>
-                                            <select id="modal-abm-compra-paso-sig" name="pasosig" class="form-control">
-                                            </select>
-                                        </div>
-                                    </div>                        
+                                    </div>                                             
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">

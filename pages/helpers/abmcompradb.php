@@ -21,7 +21,6 @@
     $id_estado= mysqli_real_escape_string($con,(strip_tags($_POST['id_estado'],ENT_QUOTES)));
     $id_paso_actual= mysqli_real_escape_string($con,(strip_tags($_POST['id_paso_actual'],ENT_QUOTES)));
     $id_paso_actual_original= mysqli_real_escape_string($con,(strip_tags($_POST['id_paso_actual_original'],ENT_QUOTES)));
-    $id_siguiente_paso= mysqli_real_escape_string($con,(strip_tags($_POST['id_siguiente_paso'],ENT_QUOTES)));
     $fecha_oc= mysqli_real_escape_string($con,(strip_tags($_POST['fecha_oc'],ENT_QUOTES)));
     $fecha_fin_contrato= mysqli_real_escape_string($con,(strip_tags($_POST['fecha_fin_contrato'],ENT_QUOTES)));
     $nro_oc= mysqli_real_escape_string($con,(strip_tags($_POST['nro_oc'],ENT_QUOTES)));
@@ -51,7 +50,7 @@
     switch ($op) {
         case 'A':
             // INSERT
-            $sql = "INSERT INTO adm_compras(id_gerencia,id_subgerencia,nro_solicitud,concepto,pre_id_moneda,pre_monto,id_solicitante,fecha_solicitud,fecha_limite,capex_opex,modificado,modif_user,plazo_unidad,plazo_valor,id_estado,id_paso_actual,id_siguiente_paso,fecha_oc,nro_oc,oc_monto,oc_id_moneda,id_proveedor,id_proceso, fecha_fin_contrato
+            $sql = "INSERT INTO adm_compras(id_gerencia,id_subgerencia,nro_solicitud,concepto,pre_id_moneda,pre_monto,id_solicitante,fecha_solicitud,fecha_limite,capex_opex,modificado,modif_user,plazo_unidad,plazo_valor,id_estado,id_paso_actual,fecha_oc,nro_oc,oc_monto,oc_id_moneda,id_proveedor,id_proceso, fecha_fin_contrato
              ) VALUES (
                 '$gerencia'
                 ,'$subgerencia'
@@ -69,7 +68,6 @@
                 ,'$plazo'
                 ,'$id_estado'
                 ,'$id_paso_actual'
-                ,'$id_siguiente_paso'
                 ,'$fecha_oc'
                 ,'$nro_oc'
                 ,'$oc_monto'
@@ -90,8 +88,6 @@
                     , $user)";
             $insert_gerencia = mysqli_query($con, $sql) or die(mysqli_error());
             
-            $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-                                                VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
             $result->id = $lastInsert;
             break;
         
@@ -111,7 +107,6 @@
                 ,modif_user = 1
                 ,id_subgerencia = '$subgerencia'
                 ,id_solicitante = '$solicitante'
-                ,id_siguiente_paso = '$id_siguiente_paso'
                 ,id_proveedor = '$id_proveedor'
                 ,id_proceso = '$id_proceso'
                 ,id_paso_actual = '$id_paso_actual'
@@ -135,8 +130,6 @@
                 $insert_gerencia = mysqli_query($con, $sql) or die(mysqli_error());                
             }
 
-            $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-                                                VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
             break;
 
         case 'B':
