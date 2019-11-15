@@ -314,14 +314,13 @@ desired effect
                                                   </thead>
                                                   <tbody>
                                                       <?php
-                                                          $query = "SELECT C.*, sub.nombre as subgerencia, mon.sigla as moneda, cur_step.descripcion as cur_step_desc, next_step.descripcion as next_step_desc
+                                                          $query = "SELECT C.*, sub.nombre as subgerencia, mon.sigla as moneda, cur_step.descripcion as cur_step_desc
                                                           , (SELECT COUNT(1) FROM adm_compras_comments as com WHERE C.id = com.id_compra) as comentarios
                                                           , (SELECT datediff(MAX(hist.fecha), now()) FROM adm_compras_pasos_hist as hist WHERE hist.id_compra = C.id AND hist.id_paso = C.id_paso_actual) as dias
                                                           FROM adm_compras as C
                                                           LEFT JOIN subgerencia as sub ON C.id_subgerencia = sub.id_subgerencia
                                                           LEFT JOIN adm_monedas as mon ON C.pre_id_moneda = mon.id
                                                           LEFT JOIN adm_com_pasos as cur_step ON C.id_paso_actual = cur_step.id
-                                                          LEFT JOIN adm_com_pasos as next_step ON C.id_siguiente_paso = next_step.id
                                                           WHERE C.borrado = 0
                                                           AND C.id_estado = 1 ";
                                                           // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
