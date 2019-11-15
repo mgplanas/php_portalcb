@@ -32,8 +32,9 @@ $sqlindicadores = $sqlindicadores . "AND ( 0 = " . $per_id_gerencia . " OR c.id_
 $q_indicadores = mysqli_query($con, $sqlindicadores);
 $rq_indicadores = mysqli_fetch_assoc($q_indicadores);	
 
-$__LOW = 5;
-$__HIGH = 15;
+$__LOW = 3;
+$__HIGH_2 = 10;
+$__HIGH = 5;
 
 if ($rq_indicadores['PET'] <= $__LOW) {$i_pet_color = '#00a65a';}
 else if ($rq_indicadores['PET'] >= $__HIGH) {$i_pet_color = '#f56954';}
@@ -44,7 +45,7 @@ else if ($rq_indicadores['EnvioSC'] >= $__HIGH) {$i_envio_color = '#f56954';}
 else {$i_envio_color = '#f39c12';}
 
 if ($rq_indicadores['Ofertas'] <= $__LOW) {$i_oferta_color = '#00a65a';}
-else if ($rq_indicadores['Ofertas'] >= $__HIGH) {$i_oferta_color = '#f56954';}
+else if ($rq_indicadores['Ofertas'] >= $__HIGH_2) {$i_oferta_color = '#f56954';}
 else {$i_oferta_color = '#f39c12';}
 
 if ($rq_indicadores['Dictamen'] <= $__LOW) {$i_dictamen_color = '#00a65a';}
@@ -52,7 +53,7 @@ else if ($rq_indicadores['Dictamen'] >= $__HIGH) {$i_dictamen_color = '#f56954';
 else {$i_dictamen_color = '#f39c12';}
 
 if ($rq_indicadores['adjudicacion'] <= $__LOW) {$i_adjudicacion_color = '#00a65a';}
-else if ($rq_indicadores['adjudicacion'] >= $__HIGH) {$i_adjudicacion_color = '#f56954';}
+else if ($rq_indicadores['adjudicacion'] >= $__HIGH_2) {$i_adjudicacion_color = '#f56954';}
 else {$i_adjudicacion_color = '#f39c12';}
 
 //Get Personas

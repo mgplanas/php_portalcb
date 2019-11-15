@@ -413,6 +413,7 @@ $(function() {
         refreshCapexOpex();
         refreshMonedaOC();
         refreshPasoActual(1);
+        refreshPasoSiguiente();
         refreshProceso();
         refreshProveedor();
         refreshEstados(1);
