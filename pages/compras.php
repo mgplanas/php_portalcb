@@ -35,6 +35,7 @@ $rq_indicadores = mysqli_fetch_assoc($q_indicadores);
 $__LOW = 3;
 $__HIGH_2 = 10;
 $__HIGH = 5;
+$__DIFF_DAYS = 2;
 
 if ($rq_indicadores['PET'] <= $__LOW) {$i_pet_color = '#00a65a';}
 else if ($rq_indicadores['PET'] >= $__HIGH) {$i_pet_color = '#f56954';}
@@ -55,6 +56,12 @@ else {$i_dictamen_color = '#f39c12';}
 if ($rq_indicadores['adjudicacion'] <= $__LOW) {$i_adjudicacion_color = '#00a65a';}
 else if ($rq_indicadores['adjudicacion'] >= $__HIGH_2) {$i_adjudicacion_color = '#f56954';}
 else {$i_adjudicacion_color = '#f39c12';}
+
+
+// $sql = "SELECT id_paso, COUNT(1) as cuenta, FLOOR(AVG(DATEDIFF(now(), fecha))) as promedio
+// FROM adm_compras_pasos_hist 
+// WHERE id_paso > 0
+// GROUP BY id_paso";
 
 //Get Personas
 $personas = mysqli_query($con, "SELECT * FROM persona");
@@ -317,6 +324,7 @@ desired effect
                                                           $query = "SELECT C.*, sub.nombre as subgerencia, mon.sigla as moneda, cur_step.descripcion as cur_step_desc
                                                           , (SELECT COUNT(1) FROM adm_compras_comments as com WHERE C.id = com.id_compra) as comentarios
                                                           , (SELECT datediff(MAX(hist.fecha), now()) FROM adm_compras_pasos_hist as hist WHERE hist.id_compra = C.id AND hist.id_paso = C.id_paso_actual) as dias
+                                                          , (SELECT FLOOR(AVG(DATEDIFF(now(), hist2.fecha))) as promedio FROM adm_compras_pasos_hist as hist2 WHERE  hist2.id_paso = C.id_paso_actual) as promedio
                                                           FROM adm_compras as C
                                                           LEFT JOIN subgerencia as sub ON C.id_subgerencia = sub.id_subgerencia
                                                           LEFT JOIN adm_monedas as mon ON C.pre_id_moneda = mon.id
@@ -343,7 +351,14 @@ desired effect
                                                               echo '<td align="center">'. $row['moneda'] . '</td>';
                                                               echo '<td align="right">' . $row['pre_monto'] . '</td>';
                                                               echo '<td align="center">'. $row['cur_step_desc'] .'</td>';
-                                                              echo '<td align="center">'. ($row['dias'] ? abs($row['dias']) : '0') .'</td>';
+                                                              $dias = ($row['dias'] ? abs($row['dias']) : 0);
+                                                              $promedio = ($row['promedio'] ? abs($row['promedio']) : 0);
+                                                              $diff = $dias - $promedio;
+                                                              if ($diff >= $__DIFF_DAYS) {
+                                                                echo '<td align="center"><span class="badge bg-red" title="Atrazo de ' . strval($diff). ' día(s) con respecto al promedio ('. strval($promedio).' día(s))">'. strVal($dias) .'</span></td>';
+                                                              } else {
+                                                                echo '<td align="center">'. strVal($dias) .'</td>';
+                                                              }
                                                               // echo '<td align="center">'. $row['next_step_desc'] .'</td>';
                                                               echo '<td align="right">';
                                                               if ($row['comentarios']>0) {

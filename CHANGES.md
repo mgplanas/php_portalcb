@@ -28,6 +28,7 @@ Se agrega el módulo de administración y seguimiento de compras
     - Alta proveedores
     N [pages/helpers/abmroveedordb.php]
     - Quito paso siguiente
+    - Calculo promedio
 
 
 ## FIX-VARIAS
