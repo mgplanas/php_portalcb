@@ -111,6 +111,34 @@ while($rowrv = mysqli_fetch_array($count_rven)){
             $countrv++; }
         }else $countrp++;
 }
+
+// FUNCION DE FECHAS
+function validarVto($fecha) {
+
+    $res = 0;
+    if ($fecha) {
+      try {
+        $gmtTimezone = new DateTimeZone('GMT');
+        $now = new DateTime("now", $gmtTimezone);
+        $now = $now->format('Y-m-d');
+        $interval = date_diff(date_create($fecha), date_create($now) );
+        if ($interval->days != 0) {
+          if ($interval->invert == 0) {
+            $res = 0;
+          } else {
+            $res = 1;
+          }
+        } else {
+          $res=2;
+        }
+      } catch (Exception $e) {
+        $res = 0;
+      }
+    }
+    return $res;
+  }
+
+
 ?>
 
 <style>
@@ -1633,48 +1661,53 @@ desired effect
                                                   $day=date("d");
                                                   $month=date("m");
                                                   $year=date("Y");
+                                                  if ($row['vencimiento'] && $row['vencimiento']!='0000-00-00 00:00:00') {
+                                                    $due = explode("/", $row['vencimiento']);
+                                                    $due_d = $due[0];
+                                                    $due_m = $due[1];
+                                                    $due_y = $due[2];
+                                                    $ok=0;
 
-                                                  $due = explode("/", $row['vencimiento']);
-                                                  $due_d = $due[0];
-                                                  $due_m = $due[1];
-                                                  $due_y = $due[2];
-                                                  $ok=0;
+                                                    $dayofy = (($month * 30)+($day));
+                                                    $dayofdue = (($due_m * 30)+($due_d));
 
-                                                  $dayofy = (($month * 30)+($day));
-                                                  $dayofdue = (($due_m * 30)+($due_d));
+                                                    if ($due_y >= $year){
+                                                        if ($dayofy < $dayofdue){
+                                                            $ok=1;
+                                                        }
+                                                        else if ($dayofy == $dayofdue){
+                                                            $ok=2;
+                                                        }
+                                                    }
+                                                    echo '<td><span class="badge bg-';
+                                                    $n_date = $due_y . "-" . $due_m . "-" . $due_d;
+                                                    $ok = validarVto($n_date);
+                                                    if ($row['estado'] == '0' ){
+                                                        if ($ok == '0'){
+                                                            echo 'red';
+                                                        }
 
-                                                  if ($due_y >= $year){
-                                                      if ($dayofy < $dayofdue){
-                                                          $ok=1;
-                                                      }
-                                                      else if ($dayofy == $dayofdue){
-                                                          $ok=2;
-                                                      }
-                                                  }
-                                                  echo '<td><span class="badge bg-';
+                                                        else if ($ok == '1'){
+                                                            echo 'green';
+                                                        }
+                                                        else if ($ok == '2'){
+                                                            echo 'yellow';
+                                                        }
+                                                    } else {echo 'gray';}
 
-                                                  if ($row['estado'] == '0' ){
-                                                      if ($ok == '0'){
-                                                          echo 'red';
-                                                      }
-
-                                                      else if ($ok == '1'){
-                                                          echo 'green';
-                                                      }
-                                                      else if ($ok == '2'){
-                                                          echo 'yellow';
-                                                      }
-                                                  } else {echo 'gray';}
-
-                                                  echo '">'.$row['vencimiento'].'</span></td>';
-                                                  
-                                                  $days2ven = $dayofdue - $dayofy;
-                                                  
-                                                  if ($row['estado'] == '0' ){
-                                                      //if ($due_y >= $year){
-                                                          echo '<td>'.$days2ven.' días</td>';
-                                                      //}else echo '<td><span class="label label-danger">Vencido</span></td>';
-                                                  }else echo '<td><span class="label label-info">No Aplica</span></td>';
+                                                    echo '">'.$row['vencimiento'].'</span></td>';
+                                                    $gmtTimezone = new DateTimeZone('GMT');
+                                                    $now = new DateTime("now", $gmtTimezone);
+                                                    $now = $now->format('Y-m-d');
+                                                    $interval = date_diff(date_create($n_date), date_create($now) );                                                    
+                                                    if ($row['estado'] == '0' ){
+                                                        //if ($due_y >= $year){
+                                                            echo '<td>'. ($interval->invert ? $interval->days : '-'.$interval->days).' días</td>';
+                                                        //}else echo '<td><span class="label label-danger">Vencido</span></td>';
+                                                    }else echo '<td><span class="label label-info">No Aplica</span></td>';
+                                                } else { 
+                                                    echo '<td></td><td><span class="label label-info">No Aplica</span></td>'; 
+                                                }
                                                                 
                                                   echo '<td align="center">
                                                           <a href="edit_riesgo.php?nik='.$row['id_riesgo'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>

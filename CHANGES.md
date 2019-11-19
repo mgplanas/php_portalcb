@@ -30,6 +30,10 @@ Se agrega el módulo de administración y seguimiento de compras
     - Quito paso siguiente
     - Calculo promedio
 
+## FIX RIESGOS FECHA VENCIMEINTO
+    - Corrijo el cálculo y la cantidad de días
+    M [pages/riesgos.php]
+
 
 ## FIX-VARIAS
 *Fecha:* 2019-11-01
