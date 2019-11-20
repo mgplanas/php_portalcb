@@ -161,7 +161,7 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="plazo">Plazo</label>
-                                            <input type="number" id="modal-abm-compra-plazo" class="form-control" name="plazo" placeholder="0" min="1">
+                                            <input type="number" id="modal-abm-compra-plazo" class="form-control" name="plazo" placeholder="0">
                                         </div>
                                     </div>
                                     <div class="col-md-2">

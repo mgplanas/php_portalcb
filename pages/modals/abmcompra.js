@@ -281,8 +281,8 @@ $(function() {
     ddlEstados.on('change', function() {
         let idEstado = $('option:selected', this).val();
 
-        $('#modal-abm-compra-fecha-oc').attr('required', (idEstado == '2'));
-        $('#modal-abm-compra-oc').attr('required', (idEstado == '2'));
+        //$('#modal-abm-compra-fecha-oc').attr('required', (idEstado == '2'));
+        //$('#modal-abm-compra-oc').attr('required', (idEstado == '2'));
     });
     // Calculo la fecha fin del contrato
     $('#modal-abm-compra-calc-ff').on('click', function() {
