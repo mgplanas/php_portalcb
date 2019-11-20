@@ -50,6 +50,41 @@ CASE WHEN r.n_resid :comparacion_bajo THEN 0
   ELSE 1 
 END";
 
+// RIESGOS POR GERENCIA (VIGENTES)
+$sqlTmpRiesgosPorGenrenciaVigente = "SELECT g.nombre,
+CASE WHEN r.n_resid :comparacion_bajo THEN 0 
+  WHEN r.n_resid :comparacion_alto THEN 2
+  ELSE 1 
+END AS nivel,
+COUNT(1) as cuenta
+FROM riesgo as r
+INNER JOIN persona as p ON r.responsable = p.id_persona
+LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
+WHERE r.borrado=0 AND r.estado='0' AND YEAR(STR_TO_DATE(alta,'%d/%m/%Y')) = :anio
+AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )
+GROUP BY g.nombre, 
+CASE WHEN r.n_resid :comparacion_bajo THEN 0 
+  WHEN r.n_resid :comparacion_alto THEN 2
+  ELSE 1 
+END";
+// RIESGOS POR GERENCIA (VIGENTES) CERRADOS
+$sqlTmpRiesgosPorGenrenciaVigenteCerrados = "SELECT g.nombre,
+CASE WHEN r.n_resid :comparacion_bajo THEN 0 
+  WHEN r.n_resid :comparacion_alto THEN 2
+  ELSE 1 
+END AS nivel,
+COUNT(1) as cuenta
+FROM riesgo as r
+INNER JOIN persona as p ON r.responsable = p.id_persona
+LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
+WHERE r.borrado=0 AND r.estado='1' AND YEAR(STR_TO_DATE(alta,'%d/%m/%Y')) = :anio AND YEAR(modificado) = :anio
+AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )
+GROUP BY g.nombre, 
+CASE WHEN r.n_resid :comparacion_bajo THEN 0 
+  WHEN r.n_resid :comparacion_alto THEN 2
+  ELSE 1 
+END";
+
 
 //Get Personas
 $personas = mysqli_query($con, "SELECT * FROM persona");
@@ -328,7 +363,141 @@ desired effect
                         </table>
                         </div>
                         <!-- /.box-body -->
-                    </div>                                    
+                    </div>  
+                    <!-- RIESGO POR GERENCIA ABIERTOS (VIGENTES) -->
+                    <div class="box box-warning">
+                        <div class="box-header">
+                            <h3 class="box-title">Riesgos Abiertos por Gerencia (VIGENTES)</h3>
+                        </div>
+                        <div class="box-body no-padding">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Gerencia</th>
+                                <th>Bajo</th>
+                                <th>Medio</th>
+                                <th>Alto</th>
+                            </tr>
+                            <?php
+                                $resRA = mysqli_query($con, strtr($sqlTmpRiesgosPorGenrenciaVigente, array(':estado' => '0', ':comparacion_bajo' => '<= 3', ':comparacion_alto' => '> 11', ':anio' => date("Y"), ':per_id_gerencia' => $per_id_gerencia)));
+                                $allRows = mysqli_num_rows($resRA);
+                                if ($allRows == 0) {
+                                    echo '<tr><td colspan="4">No hay datos.</td></tr>';
+                                }else {
+                                    $nRow = 1;
+                                    $gerencia_actual = '';
+                                    $row = mysqli_fetch_assoc($resRA);
+                                    while($nRow <= $allRows) {   
+                                        $gerencia_actual = $row['nombre'];
+                                        echo '<tr>';
+                                        echo '<td>' . $row['nombre'] . '</td>';
+                                        $nivelControl = 0;
+                                        while ($nRow <= $allRows && $row['nombre'] == $gerencia_actual) {
+                                        
+                                            // Creo las celdas vacias hasat el nivel
+                                            // de 0-2
+                                            for ($i = $nivelControl; $i < $row['nivel']; $i++) {
+                                                echo '<td></td>';
+                                            }
+                                            
+                                            $nivelControl = $row['nivel'];
+                                            // Hay nivel
+                                            switch ($row['nivel']) {
+                                                case 0:
+                                                    echo '<td class="text-center"><span class="badge bg-green">' . $row['cuenta'] . '</span></td>';
+                                                    break;
+                                                case 1:
+                                                    echo '<td class="text-center"><span class="badge bg-yellow">' . $row['cuenta'] . '</span></td>';
+                                                    break;
+                                                case 2:
+                                                    echo '<td class="text-center"><span class="badge bg-red">' . $row['cuenta'] . '</span></td>';
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            $nivelControl++;
+                                            $row = mysqli_fetch_assoc($resRA);
+                                            $nRow++;
+                                        }
+                                        // Creo las celdas vacias faltantes
+                                        // de 0-2
+                                        for ($i = $nivelControl; $i <= 2; $i++) {
+                                            echo '<td></td>';
+                                        }                                        
+                                        echo '</tr>';
+                                    }
+                                }
+                            ?>                                
+                        </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>                                                         
+                    <!-- RIESGO POR GERENCIA CERRADOS (VIGENTES) -->
+                    <div class="box box-success">
+                        <div class="box-header">
+                            <h3 class="box-title">Riesgos Cerrados por Gerencia (VIGENTES)</h3>
+                        </div>
+                        <div class="box-body no-padding">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Gerencia</th>
+                                <th>Bajo</th>
+                                <th>Medio</th>
+                                <th>Alto</th>
+                            </tr>
+                            <?php
+                                $resRA = mysqli_query($con, strtr($sqlTmpRiesgosPorGenrenciaVigenteCerrados, array(':estado' => '1', ':comparacion_bajo' => '<= 3', ':comparacion_alto' => '> 11', ':anio' => date("Y"), ':per_id_gerencia' => $per_id_gerencia)));
+                                $allRows = mysqli_num_rows($resRA);
+                                if ($allRows == 0) {
+                                    echo '<tr><td colspan="4">No hay datos.</td></tr>';
+                                }else {
+                                    $nRow = 1;
+                                    $gerencia_actual = '';
+                                    $row = mysqli_fetch_assoc($resRA);
+                                    while($nRow <= $allRows) {   
+                                        $gerencia_actual = $row['nombre'];
+                                        echo '<tr>';
+                                        echo '<td>' . $row['nombre'] . '</td>';
+                                        $nivelControl = 0;
+                                        while ($nRow <= $allRows && $row['nombre'] == $gerencia_actual) {
+                                        
+                                            // Creo las celdas vacias hasat el nivel
+                                            // de 0-2
+                                            for ($i = $nivelControl; $i < $row['nivel']; $i++) {
+                                                echo '<td></td>';
+                                            }
+                                            
+                                            $nivelControl = $row['nivel'];
+                                            // Hay nivel
+                                            switch ($row['nivel']) {
+                                                case 0:
+                                                    echo '<td class="text-center"><span class="badge bg-green">' . $row['cuenta'] . '</span></td>';
+                                                    break;
+                                                case 1:
+                                                    echo '<td class="text-center"><span class="badge bg-yellow">' . $row['cuenta'] . '</span></td>';
+                                                    break;
+                                                case 2:
+                                                    echo '<td class="text-center"><span class="badge bg-red">' . $row['cuenta'] . '</span></td>';
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            $nivelControl++;
+                                            $row = mysqli_fetch_assoc($resRA);
+                                            $nRow++;
+                                        }
+                                        // Creo las celdas vacias faltantes
+                                        // de 0-2
+                                        for ($i = $nivelControl; $i <= 2; $i++) {
+                                            echo '<td></td>';
+                                        }                                        
+                                        echo '</tr>';
+                                    }
+                                }
+                            ?>                                
+                        </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>                                                         
                 </div>                  
                 <div class="col-lg-6 col-xs-6">
                     <!-- MATRIZ INHERENTE -->

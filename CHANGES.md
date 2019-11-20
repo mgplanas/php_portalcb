@@ -1,5 +1,13 @@
 # CHANGES
 
+## FEAT-RGO-METRICA
+Se agregan dos cuadros en las métricas de riesgo donde figuran los Riesgos Abiertos y cerrados por gerencia pero vigentes (del año)
+En cuento a los cerrados son aquellos cerrados que se han abierto en el mismo año también:
+"_ Incluir dos gráficos similares a los existentes (adjunto) pero que muestres los Riesgos Abiertos y Cerrados en el año vigente (Ejemplo Abiertos en 2019 y Cerrados en 2019 (solo de los que se abrieron en ese mismo año)"
+*Fecha:* 2019-11-20
+*Cambios:*
+    - 
+
 ## FEAT-COMPRAS
 Se agrega el módulo de administración y seguimiento de compras
 *Fecha:* 2019-11-05
