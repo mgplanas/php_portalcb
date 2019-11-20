@@ -571,7 +571,7 @@ desired effect
     $('#tbEnProceso').DataTable({
       'language': { 'emptyTable': 'No hay compras' },
       'paging'      : true,
-      'pageLength': 10,
+      'pageLength': 50,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : true,
