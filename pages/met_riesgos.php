@@ -367,7 +367,7 @@ desired effect
                     <!-- RIESGO POR GERENCIA ABIERTOS (VIGENTES) -->
                     <div class="box box-warning">
                         <div class="box-header">
-                            <h3 class="box-title">Riesgos Abiertos por Gerencia (VIGENTES)</h3>
+                            <h3 class="box-title">Riesgos Abiertos por Gerencia (Año vigente)</h3>
                         </div>
                         <div class="box-body no-padding">
                         <table class="table table-striped">
@@ -434,7 +434,7 @@ desired effect
                     <!-- RIESGO POR GERENCIA CERRADOS (VIGENTES) -->
                     <div class="box box-success">
                         <div class="box-header">
-                            <h3 class="box-title">Riesgos Cerrados por Gerencia (VIGENTES)</h3>
+                            <h3 class="box-title">Riesgos Cerrados por Gerencia (Año vigente)</h3>
                         </div>
                         <div class="box-body no-padding">
                         <table class="table table-striped">
