@@ -21,7 +21,7 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#tab_compra" data-toggle="tab">General</a></li>
                         <li><a href="#tab_seg" data-toggle="tab">Seguimiento</a></li>
-                        <li><a href="#tab_adjudicacion" data-toggle="tab">Adjucicación</a></li>
+                        <li><a href="#tab_adjudicacion" data-toggle="tab">Adjudicación</a></li>
                     </ul>
                     <div class="tab-content">
                         <!-- En proceso -->
