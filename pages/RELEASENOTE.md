@@ -14,4 +14,7 @@
 - Cambios en DB
 - Cambios en src
 
-M [pages/riesgos.php]
+    M[pages/met_riesgos.php]
+    M[pages/met_compras.php]
+    M[pages/site_sidebar.php]
+    N[site.php]
