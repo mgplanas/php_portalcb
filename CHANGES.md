@@ -6,7 +6,12 @@ En cuento a los cerrados son aquellos cerrados que se han abierto en el mismo a�
 "_ Incluir dos gráficos similares a los existentes (adjunto) pero que muestres los Riesgos Abiertos y Cerrados en el año vigente (Ejemplo Abiertos en 2019 y Cerrados en 2019 (solo de los que se abrieron en ese mismo año)"
 *Fecha:* 2019-11-20
 *Cambios:*
-    - 
+    - Se agregan las métricas de riesgos
+    M[pages/met_riesgos.php]
+    - Se agregan las métricas de compras y se actualiza el menú lateral
+    M[pages/met_compras.php]
+    M[pages/site_sidebar.php]
+    N[site.php]
 
 ## FEAT-COMPRAS
 Se agrega el módulo de administración y seguimiento de compras

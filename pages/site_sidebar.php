@@ -94,7 +94,7 @@
       </ul>
     </li>    
     <?php } ?>
-    <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
+    <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1' OR $rq_sec['compras']=='1'){ ?>
       <li class="treeview">
         <a href="#">
           <i class="fa fa-pie-chart"></i><span>Métricas</span>
@@ -103,11 +103,15 @@
           </span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="met_activos.php"><i class="fa fa-archive"></i>Activos</a></li>
-          <li><a href="met_iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
-          <li><a href="met_riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
-          <li><a href="met_controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
-          <li><a href="met_mejoras.php"><i class="fa fa-refresh"></i> <span>Mejoras</span></a></li>
+          <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
+            <li><a href="met_activos.php"><i class="fa fa-archive"></i>Activos</a></li>
+            <li><a href="met_iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>
+            <li><a href="met_riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
+            <li><a href="met_controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
+            <li><a href="met_mejoras.php"><i class="fa fa-refresh"></i> <span>Mejoras</span></a></li>
+          <?php } if ($rq_sec['admin']=='1' OR $rq_sec['compras']=='1'){ ?>
+            <li><a href="met_compras.php"><i class="fa fa-cart-plus"></i> <span>Compras</span></a></li>
+          <?php } ?>
         </ul>
       </li>
     <?php } ?>
