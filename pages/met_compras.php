@@ -85,7 +85,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
-
+<!-- ChartJS -->
+<script src="../js/chart.js"></script>
+<script src="../js/chart.min.js"></script>
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -238,9 +240,26 @@ desired effect
                             </div>
                             <!-- /.box-body -->
                         </div>     
-
                     </div>
-                </div>                  
+                </div> 
+                <div class="col-lg-5 col-xs-12">
+                    <!-- small box -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                        <h3 class="box-title">Distribución por Tipo de Compra</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        </div>
+                        <div class="box-body">
+                        <canvas id="cuentaxtipo"></canvas>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>                    
+                </div>
+
             </div>  
         </section>
     <!-- /.content -->
@@ -256,12 +275,85 @@ desired effect
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
-<!-- ChartJS -->
-<script src="../bower_components/chart.js/Chart.js"></script>
 <!-- FastClick -->
 <script src="../bower_components/fastclick/lib/fastclick.js"></script>
 
 <script>
+    $(function () {
+        var chart_tot_tipo_compra = null;
+        // NC Por Responsables
+        function fn_Show_PorTipoCompra() {
+        if (chart_tot_tipo_compra !=null) {
+            chart_tot_tipo_compra.destroy();
+        }        
+        
+        query = "SELECT IF(p.descripcion IS NULL,'Sin Definir',p.descripcion) as descripcion, COUNT(1) as cuenta FROM adm_compras as c LEFT JOIN adm_com_procesos as p ON c.id_proceso = p.id WHERE c.id_estado = 2 AND c.borrado = 0 GROUP BY p.descripcion ORDER BY 2 DESC";
+        // query = "SELECT p.descripcion, COUNT(1) as cuenta FROM adm_compras as c INNER JOIN adm_com_procesos as p ON c.id_proceso = p.id WHERE c.id_estado = 2 AND c.borrado = 0 GROUP BY p.descripcion ORDER BY 2 DESC";
+        $.ajax({
+            type: 'POST',
+            url: './helpers/getAsyncDataFromDB.php',
+            data: { query: query},
+            dataType: 'json',
+            success: function(json) {
+                let parsedData = json.data;
+                var name = [];
+                var cuenta = [];
+                
+                // parsedData = JSON.parse(data);
+                
+                for (var i in parsedData) {
+                    name.push(parsedData[i].descripcion);
+                    cuenta.push(parsedData[i].cuenta);
+                }
+                var chartdata = {
+                    labels: name,
+                    datasets: [
+                        {
+                            label: 'Cantida de Adquisiciones',
+                            data: cuenta,
+                            backgroundColor: 'rgb(245, 105, 84)'
+                        }
+                    ]
+                };
+                var options = {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        position: "top",
+                        text: "Bar Graph",
+                        fontSize: 18,
+                        fontColor: "#111"
+                    },
+                    legend: {
+                        display: false,
+                        position: "top",
+                        labels: {
+                            fontColor: "#333",
+                            fontSize: 16
+                        }
+                    },
+                    scales: {
+                            xAxes: [{ stacked: true }],
+                            yAxes: [{ stacked: true }]
+                            }
+                };
+
+                var graphTarget = $("#cuentaxtipo");
+
+                chart_tot_tipo_compra = new Chart(graphTarget, {
+                    type: 'horizontalBar',
+                    data: chartdata,
+                    options: options
+                });
+            },
+            error: function(xhr, status, error) {
+                alert(xhr.responseText, error);
+            }
+        });
+        }
+
+        fn_Show_PorTipoCompra();  
+    })
 </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
