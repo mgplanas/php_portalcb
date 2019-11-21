@@ -21,7 +21,8 @@ $per_id_gerencia = $rowp['gerencia'];
 
 // RIESGOS POR GERENCIA
 $sqlCapexOpex = "SELECT c.capex_opex, m.sigla, FORMAT(SUM(c.pre_monto),2,'es_AR') as estimado, FORMAT(SUM(c.oc_monto),2,'es_AR') as adjudicado,
-CAST((SUM(c.oc_monto)*100/SUM(c.pre_monto)) AS DECIMAL(5,2)) as delta
+CAST((SUM(c.oc_monto)*100/SUM(c.pre_monto)) AS DECIMAL(5,2)) as delta,
+COUNT(1) as cantidad
 FROM adm_compras as c 
 INNER JOIN adm_monedas as m ON c.pre_id_moneda = m.id
 WHERE c.id_estado = 2
@@ -30,7 +31,8 @@ GROUP BY c.capex_opex, m.sigla
 ORDER BY c.capex_opex, m.sigla;";
 
 $sqlCapexOpexVigente = "SELECT c.capex_opex, m.sigla, FORMAT(SUM(c.pre_monto),2,'es_AR') as estimado, FORMAT(SUM(c.oc_monto),2,'es_AR') as adjudicado,
-CAST((SUM(c.oc_monto)*100/SUM(c.pre_monto)) AS DECIMAL(5,2)) as delta
+CAST((SUM(c.oc_monto)*100/SUM(c.pre_monto)) AS DECIMAL(5,2)) as delta,
+COUNT(1) as cantidad
 FROM adm_compras as c 
 INNER JOIN adm_monedas as m ON c.pre_id_moneda = m.id
 WHERE c.id_estado = 2
@@ -162,6 +164,7 @@ desired effect
                                 <tr>
                                     <th>CAPEX/OPEX</th>
                                     <th style="text-align: center;">Moneda</th>
+                                    <th style="text-align: center;">Cantidad</th>
                                     <th style="text-align: right;">Estimado</th>
                                     <th style="text-align: right;">Adjudicado</th>
                                     <th style="text-align: right;">Delta</th>
@@ -180,6 +183,7 @@ desired effect
                                             echo '<tr>';
                                             echo '<td>' . ($cambio ? ($row['capex_opex']=='O' ? 'OPEX' : 'CAPEX') : '') . '</td>';
                                             echo '<td align="center">' . $row['sigla'] . '</td>';
+                                            echo '<td align="center">' . $row['cantidad'] . '</td>';
                                             echo '<td align="right">' . $row['estimado'] . '</td>';
                                             echo '<td align="right">' . $row['adjudicado'] . '</td>';
                                             echo '<td align="right">' . $row['delta']  . '%</td>';
@@ -203,6 +207,7 @@ desired effect
                                 <tr>
                                     <th>CAPEX/OPEX</th>
                                     <th style="text-align: center;">Moneda</th>
+                                    <th style="text-align: center;">Cantidad</th>
                                     <th style="text-align: right;">Estimado</th>
                                     <th style="text-align: right;">Adjudicado</th>
                                     <th style="text-align: right;">Delta</th>
@@ -221,6 +226,7 @@ desired effect
                                             echo '<tr>';
                                             echo '<td>' . ($cambio ? ($row['capex_opex']=='O' ? 'OPEX' : 'CAPEX') : '') . '</td>';
                                             echo '<td align="center">' . $row['sigla'] . '</td>';
+                                            echo '<td align="center">' . $row['cantidad'] . '</td>';
                                             echo '<td align="right">' . $row['estimado'] . '</td>';
                                             echo '<td align="right">' . $row['adjudicado'] . '</td>';
                                             echo '<td align="right">' . $row['delta']  . '%</td>';
