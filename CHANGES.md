@@ -12,6 +12,8 @@ En cuento a los cerrados son aquellos cerrados que se han abierto en el mismo a�
     M[pages/met_compras.php]
     M[pages/site_sidebar.php]
     N[site.php]
+    - Riesgos Muesto v_actual en vez de inicial
+    M[pages/riesgos.php]
 
 ## FEAT-COMPRAS
 Se agrega el módulo de administración y seguimiento de compras

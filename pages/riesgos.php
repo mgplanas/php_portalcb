@@ -1641,7 +1641,7 @@ desired effect
                                                 //   echo '<td>'.$row['tipo'].'</td>';
                                                 //   echo '<td>'.$row['n_riesgo'].'</td>';
                                                 //   echo '<td>'.$row['valoracion'].'</td>';
-                                                  echo '<td>'.$row['v_inicial'].'</td>';
+                                                  echo '<td>'.$row['v_actual'].'</td>';
                                                   
                                                   if($row['estado'] == '0'){
                                                     echo '<td><span class="label label-warning">Abierto</span></td>'; 

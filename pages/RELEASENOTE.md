@@ -17,4 +17,5 @@
     M[pages/met_riesgos.php]
     M[pages/met_compras.php]
     M[pages/site_sidebar.php]
+    M[pages/riesgos.php]
     N[site.php]
