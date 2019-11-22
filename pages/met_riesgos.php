@@ -249,7 +249,7 @@ desired effect
                                 <th>Alto</th>
                             </tr>
                             <?php
-                                $resRA = mysqli_query($con, strtr($sqlTmpRiesgosPorGenrencia, array(':estado' => '0', ':comparacion_bajo' => '<= 3', ':comparacion_alto' => '> 11', ':per_id_gerencia' => $per_id_gerencia)));
+                                $resRA = mysqli_query($con, strtr($sqlTmpRiesgosPorGenrencia, array(':estado' => '0', ':comparacion_bajo' => '<= 3', ':comparacion_alto' => '> 10', ':per_id_gerencia' => $per_id_gerencia)));
                                 $allRows = mysqli_num_rows($resRA);
                                 if ($allRows == 0) {
                                     echo '<tr><td colspan="4">No hay datos.</td></tr>';
@@ -316,7 +316,7 @@ desired effect
                                 <th>Alto</th>
                             </tr>
                             <?php
-                                $resRA = mysqli_query($con, strtr($sqlTmpRiesgosPorGenrencia, array(':estado' => '1', ':comparacion_bajo' => '<= 3', ':comparacion_alto' => '> 11', ':per_id_gerencia' => $per_id_gerencia)));
+                                $resRA = mysqli_query($con, strtr($sqlTmpRiesgosPorGenrencia, array(':estado' => '1', ':comparacion_bajo' => '<= 3', ':comparacion_alto' => '> 10', ':per_id_gerencia' => $per_id_gerencia)));
                                 $allRows = mysqli_num_rows($resRA);
                                 if ($allRows == 0) {
                                     echo '<tr><td colspan="4">No hay datos.</td></tr>';
@@ -378,7 +378,7 @@ desired effect
                                 <th>Alto</th>
                             </tr>
                             <?php
-                                $resRA = mysqli_query($con, strtr($sqlTmpRiesgosPorGenrenciaVigente, array(':estado' => '0', ':comparacion_bajo' => '<= 3', ':comparacion_alto' => '> 11', ':anio' => date("Y"), ':per_id_gerencia' => $per_id_gerencia)));
+                                $resRA = mysqli_query($con, strtr($sqlTmpRiesgosPorGenrenciaVigente, array(':estado' => '0', ':comparacion_bajo' => '<= 3', ':comparacion_alto' => '> 10', ':anio' => date("Y"), ':per_id_gerencia' => $per_id_gerencia)));
                                 $allRows = mysqli_num_rows($resRA);
                                 if ($allRows == 0) {
                                     echo '<tr><td colspan="4">No hay datos.</td></tr>';
@@ -445,7 +445,7 @@ desired effect
                                 <th>Alto</th>
                             </tr>
                             <?php
-                                $resRA = mysqli_query($con, strtr($sqlTmpRiesgosPorGenrenciaVigenteCerrados, array(':estado' => '1', ':comparacion_bajo' => '<= 3', ':comparacion_alto' => '> 11', ':anio' => date("Y"), ':per_id_gerencia' => $per_id_gerencia)));
+                                $resRA = mysqli_query($con, strtr($sqlTmpRiesgosPorGenrenciaVigenteCerrados, array(':estado' => '1', ':comparacion_bajo' => '<= 3', ':comparacion_alto' => '> 10', ':anio' => date("Y"), ':per_id_gerencia' => $per_id_gerencia)));
                                 $allRows = mysqli_num_rows($resRA);
                                 if ($allRows == 0) {
                                     echo '<tr><td colspan="4">No hay datos.</td></tr>';
