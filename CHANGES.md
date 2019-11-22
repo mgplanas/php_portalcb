@@ -1,5 +1,12 @@
 # CHANGES
 
+## FEAT-BCRA
+Se implementa la matriz BCRA (Compliance)
+*Fecha:* 2019-11-22
+*Cambios:*
+    - [DB] Se crean las tablas de referentes items y version
+    M[pages/met_riesgos.php]
+
 ## FEAT-RGO-METRICA
 Se agregan dos cuadros en las métricas de riesgo donde figuran los Riesgos Abiertos y cerrados por gerencia pero vigentes (del año)
 En cuento a los cerrados son aquellos cerrados que se han abierto en el mismo año también:
