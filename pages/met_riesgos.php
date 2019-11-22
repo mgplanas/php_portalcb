@@ -60,7 +60,7 @@ COUNT(1) as cuenta
 FROM riesgo as r
 INNER JOIN persona as p ON r.responsable = p.id_persona
 LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
-WHERE r.borrado=0 AND r.estado='0' AND YEAR(STR_TO_DATE(alta,'%d/%m/%Y')) = :anio
+WHERE r.borrado=0 AND YEAR(STR_TO_DATE(alta,'%d/%m/%Y')) = :anio
 AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )
 GROUP BY g.nombre, 
 CASE WHEN r.n_resid :comparacion_bajo THEN 0 
