@@ -367,7 +367,7 @@ desired effect
                     <!-- RIESGO POR GERENCIA ABIERTOS (VIGENTES) -->
                     <div class="box box-warning">
                         <div class="box-header">
-                            <h3 class="box-title">Riesgos Abiertos por Gerencia (Año vigente)</h3>
+                            <h3 class="box-title">Riesgos dados de alta por Gerencia (Año vigente)</h3>
                         </div>
                         <div class="box-body no-padding">
                         <table class="table table-striped">
