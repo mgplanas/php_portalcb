@@ -27,7 +27,7 @@ $sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='4',1,null)) as
 $sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='5',1,null)) as adjudicacion ";
 $sqlindicadores = $sqlindicadores . ",COUNT(1) as total ";
 $sqlindicadores = $sqlindicadores . "FROM adm_compras as c  ";
-$sqlindicadores = $sqlindicadores . "WHERE c.borrado='0' AND c.id_estado = 1;  ";
+$sqlindicadores = $sqlindicadores . "WHERE c.borrado='0' AND c.id_estado = 1  ";
 $sqlindicadores = $sqlindicadores . "AND ( 0 = " . $per_id_gerencia . " OR c.id_gerencia = " . $per_id_gerencia . " ); ";
 $q_indicadores = mysqli_query($con, $sqlindicadores);
 $rq_indicadores = mysqli_fetch_assoc($q_indicadores);	
