@@ -1599,7 +1599,7 @@ desired effect
                                                 <!-- <th>Categoría</th> -->
                                                 <!-- <th>Riesgo</th> -->
                                                 <!-- <th>Acción</th> -->
-                                                <th>Valoración</th>
+                                                <th>Val. Res.</th>
                                                 <th>Estado</th>
                                                 <th>Incidente</th>
                                                 <th>Avance</th>
