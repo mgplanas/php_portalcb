@@ -25,6 +25,7 @@ $sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='2',1,null)) as
 $sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='3',1,null)) as Ofertas ";
 $sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='4',1,null)) as Dictamen ";
 $sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='5',1,null)) as adjudicacion ";
+$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='6',1,null)) as standby ";
 $sqlindicadores = $sqlindicadores . ",COUNT(1) as total ";
 $sqlindicadores = $sqlindicadores . "FROM adm_compras as c  ";
 $sqlindicadores = $sqlindicadores . "WHERE c.borrado='0' AND c.id_estado = 1  ";
@@ -57,6 +58,10 @@ if ($rq_indicadores['adjudicacion'] <= $__LOW) {$i_adjudicacion_color = '#00a65a
 else if ($rq_indicadores['adjudicacion'] >= $__HIGH_2) {$i_adjudicacion_color = '#f56954';}
 else {$i_adjudicacion_color = '#f39c12';}
 
+if ($rq_indicadores['standby'] <= $__LOW) {$i_standby_color = '#00a65a';}
+else if ($rq_indicadores['standby'] >= $__HIGH) {$i_standby_color = '#f56954';}
+else {$i_standby_color = '#f39c12';}
+
 
 // $sql = "SELECT id_paso, COUNT(1) as cuenta, FLOOR(AVG(DATEDIFF(now(), fecha))) as promedio
 // FROM adm_compras_pasos_hist 
@@ -74,6 +79,9 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
    width: 50%;
    float: right;
    text-align: right;
+}
+.direct-search {
+  cursor: pointer;
 }
 </style>
 <!--
@@ -245,26 +253,30 @@ desired effect
       <!-- INDICADORES -->
       <div class="row">
         <!-- /.box-header -->
-          <div class="col-xs-12 col-md-7"><h1>Gestión de Compras &nbsp;&nbsp;<small>Total de compras en proceso:&nbsp;<?=$rq_indicadores['total'] ?></small></h1></div>
+          <div class="col-xs-12 col-md-6"><h1>Gestión de Compras &nbsp;&nbsp;<small>Total de compras en proceso:&nbsp;<?=$rq_indicadores['total'] ?></small></h1></div>
+          <div class="col-xs-6 col-md-1 text-center">
+            <input id="knob_standby" type="text" class="knob" value="<?= (int)($rq_indicadores['standby']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_standby_color ?>">
+            <div class="knob-label direct-search">Stand by</div>
+          </div>
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_pet" type="text" class="knob" value="<?= (int)($rq_indicadores['PET']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_pet_color ?>">
-            <div class="knob-label">PET</div>
+            <div class="knob-label direct-search">PET</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_enviosc" type="text" class="knob" value="<?= (int)($rq_indicadores['EnvioSC']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_envio_color ?>">
-            <div class="knob-label">Envío SC</div>
+            <div class="knob-label direct-search">Envío SC</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_ofertas" type="text" class="knob" value="<?= (int)($rq_indicadores['Ofertas']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_oferta_color ?>">
-            <div class="knob-label">Ofertas</div>
+            <div class="knob-label direct-search">Ofertas</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_dictamen" type="text" class="knob" value="<?= (int)($rq_indicadores['Dictamen']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_dictamen_color ?>">
-            <div class="knob-label">Dictamen</div>
+            <div class="knob-label direct-search">Dictamen</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_adjudicacion" type="text" class="knob" value="<?= (int)($rq_indicadores['adjudicacion']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_adjudicacion_color ?>">
-            <div class="knob-label">Adjudicación</div>
+            <div class="knob-label direct-search">Adjudicación</div>
           </div>
         <!-- /.box-body -->
       </div>             
@@ -679,6 +691,8 @@ desired effect
     });
 
     // SET TEXT
+    $('#knob_standby').val(<?=$rq_indicadores['standby'] ?>);
+    $("#knob_standby").attr('disabled','disabled');
     $('#knob_pet').val(<?=$rq_indicadores['PET'] ?>);
     $("#knob_pet").attr('disabled','disabled');
     $('#knob_ofertas').val(<?=$rq_indicadores['Ofertas'] ?>);
@@ -692,6 +706,9 @@ desired effect
 
     $('#btn-showhide-comments').prop('disabled', 'true');
 
+    $('.direct-search').on( 'click', function () {
+      $('#tbEnProceso').dataTable().fnFilter( $(this)[0].innerText );
+    });
     // toggleComments();
 });
 </script>

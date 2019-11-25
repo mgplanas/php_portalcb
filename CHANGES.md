@@ -1,5 +1,13 @@
 # CHANGES
 
+## FEAT-COM-VARIOS
+*Cambios:*
+    - Se agregan Estado "STAND BY"
+    [DB] Se agrega estado en tabla adm_com_pasos el estado STAND BY (6)
+    - Se crea otro indicador.
+    [pages/compras.php]
+
+
 ## FEAT-RGO-METRICA
 Se agregan dos cuadros en las métricas de riesgo donde figuran los Riesgos Abiertos y cerrados por gerencia pero vigentes (del año)
 En cuento a los cerrados son aquellos cerrados que se han abierto en el mismo año también:
