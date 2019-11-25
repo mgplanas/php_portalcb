@@ -189,9 +189,7 @@ desired effect
                 <thead>
                 <tr>
                   <th width="1"></th>
-                  <th width="1"></th>
-		  <th width="2">Codigo</th>
-                  <th>Titulo</th>
+		              <th width="2">Codigo</th>
                   <th>Descripcion</th>
                   <th>Escenarios</th>
                   <th>Responsable</th>
@@ -236,9 +234,7 @@ desired effect
                     
                     echo '<tr>';
                     echo '<td>'.$row['t_codigo']. ' - ' .$row['t_titulo']. '</td>'; 
-                    echo '<td>'.$row['s_codigo']. ' - ' .$row['s_titulo']. ' <br/><small>' .$row['s_descripcion']. '</small></td>'; 
                     echo '<td align="center">'.$row['codigo'].'</td>';
-                    echo '<td>'.$row['titulo'].'</td>';
                     echo '<td>'.$row['descripcion'].'</td>';
                     echo '<td>'.$row['escenarios'].'</td>';
                     echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
@@ -260,10 +256,10 @@ desired effect
                           data-referentes="'.$row['referentes_ids'].'" 
                           data-madurez="'.$row['madurez'].'" 
                           data-codigo="'.$row['codigo'].'" 
-                          data-titulo="'.$row['titulo'].'" 
                           data-descripcion="'.$row['descripcion'].'" 
                           data-implementacion="'.$row['implementacion'].'" 
                           data-documentacion="'.$row['documentacion'].'" 
+                          data-escenarios="'.$row['escenarios'].'" 
                           data-evidencia="'.$row['evidencia'].'" 
                           data-usuario="'.$user.'" 
                           title="Editar datos" class="modal-abm-bcra-btn-edit btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
@@ -343,7 +339,7 @@ desired effect
             'dataSrc': [ 0 ]
         },
         'columnDefs': [ {
-            'targets': [ 0, 1 ],
+            'targets': [ 0 ],
             'visible': false
         } ],
       'dom'         : 'frtipB',
