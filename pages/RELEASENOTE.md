@@ -14,4 +14,5 @@
 - Cambios en DB
     Add "Stand by" en adm_com_pasos
 - Cambios en src
-
+    [pages/compras.php]
+    [pages/modals/abmcompras.js]

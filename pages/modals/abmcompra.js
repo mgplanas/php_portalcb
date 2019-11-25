@@ -447,6 +447,36 @@ $(function() {
     });
 
     // ==============================================================
+    // BAJA
+    // ==============================================================
+    $('.modal-abm-compra-btn-baja').click(function() {
+        if (confirm('Esta seguro de borrar la compra?')) {
+            let id = $(this).data('id');
+            // Ejecuto
+            $.ajax({
+                type: 'POST',
+                url: './helpers/abmcompradb.php',
+                data: {
+                    operacion: 'B',
+                    id: id
+                },
+                dataType: 'json',
+                success: function(json) {
+                    if (!json.ok) {
+                        alert(json.err);
+                    } else {
+                        location.reload();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert(xhr.responseText, error);
+                }
+            });
+
+        }
+    });
+
+    // ==============================================================
     // SUBMIT FORM
     // ==============================================================
     $('#modal-abm-compra-form').submit(function() {

@@ -6,6 +6,9 @@
     [DB] Se agrega estado en tabla adm_com_pasos el estado STAND BY (6)
     - Se crea otro indicador.
     [pages/compras.php]
+    - Borrar compras
+    [pages/compras.php]
+    [pages/modals/abmcompras.js]
 
 
 ## FEAT-RGO-METRICA

@@ -377,8 +377,9 @@ desired effect
                                                                 echo '<a data-id="'.$row['id'].'" class="btn" title="'.$row['comentarios'].' comentarios" style="padding: 2px;" onclick="showComments();"><i class="fa fa-comments"></i></a>';
                                                               }
                                                               // echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="modal-abm-compra-btn-view btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
-                                                              echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-compra-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a></td>';
-                                                              echo '</tr>';
+                                                              echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-compra-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
+                                                              if ($rq_sec['admin_compras'] == '1') {echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-compra-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash"></i></a>';}
+                                                              echo '</td></tr>';
                                                           }
                                                       ?>
                                                   </tbody>
