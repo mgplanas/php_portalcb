@@ -87,7 +87,6 @@ $(function() {
         let id = $('#modal-abm-bcra-id').val();
         let versionid = $('#modal-abm-bcra-version-id').val();
         let grupo = $('#modal-abm-bcra-grupo').val();
-        let subgrupo = $('#modal-abm-bcra-subgrupo').val();
         let responsable = $('#modal-abm-bcra-responsable').val();
         let referentes = $('#modal-abm-bcra-referentes').val();
         let madurez = $('#modal-abm-bcra-madurez').val();
@@ -109,7 +108,6 @@ $(function() {
                 id: id,
                 versionid: versionid,
                 grupo: grupo,
-                subgrupo: subgrupo,
                 responsable: responsable,
                 referentes: referentes,
                 madurez: madurez,
@@ -127,7 +125,7 @@ $(function() {
                 $("#modal-abm-bcra").modal("hide");
                 if (!json.ok) {
                     if (json.err.indexOf('UNIQUE')) {
-                        alert('El código del ítem debe ser único para el grupo/subgrupo.');
+                        alert('El código del ítem debe ser único para el grupo.');
                     } else {
                         alert(json.err);
                     }
@@ -159,7 +157,6 @@ $(function() {
         $('#modal-abm-bcra-id').val(0);
         $('#modal-abm-bcra-version-id').val($('#versionselector :selected').val());
         $('#modal-abm-bcra-grupo').val('first').change();
-        $('#modal-abm-bcra-subgrupo').val('first').change();
         $('#modal-abm-bcra-responsable').val('first').change();
         $('#modal-abm-bcra-referentes').val([]);
         $('#modal-abm-bcra-madurez').val('first').change();

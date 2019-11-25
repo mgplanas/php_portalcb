@@ -8,17 +8,16 @@
     
     
 	$grupo = mysqli_real_escape_string($con,(strip_tags($_POST["grupo"],ENT_QUOTES)));
-	$subgrupo = mysqli_real_escape_string($con,(strip_tags($_POST["subgrupo"],ENT_QUOTES)));
 	$responsable = mysqli_real_escape_string($con,(strip_tags($_POST["responsable"],ENT_QUOTES)));
-        $referentes = (isset($_POST["referentes"]) ? $_POST["referentes"] : []);
+    $referentes = (isset($_POST["referentes"]) ? $_POST["referentes"] : []);
 	$madurez = mysqli_real_escape_string($con,(strip_tags($_POST["madurez"],ENT_QUOTES)));
 	$descripcion = mysqli_real_escape_string($con,(strip_tags($_POST["descripcion"],ENT_QUOTES)));
 	$implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
 	$evidencia = mysqli_real_escape_string($con,(strip_tags($_POST["evidencia"],ENT_QUOTES)));
-        $codigo = mysqli_real_escape_string($con,(strip_tags($_POST["codigo"],ENT_QUOTES)));
-        $user=mysqli_real_escape_string($con,(strip_tags($_POST["usuario"],ENT_QUOTES)));
-        $escenarios = mysqli_real_escape_string($con,(strip_tags($_POST["escenarios"],ENT_QUOTES)));
-        $documentacion=mysqli_real_escape_string($con,(strip_tags($_POST["documentacion"],ENT_QUOTES)));
+    $codigo = mysqli_real_escape_string($con,(strip_tags($_POST["codigo"],ENT_QUOTES)));
+    $user=mysqli_real_escape_string($con,(strip_tags($_POST["usuario"],ENT_QUOTES)));
+    $escenarios = mysqli_real_escape_string($con,(strip_tags($_POST["escenarios"],ENT_QUOTES)));
+    $documentacion=mysqli_real_escape_string($con,(strip_tags($_POST["documentacion"],ENT_QUOTES)));
 
     $result = new stdClass();
     $result->ok = false;
@@ -30,7 +29,7 @@
         case 'A':
             // INSERT
             $resultado = mysqli_query($con, "INSERT INTO item_bcra (codigo,descripcion,madurez,implementacion,responsable,evidencia,modificado,borrado,usuario,escenarios, documentacion,nivel,parent,version) 
-                                      VALUES ('$codigo', '$descripcion', '$madurez', '$implementacion', '$responsable', '$evidencia', NOW(), 0, '$user', '$escenarios', '$documentacion' , 2, '$subgrupo', '$version')");
+                                      VALUES ('$codigo', '$descripcion', '$madurez', '$implementacion', '$responsable', '$evidencia', NOW(), 0, '$user', '$escenarios', '$documentacion' , 2, '$grupo', '$version')");
             $result->err = $con->error;
             if ($resultado) {
                 $lastInsert = mysqli_insert_id($con);
@@ -58,7 +57,7 @@
         
         case 'M':
             //UPDATE
-            $resultado = mysqli_query($con, "UPDATE item_bcra SET codigo='$codigo',  descripcion='$descripcion', parent='$subgrupo', responsable='$responsable', madurez='$madurez', implementacion='$implementacion', escenarios='$escenarios', documentacion='$documentacion', evidencia='$evidencia', modificado=NOW(), usuario='$user' WHERE id_item_bcra='$id'");
+            $resultado = mysqli_query($con, "UPDATE item_bcra SET codigo='$codigo',  descripcion='$descripcion', parent='$grupo', responsable='$responsable', madurez='$madurez', implementacion='$implementacion', escenarios='$escenarios', documentacion='$documentacion', evidencia='$evidencia', modificado=NOW(), usuario='$user' WHERE id_item_bcra='$id'");
             $result->err = $con->error;
             if ($resultado) {
 
