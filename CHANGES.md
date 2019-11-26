@@ -10,6 +10,17 @@
     [pages/compras.php]
     [pages/modals/abmcompras.js]
 
+## FEAT-BCRA
+Se implementa la matriz BCRA (Compliance)
+*Fecha:* 2019-11-22
+*Cambios:*
+    - [DB] Se crean las tablas de referentes items y version
+    M[site.php]
+    M[pages/bcra.php]
+    M[pages/site_sidebar.php]
+    M[pages/modals/abmbcra.php]
+    M[pages/modals/abmbcra.js]
+    M[pages/helpers/abmbcradb.php]
 
 ## FEAT-RGO-METRICA
 Se agregan dos cuadros en las métricas de riesgo donde figuran los Riesgos Abiertos y cerrados por gerencia pero vigentes (del año)
