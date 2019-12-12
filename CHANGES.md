@@ -1,5 +1,14 @@
 # CHANGES
 
+## FEAT-INVENTARIO
+Inventario de servidores DC
+*Cambios:*
+    - Agrego item menú en cdc
+    [pages/site_sidebar.php]
+    [site.php]
+
+    - ABM de servicores DC. Se reutilizan los permisos de cdc y admin cdc
+
 ## FEAT-COM-VARIOS
 *Cambios:*
     - Se agregan Estado "STAND BY"

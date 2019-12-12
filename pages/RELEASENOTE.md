@@ -4,8 +4,7 @@
 
 ### Features
 
-- FEAT-COM-VARIOS
-- FEAT-BCRA
+- FEAT-INVENTARIO
 
 
 ### Pasos
@@ -14,54 +13,27 @@
 - BackUp DB
 - Backup /pages
 - Cambios en DB
-    Add "Stand by" en adm_com_pasos
 
-# ITEMS
-CREATE TABLE `item_bcra` (
-  `id_item_bcra` int(11) NOT NULL AUTO_INCREMENT,
-  `codigo` varchar(8) NOT NULL,
-  `titulo` varchar(255) DEFAULT NULL,
-  `descripcion` varchar(3000) DEFAULT NULL,
-  `escenarios` varchar(255) DEFAULT NULL,
-  `responsable` int(11) DEFAULT NULL,
-  `madurez` int(11) DEFAULT NULL,
-  `implementacion` varchar(2000) DEFAULT NULL,
-  `documentacion` varchar(2000) DEFAULT NULL,
-  `evidencia` varchar(2000) DEFAULT NULL,
-  `modificado` datetime DEFAULT NULL,
-  `borrado` int(11) DEFAULT '0',
-  `usuario` varchar(155) DEFAULT NULL,
-  `nivel` int(11) NOT NULL DEFAULT '2',
-  `parent` int(11) DEFAULT NULL,
-  `version` int(11) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id_item_bcra`),
-  UNIQUE KEY `codigo_UNIQUE` (`version`,`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
-# REFERENTES
-CREATE TABLE `bcra_refs` (
-  `id_item_bcra` int(11) NOT NULL,
-  `id_persona` int(11) NOT NULL,
-  `borrado` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-# VERSIONADO
-CREATE TABLE `bcra_version` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `numero` varchar(20) NOT NULL,
-  `descripcion` varchar(255) DEFAULT NULL,
-  `modificacion` datetime NOT NULL,
-  `borrado` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
-
-# CREAR VERSION 1
-1	0.1	Inicial	22/11/2019 00:00:00	0
+CREATE TABLE controls.cdc_inv_servidores (
+   id INT AUTO_INCREMENT NOT NULL,
+   marca VARCHAR(255),
+   modelo VARCHAR(255),
+   serie VARCHAR(50),
+   memoria INT,
+   sockets INT,
+   nucleos INT,
+   ubicacion_sala VARCHAR(20),
+   ubicacion_fila INT,
+   ubicacion_rack INT,
+   ubicacion_unidad INT,
+   IP VARCHAR(16),
+   vcenter VARCHAR(50),
+   cluster VARCHAR(50),
+   hostname VARCHAR(50),
+   cliente VARCHAR(255),
+   borrado INT DEFAULT '0',
+  PRIMARY KEY (id)
+) ENGINE = InnoDB ROW_FORMAT = DEFAULT;
 
 - Cambios en src
     N[site.php]
-    M[pages/compras.php]
-    M[pages/bcra.php]
-    M[pages/site_sidebar.php]
-    M[pages/modals/abmcompras.js]

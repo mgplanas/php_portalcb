@@ -423,6 +423,7 @@ desired effect
                 <li><a href="./pages/cdc_dashboard.php"><i class="fa fa-pie-chart"></i> Dashboard</a></li>
                 <li><a href="./pages/cdc_organismo.php"><i class="fa fa-building"></i> Organismos</a></li>
                 <li><a href="./pages/cdc_cliente.php"><i class="fa fa-user"></i> Clientes</a></li>
+                <li><a href="./pages/cdc_servidores.php"><i class="fa fa-server"></i> Servidores</a></li>
                 <li class="treeview">
                   <a href="#"><i class="fa fa-gears"></i> Servicios
                     <span class="pull-right-container">

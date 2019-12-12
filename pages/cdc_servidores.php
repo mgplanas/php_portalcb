@@ -7,8 +7,23 @@ session_start();
 if (!isset($_SESSION['usuario'])){
 	header('Location: ../index.html');
 }
-$page_title="Hosting";
+$page_title="Servidores"; 
 $user=$_SESSION['usuario'];
+
+/// BORRADO DE ORGANISMOS
+if(isset($_GET['aksi']) == 'delete'){
+	// escaping, additionally removing everything that could be (html/javascript-) code
+	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+  //Elimino Control
+  
+  $delete_control = mysqli_query($con, "UPDATE cdc_organismo SET borrado='1' WHERE id='$nik'");
+  
+  //$delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+  //                  VALUES ('3', '5', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
+  if(!$delete_control){
+    $_SESSION['formSubmitted'] = 9;
+  }
+}
 
 //Get user query
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' AND borrado = 0");
@@ -85,7 +100,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 	<section class="content-header">
-      <h1>Servicios de Hosting</h1>
+      <h1>Gestión de Organismos</h1>
     </section>
     <!-- Main content -->
     <section class="content container-fluid">
@@ -97,41 +112,84 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <div class="col-sm-6" style="text-align:left">
-                <h2 class="box-title">Listado de Servicios</h2>
-              </div>
-              <div class="col-sm-6" style="text-align:right;">
-              <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
-                <button type="button" id="modal-import-hosting-btn-import" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-upload"></i> Importar Servicios</button>
-              <?php } ?>
-              </div>
+				<div class="col-sm-6" style="text-align:left">
+					<h2 class="box-title">Listado de Servidores</h2>
+				</div>
+         <div class="col-sm-6" style="text-align:right;">
+          <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
+                <button type="button" id="modal-abm-servers-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-server"></i> Nuevo Server</button>
+          <?php } ?>
+				</div>
             </div>
 
             <!-- /.box-header -->
 	
 			<div class="box-body">
-              <table id="hosting" class="table table-striped" width="100%">
+              <table id="servidores" class="table table-striped" width="100%">
                 <thead>
                 <tr>
-                    <th>Cliente</th>
-                    <th>Organismo</th>
-                    <th>Tipo</th>
-                    <th>Nombre</th>
-                    <th>Display Name</th>
-                    <th>Proyecto</th>
-                    <th>Fecha</th>
-                    <th>Hipervisor</th>
-                    <th>Hostname</th>
-                    <th>Pool</th>
-                    <th>UUID</th>
-                    <th>VCPU</th>
-                    <th>RAM</th>
-                    <th>Storage</th>
-                    <th>Sistema Operativo</th>
-                    <th>Datacenter</th>
-                    <!-- <th width="110px">Acciones</th> -->
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Serie</th>
+                    <th>Mem.</th>
+                    <th>Sockets</th>
+                    <th>Nucleos</th>
+                    <th>Sala</th>
+                    <th>Fila</th>
+                    <th>Rack</th>
+                    <th>Unidad</th>
+                    <th>IP</th>
+                    <th>VCenter</th>                
+                    <th>Cluster</th>
+                    <th>hostname</th>
+                    <th width="110px">Acciones</th>
                 </tr>
                 </thead>
+                <tbody>
+					<?php
+					$query = "SELECT marca, modelo, serie, memoria, sockets, nucleos, ubicacion_sala, ubicacion_fila, ubicacion_rack, ubicacion_unidad, IP, vcenter, cluster, hostname, cliente
+                    FROM cdc_inv_servidores
+                    WHERE borrado = 0 
+                    ORDER BY marca, modelo;";
+					
+					$sql = mysqli_query($con, $query);
+
+					if(mysqli_num_rows($sql) == 0){
+						echo '<tr><td colspan="8">No hay datos.</td></tr>';
+					}else{
+						$no = 1;
+						while($row = mysqli_fetch_assoc($sql)){
+							
+							echo '<tr>';
+                            echo '<td align="center">'. $row['marca'].'</td>';
+                            echo '<td align="center">'. $row['modelo'].'</td>';
+                            echo '<td align="center">'. $row['serie'].'</td>';
+                            echo '<td align="center">'. $row['memoria'].'</td>';
+                            echo '<td align="center">'. $row['sockets'].'</td>';
+                            echo '<td align="center">'. $row['nucleos'].'</td>';
+                            echo '<td align="center">'. $row['ubicacion_sala'].'</td>';
+                            echo '<td align="center">'. $row['ubicacion_fila'].'</td>';
+                            echo '<td align="center">'. $row['ubicacion_rack'].'</td>';
+                            echo '<td align="center">'. $row['ubicacion_unidad'].'</td>';
+                            echo '<td align="center">'. $row['IP'].'</td>';
+                            echo '<td align="center">'. $row['vcenter'].'</td>';                
+                            echo '<td align="center">'. $row['cluster'].'</td>';
+                            echo '<td align="center">'. $row['hostname'].'</td>';
+                                    
+                            echo '<td align="center">';
+                            if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
+                            echo '<a 
+                                data-id="' . $row['id'] . '" 
+                                title="Editar Server" class="modal-abm-servers-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                                if ($row['clientes'] == 0) {
+                                echo '<a href="cdc_organismo.php?aksi=delete&nik='.$row['id'].'" title="Borrar Server" onclick="return confirm(\'Esta seguro de borrar el server '. $row['hostname'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                                }                
+                            }
+                            echo '</td></tr>';
+						}
+					}
+					?>
+                </tbody>
               </table>
             </div>
             <!-- /.box-body -->
@@ -142,7 +200,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- /.col -->
         <?php
-            include_once('./modals/sdc_importhosting.php');
+            include_once('./modals/cdc_abmservers.php');
         ?>        
       </div>
       <!-- /.row -->
@@ -161,7 +219,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- DataTables -->
 <script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<!-- <script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
+<script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -176,75 +234,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
-<script src="./modals/sdc_importhosting.js"></script>
-      
+<script src="./modals/cdc_abmservers.js"></script>         
 <script>
   $(function () {
+    $('#servidores').DataTable({
+      'paging'      : true,
+			'pageLength': 20,
+      'lengthChange': false,
+      'searching'   : true,
+      "scrollX": true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : true,
+      'dom'         : 'Bfrtip',
+      'buttons'     : [{
+                  extend: 'pdfHtml5',
+                  orientation: 'landscape',
+                  pageSize: 'A4',
+                         
+                     },
+                      {
+            extend: 'excel',
+            text: 'Excel',
+            }]
 
-    let strquery = 'SELECT H.id, H.id_cliente, H.tipo, H.nombre, H.displayName, H.proyecto, H.datacenter, DATE_FORMAT(H.fecha, "%Y-%m-%d") as fecha, H.hipervisor, H.hostname, H.pool, H.uuid, H.VCPU, H.RAM, H.storage, H.SO , C.razon_social as cliente, O.razon_social as organismo, C.sector ';
-    strquery += 'FROM sdc_hosting as H ';
-    strquery += 'INNER JOIN cdc_cliente as C ON H.id_cliente = C.id ';
-    strquery += 'LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id ';
-    strquery += 'WHERE H.borrado = 0 ';
-
-    // REcreo la tabla
-    $('#hosting').DataTable({
-        "scrollY": 400,
-        "scrollX": true,
-        "paging": true,
-        "deferRender": true,
-        "ajax": {
-            type: 'POST',
-            url: './helpers/getAsyncDataFromDB.php',
-            data: { query: strquery },
-        },
-        "dataSrc": function(json) {
-            console.log(json);
-        },
-        "columns": [
-            { "data": "cliente" },
-            { "data": "organismo" },
-            { "data": "tipo" },
-            { "data": "nombre" },
-            { "data": "displayName" },
-            { "data": "proyecto" },
-            { "data": "fecha" },
-            { "data": "hipervisor" },
-            { "data": "hostname" },
-            { "data": "pool" },
-            { "data": "uuid" },
-            { "data": "VCPU" },
-            { "data": "RAM" },
-            { "data": "storage" },
-            { "data": "SO" },
-            { "data": "datacenter" }
-        ]
-    });
-
-  //   $('#hosting').DataTable({
-  //       'paging'      : true,
-  //       'deferRender' : true,
-  //       'pageLength'  : 20,
-  //       'lengthChange': false,
-  //       'searching'   : true,
-  //       'ordering'    : true,
-  //       'info'        : true,
-  //       'autoWidth'   : true,
-  //       'scrollX'     : true,
-  //       'dom'         : 'frtipB',
-  //       'buttons'     : [{
-  //                   extend: 'pdfHtml5',
-  //                   orientation: 'landscape',
-  //                   pageSize: 'A4',
-                            
-  //                       },
-  //                       {
-  //           extend: 'excel',
-  //           text: 'Excel',
-  //           }]
-            
-  //   })
-  });
+    })
+  })
+</script>
+<script>
+    window.onload = function() {
+        history.replaceState("", "", "cdc_servidores.php");
+    }
 </script>
 <script>
   $(function() {
