@@ -1,5 +1,13 @@
 # CHANGES
 
+## FEAT-ADMN-COMP
+Administrción Compensatorios
+*Cambios:*
+    - ADD Table Feriados
+    [DB] Se agrega tabla adm_dnl
+    - Calculo de días de compensación en activacion de guardias
+    [pages/compras.php]
+
 ## FEAT-COM-VARIOS
 *Cambios:*
     - Se agregan Estado "STAND BY"
