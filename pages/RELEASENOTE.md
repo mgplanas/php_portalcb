@@ -36,4 +36,9 @@ CREATE TABLE controls.cdc_inv_servidores (
 ) ENGINE = InnoDB ROW_FORMAT = DEFAULT;
 
 - Cambios en src
-    N[site.php]
+    [pages/site_sidebar.php]
+    [pages/cdc_servidores.php]
+    [pages/modals/cdc_abmservers.php]
+    [pages/modals/cdc_abmservers.js]
+    [pages/helpers/cdc_abmservidoresdb.js]
+    [site.php]

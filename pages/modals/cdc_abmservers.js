@@ -8,7 +8,7 @@ $(function() {
         // seteo boton trigger para el alta de gerencia
         $('#modal-abm-servers-btn-alta').click(function() {
             $('#modal-abm-servers-title').html('Nuevo Server');
-            modalAbmOrganismoLimpiarCampos();
+            modalAbmServidoresLimpiarCampos();
             $('#modal-abm-servers-submit').attr('name', 'A');
             $("#modal-abm-servers").modal("show");
         });
@@ -17,7 +17,7 @@ $(function() {
         // seteo boton trigger para el edit de gerencia
         $('.modal-abm-servers-btn-edit').click(function() {
             $('#modal-abm-servers-title').html('Editar Server');
-            modalAbmOrganismoLimpiarCampos();
+            modalAbmServidoresLimpiarCampos();
 
             $('#modal-abm-servers-id').val($(this).data('id'));
             $('#modal-abm-servers-marca').val($(this).data('marca'));
@@ -53,21 +53,41 @@ $(function() {
         // Recupero datos del formulario
         let op = $(this).attr('name');
         let id = $('#modal-abm-servers-id').val();
-        let razon_social = $('#modal-abm-servers-nombre').val();
-        let nombre_corto = $('#modal-abm-servers-sigla').val();
-        let cuit = $('#modal-abm-servers-cuit').val();
-        let sector = $("input[name='optSector']:checked").val();
+        let marca = $('#modal-abm-servers-marca').val();
+        let modelo = $('#modal-abm-servers-modelo').val();
+        let serie = $('#modal-abm-servers-serie').val();
+        let memoria = $('#modal-abm-servers-memoria').val();
+        let sockets = $('#modal-abm-servers-sockets').val();
+        let nucleos = $('#modal-abm-servers-nucleos').val();
+        let sala = $('#modal-abm-servers-sala').val();
+        let fila = $('#modal-abm-servers-fila').val();
+        let rack = $('#modal-abm-servers-rack').val();
+        let unidad = $('#modal-abm-servers-unidad').val();
+        let ip = $('#modal-abm-servers-ip').val();
+        let vcenter = $('#modal-abm-servers-vcenter').val();
+        let cluster = $('#modal-abm-servers-cluster').val();
+        let hostname = $('#modal-abm-servers-hostname').val();
         // Ejecuto
         $.ajax({
             type: 'POST',
-            url: './helpers/cdc_abmorganismodb.php',
+            url: './helpers/cdc_abmservidoresdb.php',
             data: {
                 operacion: op,
                 id: id,
-                razon_social: razon_social,
-                nombre_corto: nombre_corto,
-                cuit: cuit,
-                sector: sector
+                marca: marca,
+                modelo: modelo,
+                serie: serie,
+                memoria: memoria,
+                sockets: sockets,
+                nucleos: nucleos,
+                sala: sala,
+                fila: fila,
+                rack: rack,
+                unidad: unidad,
+                ip: ip,
+                vcenter: vcenter,
+                cluster: cluster,
+                hostname: hostname
             },
             dataType: 'json',
             success: function(json) {
@@ -83,12 +103,25 @@ $(function() {
     // ==============================================================
     // AUXILIARES
     // ==============================================================
-    function modalAbmOrganismoLimpiarCampos() {
+    function modalAbmServidoresLimpiarCampos() {
         $('#modal-abm-servers-id').val(0);
+        $('#modal-abm-servers-marca').val('');
+        $('#modal-abm-servers-modelo').val('');
+        $('#modal-abm-servers-serie').val('');
+        $('#modal-abm-servers-memoria').val('');
+        $('#modal-abm-servers-sockets').val('');
+        $('#modal-abm-servers-nucleos').val('');
+        $('#modal-abm-servers-sala').val('');
+        $('#modal-abm-servers-fila').val('');
+        $('#modal-abm-servers-rack').val('');
+        $('#modal-abm-servers-unidad').val('');
+        $('#modal-abm-servers-ip').val('');
+        $('#modal-abm-servers-vcenter').val('');
+        $('#modal-abm-servers-cluster').val('');
+        $('#modal-abm-servers-hostname').val('');
         $('#modal-abm-servers-nombre').val('');
         $('#modal-abm-servers-sigla').val('');
         $('#modal-abm-servers-cuit').val('');
-        $('#opt-sector-publico').prop("checked", true);
     }
     // ********************************************************************************************
 

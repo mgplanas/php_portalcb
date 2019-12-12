@@ -5,7 +5,12 @@ Inventario de servidores DC
 *Cambios:*
     - Agrego item menú en cdc
     [pages/site_sidebar.php]
+    [pages/cdc_servidores.php]
+    [pages/modals/cdc_abmservers.php]
+    [pages/modals/cdc_abmservers.js]
+    [pages/helpers/cdc_abmservidoresdb.js]
     [site.php]
+
 
     - ABM de servicores DC. Se reutilizan los permisos de cdc y admin cdc
 

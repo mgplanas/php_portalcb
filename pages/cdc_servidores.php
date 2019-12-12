@@ -16,7 +16,7 @@ if(isset($_GET['aksi']) == 'delete'){
 	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
   //Elimino Control
   
-  $delete_control = mysqli_query($con, "UPDATE cdc_organismo SET borrado='1' WHERE id='$nik'");
+  $delete_control = mysqli_query($con, "UPDATE cdc_inv_servidores SET borrado='1' WHERE id='$nik'");
   
   //$delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
   //                  VALUES ('3', '5', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
@@ -147,7 +147,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT marca, modelo, serie, memoria, sockets, nucleos, ubicacion_sala, ubicacion_fila, ubicacion_rack, ubicacion_unidad, IP, vcenter, cluster, hostname, cliente
+					$query = "SELECT id, marca, modelo, serie, memoria, sockets, nucleos, ubicacion_sala, ubicacion_fila, ubicacion_rack, ubicacion_unidad, IP, vcenter, cluster, hostname, cliente
                     FROM cdc_inv_servidores
                     WHERE borrado = 0 
                     ORDER BY marca, modelo;";
@@ -195,9 +195,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 data-cluster="' . $row['cluster'] . '"
                                 data-hostname="' . $row['hostname'] . '"
                                 title="Editar Server" class="modal-abm-servers-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
-                                if ($row['clientes'] == 0) {
-                                echo '<a href="cdc_organismo.php?aksi=delete&nik='.$row['id'].'" title="Borrar Server" onclick="return confirm(\'Esta seguro de borrar el server '. $row['hostname'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
-                                }                
+                                echo '<a href="cdc_servidores.php?aksi=delete&nik='.$row['id'].'" title="Borrar Server" onclick="return confirm(\'Esta seguro de borrar el server '. $row['hostname'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
                             }
                             echo '</td></tr>';
 						}
