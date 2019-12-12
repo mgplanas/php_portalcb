@@ -178,8 +178,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     
                             echo '<td align="center">';
                             if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
-                            echo '<a 
+                                echo '<a 
                                 data-id="' . $row['id'] . '" 
+                                data-marca="' . $row['marca'] . '"
+                                data-modelo="' . $row['modelo'] . '"
+                                data-serie="' . $row['serie'] . '"
+                                data-memoria="' . $row['memoria'] . '"
+                                data-sockets="' . $row['sockets'] . '"
+                                data-nucleos="' . $row['nucleos'] . '"
+                                data-sala="' . $row['ubicacion_sala'] . '"
+                                data-fila="' . $row['ubicacion_fila'] . '"
+                                data-rack="' . $row['ubicacion_rack'] . '"
+                                data-unidad="' . $row['ubicacion_unidad'] . '"
+                                data-ip="' . $row['IP'] . '"
+                                data-vcenter="' . $row['vcenter'] . '"
+                                data-cluster="' . $row['cluster'] . '"
+                                data-hostname="' . $row['hostname'] . '"
                                 title="Editar Server" class="modal-abm-servers-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
                                 if ($row['clientes'] == 0) {
                                 echo '<a href="cdc_organismo.php?aksi=delete&nik='.$row['id'].'" title="Borrar Server" onclick="return confirm(\'Esta seguro de borrar el server '. $row['hostname'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
