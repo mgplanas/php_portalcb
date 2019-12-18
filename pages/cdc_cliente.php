@@ -148,8 +148,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <tbody>
 					<?php
 					$query = "SELECT C.id_organismo, C.id, C.razon_social, O.razon_social as organismo, C.cuit, C.nombre_corto, C.sector, 
-                    (SELECT COUNT(1) FROM sdc_hosting as HO where HO.id_cliente = C.id) as hosting,
-                    (SELECT COUNT(1) FROM sdc_housing as HU where HU.id_cliente = C.id) as housing
+                    (SELECT COUNT(1) FROM sdc_hosting as HO where HO.id_cliente = C.id AND HO.borrado=0) as hosting,
+                    (SELECT COUNT(1) FROM sdc_housing as HU where HU.id_cliente = C.id AND HU.borrado=0) as housing
                   FROM cdc_cliente as C 
                   LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
                   WHERE C.borrado = 0";
