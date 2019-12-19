@@ -355,7 +355,7 @@ $(function() {
         $('#modal-abm-compra-plazo').val(1);
         $('#modal-abm-compra-fecha-oc').val('');
         $('#modal-abm-compra-fecha-fin').val('');
-        $('#modal-abm-compra-nro-oc').val('');
+        $('#modal-abm-compra-oc').val('');
         $('#modal-abm-compra-monto-oc').val('');
         // $('#modal-abm-compra-grupo-div').hide();
 
@@ -420,7 +420,7 @@ $(function() {
                 if (compra.fecha_fin_contrato && compra.fecha_fin_contrato !== '0000-00-00') {
                     $('#modal-abm-compra-fecha-fin').val(compra.fecha_fin_contrato);
                 }
-                $('#modal-abm-compra-nro-oc').val(compra.nro_oc);
+                $('#modal-abm-compra-oc').val(compra.nro_oc);
                 $('#modal-abm-compra-monto-oc').val(compra.oc_monto);
                 $('#modal-abm-compra-paso-actual-id').val(compra.id_paso_actual);
                 refreshProveedor(compra.id_proveedor);
