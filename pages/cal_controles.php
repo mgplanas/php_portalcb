@@ -296,7 +296,7 @@ desired effect
                                                                     LEFT JOIN gerencia AS GER ON RES.gerencia = GER.id_gerencia
                                                                     LEFT JOIN persona AS CLD ON REF.controlador = CLD.id_persona
                                                                     LEFT JOIN estados AS EST ON REF.status = EST.id_estado
-                                                                    WHERE CON.ano = YEAR(NOW())
+                                                                    WHERE REF.ano = YEAR(NOW())
                                                                     AND REF.borrado = 0
                                                                     AND CON.borrado = 0 
                                                                     AND ( 1 = $per_id_gerencia OR  RES.gerencia = $per_id_gerencia )";
@@ -470,7 +470,7 @@ desired effect
                                                               INNER JOIN controles as CON ON REF.id_control = CON.id_control
                                                               LEFT JOIN persona AS RES ON CON.responsable = RES.id_persona
                                                               LEFT JOIN gerencia AS GER ON RES.gerencia = GER.id_gerencia
-                                                              WHERE CON.ano = YEAR(NOW())
+                                                              WHERE REF.ano = YEAR(NOW())
                                                               AND REF.borrado = 0
                                                               AND CON.borrado = 0 
                                                               AND ( 1 = $per_id_gerencia OR  RES.gerencia = $per_id_gerencia )

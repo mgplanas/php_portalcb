@@ -14,6 +14,9 @@ Con el cambio de año comenzaron a aparecer errores referidos a fechas.
     - Arreglar grafico s inicio y metricas y filtrar por año actual al mes actual.
     [pages/met_controles.php]
     [pages/site.php]
+    - Arreglar calendario de controles
+    [pages/cal_controles.php]
+    
 
 
 
