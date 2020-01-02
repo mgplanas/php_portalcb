@@ -449,7 +449,7 @@ desired effect
                                                             FROM controles cp
                                                             INNER JOIN referencias ON cp.id_control = referencias.id_control
                                                             WHERE cp.id_control = i.id_control 
-                                                            and referencias.mes <= MONTH(CURRENT_DATE()) AND referencias.ano =  YEAR(CURRENT_DATE()) 
+                                                            and STR_TO_DATE(CONCAT('01,',referencias.mes , ',', referencias.ano) , '%d,%m,%Y') <= CURRENT_DATE()
                                                             and cp.borrado = 0
                                                             and referencias.borrado = 0
                                                             AND referencias.status='2'

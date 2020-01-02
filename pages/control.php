@@ -45,11 +45,13 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
   
 $nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
 
-$query = "SELECT estados.estado as status, count(*) as number FROM referencias INNER JOIN estados ON referencias.status = estados.id_estado where id_control = '$nik' GROUP BY status";
-$result = mysqli_query($con, $query); 
+// $query = "SELECT estados.estado as status, count(*) as number FROM referencias INNER JOIN estados ON referencias.status = estados.id_estado where id_control = '$nik' GROUP BY status";
+$queryAnioAnterior = "SELECT estados.estado as status, count(*) as number FROM referencias INNER JOIN estados ON referencias.status = estados.id_estado where id_control = '$nik' and referencias.ano = YEAR(CURRENT_DATE())-1 GROUP BY status";
+$result = mysqli_query($con, $queryAnioAnterior); 
 $mesActual = date('m');
-$queryHastaHoy = "SELECT estados.estado as status, count(*) as number FROM referencias INNER JOIN estados ON referencias.status = estados.id_estado where id_control = '$nik' AND mes <= '$mesActual' GROUP BY status";
-$resultHastaHoy = mysqli_query($con, $queryHastaHoy); 
+// $queryHastaHoy = "SELECT estados.estado as status, count(*) as number FROM referencias INNER JOIN estados ON referencias.status = estados.id_estado where id_control = '$nik' AND  STR_TO_DATE(CONCAT('01,', mes , ',', ano) , '%d,%m,%Y') <= CURRENT_DATE() GROUP BY status";
+$queryAnioActual = "SELECT estados.estado as status, count(*) as number FROM referencias INNER JOIN estados ON referencias.status = estados.id_estado where id_control = '$nik' and referencias.ano = YEAR(CURRENT_DATE()) GROUP BY status";
+$resultAnioActual = mysqli_query($con, $queryAnioActual); 
 
 
 //Titulo
@@ -79,7 +81,7 @@ if(isset($_GET['aksi']) == 'delete'){
  			var data = google.visualization.arrayToDataTable([
  				['status', 'number'],
  				<?php  
- 				while($row = mysqli_fetch_array($resultHastaHoy))  
+ 				while($row = mysqli_fetch_array($resultAnioActual))  
  				{  
  					echo "['".$row["status"]."', ".$row["number"]."],";  
  				}  
@@ -98,7 +100,7 @@ if(isset($_GET['aksi']) == 'delete'){
  			}
 
  			var options = {
- 				title: 'Cumplimiento al Mes <?php echo date("m");?>',
+ 				title: 'Cumplimiento al <?php echo date("Y");?>',
  				is3D: true,
  				colors: colors,
  				backgroundColor: '#fafafa'
@@ -134,7 +136,7 @@ if(isset($_GET['aksi']) == 'delete'){
  			}
 
  			var options = {
- 				title: 'Cumplimiento <?php echo date("Y");?>',
+ 				title: 'Cumplimiento al <?php echo date("Y")-1;?>',
  				is3D: true,
  				colors: colors,
  				backgroundColor: '#fafafa'
@@ -285,6 +287,7 @@ desired effect
     <table class="table table-striped table-hover">
         <tr>
             <th>No.</th>
+            <th>Año</th>
             <th>Mes</th>
             <th>Estado</th>
             <th>Controlador</th>
@@ -296,9 +299,9 @@ desired effect
         $nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
 
         if($filter){
-            $sql = mysqli_query($con, "SELECT *  FROM referencias  WHERE mes < '13' AND id_control= '$nik' AND status='$filter' ORDER BY nro_referencia ASC");
+            $sql = mysqli_query($con, "SELECT *  FROM referencias  WHERE mes < '13' AND id_control= '$nik' AND status='$filter' ORDER BY nro_referencia DESC");
         }else{
-            $sql = mysqli_query($con, "SELECT * FROM referencias WHERE mes < '13' AND id_control='$nik' ORDER BY nro_referencia ASC");
+            $sql = mysqli_query($con, "SELECT * FROM referencias WHERE mes < '13' AND id_control='$nik' ORDER BY nro_referencia DESC");
         }
         if(mysqli_num_rows($sql) == 0){
             echo '<tr><td colspan="8">No hay datos.</td></tr>';
@@ -308,7 +311,8 @@ desired effect
             while($row = mysqli_fetch_assoc($sql)){
                 echo '
                 <tr>
-                    <td>'.$no.'</td>
+                    <td>'.$row['nro_referencia'].'</td>
+                    <td>'.$row['ano'].'</td>
                     <td>';
                         if($row['mes'] == '1'){
                             echo 'Enero';

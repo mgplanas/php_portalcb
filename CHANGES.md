@@ -1,5 +1,22 @@
 # CHANGES
 
+## FIX-CONTROLES
+Con el cambio de año comenzaron a aparecer errores referidos a fechas.
+*Cambios:*
+    - Se saca el filtro de fechas para el cálculo de cantidad de controles pendientes.
+    [pages/controles.php]
+    - Generar referencias de controles según la periodicidad y el último mes generado para el año actual
+    [helpers/gen_controles.php]
+    - Modificar vista de referencias. Incluir Año y ordenarlos por fecha decremental
+    [pages/controles.php]
+    - Arreglar gráfico de indicadores de cumplimiento. Poner al año anterior vs año actual
+    [pages/controles.php]
+    - Arreglar grafico s inicio y metricas y filtrar por año actual al mes actual.
+    [pages/met_controles.php]
+    [pages/site.php]
+
+
+
 ## FEAT-INVENTARIO
 Inventario de servidores DC
 *Cambios:*
