@@ -218,7 +218,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
             { "data": "storage" },
             { "data": "SO" },
             { "data": "datacenter" }
-        ]
+        ],
+        'dom'         : 'Bfrtip',
+        'buttons'     : [{
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                            
+                        },
+                        {
+            extend: 'excel',
+            text: 'Excel',
+            }]
+
     });
 
   //   $('#hosting').DataTable({

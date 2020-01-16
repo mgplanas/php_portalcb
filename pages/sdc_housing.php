@@ -248,7 +248,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         'order'       : [[ 1, 'desc' ], [0, 'asc']],
         'info'        : true,
         'autoWidth'   : true,
-        'dom'         : 'frtipB',
+        'dom'         : 'Bfrtip',
         'buttons'     : [{
                     extend: 'pdfHtml5',
                     orientation: 'landscape',

@@ -1,5 +1,22 @@
 # CHANGES
 
+## FEAT-PROY-REPROG
+Reprogramación de proyectos mediante avance.
+*Cambios:*
+    - Se agrega la categoría de Reprogramación
+    [pages/edit_proyectos.php]
+    - Se agega campo fecha en el avance y se muestra cuando se selecciona solo la categoría Reprogramacion
+    [pages/edit_proyectos.php]
+
+    ALTER TABLE controls.proyecto
+    ADD repro_date VARCHAR(10) AFTER porcentaje_estimado;
+
+    - Se habilita la modificacion del titulo
+    - Visualizo fecha de reprogramación en grilla proyectos
+    [pages/proyectos]
+    - Se pone los botones export en scs_hosting/housing
+    [pages/sds_hosting/Housing]
+
 ## FIX-CONTROLES
 Con el cambio de año comenzaron a aparecer errores referidos a fechas.
 *Cambios:*

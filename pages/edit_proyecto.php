@@ -35,7 +35,7 @@ if(isset($_POST['save'])){
     $path = mysqli_real_escape_string($con,(strip_tags($_POST["path"],ENT_QUOTES)));
     $tipo = mysqli_real_escape_string($con,(strip_tags($_POST["tipo"],ENT_QUOTES)));
 	
-	$update_proyecto = mysqli_query($con, "UPDATE proyecto SET tipo='$tipo', descripcion='$descripcion', responsable='$responsable', categoria='$categoria', prioridad='$prioridad', inicio='$inicio', due_date='$due_date', grupo='$grupo', path='$path', modificado=NOW() WHERE id_proyecto='$nik'") or die(mysqli_error());
+	$update_proyecto = mysqli_query($con, "UPDATE proyecto SET titulo='$titulo', tipo='$tipo', descripcion='$descripcion', responsable='$responsable', categoria='$categoria', prioridad='$prioridad', inicio='$inicio', due_date='$due_date', grupo='$grupo', path='$path', modificado=NOW() WHERE id_proyecto='$nik'") or die(mysqli_error());
     
 	$insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
 											   VALUES ('2', '3','$nik', now(), '$user', '$titulo')") or die(mysqli_error());
@@ -195,7 +195,7 @@ desired effect
               <div class="box-body">
                 <div class="form-group">
                   <label for="titulo">Titulo</label>
-                  <input type="text" class="form-control" name="titulo" value="<?php echo $row ['titulo']; ?>" readonly>
+                  <input type="text" class="form-control" name="titulo" value="<?php echo $row ['titulo']; ?>">
                 </div>
                 <div class="form-group">
                   <label for="descripcion">Descripción</label>
@@ -286,7 +286,7 @@ desired effect
                                 </div>
                           </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                           <div class="form-group">
                             <label>Fecha de vencimiento</label>
                             <div class="input-group date" data-provide="datepicker2">
@@ -298,7 +298,13 @@ desired effect
                                      class="form-control pull-right" name="due_date" id="datepicker2" value="<?php echo $row ['due_date']; ?>">
                             </div>
                           </div>
-                    </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label for="repro">Fecha Reprogramación</label>
+                            <input type="text" class="form-control" name="repro" value="<?php echo $row ['repro_date']; ?>" readonly>
+                          </div>
+                        </div>
                 </div>
                 <div class="row">
                         <div class="col-sm-6">
@@ -359,9 +365,10 @@ desired effect
                   <th style="width: 150px">Fecha</th>
                 </tr>
                 <?php
-                    $query = "SELECT * FROM avance
-                              WHERE borrado='0' AND id_proyecto='$nik'
-                              ORDER BY id_avance ASC";
+                    $query = "SELECT a.*, p.repro_date FROM avance as a 
+                              INNER JOIN proyecto as p ON a.id_proyecto = p.id_proyecto
+                              WHERE a.borrado='0' AND a.id_proyecto='$nik'
+                              ORDER BY a.id_avance ASC";
 
                     $sql = mysqli_query($con, $query);
 
@@ -388,6 +395,8 @@ desired effect
                               echo '<td style="text-align: center;"><i title="Riesgo" class="fa fa-flash" style="font-size: 20px;"></i></td>';
                             } elseif ($row['reunion']==3) {
                               echo '<td style="text-align: center;"><i title="Problema" class="fa fa-exclamation-triangle" style="font-size: 20px;"></i></td>';
+                            } elseif ($row['reunion']==4) {
+                              echo '<td style="text-align: center;"><i title="Reprogramación (' . $row['repro_date'] . ')" class="fa fa-calendar" style="font-size: 20px;"></i></td>';
                             } else {
                               echo '<td></td>';
                             }
@@ -431,12 +440,17 @@ desired effect
                     $porcentaje_estimado = mysqli_real_escape_string($con,(strip_tags($_POST["porcentaje_estimado"],ENT_QUOTES)));//Escanpando caracteres
                     $categoria = mysqli_real_escape_string($con,(strip_tags($_POST["categoria"],ENT_QUOTES)));//Escanpando caracteres
                     $tiempo = mysqli_real_escape_string($con,(strip_tags($_POST["tiempo"],ENT_QUOTES)));//Escanpando caracteres
+                    $repro = mysqli_real_escape_string($con,(strip_tags($_POST["reprog_date"],ENT_QUOTES)));//Escanpando caracteres
                     
                     $insert_avance = mysqli_query($con, "INSERT INTO avance (id_proyecto, detalle, fecha, user, reunion, tiempo) 
                                                          VALUES ('$nik', '$detalle', now(), '$user', '$categoria', '$tiempo')") or die(mysqli_error());
                     
-                    $update_proyecto = mysqli_query($con, "UPDATE proyecto SET estado='$estado', porcentaje='$porcentaje', porcentaje_estimado='$porcentaje_estimado', modificado=NOW() 
-										 WHERE id_proyecto='$nik'") or die(mysqli_error());	
+                    if ($categoria=='4') {
+                      $update_proyecto = mysqli_query($con, "UPDATE proyecto SET repro_date='$repro', estado='$estado', porcentaje='$porcentaje', porcentaje_estimado='$porcentaje_estimado', modificado=NOW() WHERE id_proyecto='$nik'") or die(mysqli_error());	
+                    } else {
+                      $update_proyecto = mysqli_query($con, "UPDATE proyecto SET estado='$estado', porcentaje='$porcentaje', porcentaje_estimado='$porcentaje_estimado', modificado=NOW() WHERE id_proyecto='$nik'") or die(mysqli_error());	
+                    }
+										 
                     
                     
                     $lastInsert = mysqli_insert_id($con);
@@ -490,19 +504,29 @@ desired effect
                                     <option value='1' >Reunión</option>
                                     <option value='2' >Riesgo</option>
                                     <option value='3' >Problema</option>
+                                    <option value='4' >Reprogramación</option>
                                 </select>                            
                             </div>
                          </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-6">
                              <div id="tiempo" class="form-group">
                               <label>Minutos</label>
                               <input type="number" min="0" class="form-control" name="tiempo" value="15">
+                            </div>
+                             <div id="fecha-reprog" class="form-group">
+                              <label>Fecha de Reprogramación</label>
+                              <div class="input-group date" data-provide="datepicker3">
+                                <div class="input-group-addon">
+                                  <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" name="reprog_date" id="datepicker3">
+                              </div>
                             </div>
                         </div>
                 </div>
             <div class="form-group">
                 <div class="col-sm-3">
-                    <input type="submit" name="Adda" class="btn  btn-raised btn-success" value="Guardar datos">
+                    <input id="avance-submit" type="submit" name="Adda" class="btn  btn-raised btn-success" value="Guardar datos" >
                 </div>
                 <div class="col-sm-3">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
@@ -626,6 +650,12 @@ desired effect
       todayHighlight: true,
       daysOfWeekDisabled: [0,6]
     })
+    $('#datepicker3').datepicker({
+      autoclose: true,
+      format: 'dd/mm/yyyy',
+      todayHighlight: true,
+      daysOfWeekDisabled: [0,6]
+    })
 
   })
 </script>
@@ -643,19 +673,35 @@ $(function(){
 });
 </script>
 <script>
-    $(document).ready(function () {
+    $(function() {
+
+      $('#avance-submit').click(function() {
+        let cat = $('#ddlcategoria').val();
+        let repro = $('#datepicker3').val();
+
+        if (cat == '4' && !repro) {
+          alert('La fecha de reprogramación no debe estar vacía.');
+          return false;
+        }
+        return true;
+      });
+
 
       //Seto el trigger si la el anio cambia 
       $('#ddlcategoria').on('change', function() {
+        $('#tiempo').hide();
+        $('#fecha-reprog').hide();
         // Si elige la reunión muestro el div de timer
         if ($(this).val() == "1") {
           $('#tiempo').show();
-        } else {
-          $('#tiempo').hide();
+        }
+        if ($(this).val() == "4") {
+          $('#fecha-reprog').show();
         }
       });
 
       $('#tiempo').hide();
+      $('#fecha-reprog').hide();
     });
 </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.

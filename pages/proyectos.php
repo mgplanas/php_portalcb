@@ -257,7 +257,8 @@ desired effect
                             <th>Estado</th>
                             <th>Avance real (%)</th>
                             <th>Avance Est. (%)</th>
-                            <th width="2">Vencimiento</th>
+                            <th width="2">Vencimiento</th>                            
+                            <th width="2">Fecha reprog</th>                            
                             <th width="110px">Acciones</th>
                         </thead>
                         <tbody>
@@ -396,6 +397,7 @@ desired effect
 
                                     echo '">'.$row['due_date'].'</span></td>';
                                   } else { echo '<td></td>'; }
+                                  echo '<td>'.$row['repro_date'].'</td>';
                                   echo '
                                   <td align="center">
                                     <a href="edit_proyecto.php?nik='.$row['id_proyecto'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
@@ -437,6 +439,7 @@ desired effect
                           <th>Avance real (%)</th>
                           <th>Avance Est. (%)</th>
                           <th width="2">Vencimiento</th>
+                          <th width="2">Fecha reprog</th>
                           <th width="110px">Acciones</th>
                         </tr>
                         </thead>
@@ -581,6 +584,7 @@ desired effect
 
                                       echo '">'.$row['due_date'].'</span></td>';
                                     } else { echo '<td></td>'; }
+                                    echo '<td>'.$row['repro_date'].'</td>';
                                     echo '<td align="center">
                                     <a href="edit_proyecto.php?nik='.$row['id_proyecto'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
                                     <a href="proyectos.php?aksi=delete&nik='.$row['id_proyecto'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['titulo'].'?\')" class="btn btn-danger btn-sm ';
@@ -626,6 +630,7 @@ desired effect
                           <th>Avance real (%)</th>
                           <th>Avance Est. (%)</th>
                           <th width="2">Vencimiento</th>
+                          <th width="2">Fecha reprog</th>
                           <th width="110px">Acciones</th>
                         </tr>
                         </thead>
@@ -779,6 +784,7 @@ desired effect
                                     } else {
                                       echo '<td></td>';
                                     }
+                                    echo '<td>'.$row['repro_date'].'</td>';
                                     echo '
                                     <td align="center">
                                     <a href="edit_proyecto.php?nik='.$row['id_proyecto'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
@@ -819,6 +825,7 @@ desired effect
                         <th>Avance real (%)</th>
                         <th>Avance Est. (%)</th>
                         <th width="2">Vencimiento</th>
+                        <th width="2">Fecha reprog</th>
                         <th width="110px">Acciones</th>
                       </tr>
                       </thead>
@@ -982,6 +989,7 @@ desired effect
                                   } else {
                                     echo '<td></td>';
                                   }
+                                  echo '<td>'.$row['repro_date'].'</td>';
                                   echo '
                                   <td align="center">
                                   <a href="edit_proyecto.php?nik='.$row['id_proyecto'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
