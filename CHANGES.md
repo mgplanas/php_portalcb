@@ -7,6 +7,19 @@ Administrción Compensatorios
     [DB] Se agrega tabla adm_dnl
     - Calculo de días de compensación en activacion de guardias
     [pages/compras.php]
+    -[DB] ADD Table adm_cmp_guardias y adm_cmp_lotes
+    - Agrego las librerias de excel
+    [helpers/SpreadSheetReader*.php]
+    - Creo el menu de compensatorios
+    M[pages/site_sidebar]
+    M[site.php]
+
+    - Agrego pagina de guardias y compensaiens
+    N[pages/compensatorios.php]
+    N[pages/modals/cmp_importguardias.php]
+    N[pages/modals/cmp_importguardias.js]
+    N[pages/helpers/cmp_importguardias.php]
+
 
 ## FEAT-COM-VARIOS
 *Cambios:*

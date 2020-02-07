@@ -34,6 +34,7 @@
         <ul class="treeview-menu">
           <?php if ($rq_sec['admin']=='1' OR $rq_sec['compras']=='1'){ ?>
             <li><a href="compras.php"><i class="fa fa-cart-plus"></i>Compras</a></li>
+            <li><a href="compensatorios.php"><i class="fa fa-dollar"></i>Compensatorios</a></li>
           <?php } ?>
         </ul>
       </li>
