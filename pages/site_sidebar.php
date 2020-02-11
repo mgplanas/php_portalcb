@@ -36,6 +36,7 @@
             <li><a href="compras.php"><i class="fa fa-cart-plus"></i>Compras</a></li>
             <li><a href="compensatorios.php"><i class="fa fa-dollar"></i>Compensatorios</a></li>
             <li><a href="feriados.php"><i class="fa fa-calendar"></i>Feriados</a></li>
+            <li><a href="cmp_periodos.php"><i class="fa fa-calendar"></i>Periodos</a></li>
           <?php } ?>
         </ul>
       </li>

@@ -381,6 +381,7 @@ desired effect
                 <li><a href="./pages/compras.php"><i class="fa fa-cart-plus"></i>Compras</a></li>
                 <li><a href="./pages/compensatorios.php"><i class="fa fa-dollar"></i>Compensatorios</a></li>
                 <li><a href="./pages/feriados.php"><i class="fa fa-calendar"></i>Feriados</a></li>
+                <li><a href="./pages/cmp_periodos.php"><i class="fa fa-calendar"></i>Periodos</a></li>
               <?php } ?>
             </ul>
           </li>

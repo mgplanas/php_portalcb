@@ -27,6 +27,11 @@ Administrción Compensatorios
     N[pages/modals/cmp_recupero.php]
     N[pages/modals/cmp_recupero.js]
     N[pages/helpers/abmrecuperodb.php]   
+    - Agrego páginas para abm periodos
+    N[pages/cmp_periodo.php]
+    N[pages/modals/abmperiodo.php]
+    N[pages/modals/abmperiodo.js]
+    N[pages/helpers/abmperiodosdb.php]
 
 ## FEAT-COM-VARIOS
 *Cambios:*
