@@ -54,19 +54,19 @@ ORDER BY sub.nombre, area.nombre, per.apellido, per.nombre,sumatoria.id_periodo;
 $sql = mysqli_query($con, $query);
 
 $aux_per_fecha = '';
+$periodo_max=0;
+$periodo_min=999999;
 while($row = mysqli_fetch_assoc($sql)){    
-    array_push($arrPeriodos, $row['id_periodo'].'|'.$row['fecha_desde'].'|'.$row['fecha_hasta']);
+    $periodo_min = (intval($row['id_periodo']) < $periodo_min ?  intval($row['id_periodo']) : $periodo_min);
+    $periodo_max = (intval($row['id_periodo']) > $periodo_max ?  intval($row['id_periodo']) : $periodo_max);
     array_push($arrCompensatorios, $row);
 }
-$arrPeriodos=array_unique($arrPeriodos);
-sort($arrPeriodos);
-foreach ($arrPeriodos as $key => $value) {
-    $arrPeriodos[$key] = explode('|', $value);
-}
-$periodo_min = intval($arrPeriodos[0][0]);
-$periodo_max = intval($arrPeriodos[count($arrPeriodos)-1][0]);
-
 unset($sql);
+$query = "SELECT id, fecha_desde, fecha_hasta FROM adm_cmp_periodos WHERE id >= '$periodo_min' and id <= '$periodo_max' ORDER BY fecha_desde";
+$sql = mysqli_query($con, $query);
+while($row = mysqli_fetch_assoc($sql)){    
+    array_push($arrPeriodos, $row);
+}
 
 //TOTALES
 $arrCompensatoriosTotales=[];
@@ -191,7 +191,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th rowspan="2" style="text-align:center;">Total a la fecha</th>
                     <?php 
                         foreach ($arrPeriodos as $key => $value) {
-                            echo '<th colspan="2" style="text-align:center;"> al '. date_format(date_create_from_format('Y-m-d H:i:s', $value[2]), 'd/m/Y') .'</th>';
+                            $tdesde = strtotime($value['fecha_desde']);
+                            $thasta = strtotime($value['fecha_hasta']);
+                            if (time() >= $tdesde and time() <= $thasta) {
+                                echo '<th colspan="2" style="text-align:center;"><span class="badge bg-blue"> al '. date_format(date_create_from_format('Y-m-d H:i:s', $value['fecha_hasta']), 'd/m/Y') .'</span></th>';
+                            } else {
+                                echo '<th colspan="2" style="text-align:center;"> al '. date_format(date_create_from_format('Y-m-d H:i:s', $value['fecha_hasta']), 'd/m/Y') .'</th>';
+                            }
                         }
                     ?>
                 </tr>
@@ -226,18 +232,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             }
                             
                             $currPeriodo = $periodo_min;
+                            $regCurPeriodo = intval($registro['id_periodo']);
+                            $data = "Comienzo";
                             while ($nRow < $allRows and intval($registro['id_persona']) == $curr_id_persona) {
-                                
+                                $regCurPeriodo = intval($registro['id_periodo']);
                                 // Formo las celdas vacias anteriores (si las hay) de sumas y restas por periodo
                                 for ($i = $currPeriodo; $i < intval($registro['id_periodo']); $i++) {
-                                    echo '<td style="text-align:center;background-color:rgb(153,255,153);">0</td><td style="text-align:center;background-color:rgb(248,203,173);">0</td>';
+                                    $data = "Inserto blanco periodo " .  $i;
+                                    echo '<td style="text-align:center;background-color:rgb(153,255,153);"></td><td style="text-align:center;background-color:rgb(248,203,173);"></td>';
                                 }
                                 
+                                $data = "Inserto Datos periodo " .  $i;
                                 //----------------------------
                                 //En esta compensatorios o recuperos
                                 //----------------------------
-                                echo '<td style="text-align:center;background-color:rgb(153,255,153);">'.$registro['compensatorios'].'</td>';
-                                echo '<td style="text-align:center;background-color:rgb(248,203,173);">'.$registro['recuperos'].'</td>';
+                                echo '<td style="text-align:center;background-color:rgb(153,255,153);">'.($registro['compensatorios'] ? $registro['compensatorios'] :"") .'</td>';
+                                echo '<td style="text-align:center;background-color:rgb(248,203,173);">'.($registro['recuperos'] ? $registro['recuperos'] :"").'</td>';
                                 //----------------------------
                                 
                                 //Incremento el mes para generar celdas hasta el próximo mes 
@@ -250,7 +260,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             
                             // relleno los periodos que faltan
                             for ($i = $currPeriodo; $i <= $periodo_max; $i++) {
-                                echo '<td style="text-align:center;background-color:rgb(153,255,153);">0</td><td style="text-align:center;background-color:rgb(248,203,173);">0</td>';
+                                echo '<td style="text-align:center;background-color:rgb(153,255,153);"></td><td style="text-align:center;background-color:rgb(248,203,173);"></td>';
                             }             
                             echo '</tr>';       
                         }
