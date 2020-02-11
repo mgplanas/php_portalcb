@@ -4,22 +4,29 @@
 Administrción Compensatorios
 *Cambios:*
     - ADD Table Feriados
-    [DB] Se agrega tabla adm_dnl
+    [DB] Se agrega tabla adm_dnl, adm_cmp_balance
+    -[DB] ADD Table adm_cmp_guardias y adm_cmp_lotes, adm_cmp_periodos
     - Calculo de días de compensación en activacion de guardias
     [pages/compras.php]
-    -[DB] ADD Table adm_cmp_guardias y adm_cmp_lotes
     - Agrego las librerias de excel
     [helpers/SpreadSheetReader*.php]
     - Creo el menu de compensatorios
     M[pages/site_sidebar]
     M[site.php]
-
     - Agrego pagina de guardias y compensaiens
     N[pages/compensatorios.php]
     N[pages/modals/cmp_importguardias.php]
     N[pages/modals/cmp_importguardias.js]
     N[pages/helpers/cmp_importguardias.php]
-
+    - Agrego páginas para abm feriados
+    N[pages/feriados.php]
+    N[pages/modals/adm_dnl.php]
+    N[pages/modals/adm_dnl.js]
+    N[pages/helpers/abmdnl.php]    
+    - Agrego páginas para abm recupero
+    N[pages/modals/cmp_recupero.php]
+    N[pages/modals/cmp_recupero.js]
+    N[pages/helpers/abmrecuperodb.php]   
 
 ## FEAT-COM-VARIOS
 *Cambios:*

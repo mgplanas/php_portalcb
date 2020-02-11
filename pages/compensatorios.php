@@ -19,7 +19,73 @@ $id_rowp = $rowp['id_persona'];
 $personas = mysqli_query($con, "SELECT * FROM persona");
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);				
-		
+        
+
+//Compensatorios
+//-------------------------------------------------------------------------------------------------
+function getTotalFromPersona($id_persona, $arr) {
+    $total = 0;
+    foreach ($arr as $key => $value) {
+        if($value['id_persona'] == $id_persona) {
+            return $value['Total'];
+        }
+    }
+    return $total;
+}
+
+$arrCompensatorios = [];
+$arrPeriodos = [];
+
+$query = "SELECT sub.nombre as subgerencia, area.nombre as area, per.apellido, per.nombre, sumatoria.* , p.fecha_desde, p.fecha_hasta
+FROM persona as per
+LEFT JOIN subgerencia as sub ON per.subgerencia = sub.id_subgerencia
+LEFT JOIN area ON per.area = area.id_area
+INNER JOIN 
+( 
+SELECT bal.id_persona, bal.id_periodo, 
+  IFNULL(CASE WHEN bal.tipo = 'C' THEN SUM(dias) END,0) as compensatorios,
+  IFNULL(CASE WHEN bal.tipo = 'R' THEN SUM(dias) END,0) as recuperos
+FROM adm_cmp_balance as bal
+GROUP BY id_periodo, id_persona, tipo
+) AS sumatoria ON per.id_persona = sumatoria.id_persona
+INNER JOIN adm_cmp_periodos as p ON sumatoria.id_periodo = p.id AND fecha_desde >= DATE_ADD(NOW(), INTERVAL -6 MONTH) 
+ORDER BY sub.nombre, area.nombre, per.apellido, per.nombre,sumatoria.id_periodo;";
+
+$sql = mysqli_query($con, $query);
+
+$aux_per_fecha = '';
+while($row = mysqli_fetch_assoc($sql)){    
+    array_push($arrPeriodos, $row['id_periodo'].'|'.$row['fecha_desde'].'|'.$row['fecha_hasta']);
+    array_push($arrCompensatorios, $row);
+}
+$arrPeriodos=array_unique($arrPeriodos);
+sort($arrPeriodos);
+foreach ($arrPeriodos as $key => $value) {
+    $arrPeriodos[$key] = explode('|', $value);
+}
+$periodo_min = intval($arrPeriodos[0][0]);
+$periodo_max = intval($arrPeriodos[count($arrPeriodos)-1][0]);
+
+unset($sql);
+
+//TOTALES
+$arrCompensatoriosTotales=[];
+$query = "SELECT bal.id_persona, SUM(compensatorios-recuperos) as Total FROM 
+(
+  SELECT bal.id_persona, bal.id_periodo, 
+    IFNULL(CASE WHEN bal.tipo = 'C' THEN SUM(dias) END,0) as compensatorios,
+    IFNULL(CASE WHEN bal.tipo = 'R' THEN SUM(dias) END,0) as recuperos
+  FROM adm_cmp_balance as bal
+  GROUP BY id_periodo, id_persona, tipo
+) as bal
+GROUP BY bal.id_persona;";
+
+$sql = mysqli_query($con, $query);
+
+while($row = mysqli_fetch_assoc($sql)){    
+    array_push($arrCompensatoriosTotales, $row);
+}
+unset($sql);
 ?>
 <style>
 .dataTables_filter {
@@ -50,7 +116,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
+
+<!-- bootstrap datepicker -->
+<link rel="stylesheet" href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/rowGroup.dataTables.min.css">
    <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
@@ -98,32 +168,95 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="box">
             <div class="box-header">
               <div class="col-sm-6" style="text-align:left">
-                <h2 class="box-title">Listado de Compensaciones</h2>
+                <h2 class="box-title">Balance de Compensaciones/Recuperos</h2>
               </div>
               <div class="col-sm-6" style="text-align:right;">
               <?php if ($rq_sec['admin']=='1' OR $rq_sec['compensaciones']=='1'){ ?>
                 <button type="button" id="modal-import-hosting-btn-import" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-upload"></i> Importar Planilla de Guardias</button>
               <?php } ?>
+              <?php if ($rq_sec['admin']=='1' OR $rq_sec['compensaciones']=='1'){ ?>
+                <button type="button" id="modal-cmp-recupero-btn-alta" class="btn-sm btn-primary" data-toggle="modal"><i class="fa fa-calendar-plus-o"></i> Agregar Recupero</button>
+              <?php } ?>
               </div>
             </div>
 
             <!-- /.box-header -->
-	
+
 			<div class="box-body">
               <table id="guardias" class="display" width="100%">
                 <thead>
                 <tr>
-                    <th>Subgerencia</th>
-                    <th>Persona</th>
-                    <th>Desde</th>
-                    <th>Hasta</th>
-                    <th>Regla</th>
-                    <th>Min</th>
-                    <th>Compensatorio</th>
-                    <th>Tipo</th>
-                    <!-- <th width="110px">Acciones</th> -->
+                    <th rowspan="2">Subgerencia</th>
+                    <th rowspan="2">Persona</th>
+                    <th rowspan="2" style="text-align:center;">Total a la fecha</th>
+                    <?php 
+                        foreach ($arrPeriodos as $key => $value) {
+                            echo '<th colspan="2" style="text-align:center;"> al '. date_format(date_create_from_format('Y-m-d H:i:s', $value[2]), 'd/m/Y') .'</th>';
+                        }
+                    ?>
+                </tr>
+                <tr>
+                    <?php 
+                        foreach ($arrPeriodos as $key => $value) {
+                            echo '<th style="text-align:center;">Suma</th>';
+                            echo '<th style="text-align:center;">Resta</th>';
+                        }
+                    ?>
                 </tr>
                 </thead>
+                <tbody>
+                    <?php
+                        $curr_id_persona =0;
+                        $nRow = 0;
+                        $registro = $arrCompensatorios[$nRow];
+                        $allRows = count($arrCompensatorios);
+                        while($nRow < $allRows) {
+                            
+                            $curr_id_persona = intval($registro['id_persona']);
+                            echo '<tr>';
+                            echo '<td>'. $registro['subgerencia'].' - '. $registro['area'] .'</td>';
+                            echo '<td>'. $registro['apellido'].', '. $registro['nombre'] .'</td>';
+                            // Total
+                            $aux_total = getTotalFromPersona($registro['id_persona'], $arrCompensatoriosTotales);
+                            if ($aux_total < 0) {
+                                echo '<td style="text-align:center;font-size:16px;"><strong><span class="badge bg-red">' . $aux_total . '</span></strong></td>';
+                            }
+                            else {
+                                echo '<td style="text-align:center;font-size:16px;"><strong>'. getTotalFromPersona($registro['id_persona'], $arrCompensatoriosTotales).'</strong></td>';
+                            }
+                            
+                            $currPeriodo = $periodo_min;
+                            while ($nRow < $allRows and intval($registro['id_persona']) == $curr_id_persona) {
+                                
+                                // Formo las celdas vacias anteriores (si las hay) de sumas y restas por periodo
+                                for ($i = $currPeriodo; $i < intval($registro['id_periodo']); $i++) {
+                                    echo '<td style="text-align:center;background-color:rgb(153,255,153);">0</td><td style="text-align:center;background-color:rgb(248,203,173);">0</td>';
+                                }
+                                
+                                //----------------------------
+                                //En esta compensatorios o recuperos
+                                //----------------------------
+                                echo '<td style="text-align:center;background-color:rgb(153,255,153);">'.$registro['compensatorios'].'</td>';
+                                echo '<td style="text-align:center;background-color:rgb(248,203,173);">'.$registro['recuperos'].'</td>';
+                                //----------------------------
+                                
+                                //Incremento el mes para generar celdas hasta el próximo mes 
+                                $currPeriodo = intval($registro['id_periodo']) + 1;
+                                
+                                $nRow++;
+                                if ($nRow >= $allRows) {break;}
+                                $registro = $arrCompensatorios[$nRow];
+                            }
+                            
+                            // relleno los periodos que faltan
+                            for ($i = $currPeriodo; $i <= $periodo_max; $i++) {
+                                echo '<td style="text-align:center;background-color:rgb(153,255,153);">0</td><td style="text-align:center;background-color:rgb(248,203,173);">0</td>';
+                            }             
+                            echo '</tr>';       
+                        }
+                    ?>
+                </tbody>
+
               </table>
             </div>
             <!-- /.box-body -->
@@ -135,6 +268,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- /.col -->
         <?php
             include_once('./modals/cmp_importguardias.php');
+            include_once('./modals/cmp_recupero.php');
         ?>        
       </div>
       <!-- /.row -->
@@ -154,6 +288,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- DataTables -->
 <script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <!-- <script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
+<!-- bootstrap datepicker -->
+<script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- SlimScroll -->
 <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -162,6 +298,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- export -->
 <script src="../bower_components/datatables.net/js/dataTables.buttons.min.js"></script>
+<script src="../bower_components/datatables.net/js/dataTables.rowGroup.min.js"></script>
 <script src="../bower_components/datatables.net/js/buttons.flash.min.js"></script>
 <script src="../bower_components/datatables.net/js/jszip.min.js"></script>
 <script src="../bower_components/datatables.net/js/buttons.html5.min.js"></script>
@@ -169,73 +306,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
 <script src="./modals/cmp_importguardias.js"></script>
+<script src="./modals/cmp_recupero.js"></script>
       
 <script>
   $(function () {
-
-    let strquery = 'SELECT H.id, H.id_cliente, H.tipo, H.nombre, H.displayName, H.proyecto, H.datacenter, DATE_FORMAT(H.fecha, "%Y-%m-%d") as fecha, H.hipervisor, H.hostname, H.pool, H.uuid, H.VCPU, H.RAM, H.storage, H.SO , C.razon_social as cliente, O.razon_social as organismo, C.sector ';
-    strquery += 'FROM sdc_hosting as H ';
-    strquery += 'INNER JOIN cdc_cliente as C ON H.id_cliente = C.id ';
-    strquery += 'LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id ';
-    strquery += 'WHERE H.borrado = 0 ';
-
-    // REcreo la tabla
-    $('#hosting').DataTable({
-        "scrollY": 400,
-        "scrollX": true,
-        "paging": true,
-        "deferRender": true,
-        "ajax": {
-            type: 'POST',
-            url: './helpers/getAsyncDataFromDB.php',
-            data: { query: strquery },
+    $('#guardias').DataTable({
+      'language': { 'emptyTable': 'No hay datos' },
+      'paging'      : false,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : false,
+      'info'        : true,
+      'autoWidth'   : true,
+      'order': [[0, 'asc'], [1, 'asc']],
+        'rowGroup': {
+            'dataSrc': [ 0 ]
         },
-        "dataSrc": function(json) {
-            console.log(json);
-        },
-        "columns": [
-            { "data": "cliente" },
-            { "data": "organismo" },
-            { "data": "tipo" },
-            { "data": "nombre" },
-            { "data": "displayName" },
-            { "data": "proyecto" },
-            { "data": "fecha" },
-            { "data": "hipervisor" },
-            { "data": "hostname" },
-            { "data": "pool" },
-            { "data": "uuid" },
-            { "data": "VCPU" },
-            { "data": "RAM" },
-            { "data": "storage" },
-            { "data": "SO" },
-            { "data": "datacenter" }
-        ]
+        'columnDefs': [ {
+            'targets': [ 0],
+            'visible': false
+        } ],
     });
-
-  //   $('#hosting').DataTable({
-  //       'paging'      : true,
-  //       'deferRender' : true,
-  //       'pageLength'  : 20,
-  //       'lengthChange': false,
-  //       'searching'   : true,
-  //       'ordering'    : true,
-  //       'info'        : true,
-  //       'autoWidth'   : true,
-  //       'scrollX'     : true,
-  //       'dom'         : 'frtipB',
-  //       'buttons'     : [{
-  //                   extend: 'pdfHtml5',
-  //                   orientation: 'landscape',
-  //                   pageSize: 'A4',
-                            
-  //                       },
-  //                       {
-  //           extend: 'excel',
-  //           text: 'Excel',
-  //           }]
-            
-  //   })
   });
 </script>
 <script>
