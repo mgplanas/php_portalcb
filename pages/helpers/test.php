@@ -145,3 +145,57 @@
     //     var_dump($guardia_aplicable);
     // }    
 ?>
+
+
+<?php
+                        $curr_id_persona =0;
+                        $nRow = 0;
+                        $registro = $arrCompensatorios[$nRow];
+                        $allRows = count($arrCompensatorios);
+                        while($nRow < $allRows) {
+                            
+                            $curr_id_persona = intval($registro['id_persona']);
+                            echo '<tr>';
+                            echo '<td>'. $registro['subgerencia'].' - '. $registro['area'] .'</td>';
+                            echo '<td>'. $registro['apellido'].', '. $registro['nombre'] .'</td>';
+                            // Total
+                            $aux_total = getTotalFromPersona($registro['id_persona'], $arrCompensatoriosTotales);
+                            if ($aux_total < 0) {
+                                echo '<td style="text-align:center;font-size:16px;"><strong><span class="badge bg-red">' . $aux_total . '</span></strong></td>';
+                            }
+                            else {
+                                echo '<td style="text-align:center;font-size:16px;"><strong>'. getTotalFromPersona($registro['id_persona'], $arrCompensatoriosTotales).'</strong></td>';
+                            }
+                            
+                            $currPeriodo = $periodo_min;
+                            while ($nRow < $allRows and intval($registro['id_persona']) == $curr_id_persona) {
+
+                                $regCurPeriodo = intval($registro['id_periodo']);
+                                $result = getRegistroCompensatorio(intval($registro['id_persona']), 0, $arrCompensatorios);
+                                // Formo las celdas vacias anteriores (si las hay) de sumas y restas por periodo
+                                for ($i = $currPeriodo; $i < intval($registro['id_periodo']); $i++) {
+                                    echo '<td style="text-align:center;background-color:rgb(153,255,153);"></td><td style="text-align:center;background-color:rgb(248,203,173);"></td>';
+                                }
+                                
+                                //----------------------------
+                                //En esta compensatorios o recuperos
+                                //----------------------------
+                                echo '<td style="text-align:center;background-color:rgb(153,255,153);">'.($registro['compensatorios'] ? $registro['compensatorios'] :"") .'</td>';
+                                echo '<td style="text-align:center;background-color:rgb(248,203,173);">'.($registro['recuperos'] ? $registro['recuperos'] :"").'</td>';
+                                //----------------------------
+                                
+                                //Incremento el mes para generar celdas hasta el próximo mes 
+                                $currPeriodo = intval($registro['id_periodo']) + 1;
+                                
+                                $nRow++;
+                                if ($nRow >= $allRows) {break;}
+                                $registro = $arrCompensatorios[$nRow];
+                            }
+                            
+                            // relleno los periodos que faltan
+                            for ($i = $currPeriodo; $i <= $periodo_max; $i++) {
+                                echo '<td style="text-align:center;background-color:rgb(153,255,153);"></td><td style="text-align:center;background-color:rgb(248,203,173);"></td>';
+                            }             
+                            echo '</tr>';       
+                        }
+                    ?>

@@ -19,7 +19,28 @@ $id_rowp = $rowp['id_persona'];
 $personas = mysqli_query($con, "SELECT * FROM persona");
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);				
-        
+
+// Funciones auxiliares
+function getRegistroCompensatorio($id_persona, $id_periodo, $arr) {
+    $result = null;
+
+    foreach ($arr as $k => $v) {
+        if ($id_persona == intval($v['id_persona'])) {
+
+            if ($id_periodo > 0) {
+                if ($id_periodo == intval($v['id_periodo'])) {
+                    $result = $v;
+                break;
+                }
+            } else {
+                $result = $v;
+            break;
+            }
+        }
+    }
+
+    return $result;
+}
 
 //Compensatorios
 //-------------------------------------------------------------------------------------------------
@@ -61,6 +82,8 @@ while($row = mysqli_fetch_assoc($sql)){
     $periodo_max = (intval($row['id_periodo']) > $periodo_max ?  intval($row['id_periodo']) : $periodo_max);
     array_push($arrCompensatorios, $row);
 }
+$periodo_min = ($periodo_min > ($periodo_max)-4 ? $periodo_min : ($periodo_max)-4 );
+
 unset($sql);
 $query = "SELECT id, fecha_desde, fecha_hasta FROM adm_cmp_periodos WHERE id >= '$periodo_min' and id <= '$periodo_max' ORDER BY fecha_desde";
 $sql = mysqli_query($con, $query);
@@ -70,7 +93,7 @@ while($row = mysqli_fetch_assoc($sql)){
 
 //TOTALES
 $arrCompensatoriosTotales=[];
-$query = "SELECT bal.id_persona, SUM(compensatorios-recuperos) as Total FROM 
+$query = "SELECT sub.nombre as subgerencia, area.nombre as area, bal.id_persona, SUM(compensatorios-recuperos) as Total FROM 
 (
   SELECT bal.id_persona, bal.id_periodo, 
     IFNULL(CASE WHEN bal.tipo = 'C' THEN SUM(dias) END,0) as compensatorios,
@@ -78,7 +101,10 @@ $query = "SELECT bal.id_persona, SUM(compensatorios-recuperos) as Total FROM
   FROM adm_cmp_balance as bal
   GROUP BY id_periodo, id_persona, tipo
 ) as bal
-GROUP BY bal.id_persona;";
+LEFT JOIN persona as per ON bal.id_persona = per.id_persona
+LEFT JOIN subgerencia as sub ON per.subgerencia = sub.id_subgerencia
+LEFT JOIN area ON per.area = area.id_area
+GROUP BY sub.id_subgerencia, area.id_area, bal.id_persona;";
 
 $sql = mysqli_query($con, $query);
 
@@ -212,56 +238,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </thead>
                 <tbody>
                     <?php
-                        $curr_id_persona =0;
-                        $nRow = 0;
-                        $registro = $arrCompensatorios[$nRow];
-                        $allRows = count($arrCompensatorios);
-                        while($nRow < $allRows) {
+                        foreach($arrCompensatoriosTotales as $ktot => $vtot) {
                             
-                            $curr_id_persona = intval($registro['id_persona']);
+                            $curr_id_persona = intval($vtot['id_persona']);
+                            $aux_total = $vtot['Total'];
+                            $regCompensatorio = getRegistroCompensatorio($curr_id_persona, 0, $arrCompensatorios);
                             echo '<tr>';
-                            echo '<td>'. $registro['subgerencia'].' - '. $registro['area'] .'</td>';
-                            echo '<td>'. $registro['apellido'].', '. $registro['nombre'] .'</td>';
+                            echo '<td>'. $regCompensatorio['subgerencia'].' - '. $regCompensatorio['area'] .'</td>';
+                            echo '<td>'. $regCompensatorio['apellido'].', '. $regCompensatorio['nombre'] .'</td>';
                             // Total
-                            $aux_total = getTotalFromPersona($registro['id_persona'], $arrCompensatoriosTotales);
                             if ($aux_total < 0) {
                                 echo '<td style="text-align:center;font-size:16px;"><strong><span class="badge bg-red">' . $aux_total . '</span></strong></td>';
                             }
                             else {
-                                echo '<td style="text-align:center;font-size:16px;"><strong>'. getTotalFromPersona($registro['id_persona'], $arrCompensatoriosTotales).'</strong></td>';
+                                echo '<td style="text-align:center;font-size:16px;"><strong>'. $aux_total .'</strong></td>';
                             }
                             
-                            $currPeriodo = $periodo_min;
-                            $regCurPeriodo = intval($registro['id_periodo']);
-                            $data = "Comienzo";
-                            while ($nRow < $allRows and intval($registro['id_persona']) == $curr_id_persona) {
-                                $regCurPeriodo = intval($registro['id_periodo']);
-                                // Formo las celdas vacias anteriores (si las hay) de sumas y restas por periodo
-                                for ($i = $currPeriodo; $i < intval($registro['id_periodo']); $i++) {
-                                    $data = "Inserto blanco periodo " .  $i;
+                            // Voy poniendo los registros de datos
+                            foreach ($arrPeriodos as $kper => $vper) {
+                                $regCompensatorio = getRegistroCompensatorio($curr_id_persona, intval($vper['id']), $arrCompensatorios);
+                                if ($regCompensatorio) {
+                                    //----------------------------
+                                    //En esta compensatorios o recuperos
+                                    //----------------------------
+                                    echo '<td style="text-align:center;background-color:rgb(153,255,153);">'.($regCompensatorio['compensatorios'] ? $regCompensatorio['compensatorios'] :"") .'</td>';
+                                    echo '<td style="text-align:center;background-color:rgb(248,203,173);">'.($regCompensatorio['recuperos'] ? $regCompensatorio['recuperos'] :"").'</td>';
+                                    //----------------------------                                    
+                                } else {
                                     echo '<td style="text-align:center;background-color:rgb(153,255,153);"></td><td style="text-align:center;background-color:rgb(248,203,173);"></td>';
                                 }
-                                
-                                $data = "Inserto Datos periodo " .  $i;
-                                //----------------------------
-                                //En esta compensatorios o recuperos
-                                //----------------------------
-                                echo '<td style="text-align:center;background-color:rgb(153,255,153);">'.($registro['compensatorios'] ? $registro['compensatorios'] :"") .'</td>';
-                                echo '<td style="text-align:center;background-color:rgb(248,203,173);">'.($registro['recuperos'] ? $registro['recuperos'] :"").'</td>';
-                                //----------------------------
-                                
-                                //Incremento el mes para generar celdas hasta el próximo mes 
-                                $currPeriodo = intval($registro['id_periodo']) + 1;
-                                
-                                $nRow++;
-                                if ($nRow >= $allRows) {break;}
-                                $registro = $arrCompensatorios[$nRow];
                             }
-                            
-                            // relleno los periodos que faltan
-                            for ($i = $currPeriodo; $i <= $periodo_max; $i++) {
-                                echo '<td style="text-align:center;background-color:rgb(153,255,153);"></td><td style="text-align:center;background-color:rgb(248,203,173);"></td>';
-                            }             
+                                
                             echo '</tr>';       
                         }
                     ?>
