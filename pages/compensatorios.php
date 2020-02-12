@@ -10,6 +10,11 @@ if (!isset($_SESSION['usuario'])){
 $page_title="Compensatorios";
 $user=$_SESSION['usuario'];
 
+$periodo_desde = 0;
+if ($_GET["d"]) {
+    $periodo_desde = $_GET["d"];
+}
+
 //Get user query
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' AND borrado = 0");
 $rowp = mysqli_fetch_assoc($persona);
@@ -84,6 +89,13 @@ while($row = mysqli_fetch_assoc($sql)){
 }
 $periodo_min = ($periodo_min > ($periodo_max)-4 ? $periodo_min : ($periodo_max)-4 );
 
+if ($periodo_desde) {
+    $periodo_max=$periodo_desde + 4;
+    $periodo_min=$periodo_desde;
+}
+
+$periodo_prev = $periodo_min -1;
+$periodo_next = $periodo_min +1;
 unset($sql);
 $query = "SELECT id, fecha_desde, fecha_hasta FROM adm_cmp_periodos WHERE id >= '$periodo_min' and id <= '$periodo_max' ORDER BY fecha_desde";
 $sql = mysqli_query($con, $query);
@@ -196,11 +208,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <div class="col-sm-6" style="text-align:left">
                 <h2 class="box-title">Balance de Compensaciones/Recuperos</h2>
               </div>
-              <div class="col-sm-6" style="text-align:right;">
+              <div class="col-sm-2" style="text-align:center;">
+                  <button type="button" id="cmp-nav-prev" class="btn-sm btn-success" data-value="<?=$periodo_prev ?>"><i class="fa fa-arrow-left"></i></button>
+                  <button type="button" id="cmp-nav-next" class="btn-sm btn-success" data-value="<?=$periodo_next ?>"><i class="fa fa-arrow-right"></i></button>
+              </div>
+              <div class="col-sm-4" style="text-align:right;">
               <?php if ($rq_sec['admin']=='1' OR $rq_sec['compensaciones']=='1'){ ?>
                 <button type="button" id="modal-import-hosting-btn-import" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-upload"></i> Importar Planilla de Guardias</button>
-              <?php } ?>
-              <?php if ($rq_sec['admin']=='1' OR $rq_sec['compensaciones']=='1'){ ?>
                 <button type="button" id="modal-cmp-recupero-btn-alta" class="btn-sm btn-primary" data-toggle="modal"><i class="fa fa-calendar-plus-o"></i> Agregar Recupero</button>
               <?php } ?>
               </div>
@@ -359,7 +373,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
       // for treeview
       $('ul.treeview-menu a').filter(function() {
         return this.href == url;
-      }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');    
+      }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');   
+      
+      
+        $('#cmp-nav-prev').on('click', function() {
+            window.location.href = "compensatorios.php?d=".concat($(this).data('value'));
+        });          
+        $('#cmp-nav-next').on('click', function() {
+            window.location.href = "compensatorios.php?d=".concat($(this).data('value'));
+        });          
+
   });
 </script>
 </body>
