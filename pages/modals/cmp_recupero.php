@@ -27,6 +27,20 @@
                     </div>                    
                     <div class="row">
                         <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Días de recupero</label>
+                                <select name="dias" class="form-control" id="modal-cmp-recupero-dias">
+                                    <option value="0">0.5</option>;										
+                                    <option value="1">1</option>;										
+                                    <option value="2">2</option>;										
+                                    <option value="3">3</option>;										
+                                    <option value="4">4</option>;										
+                                    <option value="5">5</option>;										
+                                </select>
+                            </div>                    
+
+                        </div>
+                        <div class="col-md-4">
 
                             <div class="form-group">
                                 <label for="Fecha">Fecha</label>
@@ -38,6 +52,7 @@
                                 </div>                        
                             </div>
                         </div>
+
                     </div>
                     <div class="row">
                         <div class="col-md-12">

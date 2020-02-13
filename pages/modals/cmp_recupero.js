@@ -51,6 +51,7 @@ $(function() {
             $('#modal-cmp-recupero-id').val($(this).data('id'));
             $('#modal-cmp-recupero-fecha').val($(this).data('fecha').split('-').reverse().join("/"));
             $('#modal-cmp-recupero-descripcion').val($(this).data('descripcion'));
+            $('#modal-cmp-recupero-dias').val($(this).data('dias'));
             $('#modal-cmp-recupero-submit').attr('name', 'M');
 
             $("#modal-cmp-recupero").modal("show");
@@ -68,6 +69,10 @@ $(function() {
         let id = $('#modal-cmp-recupero-id').val();
         let descripcion = $('#modal-cmp-recupero-descripcion').val();
         let fecha = $('#modal-cmp-recupero-fecha').val().split('/').reverse().join("-");
+        let dias = $('#modal-cmp-recupero-dias').val();
+        if (dias == 0) {
+            dias = 0.5;
+        }
         let persona = $('#modal-cmp-recupero-persona').val();
 
         // Ejecuto
@@ -79,6 +84,7 @@ $(function() {
                 id: id,
                 descripcion: descripcion,
                 fecha: fecha,
+                dias: dias,
                 persona: persona
             },
             dataType: 'json',
@@ -102,6 +108,7 @@ $(function() {
         $('#modal-cmp-recupero-id').val(0);
         $('#modal-cmp-recupero-descripcion').val('');
         $('#modal-cmp-recupero-fecha').val('');
+        $('#modal-cmp-recupero-dias').val('0').change();
         $('#modal-cmp-recupero-persona').val('');
     }
     // ********************************************************************************************

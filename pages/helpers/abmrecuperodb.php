@@ -16,21 +16,37 @@
 
     $id = $_POST['id'];
     $fecha = $_POST['fecha'];
+    $dias = $_POST['dias'];
     $id_persona = $_POST['persona'];
     $descripcion = $_POST['descripcion'];
     $result = new stdClass();
     $result->ok = false;
 
-    $id_periodo = verificarPeriodo($fecha, $con);
-    if ($id_periodo==0) {
+    $auxfechasperiodos = [];
+    $_flag_ok = true;
+    $auxdias = ($dias == 0.5 ? 1 : $dias);
+    for ($i=1; $i <= $auxdias ; $i++) { 
+        $id_periodo = 0;
+        $fechains = date('Y-m-d', strtotime("+". ($i-1) ." day", strtotime($fecha)));
+        $id_periodo = verificarPeriodo($fechains, $con);
+        if (!$id_periodo) {
+            $_flag_ok = false;
+            break;
+        }
+        array_push($auxfechasperiodos, [$id_periodo, $fechains, ($dias > 1 ? 1 : $dias)]);
+    }
+
+    if ($_flag_ok==0) {
         $result->err = "Período inexistente";
     } else {
         switch ($op) {
             case 'A':
                 // INSERT
-                $insert_area = mysqli_query($con, "INSERT INTO adm_cmp_balance (id_periodo, id_persona, fecha, tipo, dias, origen) VALUES ('$id_periodo', '$id_persona','$fecha', 'R', 1, 'M')") or die(mysqli_error());	
-                $lastInsert = mysqli_insert_id($con);
-                $result->id = $lastInsert;
+                foreach ($auxfechasperiodos as $key => $value) {
+                    $insert_area = mysqli_query($con, "INSERT INTO adm_cmp_balance (id_periodo, id_persona, fecha, tipo, dias, origen, observacion) VALUES ('$value[0]', '$id_persona','$value[1]', 'R', '$value[2]', 'M','$descripcion')") or die(mysqli_error());	
+                }
+                // $lastInsert = mysqli_insert_id($con);
+                // $result->id = $lastInsert;
                 break;
             
             // case 'M':
