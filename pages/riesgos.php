@@ -1709,20 +1709,13 @@ desired effect
                                                     echo '<td></td><td><span class="label label-info">No Aplica</span></td>'; 
                                                 }
                                                                 
-                                                  echo '<td align="center">
-                                                          <a href="edit_riesgo.php?nik='.$row['id_riesgo'].'" title="Editar datos" class="btn btn-primary btn-sm ';
-                                                          if ($rq_sec['edicion']=='0' or $rq_sec['admin_riesgos']=='0'){
-                                                            echo 'disabled';
-                                                          }
-
-                                                          echo '"><i class="glyphicon glyphicon-edit"></i></a>
-                                                          <a href="riesgos.php?aksi=delete&nik='.$row['id_riesgo'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['amenaza'].'?\')" class="btn btn-danger btn-sm ';
-                                                                if ($rq_sec['edicion']=='0' or $rq_sec['admin_riesgos']=='0'){
-                                                                        echo 'disabled';
-                                                                }
-                                                                echo '"><i class="glyphicon glyphicon-trash"></i></a>
-                                                        </td>
-                                                        </tr>';
+                                                    echo '<td align="center">';
+                                                    if ($rq_sec['admin_riesgos']==1) {
+                                                        echo '<a href="edit_riesgo.php?nik='.$row['id_riesgo'].'" title="Editar datos" class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                                                        echo '<a href="riesgos.php?aksi=delete&nik='.$row['id_riesgo'].'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de '.$row['amenaza'].'?\')" class="btn btn-danger btn-sm "><i class="glyphicon glyphicon-trash"></i></a>';
+                                                    }
+                                                    echo '</td>';
+                                                    echo '</tr>';
                                                 }
                                               }
                                               ?>
