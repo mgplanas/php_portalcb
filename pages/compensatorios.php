@@ -264,6 +264,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             if ($aux_total < 0) {
                                 echo '<td style="text-align:center;font-size:16px;"><strong><span class="badge bg-red">' . $aux_total . '</span></strong></td>';
                             }
+                            elseif ($aux_total > 4) {
+                                echo '<td style="text-align:center;font-size:16px;" title="Supera la cantidad de compensaciones (5)"><strong><span class="badge bg-orange">' . $aux_total . '</span></strong></td>';
+                            }
                             else {
                                 echo '<td style="text-align:center;font-size:16px;"><strong>'. $aux_total .'</strong></td>';
                             }
