@@ -629,7 +629,11 @@ desired effect
 			</div>	
             </div>
 			 <div class="form-group">
-                <button type="button" class="modal-avance btn-block btn-flat btn-primary " ><i class="fa fa-plus"></i> Agregar Avance</button>
+                <?php 
+                if ($rq_sec['admin_riesgos']==1) {
+                    echo '<button type="button" class="modal-avance btn-block btn-flat btn-primary " ><i class="fa fa-plus"></i> Agregar Avance</button>';
+                }
+                ?>
             </div>
             <div class="box">
                 <div class="box-header">
@@ -681,29 +685,31 @@ desired effect
                                 echo '<td>'.$rowavance['fecha'].'</td>';
                                 echo '<td>'.$rowavance['avance'].'</td>';
                                 echo '<td>'.$rowavance['user'].'</td>';
-                                echo '<td align="center">
-                                      <a data-id="'.$rowavance['id_avance_riesgo'].'" 
-                                        data-detail="'.$rowavance['detalle'].'"
-                                        data-justif="'.$rowavance['justificacion'].'"
-                                        data-fecha="'.$rowavance['fecha'].'"
-                                        data-usuario="'.$rowavance['user'].'"
-                                        data-porcentaje= "'.$rowavance['avance'].'"
-                                        data-riesgo="'. $nik .'"
-                                        data-estado="'.$row['estado'].'"
-                                        data-avance="'.$row['avance'].'"
-                                        data-justificacion="'.$row['justificacion_cierre'].'"
-                                        title="Editar datos" class="editar-itemDialog btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';    
-                                    
-                                // Si el riesgo esta cerrado no dejo eliminar avance.
-                                if ($row['estado']==0) {
-                                  echo '<a href="edit_riesgo.php?akav=delete&niav='.$rowavance['id_avance_riesgo'].'&nik=' . $nik .'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de ['.$rowavance['detalle'].']?\')" class="btn btn-danger btn-sm ';
-                                      
-                                  if ($rq_sec['edicion']=='0'){
-                                          echo 'disabled';
-                                  }
-                                  echo '"><i class="glyphicon glyphicon-trash"></i></a>';
+                                if ($rq_sec['admin_riesgos']==1) {
+                                    echo '<td align="center">
+                                          <a data-id="'.$rowavance['id_avance_riesgo'].'" 
+                                            data-detail="'.$rowavance['detalle'].'"
+                                            data-justif="'.$rowavance['justificacion'].'"
+                                            data-fecha="'.$rowavance['fecha'].'"
+                                            data-usuario="'.$rowavance['user'].'"
+                                            data-porcentaje= "'.$rowavance['avance'].'"
+                                            data-riesgo="'. $nik .'"
+                                            data-estado="'.$row['estado'].'"
+                                            data-avance="'.$row['avance'].'"
+                                            data-justificacion="'.$row['justificacion_cierre'].'"
+                                            title="Editar datos" class="editar-itemDialog btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';    
+                                        
+                                    // Si el riesgo esta cerrado no dejo eliminar avance.
+                                    if ($row['estado']==0) {
+                                      echo '<a href="edit_riesgo.php?akav=delete&niav='.$rowavance['id_avance_riesgo'].'&nik=' . $nik .'" title="Borrar datos" onclick="return confirm(\'Esta seguro de borrar los datos de ['.$rowavance['detalle'].']?\')" class="btn btn-danger btn-sm ';
+                                          
+                                      if ($rq_sec['admin_riesgos']=='0'){
+                                              echo 'disabled';
+                                      }
+                                      echo '"><i class="glyphicon glyphicon-trash"></i></a>';
+                                    }
+                                    echo '</td>';
                                 }
-                                echo '</td>';
                                 echo '</tr>';
                             }
                         }
@@ -714,7 +720,11 @@ desired effect
           </div>
 		    <div class="modal-footer">	
             <div class="col-sm-6">
-                <input type="submit" name="save" class="btn btn-raised btn-success" value="Guardar datos">
+                <?php 
+                if ($rq_sec['admin_riesgos']==1) {
+                    echo '<input type="submit" name="save" class="btn btn-raised btn-success" value="Guardar datos">';
+                }
+                ?>
             </div>
             <div class="col-sm-6">
                 <a href="riesgos.php" class="btn btn-default pull-left">Cancelar</a>
