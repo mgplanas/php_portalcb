@@ -10,7 +10,27 @@ ALTER TABLE controls.permisos
 M[setPermiso.php] 
 M[admin.php] 
 - Agregar columna de usuario en el avance.
+M[edit_riesgo.php]
 - Solo se puede cerrar el riesgo si estás en el grupo del punto 1.
+
+- Agregar campo matriz en mejora continua
+
+CREATE TABLE `mc_matriz` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+(mejora) ADD field matriz INT NULL
+
+1 ISO27001
+2 ISO9001
+3 BCRA
+
+
+M[mejora.php]
+M[edit_mejora.php]
+
 
 ## FEAT-PROY-REPROG
 Reprogramación de proyectos mediante avance.
