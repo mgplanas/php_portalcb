@@ -644,6 +644,7 @@ desired effect
                       <th>Detalle</th>
                       <th style="width: 150px">Fecha</th>
                       <th style="width: 150px">Avance</th>
+                      <th style="width: 150px">usuario</th>
                       <th style="text-align:center;width: 10%;">Acción</th>
                     </tr>
                     <?php
@@ -679,6 +680,7 @@ desired effect
                                 echo '<td>'.$detalleAvance.'</td>';
                                 echo '<td>'.$rowavance['fecha'].'</td>';
                                 echo '<td>'.$rowavance['avance'].'</td>';
+                                echo '<td>'.$rowavance['user'].'</td>';
                                 echo '<td align="center">
                                       <a data-id="'.$rowavance['id_avance_riesgo'].'" 
                                         data-detail="'.$rowavance['detalle'].'"

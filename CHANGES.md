@@ -1,5 +1,17 @@
 # CHANGES
 
+## FEAT-RIESGOS-VARIOS
+Cambios de permisos en riesgos y varios de Mejora Contínua.
+- Permiso de riesgo solo van a editar los que estén en este grupo [riesgos_adm]
+
+ALTER TABLE controls.permisos
+ ADD admin_riesgos INT(11) AFTER admin_compras;
+
+M[setPermiso.php] 
+M[admin.php] 
+- Agregar columna de usuario en el avance.
+- Solo se puede cerrar el riesgo si estás en el grupo del punto 1.
+
 ## FEAT-PROY-REPROG
 Reprogramación de proyectos mediante avance.
 *Cambios:*
