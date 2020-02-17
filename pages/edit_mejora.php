@@ -26,6 +26,7 @@ if(mysqli_num_rows($sql) == 0){
 if(isset($_POST['save'])){
 
 	$origen = mysqli_real_escape_string($con,(strip_tags($_POST["origen"],ENT_QUOTES)));
+	$matriz = mysqli_real_escape_string($con,(strip_tags($_POST["matriz"],ENT_QUOTES)));
     $descripcion = mysqli_real_escape_string($con,(strip_tags($_POST["descripcion"],ENT_QUOTES)));
     $responsable = mysqli_real_escape_string($con,(strip_tags($_POST["responsable"],ENT_QUOTES)));
     $tipo = mysqli_real_escape_string($con,(strip_tags($_POST["tipo"],ENT_QUOTES)));
@@ -44,7 +45,7 @@ if(isset($_POST['save'])){
 	
 	// $update_mejora = mysqli_query($con, "UPDATE mejora SET descripcion='$descripcion', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', correccion='$correccion', cierre='$cierre', implementacion='$implementacion', origen='$origen', modificado=NOW(), usuario='$user' WHERE id_mejora='$nik'") or die(mysqli_error());	
 
-	$update_mejora = mysqli_query($con, "UPDATE mejora SET descripcion='$descripcion', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', modificado=NOW(), usuario='$user' WHERE id_mejora='$nik'") or die(mysqli_error());	
+	$update_mejora = mysqli_query($con, "UPDATE mejora SET descripcion='$descripcion', matriz='$matriz', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', modificado=NOW(), usuario='$user' WHERE id_mejora='$nik'") or die(mysqli_error());	
 
     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
 											   VALUES ('2', '9','$nik', now(), '$user', '$nik')") or die(mysqli_error());
@@ -199,7 +200,7 @@ desired effect
             <div class="box-body box-primary">
                 <div class="container">
                       <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                             <label for="origen">Origen</label>
                             <select name="origen" class="form-control">
                             <?php
@@ -214,6 +215,21 @@ desired effect
                             ?>
                             </select>
                         </div>
+                        <div class="col-sm-2">
+                            <label for="matriz">Matriz</label>
+                            <select name="matriz" class="form-control">
+                            <?php
+                                    $matrices = mysqli_query($con, "SELECT * FROM mc_matriz");
+                                    while($rowpo = mysqli_fetch_array($matrices)){
+                                        if($rowpo['id']==$row['matriz']) {
+                                            echo "<option value='". $rowpo['id'] . "' selected='selected'>" .$rowpo['nombre'] . "</option>";
+                                        }
+                                        else {
+                                            echo "<option value='". $rowpo['id'] . "'>" .$rowpo['nombre'] . "</option>";			    }
+                                    }
+                            ?>
+                            </select>
+                        </div>                        
                         <div class="col-sm-4">
                            <label for="tipo">Tipo</label>
                             <select name="tipo" class="form-control">
