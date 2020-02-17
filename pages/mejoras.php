@@ -612,6 +612,7 @@ desired effect
                         <th width="1">Ver</th>
                         <th width="2">Nro</th>
                         <th width="120">Origen</th>
+                        <th>Matriz</th>
                         <th>Estado</th>
                         <th>Responsable</th>
                         <th>Tipo</th>
@@ -633,10 +634,11 @@ desired effect
                       </thead>
                       <tbody>
                       <?php
-                      $query = "SELECT i.*, p.nombre, p.apellido, o.descripcion as dorig, op.nombre as opn, op.apellido as opa FROM mejora as i 
+                      $query = "SELECT i.*, p.nombre, p.apellido, o.descripcion as dorig, op.nombre as opn, op.apellido as opa, mat.nombre as matriznombre  FROM mejora as i 
                                           LEFT JOIN persona as p on i.responsable = p.id_persona
                                           LEFT JOIN persona as op on i.abierto = op.id_persona
                                           LEFT JOIN origen as o on i.origen = o.id_origen
+                                          LEFT JOIN mc_matriz as mat on i.matriz = mat.id
                                 WHERE i.borrado='0' ";
                       // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
                       if ( $per_id_gerencia != 1) {
@@ -669,6 +671,7 @@ desired effect
                             data-plan="'.$row['plan'].'"
                             data-eficacia="'.$row['eficacia'].'"
                             data-evidencia="'.$row['evidencia'].'"
+                            data-matriz="'.$row['matriz'].'"
                             title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                           </td>';
                           echo '
@@ -676,6 +679,7 @@ desired effect
                           echo '
                           </td>								
                           <td>'.$row['dorig'].'</td>
+                          <td>'.$row['matriznombre'].'</td>
                           <td>';
                           if($row['estado'] == '0'){
                             echo 'Abierto';
@@ -951,7 +955,7 @@ $(function(){
       var table = $('#mejoras').DataTable();
 
       // Si son las columnas de filtro creo el ddl
-      if (colIdx == 3 || colIdx == 4 || colIdx == 5) {
+      if (colIdx == 3 || colIdx == 4 || colIdx == 5 || colIdx == 6) {
           var select = $('<select style="width: 100%;"><option value=""></option></select>')
           .on( 'change', function () {
               table
