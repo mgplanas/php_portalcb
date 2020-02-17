@@ -516,9 +516,13 @@ desired effect
                     <div class="modal-body">
                       <div class="container">
                                       <div class="row">
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-2">
                                             <label for="origen">Origen</label>
                             <input type="text" class="form-control" name="origen" id="origen" value="" readonly>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <label for="matriz">Matriz</label>
+                            <input type="text" class="form-control" name="matriz" id="matriz" value="" readonly>
                                         </div>
                                         <div class="col-sm-3">
                                           <label for="tipo">Tipo</label>
@@ -672,6 +676,7 @@ desired effect
                             data-eficacia="'.$row['eficacia'].'"
                             data-evidencia="'.$row['evidencia'].'"
                             data-matriz="'.$row['matriz'].'"
+                            data-matriznombre="'.$row['matriznombre'].'"
                             title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                           </td>';
                           echo '
@@ -919,6 +924,7 @@ $(function(){
     $('#cierre').val($(this).data('cierre'));
     $('#abierto').val($(this).data('abierto'));
     $('#costo').val($(this).data('costo'));
+    $('#matriz').val($(this).data('matriznombre'));
     $('#implementacion').val($(this).data('implementacion'));
 	
 	if($(this).data('tipo') == '1') {
