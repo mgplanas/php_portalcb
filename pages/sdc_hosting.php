@@ -120,15 +120,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Display Name</th>
                     <th>Proyecto</th>
                     <th>Fecha</th>
-                    <th>Hipervisor</th>
+                    <th>Plataforma</th>
                     <th>Hostname</th>
                     <th>Pool</th>
                     <th>UUID</th>
                     <th>VCPU</th>
-                    <th>RAM</th>
-                    <th>Storage</th>
+                    <th>RAM (GB)</th>
+                    <th>Storage (GB)</th>
                     <th>Sistema Operativo</th>
-                    <th>Datacenter</th>
+                    <!-- <th>Datacenter</th> -->
                     <!-- <th width="110px">Acciones</th> -->
                 </tr>
                 </thead>
@@ -216,8 +216,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             { "data": "VCPU" },
             { "data": "RAM" },
             { "data": "storage" },
-            { "data": "SO" },
-            { "data": "datacenter" }
+            { "data": "SO" }
         ],
         'dom'         : 'Bfrtip',
         'buttons'     : [{
