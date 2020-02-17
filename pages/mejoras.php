@@ -211,26 +211,27 @@ desired effect
               <?php
                 
                 if(isset($_POST['Add'])){
-                  $origen = mysqli_real_escape_string($con,(strip_tags($_POST["origen"],ENT_QUOTES)));
-                            $descripcion = mysqli_real_escape_string($con,(strip_tags($_POST["descripcion"],ENT_QUOTES)));
-                            $responsable = mysqli_real_escape_string($con,(strip_tags($_POST["responsable"],ENT_QUOTES)));
-                            $tipo = mysqli_real_escape_string($con,(strip_tags($_POST["tipo"],ENT_QUOTES)));
-                            $abierto = mysqli_real_escape_string($con,(strip_tags($_POST["abierto"],ENT_QUOTES)));
-                            $causa = mysqli_real_escape_string($con,(strip_tags($_POST["causa"],ENT_QUOTES)));
-                            $plan = mysqli_real_escape_string($con,(strip_tags($_POST["plan"],ENT_QUOTES)));
-                            $estado = mysqli_real_escape_string($con,(strip_tags($_POST["estado"],ENT_QUOTES)));
-                            $eficacia = mysqli_real_escape_string($con,(strip_tags($_POST["eficacia"],ENT_QUOTES)));
-                            $evidencia = mysqli_real_escape_string($con,(strip_tags($_POST["evidencia"],ENT_QUOTES)));
-                            $esfuerzo = mysqli_real_escape_string($con,(strip_tags($_POST["esfuerzo"],ENT_QUOTES)));
-                            $costo = mysqli_real_escape_string($con,(strip_tags($_POST["costo"],ENT_QUOTES)));
-                            $apertura = mysqli_real_escape_string($con,(strip_tags($_POST["apertura"],ENT_QUOTES)));
-                            $cierre = mysqli_real_escape_string($con,(strip_tags($_POST["cierre"],ENT_QUOTES)));
-                            $implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
+                    $origen = mysqli_real_escape_string($con,(strip_tags($_POST["origen"],ENT_QUOTES)));
+                    $matriz = mysqli_real_escape_string($con,(strip_tags($_POST["matriz"],ENT_QUOTES)));
+                    $descripcion = mysqli_real_escape_string($con,(strip_tags($_POST["descripcion"],ENT_QUOTES)));
+                    $responsable = mysqli_real_escape_string($con,(strip_tags($_POST["responsable"],ENT_QUOTES)));
+                    $tipo = mysqli_real_escape_string($con,(strip_tags($_POST["tipo"],ENT_QUOTES)));
+                    $abierto = mysqli_real_escape_string($con,(strip_tags($_POST["abierto"],ENT_QUOTES)));
+                    $causa = mysqli_real_escape_string($con,(strip_tags($_POST["causa"],ENT_QUOTES)));
+                    $plan = mysqli_real_escape_string($con,(strip_tags($_POST["plan"],ENT_QUOTES)));
+                    $estado = mysqli_real_escape_string($con,(strip_tags($_POST["estado"],ENT_QUOTES)));
+                    $eficacia = mysqli_real_escape_string($con,(strip_tags($_POST["eficacia"],ENT_QUOTES)));
+                    $evidencia = mysqli_real_escape_string($con,(strip_tags($_POST["evidencia"],ENT_QUOTES)));
+                    $esfuerzo = mysqli_real_escape_string($con,(strip_tags($_POST["esfuerzo"],ENT_QUOTES)));
+                    $costo = mysqli_real_escape_string($con,(strip_tags($_POST["costo"],ENT_QUOTES)));
+                    $apertura = mysqli_real_escape_string($con,(strip_tags($_POST["apertura"],ENT_QUOTES)));
+                    $cierre = mysqli_real_escape_string($con,(strip_tags($_POST["cierre"],ENT_QUOTES)));
+                    $implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
                             
-                  $insert_mejora = mysqli_query($con, "INSERT INTO mejora SET descripcion='$descripcion', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', creado=NOW(), usuario='$user' ") or die(mysqli_error());	
+                    $insert_mejora = mysqli_query($con, "INSERT INTO mejora SET descripcion='$descripcion', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', creado=NOW(), usuario='$user', matriz='$matriz' ") or die(mysqli_error());	
 
                             $lastInsert = mysqli_insert_id($con);
-                  $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+                    $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
                                 VALUES ('1', '9', '$lastInsert', now(), '$user', '$lastInsert')") or die(mysqli_error());
                   unset($_POST);
                   if($insert_mejora){
@@ -247,7 +248,7 @@ desired effect
                       <div class="box-body">
                             <div class="container">
                               <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <label for="origen">Origen</label>
                                     <select name="origen" class="form-control">
                                     <?php
@@ -258,6 +259,21 @@ desired effect
                                                 }
                                                 else {
                                                     echo "<option value='". $rowpo['id_origen'] . "'>" .$rowpo['descripcion'] . "</option>";			    }
+                                            }
+                                    ?>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="matriz">Matriz</label>
+                                    <select name="matriz" class="form-control">
+                                    <?php
+                                            $matrices = mysqli_query($con, "SELECT * FROM mc_matriz");
+                                            while($rowpo = mysqli_fetch_array($matrices)){
+                                                if($rowpo['matriz']==$row['matriz']) {
+                                                    echo "<option value='". $rowpo['id'] . "' selected='selected'>" .$rowpo['nombre'] . "</option>";
+                                                }
+                                                else {
+                                                    echo "<option value='". $rowpo['id'] . "'>" .$rowpo['nombre'] . "</option>";			    }
                                             }
                                     ?>
                                     </select>
