@@ -39,8 +39,8 @@ $(function() {
             $('#modal-abm-servers-cuit').val($(this).data('cuit'));
             $('#modal-abm-servers-infra').val($(this).data('infra'));
             $('#modal-abm-servers-orquestador').val($(this).data('orquestador'));
-            $('#modal-abm-servers-eol').val($(this).data('eol'));
-            $('#modal-abm-servers-eos').val($(this).data('eos'));
+            $('#modal-abm-servers-eol').val($(this).data('eol').split('-').reverse().join("/"));
+            $('#modal-abm-servers-eos').val($(this).data('eos').split('-').reverse().join("/"));
 
             $('#modal-abm-servers-submit').attr('name', 'M');
 
@@ -73,8 +73,8 @@ $(function() {
         let hostname = $('#modal-abm-servers-hostname').val();
         let orquestador = $('#modal-abm-servers-orquestador').val();
         let infra = $('#modal-abm-servers-infra').val();
-        let eol = $('#modal-abm-servers-eol').val();
-        let eos = $('#modal-abm-servers-eos').val();
+        let eol = $('#modal-abm-servers-eol').val().split('/').reverse().join("-");
+        let eos = $('#modal-abm-servers-eos').val().split('/').reverse().join("-");
         // Ejecuto
         $.ajax({
             type: 'POST',

@@ -30,7 +30,7 @@
         case 'A':
             // INSERT
             $insert_server = mysqli_query($con, "INSERT INTO cdc_inv_servidores(infra, orquestador, eol, eos, marca, modelo, serie, memoria, sockets, nucleos, ubicacion_sala, ubicacion_fila, ubicacion_rack, ubicacion_unidad, IP, vcenter, cluster, hostname, cliente) 
-                                                VALUES ('$infra', '$orquestador', '$eol', '$eos', '$marca', '$modelo', '$serie', '$memoria', '$sockets', '$nucleos', '$ubicacion_sala', '$ubicacion_fila', '$ubicacion_rack', '$ubicacion_unidad', '$IP', '$vcenter', '$cluster', '$hostname', '$cliente')") or die(mysqli_error());	
+                                                VALUES ('$infra', '$orquestador', ". ($eol == '' ? 'null' : "'".$eol."'") .", "($eos == '' ? 'null' : "'".$eos."'") .", '$marca', '$modelo', '$serie', '$memoria', '$sockets', '$nucleos', '$ubicacion_sala', '$ubicacion_fila', '$ubicacion_rack', '$ubicacion_unidad', '$IP', '$vcenter', '$cluster', '$hostname', '$cliente')") or die(mysqli_error());	
             $lastInsert = mysqli_insert_id($con);
             $result->id = $lastInsert;
             break;
@@ -53,8 +53,8 @@
             cluster = '$cluster',
             orquestador = '$orquestador',
             infra = '$infra',
-            eos = '$eos',
-            eol = '$eol',
+            eos = ". ($eos == '' ? 'null' : "'".$eos."'") .",
+            eol = ". ($eol == '' ? 'null' : "'".$eol."'") .",
             hostname = '$hostname'
             WHERE id='$id'") or die(mysqli_error());	
             break;
