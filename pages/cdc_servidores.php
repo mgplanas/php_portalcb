@@ -125,7 +125,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.box-header -->
 	
 			<div class="box-body">
-              <table id="servidores" class="table table-striped" width="100%">
+			
+              <table id="servidores" class="display" width="100%">
                 <thead>
                 <tr>
                     <th>Marca</th>
@@ -146,7 +147,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>hostname</th>
                     <th>End of Support</th>
                     <th>End of Life</th>
-                    <th>hostname</th>
                     <th width="110px">Acciones</th>
                 </tr>
                 </thead>
@@ -251,6 +251,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
+<!-- date-range-picker -->
+<script src="../bower_components/moment/min/moment.min.js"></script>
+<script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap datepicker -->
+<script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- export -->
 <script src="../bower_components/datatables.net/js/dataTables.buttons.min.js"></script>
 <script src="../bower_components/datatables.net/js/buttons.flash.min.js"></script>
@@ -262,28 +267,50 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="./modals/cdc_abmservers.js"></script>         
 <script>
   $(function () {
+    // $('#servidores').DataTable({
+    //   'paging'      : true,
+	//   'pageLength': 20,
+    //   'lengthChange': false,
+    //   'searching'   : true,
+    //   "scrollX": true,
+    //   'ordering'    : true,
+    //   'info'        : true,
+    //   'autoWidth'   : true,
+    //   'dom'         : 'Bfrtip',
+    //   'buttons'     : [{
+    //               extend: 'pdfHtml5',
+    //               orientation: 'landscape',
+    //               pageSize: 'A4',
+                         
+    //                  },
+    //                   {
+    //         extend: 'excel',
+    //         text: 'Excel',
+    //         }]
+
+    // })
     $('#servidores').DataTable({
       'paging'      : true,
-			'pageLength': 20,
+      'scrollX': true,
+      'pageLength': 20,
       'lengthChange': false,
       'searching'   : true,
-      "scrollX": true,
       'ordering'    : true,
-      'info'        : true,
       'autoWidth'   : true,
-      'dom'         : 'Bfrtip',
+      'dom'         : 'frtpB',
       'buttons'     : [{
-                  extend: 'pdfHtml5',
-                  orientation: 'landscape',
-                  pageSize: 'A4',
-                         
-                     },
-                      {
-            extend: 'excel',
-            text: 'Excel',
-            }]
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        },
+                        {
+                        extend: 'excel',
+                        text: 'Excel',
+                        }],
 
+  
     })
+
   })
 </script>
 <script>
@@ -305,6 +332,48 @@ scratch. This page gets rid of all links and provides the needed markup only.
       $('ul.treeview-menu a').filter(function() {
         return this.href == url;
       }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');    
+
+
+    // Filtro de la tabla
+    // let table = $('#servidores').DataTable();
+    // $('#servidores thead tr').clone(true).appendTo( '#servidores thead' );
+    // $('#servidores thead tr:eq(1) th').each( function (colIdx) {
+    //     $(this).removeClass('sorting');
+    //     var table = $('#servidores').DataTable();
+
+    //     // Si son las columnas de filtro creo el ddl
+    //     if (colIdx == 6 || colIdx == 7 || colIdx == 8 ) {
+    //         var select = $('<select style="width: 100%;"><option value=""></option></select>')
+    //         .on( 'change', function () {
+    //             table
+    //                 .column( colIdx )
+    //                 .search( $(this).val() )
+    //                 .draw();
+    //         } )
+    //         .on( 'click' , function(){return false;} )
+    //         // .wrap( "<div></div>" );             // VER
+    //         // Get the search data for the first column and add to the select list
+    //         table
+    //             .column( colIdx )
+    //             .cache( 'search' )
+    //             .sort()
+    //             .unique()
+    //             .each( function ( d ) {
+    //                 select.append( $('<option value="'+d+'">'+d+'</option>') );
+    //             });
+            
+    //         var filterhtml = select.parent().prop('outerHTML');
+    //         $(this).html(select);
+    //         // $(this).html(filterhtml);
+
+    //     }
+    //     else {
+    //         $(this).html("");
+    //     }
+
+    //     } );      
+
+
   });
 </script>
 </body>

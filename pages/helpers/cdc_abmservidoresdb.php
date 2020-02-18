@@ -18,6 +18,10 @@
     $vcenter = $_POST['vcenter'];
     $cluster = $_POST['cluster'];
     $hostname = $_POST['hostname'];
+    $infra = $_POST['infra'];
+    $orquestador = $_POST['orquestador'];
+    $eol = $_POST['eol'];
+    $eos = $_POST['eos'];
 
     $result = new stdClass();
     $result->ok = false;
@@ -25,8 +29,8 @@
     switch ($op) {
         case 'A':
             // INSERT
-            $insert_server = mysqli_query($con, "INSERT INTO cdc_inv_servidores(marca, modelo, serie, memoria, sockets, nucleos, ubicacion_sala, ubicacion_fila, ubicacion_rack, ubicacion_unidad, IP, vcenter, cluster, hostname, cliente) 
-                                                VALUES ('$marca', '$modelo', '$serie', '$memoria', '$sockets', '$nucleos', '$ubicacion_sala', '$ubicacion_fila', '$ubicacion_rack', '$ubicacion_unidad', '$IP', '$vcenter', '$cluster', '$hostname', '$cliente')") or die(mysqli_error());	
+            $insert_server = mysqli_query($con, "INSERT INTO cdc_inv_servidores(infra, orquestador, eol, eos, marca, modelo, serie, memoria, sockets, nucleos, ubicacion_sala, ubicacion_fila, ubicacion_rack, ubicacion_unidad, IP, vcenter, cluster, hostname, cliente) 
+                                                VALUES ('$infra', '$orquestador', '$eol', '$eos', '$marca', '$modelo', '$serie', '$memoria', '$sockets', '$nucleos', '$ubicacion_sala', '$ubicacion_fila', '$ubicacion_rack', '$ubicacion_unidad', '$IP', '$vcenter', '$cluster', '$hostname', '$cliente')") or die(mysqli_error());	
             $lastInsert = mysqli_insert_id($con);
             $result->id = $lastInsert;
             break;
@@ -47,6 +51,10 @@
             IP = '$IP',
             vcenter = '$vcenter',
             cluster = '$cluster',
+            orquestador = '$orquestador',
+            infra = '$infra',
+            eos = '$eos',
+            eol = '$eol',
             hostname = '$hostname'
             WHERE id='$id'") or die(mysqli_error());	
             break;

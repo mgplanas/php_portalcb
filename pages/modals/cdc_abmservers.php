@@ -62,20 +62,44 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-md-3">
+                            <label for="infra">Infraestructura</label>
+                            <input type="text" class="form-control" name="infra" placeholder="Tipo de Infra." id='modal-abm-servers-infra' >
+                        </div>
+                        <div class="form-group col-md-3">
                             <label for="ip">IP</label>
                             <input type="text" class="form-control" name="ip" placeholder="IP" id='modal-abm-servers-ip' >
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="vcenter">VCENTER</label>
+                            <label for="vcenter">Hypervisor</label>
                             <input type="text" class="form-control" name="vcenter" placeholder="vcenter" id='modal-abm-servers-vcenter' >
                         </div>
                         <div class="form-group col-md-3">
                             <label for="cluster">Cluster</label>
                             <input type="text" class="form-control" name="cluster" placeholder="cluster" id='modal-abm-servers-cluster' >
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="orquestador">Orquestador</label>
+                            <input type="text" class="form-control" name="orquestador" placeholder="orquestador" id='modal-abm-servers-orquestador' >
+                        </div>
                         <div class="form-group col-md-3">
                             <label for="hostname">HostName</label>
                             <input type="text" class="form-control" name="hostname" placeholder="hostname" id='modal-abm-servers-hostname' >
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="eos">End of Support</label>
+                            <div class="input-group date" data-provide="dpeos">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                <input type="text" class="form-control pull-right" name="eos" id="modal-abm-servers-eos">
+                            </div>                        
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="eol">End of Life</label>
+                            <div class="input-group date" data-provide="dpeol">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                <input type="text" class="form-control pull-right" name="eol" id="modal-abm-servers-eol">
+                            </div>                        
                         </div>
                     </div>
                     <div class="form-group">

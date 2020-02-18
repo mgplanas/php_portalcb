@@ -37,6 +37,10 @@ $(function() {
             $('#modal-abm-servers-nombre').val($(this).data('nombre'));
             $('#modal-abm-servers-sigla').val($(this).data('sigla'));
             $('#modal-abm-servers-cuit').val($(this).data('cuit'));
+            $('#modal-abm-servers-infra').val($(this).data('infra'));
+            $('#modal-abm-servers-orquestador').val($(this).data('orquestador'));
+            $('#modal-abm-servers-eol').val($(this).data('eol'));
+            $('#modal-abm-servers-eos').val($(this).data('eos'));
 
             $('#modal-abm-servers-submit').attr('name', 'M');
 
@@ -67,6 +71,10 @@ $(function() {
         let vcenter = $('#modal-abm-servers-vcenter').val();
         let cluster = $('#modal-abm-servers-cluster').val();
         let hostname = $('#modal-abm-servers-hostname').val();
+        let orquestador = $('#modal-abm-servers-orquestador').val();
+        let infra = $('#modal-abm-servers-infra').val();
+        let eol = $('#modal-abm-servers-eol').val();
+        let eos = $('#modal-abm-servers-eos').val();
         // Ejecuto
         $.ajax({
             type: 'POST',
@@ -87,7 +95,11 @@ $(function() {
                 ip: ip,
                 vcenter: vcenter,
                 cluster: cluster,
-                hostname: hostname
+                hostname: hostname,
+                infra: infra,
+                orquestador: orquestador,
+                eol: eol,
+                eos: eos
             },
             dataType: 'json',
             success: function(json) {
@@ -122,9 +134,25 @@ $(function() {
         $('#modal-abm-servers-nombre').val('');
         $('#modal-abm-servers-sigla').val('');
         $('#modal-abm-servers-cuit').val('');
+        $('#modal-abm-servers-eol').val('');
+        $('#modal-abm-servers-eos').val('');
+        $('#modal-abm-servers-infra').val('');
+        $('#modal-abm-servers-orquestador').val('');
     }
     // ********************************************************************************************
 
     setAMBOrganismoTriggers();
+
+    $('#modal-abm-servers-eos').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        todayHighlight: true
+    });
+    $('#modal-abm-servers-eol').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        todayHighlight: true
+    });
+
 
 });
