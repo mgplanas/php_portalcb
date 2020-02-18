@@ -41,6 +41,9 @@ ALTER TABLE controls.cdc_inv_servidores
  ADD eol DATE;
 
 M[cdc_servidores]
+M[modals\abmservidores.php]
+M[modals\abmservidores.js]
+M[helpers\abmservidoresdb.php]
 
 ## FEAT-PROY-REPROG
 Reprogramación de proyectos mediante avance.
