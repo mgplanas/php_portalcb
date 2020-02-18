@@ -131,23 +131,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Marca</th>
                     <th>Modelo</th>
                     <th>Serie</th>
-                    <th>Mem.</th>
+                    <th>RAM GB</th>
                     <th>Sockets</th>
                     <th>Nucleos</th>
                     <th>Sala</th>
                     <th>Fila</th>
                     <th>Rack</th>
                     <th>Unidad</th>
+                    <th>Infra.</th>
                     <th>IP</th>
-                    <th>VCenter</th>                
+                    <th>Hypervisor</th>                
+                    <th>Orquestador</th>                
                     <th>Cluster</th>
+                    <th>hostname</th>
+                    <th>End of Support</th>
+                    <th>End of Life</th>
                     <th>hostname</th>
                     <th width="110px">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT id, marca, modelo, serie, memoria, sockets, nucleos, ubicacion_sala, ubicacion_fila, ubicacion_rack, ubicacion_unidad, IP, vcenter, cluster, hostname, cliente
+					$query = "SELECT id, marca, modelo, serie, memoria, sockets, nucleos, ubicacion_sala, ubicacion_fila, ubicacion_rack, ubicacion_unidad, infra, IP, vcenter, orquestador, cluster, hostname, eos, eol, cliente
                     FROM cdc_inv_servidores
                     WHERE borrado = 0 
                     ORDER BY marca, modelo;";
@@ -171,10 +176,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             echo '<td align="center">'. $row['ubicacion_fila'].'</td>';
                             echo '<td align="center">'. $row['ubicacion_rack'].'</td>';
                             echo '<td align="center">'. $row['ubicacion_unidad'].'</td>';
+                            echo '<td align="center">'. $row['infra'].'</td>';
                             echo '<td align="center">'. $row['IP'].'</td>';
                             echo '<td align="center">'. $row['vcenter'].'</td>';                
+                            echo '<td align="center">'. $row['orquestador'].'</td>';
                             echo '<td align="center">'. $row['cluster'].'</td>';
                             echo '<td align="center">'. $row['hostname'].'</td>';
+                            echo '<td align="center">'. $row['eos'].'</td>';
+                            echo '<td align="center">'. $row['eol'].'</td>';
                                     
                             echo '<td align="center">';
                             if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
@@ -194,6 +203,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 data-vcenter="' . $row['vcenter'] . '"
                                 data-cluster="' . $row['cluster'] . '"
                                 data-hostname="' . $row['hostname'] . '"
+                                data-infra="' . $row['infra'] . '"
+                                data-orquestador="' . $row['orquestador'] . '"
+                                data-eos="' . $row['eos'] . '"
+                                data-eol="' . $row['eol'] . '"
                                 title="Editar Server" class="modal-abm-servers-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
                                 echo '<a href="cdc_servidores.php?aksi=delete&nik='.$row['id'].'" title="Borrar Server" onclick="return confirm(\'Esta seguro de borrar el server '. $row['hostname'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
                             }

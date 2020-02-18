@@ -31,6 +31,17 @@ M[mejora.php]
 M[edit_mejora.php]
 
 
+- Cambio titulos columnas Hosting
+M[sdc_hosting]
+- Cambios en servidores
+ALTER TABLE controls.cdc_inv_servidores
+ ADD infra VARCHAR(50) AFTER ubicacion_unidad,
+ ADD orquestador VARCHAR(20) AFTER vcenter,
+ ADD eos DATE AFTER cliente,
+ ADD eol DATE;
+
+M[cdc_servidores]
+
 ## FEAT-PROY-REPROG
 Reprogramación de proyectos mediante avance.
 *Cambios:*
