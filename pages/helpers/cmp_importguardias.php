@@ -144,11 +144,13 @@
     }
 
     //Cargo la lista de [id_persona,legajo]
+    error_log('Cargo Lista Personas');
     $arrIds=[];
     $idsPersonasSQL = mysqli_query($con, "SELECT id_persona, legajo FROM persona WHERE borrado = 0");
     while($row = mysqli_fetch_assoc($idsPersonasSQL)){
         $arrIds[] = $row;
     }
+    error_log('Cargo Feriados');
     //Cargo la lista de Feriados
     $arrDNL=[];
     $DNLSQL = mysqli_query($con, "SELECT fecha FROM adm_dnl WHERE  borrado = 0");
@@ -160,17 +162,24 @@
 
     $result = new stdClass();
     $result->ok = false;
-    ini_set('display_errors', '0');
+    // ini_set('display_errors', '0');
     if ($_POST['op'] == 'READ') {
 
         if($_FILES['image'])
         {
+            error_log('HAY IMAGENES');
             $filename = $_FILES['image']['name'];
             $path = $_FILES['image']['tmp_name'];
             $size = $_FILES['image']['size'];
+            error_log($filename);
+            error_log($size);
+            error_log($path);
             
+            
+            error_log('Chequeo ext');
             // get uploaded file's extension
             $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
             // check's valid format
             $result->state = 'VALIDATING INPUT FILE';
             if(in_array($ext, $valid_extensions)) { 
@@ -305,7 +314,7 @@
     }
 
 
-    ini_set('display_errors', '1');
+    // ini_set('display_errors', '1');
     echo json_encode($result);
         
 ?>
