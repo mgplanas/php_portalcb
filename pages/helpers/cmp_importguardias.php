@@ -160,7 +160,7 @@
 
     $result = new stdClass();
     $result->ok = false;
-    ini_set('display_errors', '0');
+    // ini_set('display_errors', '0');
     if ($_POST['op'] == 'READ') {
 
         if($_FILES['image'])
@@ -305,7 +305,7 @@
     }
 
 
-    ini_set('display_errors', '1');
+    // ini_set('display_errors', '1');
     echo json_encode($result);
         
 ?>
