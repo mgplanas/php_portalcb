@@ -167,16 +167,16 @@
 
         if($_FILES['image'])
         {
-            error_log('HAY IMAGENES');
+            error_log('HAY IMAGENES', 1, '/var/log/httpd/php_errors.log');
             $filename = $_FILES['image']['name'];
             $path = $_FILES['image']['tmp_name'];
             $size = $_FILES['image']['size'];
-            error_log($filename);
-            error_log($size);
-            error_log($path);
+            error_log($filename, 1, '/var/log/httpd/php_errors.log');
+            error_log($size, 1, '/var/log/httpd/php_errors.log');
+            error_log($path, 1, '/var/log/httpd/php_errors.log');
             
             
-            error_log('Chequeo ext');
+            error_log('Chequeo ext', 1, '/var/log/httpd/php_errors.log');
             // get uploaded file's extension
             $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
