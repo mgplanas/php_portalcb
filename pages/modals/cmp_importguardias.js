@@ -33,8 +33,8 @@ $(function() {
             alert('Debe seleccionar un archivo para importar.');
             return;
         }
-        formData.append(inputFile.name, inputFile.files[0]);
         formData.append('hasHeading', hasHeading);
+        formData.append(inputFile.name, inputFile.files[0]);
 
         formData.append('op', 'READ');
 
