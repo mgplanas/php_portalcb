@@ -240,48 +240,48 @@
                     unset($Spreadsheet);
 
                     // PROCESO LOS DATOS OBTENIDOS
-                    foreach ($xlsData as $key => $value) {
-                        try {
-                            $desde = date_format(date_create_from_format('m-d-y H:i', $value[2]. ' ' . $value[3]), 'Y-m-d H:i:s');
-                            $hasta = date_format(date_create_from_format('m-d-y H:i', $value[4]. ' ' . $value[5]), 'Y-m-d H:i:s');
-                            $startTime = strtotime($desde);
-                            $endTime = strtotime($hasta);
-                            $dayofweek = date('w', $startTime); //0-6 dom-sab
-                            $min = intval(abs($endTime - $startTime) / 60);  
-                        } catch (\Throwable $th) {
-                            array_push($err,[$value[0],$value[1],$value[2],$value[3],$value[4],$value[5],$value[6],'Error de Formato']);
-                        }
+                    // foreach ($xlsData as $key => $value) {
+                    //     try {
+                    //         $desde = date_format(date_create_from_format('m-d-y H:i', $value[2]. ' ' . $value[3]), 'Y-m-d H:i:s');
+                    //         $hasta = date_format(date_create_from_format('m-d-y H:i', $value[4]. ' ' . $value[5]), 'Y-m-d H:i:s');
+                    //         $startTime = strtotime($desde);
+                    //         $endTime = strtotime($hasta);
+                    //         $dayofweek = date('w', $startTime); //0-6 dom-sab
+                    //         $min = intval(abs($endTime - $startTime) / 60);  
+                    //     } catch (\Throwable $th) {
+                    //         array_push($err,[$value[0],$value[1],$value[2],$value[3],$value[4],$value[5],$value[6],'Error de Formato']);
+                    //     }
                         
-                        // Filtro las que nos son ni Sábado o domingo o feriado
-                        $esFeriado=esFeriado(substr($desde,0,10), $dnl);
-                        $condition = strtotime(substr($desde,0,10) . ' 13:00:00');
-                        if ($dayofweek==0 or ($dayofweek==6 and $endTime>$condition) or $esFeriado==1) {
+                    //     // Filtro las que nos son ni Sábado o domingo o feriado
+                    //     $esFeriado=esFeriado(substr($desde,0,10), $dnl);
+                    //     $condition = strtotime(substr($desde,0,10) . ' 13:00:00');
+                    //     if ($dayofweek==0 or ($dayofweek==6 and $endTime>$condition) or $esFeriado==1) {
 
-                            // Busco el id de la persona
-                            $id = getPersonIDByLegajo($value[0], $arrIds);
-                            if ($id == 0 OR $id == null ) {
-                                array_push($err,'No se encontró la persona ['.$value[1].'] con el legajo ['.$value[0].']');
-                            } else {
-                                array_push($arr, [
-                                    'id_persona'=>$id,
-                                    'dia'=>substr($desde,0,10),
-                                    'desde'=>$desde,
-                                    'hasta'=>$hasta,
-                                    'startTime'=>$startTime,
-                                    'endTime'=>$endTime,
-                                    'dow'=>$dayofweek,
-                                    'dnl'=>$esFeriado,
-                                    'xls_fecha_desde'=>$value[2],
-                                    'xls_hora_desde'=>$value[3],
-                                    'xls_fecha_hasta'=>$value[4],
-                                    'xls_hora_hasta'=>$value[5],
-                                    'justificacion'=>$value[6],
-                                    'g_e'=>$value[7]
-                                ]);
-                            }
-                        }
+                    //         // Busco el id de la persona
+                    //         $id = getPersonIDByLegajo($value[0], $arrIds);
+                    //         if ($id == 0 OR $id == null ) {
+                    //             array_push($err,'No se encontró la persona ['.$value[1].'] con el legajo ['.$value[0].']');
+                    //         } else {
+                    //             array_push($arr, [
+                    //                 'id_persona'=>$id,
+                    //                 'dia'=>substr($desde,0,10),
+                    //                 'desde'=>$desde,
+                    //                 'hasta'=>$hasta,
+                    //                 'startTime'=>$startTime,
+                    //                 'endTime'=>$endTime,
+                    //                 'dow'=>$dayofweek,
+                    //                 'dnl'=>$esFeriado,
+                    //                 'xls_fecha_desde'=>$value[2],
+                    //                 'xls_hora_desde'=>$value[3],
+                    //                 'xls_fecha_hasta'=>$value[4],
+                    //                 'xls_hora_hasta'=>$value[5],
+                    //                 'justificacion'=>$value[6],
+                    //                 'g_e'=>$value[7]
+                    //             ]);
+                    //         }
+                    //     }
                         
-                    }
+                    // }
                     
                     // $result->ok = (count($err)==0);
                     
