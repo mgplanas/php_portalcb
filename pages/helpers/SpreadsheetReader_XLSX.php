@@ -812,7 +812,8 @@
 				// Dates and times
 				elseif ($Format['Type'] == 'DateTime')
 				{
-					$Days = (int)$Value;
+					$Value = abs($Value); // Helder - FIX DateInterval problem
+                    $Days = (int)$Value;
 					// Correcting for Feb 29, 1900
 					if ($Days > 60)
 					{
