@@ -1,6 +1,6 @@
 <?php
     include("../../conexion.php");
-
+    $err =[];
     // SE INSERTAN LOS RESULTADOS EN LA BASE
     function insertarCompensaciones($periodo, $guardias_aplicables, $con){
         
@@ -8,6 +8,7 @@
         mysqli_autocommit($con,FALSE);
         mysqli_begin_transaction($con);
         
+        try {
         // ITERACCION POR LAS COMPENSACIONES
         foreach ($guardias_aplicables as $key_id_persona => $guardia_aplicable) {
             // var_dump($guardia_aplicable);
@@ -45,6 +46,9 @@
 
         mysqli_commit($con);
         mysqli_autocommit($con,TRUE);
+        } catch (Exception  $e) {
+            array_push($err,$e->getMessage());
+        }        
         return true;
     }
 
@@ -193,7 +197,7 @@
             
                     $Sheets = $Spreadsheet -> Sheets();
                     $arr = [];
-                    $err =[];
+                    
                     $xlsData=[];
                     $id_periodo = 0;
 
@@ -290,7 +294,7 @@
                     $resultado = calcularCompensacion($arr);
                     
                     // Inserto en la base
-                    // insertarCompensaciones($id_periodo, $resultado, $con);
+                    insertarCompensaciones($id_periodo, $resultado, $con);
 
                     $result->state = 'COMPENSATORIOS A SER AGREGADOS';
                     // cruzo los datos importados con los reales.
