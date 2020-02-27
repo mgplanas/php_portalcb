@@ -222,21 +222,21 @@
                                 array_push($xlsData, [$Row[0],$Row[1],$Row[5],$Row[6],$Row[8],$Row[9], $Row[15],1]);
                             }
                         }
+                        
+                        // SOLAPA DE EMERGENCIAS
+                        $Spreadsheet -> ChangeSheet(3);
+                        $fila = 0;
+                        foreach ($Spreadsheet as $Key => $Row) {
+                            $fila++;
+                            if ($fila>11 && $Row && $Row[0]!='') {
+                                // Legajo, Nombre, Fecha Desde, Hora desde, Fecha Hasta, Hora hasta, Justificacion, [G(1)|E(2)]
+                                array_push($xlsData, [$Row[0],$Row[1],$Row[4],$Row[5],$Row[7],$Row[8], $Row[13],2]);
+                            }
+                        }		
+                        
                     } catch (Exception  $e) {
                         array_push($err,$e->getMessage());
                     }
-
-                    // SOLAPA DE EMERGENCIAS
-                    $Spreadsheet -> ChangeSheet(3);
-                    $fila = 0;
-                    foreach ($Spreadsheet as $Key => $Row) {
-                        $fila++;
-                        if ($fila>11 && $Row && $Row[0]!='') {
-                            // Legajo, Nombre, Fecha Desde, Hora desde, Fecha Hasta, Hora hasta, Justificacion, [G(1)|E(2)]
-                            array_push($xlsData, [$Row[0],$Row[1],$Row[4],$Row[5],$Row[7],$Row[8], $Row[13],2]);
-                        }
-                    }		
-
                     unset($Spreadsheet);
 
                     // PROCESO LOS DATOS OBTENIDOS
