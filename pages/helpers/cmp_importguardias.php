@@ -192,17 +192,18 @@
                 
                     date_default_timezone_set('UTC');
                 
-                    $result->state = 'NEW Spread';
+                    
                     $Spreadsheet = new SpreadsheetReader($path, $filename);
             
-                    // $Sheets = $Spreadsheet -> Sheets();
-                    // $arr = [];
-                    // $err =[];
-                    // $xlsData=[];
-                    // $id_periodo = 0;
+                    $Sheets = $Spreadsheet -> Sheets();
+                    $arr = [];
+                    $err =[];
+                    $xlsData=[];
+                    $id_periodo = 0;
 
-                    // // SOLAPA DE DISPONIBILIDAD
-                    // $Spreadsheet -> ChangeSheet(2);
+                    // SOLAPA DE DISPONIBILIDAD
+                    $result->state = 'SOLAPA DISPONIBILIDAD';
+                    $Spreadsheet -> ChangeSheet(2);
 
                     // $fila = 0;
                     // foreach ($Spreadsheet as $Key => $Row) {
