@@ -5,10 +5,10 @@
     function insertarCompensaciones($periodo, $guardias_aplicables, $con){
         
         // Turn autocommit off
-        // mysqli_autocommit($con,FALSE);
-        // mysqli_begin_transaction($con);
+        mysqli_autocommit($con,FALSE);
+        mysqli_begin_transaction($con);
         
-        // // ITERACCION POR LAS COMPENSACIONES
+        // ITERACCION POR LAS COMPENSACIONES
         // foreach ($guardias_aplicables as $key_id_persona => $guardia_aplicable) {
         //     // var_dump($guardia_aplicable);
         //     //Por fecha
@@ -43,9 +43,9 @@
         //     }
         // }         
 
-        // mysqli_commit($con);
-        // mysqli_autocommit($con,TRUE);
-        // return true;
+        mysqli_commit($con);
+        mysqli_autocommit($con,TRUE);
+        return true;
     }
 
     // Verifica el periodo si existe, si no existe lo crea
