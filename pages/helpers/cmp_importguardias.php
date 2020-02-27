@@ -9,39 +9,39 @@
         mysqli_begin_transaction($con);
         
         // ITERACCION POR LAS COMPENSACIONES
-        // foreach ($guardias_aplicables as $key_id_persona => $guardia_aplicable) {
-        //     // var_dump($guardia_aplicable);
-        //     //Por fecha
-        //     foreach ($guardia_aplicable as $keyfecha => $guardia_aplicable_fecha) {
+        foreach ($guardias_aplicables as $key_id_persona => $guardia_aplicable) {
+            // var_dump($guardia_aplicable);
+            //Por fecha
+            foreach ($guardia_aplicable as $keyfecha => $guardia_aplicable_fecha) {
                 
-        //         $regla = '';
-        //         if ($guardia_aplicable_fecha['guardias'][0]['dnl']=='1') { $regla='F'; 
-        //         } elseif ($guardia_aplicable_fecha['guardias'][0]['dow']=='0') { $regla='D'; 
-        //         } else { $regla = 'S'; }                
+                $regla = '';
+                if ($guardia_aplicable_fecha['guardias'][0]['dnl']=='1') { $regla='F'; 
+                } elseif ($guardia_aplicable_fecha['guardias'][0]['dow']=='0') { $regla='D'; 
+                } else { $regla = 'S'; }                
                 
-        //         // Agrego el balance
-        //         $minutos = $guardias_aplicables[$key_id_persona][$keyfecha]['tot_min'];
-        //         $dias = $guardias_aplicables[$key_id_persona][$keyfecha]['compensatorio'];
+                // Agrego el balance
+                $minutos = $guardias_aplicables[$key_id_persona][$keyfecha]['tot_min'];
+                $dias = $guardias_aplicables[$key_id_persona][$keyfecha]['compensatorio'];
                 
-        //         $sqlCompensatorio = "INSERT INTO adm_cmp_balance (id_periodo, id_persona, fecha, tipo, dias, origen) VALUES ('$periodo', '$key_id_persona','$keyfecha', 'C', '$dias', '$regla')";
-        //         if (!mysqli_query($con, $sqlCompensatorio)){
-        //             mysqli_rollback($con);
-        //             mysqli_autocommit($con,TRUE);
-        //             return false;
-        //         }
-        //         $id_balance = mysqli_insert_id($con);
+                $sqlCompensatorio = "INSERT INTO adm_cmp_balance (id_periodo, id_persona, fecha, tipo, dias, origen) VALUES ('$periodo', '$key_id_persona','$keyfecha', 'C', '$dias', '$regla')";
+                if (!mysqli_query($con, $sqlCompensatorio)){
+                    mysqli_rollback($con);
+                    mysqli_autocommit($con,TRUE);
+                    return false;
+                }
+                $id_balance = mysqli_insert_id($con);
                 
-        //         // Agrego las guardias que dieron origen
-        //         foreach ($guardia_aplicable_fecha['guardias'] as $keyitem => $item) {
-        //             $sqlGuardias = "INSERT INTO adm_cmp_guardias (id_balance,id_persona, fecha_desde, fecha_hasta, minutos_efectivos, tipo, lote, justificacion) VALUES ('$id_balance', '$key_id_persona', '".$item['desde']."', '".$item['hasta']."', '$minutos', ".$item['g_e'].", 0, '".$item['justificacion']."')";
-        //             if (!mysqli_query($con, $sqlGuardias)){
-        //                 mysqli_rollback($con);
-        //                 mysqli_autocommit($con,TRUE);
-        //                 return false;
-        //             }                    
-        //         }
-        //     }
-        // }         
+                // Agrego las guardias que dieron origen
+                foreach ($guardia_aplicable_fecha['guardias'] as $keyitem => $item) {
+                    $sqlGuardias = "INSERT INTO adm_cmp_guardias (id_balance,id_persona, fecha_desde, fecha_hasta, minutos_efectivos, tipo, lote, justificacion) VALUES ('$id_balance', '$key_id_persona', '".$item['desde']."', '".$item['hasta']."', '$minutos', ".$item['g_e'].", 0, '".$item['justificacion']."')";
+                    if (!mysqli_query($con, $sqlGuardias)){
+                        mysqli_rollback($con);
+                        mysqli_autocommit($con,TRUE);
+                        return false;
+                    }                    
+                }
+            }
+        }         
 
         mysqli_commit($con);
         mysqli_autocommit($con,TRUE);
