@@ -212,7 +212,7 @@
 
                             }
                     } catch (Exception $e) {
-                        array_push($err,$e->getMessage(). ' ' . $fila);
+                        array_push($err,$e->getMessage(). ' ' . $Row);
                     }
 
                     // // SOLAPA DE EMERGENCIAS
