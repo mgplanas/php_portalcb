@@ -209,19 +209,19 @@
                     foreach ($Spreadsheet as $Key => $Row) {
                         $fila++;
                         // EXTRAIGO EL PERIODO
-                        if ($fila==8) {
-                            try {
-                                $periodo_desde = date_format(date_create_from_format('m-d-y H:i:s', $Row[4]. ' 00:00:00'), 'Y-m-d H:i:s');
-                                $periodo_hasta = date_format(date_create_from_format('m-d-y H:i:s', $Row[7]. ' 23:59:59'), 'Y-m-d H:i:s');
-                                $id_periodo = verificarPeriodo($periodo_desde, $periodo_hasta, $con);
-                                if ($id_periodo==0) {
-                                    array_push($err,'No se pudo encontrar/generar el período ['.$periodo_desde.' - ' . $periodo_hasta. ' ]');
-                                }
-                            } catch (\Throwable $th) {
-                                array_push($err,'Error de formato en el período ['.$periodo_desde.' - ' . $periodo_hasta. ' ]');
-                            }
+                        // if ($fila==8) {
+                        //     try {
+                        //         $periodo_desde = date_format(date_create_from_format('m-d-y H:i:s', $Row[4]. ' 00:00:00'), 'Y-m-d H:i:s');
+                        //         $periodo_hasta = date_format(date_create_from_format('m-d-y H:i:s', $Row[7]. ' 23:59:59'), 'Y-m-d H:i:s');
+                        //         $id_periodo = verificarPeriodo($periodo_desde, $periodo_hasta, $con);
+                        //         if ($id_periodo==0) {
+                        //             array_push($err,'No se pudo encontrar/generar el período ['.$periodo_desde.' - ' . $periodo_hasta. ' ]');
+                        //         }
+                        //     } catch (\Throwable $th) {
+                        //         array_push($err,'Error de formato en el período ['.$periodo_desde.' - ' . $periodo_hasta. ' ]');
+                        //     }
     
-                        }
+                        // }
                         
                     //     // EXTRAIGO LAS ACTIVACIONES
                     //     if ($Row && $Row[3]=='Si') {
