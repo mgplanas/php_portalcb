@@ -286,10 +286,10 @@
                         
                     $result->ok = (count($err)==0);
                     
-                    // // Calculo los días que corresponden a la guardia.
-                    // $resultado = calcularCompensacion($arr);
+                    // Calculo los días que corresponden a la guardia.
+                    $resultado = calcularCompensacion($arr);
                     
-                    // // Inserto en la base
+                    // Inserto en la base
                     // insertarCompensaciones($id_periodo, $resultado, $con);
 
                     $result->state = 'COMPENSATORIOS A SER AGREGADOS';
