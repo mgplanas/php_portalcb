@@ -69,10 +69,10 @@ LEFT JOIN area ON per.area = area.id_area
 INNER JOIN 
 ( 
 SELECT bal.id_persona, bal.id_periodo, 
-  IFNULL(CASE WHEN bal.tipo = 'C' THEN SUM(dias) END,0) as compensatorios,
-  IFNULL(CASE WHEN bal.tipo = 'R' THEN SUM(dias) END,0) as recuperos
+  IFNULL((SELECT SUM(bal_c.dias) FROM adm_cmp_balance as bal_c WHERE bal_c.tipo = 'C' AND bal_c.id_persona = bal.id_persona AND bal_c.id_periodo = bal.id_periodo),0) as compensatorios,
+  IFNULL((SELECT SUM(bal_r.dias) FROM adm_cmp_balance as bal_r WHERE bal_r.tipo = 'R' AND bal_r.id_persona = bal.id_persona AND bal_r.id_periodo = bal.id_periodo),0) as recuperos
 FROM adm_cmp_balance as bal
-GROUP BY id_periodo, id_persona, tipo
+GROUP BY id_periodo, id_persona
 ) AS sumatoria ON per.id_persona = sumatoria.id_persona
 INNER JOIN adm_cmp_periodos as p ON sumatoria.id_periodo = p.id AND fecha_desde >= DATE_ADD(NOW(), INTERVAL -6 MONTH) 
 ORDER BY sub.nombre, area.nombre, per.apellido, per.nombre,sumatoria.id_periodo;";
