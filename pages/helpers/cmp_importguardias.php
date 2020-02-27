@@ -227,8 +227,8 @@
                                 //         array_push($xlsData, [$Row[0],$Row[1],$Row[5],$Row[6],$Row[8],$Row[9], $Row[15],1]);
                                 //     }
                             }
-                    } catch (\Throwable $th) {
-                        array_push($err,'Error de formato en solapa de Disponibilidad');
+                    } catch (Exception $e) {
+                        array_push($err,$e->getMessage());
                     }
 
                     // // SOLAPA DE EMERGENCIAS
