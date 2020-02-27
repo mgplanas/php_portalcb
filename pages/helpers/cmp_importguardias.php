@@ -176,133 +176,134 @@
 
             // check's valid format
             $result->state = 'VALIDATING INPUT FILE';
-            // if(in_array($ext, $valid_extensions)) { 
+            if(in_array($ext, $valid_extensions)) { 
                 
-            //     if($size > 0) {
+                if($size > 0) {
 
-            //         // $targets = 'C:/xampp/htdocs/test/' . basename($filename);
-            //         // move_uploaded_file($path, $targets);
+                    // $targets = 'C:/xampp/htdocs/test/' . basename($filename);
+                    // move_uploaded_file($path, $targets);
             
-            //         //Borro la temporal
-            //         $sqlRes = mysqli_query($con, 'TRUNCATE TABLE adm_cmp_guardias_tmp;');
-            //         $result->state = 'INSERT DATA INTO TEMP TABLE';
+                    //Borro la temporal
+                    $sqlRes = mysqli_query($con, 'TRUNCATE TABLE adm_cmp_guardias_tmp;');
+                    $result->state = 'INSERT DATA INTO TEMP TABLE';
                     
-            //         //Importo el excel
-            //         require('./SpreadsheetReader.php');
+                    //Importo el excel
+                    require('./SpreadsheetReader.php');
                 
-            //         date_default_timezone_set('UTC');
+                    date_default_timezone_set('UTC');
                 
-            //         $Spreadsheet = new SpreadsheetReader($path, $filename);
+                    $result->state = 'NEW Spread';
+                    $Spreadsheet = new SpreadsheetReader($path, $filename);
             
-            //         $Sheets = $Spreadsheet -> Sheets();
-            //         $arr = [];
-            //         $err =[];
-            //         $xlsData=[];
-            //         $id_periodo = 0;
+                    // $Sheets = $Spreadsheet -> Sheets();
+                    // $arr = [];
+                    // $err =[];
+                    // $xlsData=[];
+                    // $id_periodo = 0;
 
-            //         // SOLAPA DE DISPONIBILIDAD
-            //         $Spreadsheet -> ChangeSheet(2);
+                    // // SOLAPA DE DISPONIBILIDAD
+                    // $Spreadsheet -> ChangeSheet(2);
 
-            //         $fila = 0;
-            //         foreach ($Spreadsheet as $Key => $Row) {
-            //             $fila++;
-            //             // EXTRAIGO EL PERIODO
-            //             if ($fila==8) {
-            //                 try {
-            //                     $periodo_desde = date_format(date_create_from_format('m-d-y H:i:s', $Row[4]. ' 00:00:00'), 'Y-m-d H:i:s');
-            //                     $periodo_hasta = date_format(date_create_from_format('m-d-y H:i:s', $Row[7]. ' 23:59:59'), 'Y-m-d H:i:s');
-            //                     $id_periodo = verificarPeriodo($periodo_desde, $periodo_hasta, $con);
-            //                     if ($id_periodo==0) {
-            //                         array_push($err,'No se pudo encontrar/generar el período ['.$periodo_desde.' - ' . $periodo_hasta. ' ]');
-            //                     }
-            //                 } catch (\Throwable $th) {
-            //                     array_push($err,'Error de formato en el período ['.$periodo_desde.' - ' . $periodo_hasta. ' ]');
-            //                 }
+                    // $fila = 0;
+                    // foreach ($Spreadsheet as $Key => $Row) {
+                    //     $fila++;
+                    //     // EXTRAIGO EL PERIODO
+                    //     if ($fila==8) {
+                    //         try {
+                    //             $periodo_desde = date_format(date_create_from_format('m-d-y H:i:s', $Row[4]. ' 00:00:00'), 'Y-m-d H:i:s');
+                    //             $periodo_hasta = date_format(date_create_from_format('m-d-y H:i:s', $Row[7]. ' 23:59:59'), 'Y-m-d H:i:s');
+                    //             $id_periodo = verificarPeriodo($periodo_desde, $periodo_hasta, $con);
+                    //             if ($id_periodo==0) {
+                    //                 array_push($err,'No se pudo encontrar/generar el período ['.$periodo_desde.' - ' . $periodo_hasta. ' ]');
+                    //             }
+                    //         } catch (\Throwable $th) {
+                    //             array_push($err,'Error de formato en el período ['.$periodo_desde.' - ' . $periodo_hasta. ' ]');
+                    //         }
     
-            //             }
+                    //     }
                         
-            //             // EXTRAIGO LAS ACTIVACIONES
-            //             if ($Row && $Row[3]=='Si') {
-            //                 // Voy metiendo la raw data en un array para después procesar
-            //                 // Legajo, Nombre, Fecha Desde, Hora desde, Fecha Hasta, Hora hasta, Justificacion, [G(1)|E(2)]
-            //                 array_push($xlsData, [$Row[0],$Row[1],$Row[5],$Row[6],$Row[8],$Row[9], $Row[15],1]);
-            //             }
-            //         }
+                    //     // EXTRAIGO LAS ACTIVACIONES
+                    //     if ($Row && $Row[3]=='Si') {
+                    //         // Voy metiendo la raw data en un array para después procesar
+                    //         // Legajo, Nombre, Fecha Desde, Hora desde, Fecha Hasta, Hora hasta, Justificacion, [G(1)|E(2)]
+                    //         array_push($xlsData, [$Row[0],$Row[1],$Row[5],$Row[6],$Row[8],$Row[9], $Row[15],1]);
+                    //     }
+                    // }
 
-            //         // SOLAPA DE EMERGENCIAS
-            //         $Spreadsheet -> ChangeSheet(3);
-            //         $fila = 0;
-            //         foreach ($Spreadsheet as $Key => $Row) {
-            //             $fila++;
-            //             if ($fila>11 && $Row && $Row[0]!='') {
-            //                 // Legajo, Nombre, Fecha Desde, Hora desde, Fecha Hasta, Hora hasta, Justificacion, [G(1)|E(2)]
-            //                 array_push($xlsData, [$Row[0],$Row[1],$Row[4],$Row[5],$Row[7],$Row[8], $Row[13],2]);
-            //             }
-            //         }		
+                    // // SOLAPA DE EMERGENCIAS
+                    // $Spreadsheet -> ChangeSheet(3);
+                    // $fila = 0;
+                    // foreach ($Spreadsheet as $Key => $Row) {
+                    //     $fila++;
+                    //     if ($fila>11 && $Row && $Row[0]!='') {
+                    //         // Legajo, Nombre, Fecha Desde, Hora desde, Fecha Hasta, Hora hasta, Justificacion, [G(1)|E(2)]
+                    //         array_push($xlsData, [$Row[0],$Row[1],$Row[4],$Row[5],$Row[7],$Row[8], $Row[13],2]);
+                    //     }
+                    // }		
 
-            //         unset($Spreadsheet);
+                    unset($Spreadsheet);
 
-            //         // PROCESO LOS DATOS OBTENIDOS
-            //         foreach ($xlsData as $key => $value) {
-            //             try {
-            //                 $desde = date_format(date_create_from_format('m-d-y H:i', $value[2]. ' ' . $value[3]), 'Y-m-d H:i:s');
-            //                 $hasta = date_format(date_create_from_format('m-d-y H:i', $value[4]. ' ' . $value[5]), 'Y-m-d H:i:s');
-            //                 $startTime = strtotime($desde);
-            //                 $endTime = strtotime($hasta);
-            //                 $dayofweek = date('w', $startTime); //0-6 dom-sab
-            //                 $min = intval(abs($endTime - $startTime) / 60);  
-            //             } catch (\Throwable $th) {
-            //                 array_push($err,[$value[0],$value[1],$value[2],$value[3],$value[4],$value[5],$value[6],'Error de Formato']);
-            //             }
+                    // PROCESO LOS DATOS OBTENIDOS
+                    // foreach ($xlsData as $key => $value) {
+                    //     try {
+                    //         $desde = date_format(date_create_from_format('m-d-y H:i', $value[2]. ' ' . $value[3]), 'Y-m-d H:i:s');
+                    //         $hasta = date_format(date_create_from_format('m-d-y H:i', $value[4]. ' ' . $value[5]), 'Y-m-d H:i:s');
+                    //         $startTime = strtotime($desde);
+                    //         $endTime = strtotime($hasta);
+                    //         $dayofweek = date('w', $startTime); //0-6 dom-sab
+                    //         $min = intval(abs($endTime - $startTime) / 60);  
+                    //     } catch (\Throwable $th) {
+                    //         array_push($err,[$value[0],$value[1],$value[2],$value[3],$value[4],$value[5],$value[6],'Error de Formato']);
+                    //     }
                         
-            //             // Filtro las que nos son ni Sábado o domingo o feriado
-            //             $esFeriado=esFeriado(substr($desde,0,10), $dnl);
-            //             $condition = strtotime(substr($desde,0,10) . ' 13:00:00');
-            //             if ($dayofweek==0 or ($dayofweek==6 and $endTime>$condition) or $esFeriado==1) {
+                    //     // Filtro las que nos son ni Sábado o domingo o feriado
+                    //     $esFeriado=esFeriado(substr($desde,0,10), $dnl);
+                    //     $condition = strtotime(substr($desde,0,10) . ' 13:00:00');
+                    //     if ($dayofweek==0 or ($dayofweek==6 and $endTime>$condition) or $esFeriado==1) {
 
-            //                 // Busco el id de la persona
-            //                 $id = getPersonIDByLegajo($value[0], $arrIds);
-            //                 if ($id == 0 OR $id == null ) {
-            //                     array_push($err,'No se encontró la persona ['.$value[1].'] con el legajo ['.$value[0].']');
-            //                 } else {
-            //                     array_push($arr, [
-            //                         'id_persona'=>$id,
-            //                         'dia'=>substr($desde,0,10),
-            //                         'desde'=>$desde,
-            //                         'hasta'=>$hasta,
-            //                         'startTime'=>$startTime,
-            //                         'endTime'=>$endTime,
-            //                         'dow'=>$dayofweek,
-            //                         'dnl'=>$esFeriado,
-            //                         'xls_fecha_desde'=>$value[2],
-            //                         'xls_hora_desde'=>$value[3],
-            //                         'xls_fecha_hasta'=>$value[4],
-            //                         'xls_hora_hasta'=>$value[5],
-            //                         'justificacion'=>$value[6],
-            //                         'g_e'=>$value[7]
-            //                     ]);
-            //                 }
-            //             }
+                    //         // Busco el id de la persona
+                    //         $id = getPersonIDByLegajo($value[0], $arrIds);
+                    //         if ($id == 0 OR $id == null ) {
+                    //             array_push($err,'No se encontró la persona ['.$value[1].'] con el legajo ['.$value[0].']');
+                    //         } else {
+                    //             array_push($arr, [
+                    //                 'id_persona'=>$id,
+                    //                 'dia'=>substr($desde,0,10),
+                    //                 'desde'=>$desde,
+                    //                 'hasta'=>$hasta,
+                    //                 'startTime'=>$startTime,
+                    //                 'endTime'=>$endTime,
+                    //                 'dow'=>$dayofweek,
+                    //                 'dnl'=>$esFeriado,
+                    //                 'xls_fecha_desde'=>$value[2],
+                    //                 'xls_hora_desde'=>$value[3],
+                    //                 'xls_fecha_hasta'=>$value[4],
+                    //                 'xls_hora_hasta'=>$value[5],
+                    //                 'justificacion'=>$value[6],
+                    //                 'g_e'=>$value[7]
+                    //             ]);
+                    //         }
+                    //     }
                         
-            //         }
+                    // }
                     
-            //         $result->ok = (count($err)==0);
+                    $result->ok = (count($err)==0);
                     
-            //         // Calculo los días que corresponden a la guardia.
-            //         $resultado = calcularCompensacion($arr);
+                    // Calculo los días que corresponden a la guardia.
+                    $resultado = calcularCompensacion($arr);
                     
-            //         // Inserto en la base
-            //         insertarCompensaciones($id_periodo, $resultado, $con);
+                    // Inserto en la base
+                    // insertarCompensaciones($id_periodo, $resultado, $con);
 
-            //         $result->state = 'COMPENSATORIOS A SER AGREGADOS';
-            //         // cruzo los datos importados con los reales.
-            //         $result->compensatorios = $resultado;
-            //         $result->error = array_unique( $err );
+                    $result->state = 'COMPENSATORIOS A SER AGREGADOS';
+                    // cruzo los datos importados con los reales.
+                    $result->compensatorios = $resultado;
+                    $result->error = array_unique( $err );
 
-            //     }
-            //     else { $result->error = 'Archivo vacío'; }
-            // } 
-            // else { $result->error = 'Extensión inválida'; }
+                }
+                else { $result->error = 'Archivo vacío'; }
+            } 
+            else { $result->error = 'Extensión inválida'; }
         }
         else { $result->error = 'invalid'; }
     }
