@@ -1,17 +1,5 @@
 <?php
     include("../../conexion.php");
-
-    try {
-        // Turn autocommit off
-        mysqli_autocommit($con,FALSE);
-        mysqli_begin_transaction($con);
-        
-        mysqli_commit($con);
-        mysqli_autocommit($con,TRUE);
-    } catch (Exception  $e) {
-        echo json_encode($e->getMessage()); 
-        die();
-    }
     
     // SE INSERTAN LOS RESULTADOS EN LA BASE
     function insertarCompensaciones($periodo, $guardias_aplicables, $con){
