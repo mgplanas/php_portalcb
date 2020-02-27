@@ -201,29 +201,29 @@
                     $Spreadsheet -> ChangeSheet(2);
 
                     $fila = 0;
-                    foreach ($Spreadsheet as $Key => $Row) {
-                        $fila++;
-                        // EXTRAIGO EL PERIODO
-                        if ($fila==8) {
-                            try {
+                    try {
+                        foreach ($Spreadsheet as $Key => $Row) {
+                            $fila++;
+                            // EXTRAIGO EL PERIODO
+                            if ($fila==8) {
                                 $periodo_desde = date_format(date_create_from_format('m-d-y H:i:s', $Row[4]. ' 00:00:00'), 'Y-m-d H:i:s');
                                 $periodo_hasta = date_format(date_create_from_format('m-d-y H:i:s', $Row[7]. ' 23:59:59'), 'Y-m-d H:i:s');
                                 $id_periodo = verificarPeriodo($periodo_desde, $periodo_hasta, $con);
                                 if ($id_periodo==0) {
                                     array_push($err,'No se pudo encontrar/generar el período ['.$periodo_desde.' - ' . $periodo_hasta. ' ]');
                                 }
-                            } catch (\Throwable $th) {
-                                array_push($err,'Error de formato en el período ['.$periodo_desde.' - ' . $periodo_hasta. ' ]');
+                                
                             }
-    
+                            
+                            // EXTRAIGO LAS ACTIVACIONES
+                            if ($Row && $Row[3]=='Si') {
+                                // Voy metiendo la raw data en un array para después procesar
+                                // Legajo, Nombre, Fecha Desde, Hora desde, Fecha Hasta, Hora hasta, Justificacion, [G(1)|E(2)]
+                                array_push($xlsData, [$Row[0],$Row[1],$Row[5],$Row[6],$Row[8],$Row[9], $Row[15],1]);
+                            }
                         }
-                        
-                        // EXTRAIGO LAS ACTIVACIONES
-                        if ($Row && $Row[3]=='Si') {
-                            // Voy metiendo la raw data en un array para después procesar
-                            // Legajo, Nombre, Fecha Desde, Hora desde, Fecha Hasta, Hora hasta, Justificacion, [G(1)|E(2)]
-                            array_push($xlsData, [$Row[0],$Row[1],$Row[5],$Row[6],$Row[8],$Row[9], $Row[15],1]);
-                        }
+                    } catch (Exception  $e) {
+                        array_push($err,$e->getMessage());
                     }
 
                     // SOLAPA DE EMERGENCIAS
