@@ -17,10 +17,13 @@ Gestión de entes de auditoría e instancias de las mismas
     - N[pages/aud_auditores] listado de auditores de un ente
     - N[modals/aud_abmauditores(js/php)] Modal de auditores
     - N[helpers/aud_abmauditoresdb] ABM DB de auditores
-
     - N[pages/aud_instancias] listado de instancias de auditorias
     - N[modals/aud_abminstancias(js/php)] Modal de intancias
     - N[helpers/aud_abminstanciasdb] ABM DB de instancias
+
+    - N[pages/aud_insauditores] listado de auditores asignados a la instancia de auditoría
+    - N[modals/aud_abminsauditores(js/php)] Modal de auditores
+    - N[helpers/aud_abminsauditoresdb] ABM DB de asignación de auditores
 
 ## FEAT-RIESGOS-VARIOS
 Cambios de permisos en riesgos y varios de Mejora Contínua.
