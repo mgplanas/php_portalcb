@@ -7,15 +7,15 @@ session_start();
 if (!isset($_SESSION['usuario'])){
 	header('Location: ../index.html');
 }
-$page_title="Entes Auditores"; 
+$page_title="Auditorías"; 
 $user=$_SESSION['usuario'];
 
-/// BORRADO DE ENTES
+/// BORRADO DE INSTANCIAS
 if(isset($_GET['aksi']) == 'delete'){
 	// escaping, additionally removing everything that could be (html/javascript-) code
 	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
     //Elimino ENTE
-    $delete_control = mysqli_query($con, "UPDATE aud_entes SET borrado='1' WHERE id='$nik'");
+    $delete_control = mysqli_query($con, "UPDATE aud_instancias SET borrado='1' WHERE id='$nik'");
   
     if(!$delete_control){
         $_SESSION['formSubmitted'] = 9;
@@ -62,6 +62,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
   <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
+  <!-- <link rel="stylesheet" href="../bower_components/datatables.net/css/rowGroup.dataTables.min.css"> -->
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 
    <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -97,7 +100,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 	<section class="content-header">
-      <h1>Gestión de Entes Auditores</h1>
+      <h1>Gestión de Instancias de Auditoría</h1>
     </section>
     <!-- Main content -->
     <section class="content container-fluid">
@@ -110,22 +113,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="box">
             <div class="box-header">
 				<div class="col-sm-6" style="text-align:left">
-					<h2 class="box-title">Listado de Entes Auditores</h2>
+					<h2 class="box-title">Listado de Instancias de Auditoría</h2>
 				</div>
                 <div class="col-sm-6" style="text-align:right;">
                     <?php #if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
-                        <button type="button" id="modal-abm-ente-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-building"></i> Nuevo Ente auditor</button>
+                        <button type="button" id="modal-abm-instancia-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-clone"></i> &nbsp;Nueva Instancia</button>
                     <?php #} ?>
 				</div>
             </div>
 
             <!-- /.box-header -->
 			<div class="box-body">
-              <table id="entes" class="table table-bordered table-hover">
+              <table id="instancias" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-				  <th>Razon Social</th>
-                  <th>CUIT</th>
+				  <th>Nombre</th>
+                  <th>Descripcion</th>
+                  <th>Inicio</th>
+                  <th>Fin</th>
                   <th>Observaciones</th>
                   <th style="text-align: center;"><i class="fa fa-users" title="Cantidad de auditores" style="font-size: 20px;"></i></th>
                   <th width="130px">Acciones</th>
@@ -133,10 +138,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT O.id, O.razon_social, O.cuit, O.observaciones, (SELECT COUNT(*) FROM aud_auditores AS C WHERE C.id_ente = O.id and C.borrado = 0) AS auditores
-                    FROM aud_entes AS O
+					$query = "SELECT O.id, O.nombre, O.descripcion, O.fecha_inicio, O.fecha_fin, O.observaciones, (SELECT COUNT(*) FROM aud_rel_ins_aud AS C WHERE C.id_instancia = O.id and C.borrado = 0) AS auditores
+                    FROM aud_instancias AS O
                     WHERE O.borrado = 0 
-                    ORDER BY O.razon_social;";
+                    ORDER BY O.fecha_inicio;";
 					
 					$sql = mysqli_query($con, $query);
 
@@ -147,21 +152,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						while($row = mysqli_fetch_assoc($sql)){
 							
 							echo '<tr>';
-							echo '<td>'. $row['razon_social'].'</td>';
-							echo '<td>'. $row['cuit'].'</td>';
+							echo '<td>'. $row['nombre'].'</td>';
+                            echo '<td>'. $row['descripcion'].'</td>';
+                            $inicio = date("d/m/Y", strtotime($row['fecha_inicio']));
+                            echo '<td>'. $inicio.'</td>';
+                            $fin = '';
+                            if ($row['fecha_fin'] and $row['fecha_fin'] != '0000-00-00 00:00:00') {
+                                $fin = date("d/m/Y", strtotime($row['fecha_fin']));
+                            }
+							echo '<td>'. $fin.'</td>';
 							echo '<td>'. $row['observaciones'].'</td>';
 							echo '<td align="center">'. $row['auditores'].'</td>';
                             echo '<td align="center">';
                             if ($rq_sec['admin']=='1' OR $rq_sec['edicion']=='1'){
-                                echo '<a href="aud_auditores.php?id_ente='.$row['id'].'" title="Auditores" class="btn btn-sm"><i class="fa fa-users"></i></a>';
+                                echo '<a href="aud_insauditores.php?id_instancia='.$row['id'].'" title="Auditores" class="btn btn-sm"><i class="fa fa-users"></i></a>';
                                 echo '<a 
                                     data-id="' . $row['id'] . '" 
-                                    data-nombre="' . $row['razon_social'] . '" 
-                                    data-cuit="' . $row['cuit'] . '" 
+                                    data-nombre="' . $row['nombre'] . '" 
+                                    data-descripcion="' . $row['descripcion'] . '" 
+                                    data-inicio="' . $inicio . '" 
+                                    data-fin="' . $fin . '" 
                                     data-observaciones="' . $row['observaciones'] . '" 
-                                    title="Editar Ente" class="modal-abm-ente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                                    title="Editar Instancia" class="modal-abm-instancia-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
                                     if ($row['auditores'] == 0) {
-                                        echo '<a href="aud_ente.php?aksi=delete&nik='.$row['id'].'" title="Borrar Ente" onclick="return confirm(\'Esta seguro de borrar el ente auditor '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                                        echo '<a href="aud_instancias.php?aksi=delete&nik='.$row['id'].'" title="Borrar Instancia" onclick="return confirm(\'Esta seguro de borrar la instancia '. $row['nombre'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
                                     }                
                             }
                             echo '</td></tr>';
@@ -180,7 +194,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- /.col -->
         <?php
-            include_once('./modals/aud_abmente.php');
+            include_once('./modals/aud_abminstancias.php');
         ?>        
       </div>
       <!-- /.row -->
@@ -202,6 +216,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- bootstrap datepicker -->
+<script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- FastClick -->
 <script src="../bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
@@ -214,10 +230,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
-<script src="./modals/aud_abmente.js"></script>         
+<script src="./modals/aud_abminstancias.js"></script>         
 <script>
   $(function () {
-    $('#entes').DataTable({
+    $('#instancias').DataTable({
       'paging'      : true,
 		'pageLength': 20,
       'lengthChange': false,
@@ -242,7 +258,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </script>
 <script>
     window.onload = function() {
-        history.replaceState("", "", "aud_ente.php");
+        history.replaceState("", "", "aud_instancias.php");
     }
 </script>
 <script>

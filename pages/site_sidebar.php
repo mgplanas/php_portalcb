@@ -55,7 +55,7 @@
             </a>
             <ul class="treeview-menu">
                 <li><a href="aud_ente.php"><i class="fa fa-building"></i> Entes Auditores</a></li>
-                <li><a href="aud_instancia.php"><i class="fa fa-clone"></i> Instancias</a></li>
+                <li><a href="aud_instancias.php"><i class="fa fa-clone"></i> Instancias</a></li>
             </ul>
         </li>    
 

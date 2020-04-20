@@ -399,7 +399,7 @@ desired effect
             </a>
             <ul class="treeview-menu">
                 <li><a href="./pages/aud_ente.php"><i class="fa fa-building"></i> Entes Auditores</a></li>
-                <li><a href="./pages/aud_instancia.php"><i class="fa fa-clone"></i> Instancias</a></li>
+                <li><a href="./pages/aud_instancias.php"><i class="fa fa-clone"></i> Instancias</a></li>
             </ul>
         </li>           
           <li><a href="./pages/riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
