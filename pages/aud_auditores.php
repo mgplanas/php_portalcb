@@ -7,15 +7,21 @@ session_start();
 if (!isset($_SESSION['usuario'])){
 	header('Location: ../index.html');
 }
-$page_title="Entes Auditores"; 
+
+if (!isset($_GET["id_ente"])){
+	header('Location: ./aud_ente.php');
+}
+$id_ente = mysqli_real_escape_string($con,(strip_tags($_GET["id_ente"],ENT_QUOTES)));
+
+$page_title="Auditores"; 
 $user=$_SESSION['usuario'];
 
-/// BORRADO DE ENTES
+/// BORRADO DE Auditores
 if(isset($_GET['aksi']) == 'delete'){
 	// escaping, additionally removing everything that could be (html/javascript-) code
 	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
     //Elimino ENTE
-    $delete_control = mysqli_query($con, "UPDATE aud_entes SET borrado='1' WHERE id='$nik'");
+    $delete_control = mysqli_query($con, "UPDATE aud_auditores SET borrado='1' WHERE id='$nik'");
   
     if(!$delete_control){
         $_SESSION['formSubmitted'] = 9;
@@ -30,7 +36,11 @@ $id_rowp = $rowp['id_persona'];
 //Get Access
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);				
-		
+        
+// Get ENTE
+//Get user query
+$ente = mysqli_query($con, "SELECT * FROM aud_entes WHERE id = '$id_ente' AND borrado = 0");
+$rowente = mysqli_fetch_assoc($ente);
 ?>
 <style>
 .dataTables_filter {
@@ -95,7 +105,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 	<section class="content-header">
-      <h1>Gestión de Entes Auditores</h1>
+      <h1>Gestión de Auditores del Ente Auditor <?= $rowente['razon_social'] ?></h1>
     </section>
     <!-- Main content -->
     <section class="content container-fluid">
@@ -108,33 +118,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="box">
             <div class="box-header">
 				<div class="col-sm-6" style="text-align:left">
-					<h2 class="box-title">Listado de Entes Auditores</h2>
+					<h2 class="box-title">Listado de Auditores</h2>
 				</div>
                 <div class="col-sm-6" style="text-align:right;">
-                    <?php #if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
-                        <button type="button" id="modal-abm-ente-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-building"></i> Nuevo Ente auditor</button>
-                    <?php #} ?>
+                    <button type="button" id="modal-abm-auditor-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo" data-idente="<?= $id_ente ?>"><i class="fa fa-user"></i> Nuevo Auditor</button>
 				</div>
             </div>
 
             <!-- /.box-header -->
 			<div class="box-body">
-              <table id="entes" class="table table-bordered table-hover">
+              <table id="auditores" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-				  <th>Razon Social</th>
-                  <th>CUIT</th>
-                  <th>Observaciones</th>
-                  <th style="text-align: center;"><i class="fa fa-users" title="Cantidad de auditores" style="font-size: 20px;"></i></th>
-                  <th width="130px">Acciones</th>
+				  <th>Apellido</th>
+                  <th>Nombre</th>
+                  <th>DNI</th>
+                  <th width="110px">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT O.id, O.razon_social, O.cuit, O.observaciones, (SELECT COUNT(*) FROM aud_auditores AS C WHERE C.id_ente = O.id and C.borrado = 0) AS auditores
-                    FROM aud_entes AS O
+					$query = "SELECT O.id, O.apellido, O.nombre, O.dni FROM aud_auditores AS O 
                     WHERE O.borrado = 0 
-                    ORDER BY O.razon_social;";
+                    ORDER BY O.apellido;";
 					
 					$sql = mysqli_query($con, $query);
 
@@ -145,22 +151,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						while($row = mysqli_fetch_assoc($sql)){
 							
 							echo '<tr>';
-							echo '<td>'. $row['razon_social'].'</td>';
-							echo '<td>'. $row['cuit'].'</td>';
-							echo '<td>'. $row['observaciones'].'</td>';
-							echo '<td align="center">'. $row['auditores'].'</td>';
+							echo '<td>'. $row['apellido'].'</td>';
+							echo '<td>'. $row['nombre'].'</td>';
+							echo '<td>'. $row['dni'].'</td>';
                             echo '<td align="center">';
                             if ($rq_sec['admin']=='1' OR $rq_sec['edicion']=='1'){
-                                echo '<a href="aud_auditores.php?id_ente='.$row['id'].'" title="Auditores" class="btn btn-sm"><i class="fa fa-users"></i></a>';
                                 echo '<a 
                                     data-id="' . $row['id'] . '" 
-                                    data-nombre="' . $row['razon_social'] . '" 
-                                    data-cuit="' . $row['cuit'] . '" 
-                                    data-observaciones="' . $row['observaciones'] . '" 
-                                    title="Editar Ente" class="modal-abm-ente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
-                                    if ($row['auditores'] == 0) {
-                                        echo '<a href="aud_ente.php?aksi=delete&nik='.$row['id'].'" title="Borrar Ente" onclick="return confirm(\'Esta seguro de borrar el ente auditor '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
-                                    }                
+                                    data-idente="' . $id_ente . '" 
+                                    data-nombre="' . $row['nombre'] . '" 
+                                    data-apellido="' . $row['apellido'] . '" 
+                                    data-dni="' . $row['dni'] . '" 
+                                    title="Editar Auditor" class="modal-abm-auditor-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                                echo '<a href="aud_auditores.php?id_ente='. $id_ente .'&aksi=delete&nik='.$row['id'].'" title="Borrar Auditor" onclick="return confirm(\'Esta seguro de borrar el auditor '. $row['apellido'] .', ' . $row['nombre'] . ' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
                             }
                             echo '</td></tr>';
 						}
@@ -178,7 +181,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- /.col -->
         <?php
-            include_once('./modals/aud_abmente.php');
+            include_once('./modals/aud_abmauditores.php');
         ?>        
       </div>
       <!-- /.row -->
@@ -212,10 +215,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
-<script src="./modals/aud_abmente.js"></script>         
+<script src="./modals/aud_abmauditores.js"></script>         
 <script>
   $(function () {
-    $('#entes').DataTable({
+    $('#auditores').DataTable({
       'paging'      : true,
 		'pageLength': 20,
       'lengthChange': false,
@@ -240,7 +243,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </script>
 <script>
     window.onload = function() {
-        history.replaceState("", "", "aud_ente.php");
+        history.replaceState("", "", "aud_auditores.php?id_ente=<?= $id_ente ?>");
     }
 </script>
 <script>

@@ -14,6 +14,9 @@ Gestión de entes de auditoría e instancias de las mismas
     - N[helpers/aud_abmentedb] ABM DB de entes de auditoria
     - M[site] Agregado de menu de entes
     - M[pages/site_sidebar] Agregado de menu de entes
+    - N[pages/aud_auditores] listado de auditores de un ente
+    - N[modals/aud_abmauditores(js/php)] Modal de auditores
+    - N[helpers/aud_abmauditoresdb] ABM DB de auditores
 
 ## FEAT-RIESGOS-VARIOS
 Cambios de permisos en riesgos y varios de Mejora Contínua.
