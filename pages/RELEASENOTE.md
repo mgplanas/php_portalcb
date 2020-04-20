@@ -4,7 +4,7 @@
 
 ### Features
 
-- FEAT-INVENTARIO
+- FEAT-MC-AUDITORES
 
 
 ### Pasos
@@ -14,31 +14,5 @@
 - Backup /pages
 - Cambios en DB
 
-CREATE TABLE controls.cdc_inv_servidores (
-   id INT AUTO_INCREMENT NOT NULL,
-   marca VARCHAR(255),
-   modelo VARCHAR(255),
-   serie VARCHAR(50),
-   memoria INT,
-   sockets INT,
-   nucleos INT,
-   ubicacion_sala VARCHAR(20),
-   ubicacion_fila INT,
-   ubicacion_rack INT,
-   ubicacion_unidad INT,
-   IP VARCHAR(16),
-   vcenter VARCHAR(50),
-   cluster VARCHAR(50),
-   hostname VARCHAR(50),
-   cliente VARCHAR(255),
-   borrado INT DEFAULT '0',
-  PRIMARY KEY (id)
-) ENGINE = InnoDB ROW_FORMAT = DEFAULT;
 
 - Cambios en src
-    [pages/site_sidebar.php]
-    [pages/cdc_servidores.php]
-    [pages/modals/cdc_abmservers.php]
-    [pages/modals/cdc_abmservers.js]
-    [pages/helpers/cdc_abmservidoresdb.js]
-    [site.php]

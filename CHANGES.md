@@ -1,5 +1,20 @@
 # CHANGES
 
+## FEAT-MC-AUDITORES
+
+Gestión de entes de auditoría e instancias de las mismas
+*Fecha:* 2020-04-13
+*Cambios:*
+    - [DB] Se crea la tabla aud_entes
+    - [DB] Se crea la tabla aud_auditores
+    - [DB] Se crea la tabla aud_instancias
+    - [DB] Se crea la tabla aud_rel_ins_aud
+    - N[pages/aud_ente] listado de entes de auditoria
+    - N[modals/aud_abmente(js/php)] Modal de entes de auditoria
+    - N[helpers/aud_abmentedb] ABM DB de entes de auditoria
+    - M[site] Agregado de menu de entes
+    - M[pages/site_sidebar] Agregado de menu de entes
+
 ## FEAT-RIESGOS-VARIOS
 Cambios de permisos en riesgos y varios de Mejora Contínua.
 - Permiso de riesgo solo van a editar los que estén en este grupo [riesgos_adm]

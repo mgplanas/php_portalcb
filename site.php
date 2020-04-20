@@ -390,6 +390,18 @@ desired effect
           <li><a href="./pages/iso9k.php"><i class="fa fa-crosshairs"></i> <span>ISO 9001</span></a></li>        
           <li><a href="./pages/bcra.php"><i class="fa fa-crosshairs"></i> <span>BCRA</span></a></li>        
           <li><a href="./pages/mejoras.php"><i class="fa fa-refresh"></i> <span>Mejora Continua</span></a></li>
+          <li class="treeview">
+            <a href="#">
+                <i class="fa fa-eye"></i> <span>Auditorías</span>
+                <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="./pages/aud_ente.php"><i class="fa fa-building"></i> Entes Auditores</a></li>
+                <li><a href="./pages/aud_instancia.php"><i class="fa fa-clone"></i> Instancias</a></li>
+            </ul>
+        </li>           
           <li><a href="./pages/riesgos.php"><i class="fa fa-flash"></i> <span>Riesgos</span></a></li>
         <?php }?>
         <?php if ($rq_sec['admin']=='1' OR $rq_sec['proy']=='1' OR $rq_sec['admin_proy']=='1'){
