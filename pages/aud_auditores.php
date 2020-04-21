@@ -141,7 +141,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <tbody>
 					<?php
 					$query = "SELECT O.id, O.apellido, O.nombre, O.dni FROM aud_auditores AS O 
-                    WHERE O.borrado = 0 
+                    WHERE O.borrado = 0 and O.id_ente = '$id_ente'
                     ORDER BY O.apellido;";
 					
 					$sql = mysqli_query($con, $query);
