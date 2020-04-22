@@ -39,7 +39,6 @@ if(isset($_POST['save'])){
     $esfuerzo = mysqli_real_escape_string($con,(strip_tags($_POST["esfuerzo"],ENT_QUOTES)));
     $costo = mysqli_real_escape_string($con,(strip_tags($_POST["costo"],ENT_QUOTES)));
     $apertura = mysqli_real_escape_string($con,(strip_tags($_POST["apertura"],ENT_QUOTES)));
-    $correccion = mysqli_real_escape_string($con,(strip_tags($_POST["correccion"],ENT_QUOTES)));
     $cierre = mysqli_real_escape_string($con,(strip_tags($_POST["cierre"],ENT_QUOTES)));
     $implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
 	
@@ -321,15 +320,6 @@ desired effect
                                 <i class="fa fa-calendar"></i>
                               </div>
                                 <input type="text" class="form-control pull-right" name="apertura" id="datepicker1" value="<?php echo $row ['apertura']; ?>">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <label for="correccion">Fecha Corrección</label>
-                            <div class="input-group date" data-provide="datepicker2">
-                              <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                              </div>
-                                <input type="text" class="form-control pull-right" name="correccion" id="datepicker2" value="<?php echo $row ['correccion']; ?>">
                             </div>
                         </div>
                       </div>

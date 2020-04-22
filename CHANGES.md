@@ -23,6 +23,9 @@ Gestión de entes de auditoría e instancias de las mismas
     - N[pages/aud_insauditores] listado de auditores asignados a la instancia de auditoría
     - N[helpers/aud_abminsauditoresdb] ABM DB de asignación de auditores
 
+    - M[pages/mejoras] Quito el campo corrección del modal alta y del modal de view
+    - M[pages/edit_mejoras] Quito el campo corrección
+
 ## FEAT-RIESGOS-VARIOS
 Cambios de permisos en riesgos y varios de Mejora Contínua.
 - Permiso de riesgo solo van a editar los que estén en este grupo [riesgos_adm]

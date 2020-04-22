@@ -371,15 +371,7 @@ desired effect
                                         <input type="text" class="form-control pull-right" name="apertura" id="datepicker5" value="<?php echo $row ['apertura']; ?>">
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
-                                    <label for="correccion">Fecha Corrección</label>
-                                    <div class="input-group date" data-provide="datepicker6">
-                                      <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                      </div>
-                                        <input type="text" class="form-control pull-right" name="correccion" id="datepicker6" value="<?php echo $row ['correccion']; ?>">
-                                    </div>
-                                </div>
+
                               </div>
                             </div>
                             <div class="container">
@@ -595,10 +587,6 @@ desired effect
                                         <div class="col-sm-3">
                                             <label for="apertura"> Fecha Apertura</label>
                             <input type="text" class="form-control" name="apertura" id="apertura" value="" readonly>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <label for="correccion">Fecha Corrección</label>
-                            <input type="text" class="form-control" name="correccion" id="correccion" value="" readonly>
                                         </div>
                                       </div>
                                     </div>
