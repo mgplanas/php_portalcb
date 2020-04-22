@@ -3,12 +3,38 @@ $(function() {
     // ********************************************************************************************
     // ENTES
     // ********************************************************************************************
+    let ddlEntes = $('#modal-abm-instancia-ente');
+    // refresh DDL
+    function refreshEntes(selectedValue) {
+        // Limpio combos
+        ddlEntes.empty();
+
+        //Populo las areas
+        $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM aud_entes WHERE borrado = 0 ORDER BY razon_social;' },
+            function(response) {
+                $.each(response.data, function() {
+                    if (selectedValue && selectedValue == this.id) {
+                        ddlEntes.append($("<option />").val(this.id).text(this.razon_social).attr('selected', 'selected'));
+                    } else {
+                        ddlEntes.append($("<option />").val(this.id).text(this.razon_social));
+                    }
+                });
+                if (!selectedValue || parseInt(selectedValue) == 0) {
+                    ddlEntes.val('first').change();
+                }
+            }
+        ).fail(function(jqXHR, errorText) {
+            console.log(errorText);
+        });
+    }
+
     function setAMBEnteTriggers() {
         // ALTA
         // seteo boton trigger para el alta de gerencia
         $('#modal-abm-instancia-btn-alta').click(function() {
             $('#modal-abm-instancia-title').html('Nueva Instancia de Auditoría');
             modalAbmEnteLimpiarCampos();
+            ddlEntes.val('first').change();
             $('#modal-abm-instancia-submit').attr('name', 'A');
             $("#modal-abm-instancia").modal("show");
         });
@@ -21,6 +47,7 @@ $(function() {
 
             $('#modal-abm-instancia-id').val($(this).data('id'));
             $('#modal-abm-instancia-nombre').val($(this).data('nombre'));
+            ddlEntes.val($(this).data('ente')).change();
             $('#modal-abm-instancia-observaciones').val($(this).data('observaciones'));
             $('#modal-abm-instancia-descripcion').val($(this).data('descripcion'));
             $('#modal-abm-instancia-inicio').val($(this).data('inicio'));
@@ -45,6 +72,7 @@ $(function() {
         let descripcion = $('#modal-abm-instancia-descripcion').val();
         let inicio = $('#modal-abm-instancia-inicio').val();
         let fin = $('#modal-abm-instancia-fin').val();
+        let ente = ddlEntes.val();
         // Ejecuto
         $.ajax({
             type: 'POST',
@@ -56,7 +84,8 @@ $(function() {
                 observaciones: observaciones,
                 descripcion: descripcion,
                 fecha_inicio: inicio,
-                fecha_fin: fin
+                fecha_fin: fin,
+                id_ente: ente
             },
             dataType: 'json',
             success: function(json) {
@@ -80,6 +109,7 @@ $(function() {
         $('#modal-abm-instancia-descripcion').val('');
         $('#modal-abm-instancia-inicio').val('');
         $('#modal-abm-instancia-fin').val('');
+        refreshEntes();
     }
     // ********************************************************************************************
 

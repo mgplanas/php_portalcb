@@ -9,6 +9,10 @@ Gestión de entes de auditoría e instancias de las mismas
     - [DB] Se crea la tabla aud_auditores
     - [DB] Se crea la tabla aud_instancias
     - [DB] Se crea la tabla aud_rel_ins_aud
+    - [DB] Se agregan campos de ente y instancia en mejoras
+        ALTER TABLE controls.mejora
+            ADD aud_ente INT AFTER matriz,
+            ADD aud_instancia INT;
     - N[pages/aud_ente] listado de entes de auditoria
     - N[modals/aud_abmente(js/php)] Modal de entes de auditoria
     - N[helpers/aud_abmentedb] ABM DB de entes de auditoria
@@ -23,7 +27,9 @@ Gestión de entes de auditoría e instancias de las mismas
     - N[pages/aud_insauditores] listado de auditores asignados a la instancia de auditoría
     - N[helpers/aud_abminsauditoresdb] ABM DB de asignación de auditores
 
+
     - M[pages/mejoras] Quito el campo corrección del modal alta y del modal de view
+    - M[pages/mejoras] Agrego filtro campo origen
     - M[pages/edit_mejoras] Quito el campo corrección
 
 ## FEAT-RIESGOS-VARIOS

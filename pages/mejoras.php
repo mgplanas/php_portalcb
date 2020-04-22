@@ -227,8 +227,11 @@ desired effect
                     $apertura = mysqli_real_escape_string($con,(strip_tags($_POST["apertura"],ENT_QUOTES)));
                     $cierre = mysqli_real_escape_string($con,(strip_tags($_POST["cierre"],ENT_QUOTES)));
                     $implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
+                    // Datos de auditoria
+                    $aud_ente = mysqli_real_escape_string($con,(strip_tags($_POST["aud_ente"],ENT_QUOTES)));
+                    $aud_instancia = mysqli_real_escape_string($con,(strip_tags($_POST["aud_instancia"],ENT_QUOTES)));
                             
-                    $insert_mejora = mysqli_query($con, "INSERT INTO mejora SET descripcion='$descripcion', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', creado=NOW(), usuario='$user', matriz='$matriz' ") or die(mysqli_error());	
+                    $insert_mejora = mysqli_query($con, "INSERT INTO mejora SET aud_ente='$aud_ente', aud_instancia='$aud_instancia', descripcion='$descripcion', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', creado=NOW(), usuario='$user', matriz='$matriz' ") or die(mysqli_error());	
 
                             $lastInsert = mysqli_insert_id($con);
                     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
@@ -965,7 +968,7 @@ $(function(){
       var table = $('#mejoras').DataTable();
 
       // Si son las columnas de filtro creo el ddl
-      if (colIdx == 3 || colIdx == 4 || colIdx == 5 || colIdx == 6) {
+      if (colIdx == 2 || colIdx == 3 || colIdx == 4 || colIdx == 5 || colIdx == 6) {
           var select = $('<select style="width: 100%;"><option value=""></option></select>')
           .on( 'change', function () {
               table

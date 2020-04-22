@@ -128,6 +128,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <thead>
                 <tr>
 				  <th>Nombre</th>
+				  <th>Ente Auditor</th>
                   <th>Descripcion</th>
                   <th>Inicio</th>
                   <th>Fin</th>
@@ -138,9 +139,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT O.id, O.nombre, O.descripcion, O.fecha_inicio, O.fecha_fin, O.observaciones, (SELECT COUNT(*) FROM aud_rel_ins_aud AS C WHERE C.id_instancia = O.id and C.borrado = 0) AS auditores
+					$query = "SELECT O.id, E.id as id_ente, E.razon_social, O.nombre, O.descripcion, O.fecha_inicio, O.fecha_fin, O.observaciones, (SELECT COUNT(*) FROM aud_rel_ins_aud AS C WHERE C.id_instancia = O.id and C.borrado = 0) AS auditores
                     FROM aud_instancias AS O
-                    WHERE O.borrado = 0 
+                    INNER JOIN aud_entes AS E ON O.id_ente = E.id
+                    WHERE O.borrado = 0 AND E.borrado = 0
                     ORDER BY O.fecha_inicio;";
 					
 					$sql = mysqli_query($con, $query);
@@ -153,6 +155,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							
 							echo '<tr>';
 							echo '<td>'. $row['nombre'].'</td>';
+							echo '<td>'. $row['razon_social'].'</td>';
                             echo '<td>'. $row['descripcion'].'</td>';
                             $inicio = date("d/m/Y", strtotime($row['fecha_inicio']));
                             echo '<td>'. $inicio.'</td>';
@@ -169,6 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 echo '<a 
                                     data-id="' . $row['id'] . '" 
                                     data-nombre="' . $row['nombre'] . '" 
+                                    data-ente="' . $row['id_ente'] . '" 
                                     data-descripcion="' . $row['descripcion'] . '" 
                                     data-inicio="' . $inicio . '" 
                                     data-fin="' . $fin . '" 

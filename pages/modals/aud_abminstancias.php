@@ -19,6 +19,11 @@
                         <input type="text" class="form-control" name="nombre" placeholder="nombre" id='modal-abm-instancia-nombre' required>
                     </div>
                     <div class="form-group">
+                        <label>Ente Auditor</label>
+                        <select id="modal-abm-instancia-ente" name="ente" class="form-control">
+                        </select>
+                    </div>                    
+                    <div class="form-group">
                         <label for="descripcion">Descripcion</label>
                         <textarea class="form-control" name="descripcion" id="modal-abm-instancia-descripcion"></textarea>                        
                     </div>

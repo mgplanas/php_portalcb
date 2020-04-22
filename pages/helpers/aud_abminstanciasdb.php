@@ -5,6 +5,7 @@
 
     $id = $_POST['id'];
     $nombre = $_POST['nombre'];
+    $id_ente = $_POST['id_ente'];
     $observaciones = $_POST['observaciones'];
     $descripcion = $_POST['descripcion'];
     $inicio = $_POST['fecha_inicio'];
@@ -21,7 +22,7 @@
     switch ($op) {
         case 'A':
             // INSERT
-            $sql = "INSERT INTO aud_instancias (nombre, descripcion, fecha_inicio, fecha_fin, observaciones) VALUES ('$nombre','$descripcion','$fecha_inicio', '$fecha_fin', '$observaciones');";
+            $sql = "INSERT INTO aud_instancias (nombre, id_ente, descripcion, fecha_inicio, fecha_fin, observaciones) VALUES ('$nombre', '$id_ente', '$descripcion','$fecha_inicio', '$fecha_fin', '$observaciones');";
             $insert_ente = mysqli_query($con, $sql) or die(mysqli_error());	
             $lastInsert = mysqli_insert_id($con);
             $result->id = $lastInsert;
@@ -29,7 +30,7 @@
         
         case 'M':
             //UPDATE
-            $update_ente = mysqli_query($con, "UPDATE aud_instancias SET nombre='$nombre',  descripcion='$descripcion', fecha_inicio='$fecha_inicio', fecha_fin='$fecha_fin', observaciones='$observaciones' 
+            $update_ente = mysqli_query($con, "UPDATE aud_instancias SET nombre='$nombre', id_ente='$id_ente', descripcion='$descripcion', fecha_inicio='$fecha_inicio', fecha_fin='$fecha_fin', observaciones='$observaciones' 
                                                     WHERE id='$id'") or die(mysqli_error());	
             break;
 
