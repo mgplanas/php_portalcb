@@ -228,10 +228,9 @@ desired effect
                     $cierre = mysqli_real_escape_string($con,(strip_tags($_POST["cierre"],ENT_QUOTES)));
                     $implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
                     // Datos de auditoria
-                    $aud_ente = mysqli_real_escape_string($con,(strip_tags($_POST["aud_ente"],ENT_QUOTES)));
                     $aud_instancia = mysqli_real_escape_string($con,(strip_tags($_POST["aud_instancia"],ENT_QUOTES)));
                             
-                    $insert_mejora = mysqli_query($con, "INSERT INTO mejora SET aud_ente='$aud_ente', aud_instancia='$aud_instancia', descripcion='$descripcion', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', creado=NOW(), usuario='$user', matriz='$matriz' ") or die(mysqli_error());	
+                    $insert_mejora = mysqli_query($con, "INSERT INTO mejora SET aud_instancia='$aud_instancia', descripcion='$descripcion', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', creado=NOW(), usuario='$user', matriz='$matriz' ") or die(mysqli_error());	
 
                             $lastInsert = mysqli_insert_id($con);
                     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
@@ -310,7 +309,7 @@ desired effect
                                     </select>
                                 </div>
                                 <div class="col-sm-4">
-                                  <label for="responsable">Responsable</label>
+                                    <label for="responsable">Responsable</label>
                                     <select name="responsable" class="form-control">
                                     <?php
                                             $personasn = mysqli_query($con, "SELECT * FROM persona");
@@ -323,8 +322,8 @@ desired effect
                                                 }
                                             }
                                     ?>
-                                </select>
-                              </div>
+                                    </select>
+                                </div>
                             </div>
                             </div><br>
                           <div class="form-group">
@@ -399,6 +398,27 @@ desired effect
                                 </div>
                               </div>
                             </div><br>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                    <label for="aud_instancia">Ente Auditor / Instancia</label>
+                                    <select name="aud_instancia" class="form-control">
+                                        <option value="">Seleccione...</option>
+                                    <?php
+                                        $instancia = mysqli_query($con, "SELECT i.*, e.razon_social FROM aud_instancias as i INNER JOIN aud_entes as e on i.id_ente = e.id where i.borrado = 0 ORDER BY fecha_inicio desc;");
+                                        while($row_instancia = mysqli_fetch_array($instancia)){
+                                            if($row_instancia['id']==$row['aud_instancia']) {
+                                                echo "<option value='". $row_instancia['id'] .  "' selected='selected'>" .$row_instancia['razon_social'] . " - " . $row_instancia['nombre']. "</option>";
+                                            }
+                                            else {
+                                                echo "<option value='". $row_instancia['id'] .  "'>" .$row_instancia['razon_social'] . " - " . $row_instancia['nombre']. "</option>";
+                                            }
+                                        }
+                                    ?>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                   <label for="estado">Estado</label>
                                     <select name="estado" class="form-control">
