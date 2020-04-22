@@ -5,7 +5,7 @@ $(function() {
     // ********************************************************************************************
     let ddlEntes = $('#modal-abm-instancia-ente');
     // refresh DDL
-    function refreshEntes(selectedValue) {
+    function refreshEntes(selectedValue, disabled = false) {
         // Limpio combos
         ddlEntes.empty();
 
@@ -22,6 +22,7 @@ $(function() {
                 if (!selectedValue || parseInt(selectedValue) == 0) {
                     ddlEntes.val('first').change();
                 }
+                ddlEntes.prop('disabled', disabled);
             }
         ).fail(function(jqXHR, errorText) {
             console.log(errorText);
@@ -34,7 +35,7 @@ $(function() {
         $('#modal-abm-instancia-btn-alta').click(function() {
             $('#modal-abm-instancia-title').html('Nueva Instancia de Auditoría');
             modalAbmEnteLimpiarCampos();
-            ddlEntes.val('first').change();
+            refreshEntes();
             $('#modal-abm-instancia-submit').attr('name', 'A');
             $("#modal-abm-instancia").modal("show");
         });
@@ -47,7 +48,8 @@ $(function() {
 
             $('#modal-abm-instancia-id').val($(this).data('id'));
             $('#modal-abm-instancia-nombre').val($(this).data('nombre'));
-            ddlEntes.val($(this).data('ente')).change();
+            refreshEntes($(this).data('ente'), ($(this).data('auditores') > 0));
+
             $('#modal-abm-instancia-observaciones').val($(this).data('observaciones'));
             $('#modal-abm-instancia-descripcion').val($(this).data('descripcion'));
             $('#modal-abm-instancia-inicio').val($(this).data('inicio'));
@@ -109,7 +111,7 @@ $(function() {
         $('#modal-abm-instancia-descripcion').val('');
         $('#modal-abm-instancia-inicio').val('');
         $('#modal-abm-instancia-fin').val('');
-        refreshEntes();
+
     }
     // ********************************************************************************************
 

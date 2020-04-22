@@ -175,6 +175,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     data-ente="' . $row['id_ente'] . '" 
                                     data-descripcion="' . $row['descripcion'] . '" 
                                     data-inicio="' . $inicio . '" 
+                                    data-auditores="' . $row['auditores'] . '"
                                     data-fin="' . $fin . '" 
                                     data-observaciones="' . $row['observaciones'] . '" 
                                     title="Editar Instancia" class="modal-abm-instancia-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';

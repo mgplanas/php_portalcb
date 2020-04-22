@@ -98,6 +98,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <body class="hold-transition skin-blue sidebar-mini">
 <input type="hidden" id='modal-abm-auditor-id-instancia' value="<?=$id_instancia ?>">
+<input type="hidden" id='modal-abm-auditor-id-ente' value="<?=$row_instancia['id_ente'] ?>">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -214,6 +215,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         let ddlEntes = $('#modal-abm-auditor-ente');
         let lstDisponibles = $('#modal-abm-auditor-disponibles');
         let lstAsignados = $('#modal-abm-auditor-asignados');
+        let id_ente_post = $('#modal-abm-auditor-id-ente').val();
         let id_ente_asignados = 0;
 
         // refresh DDL
@@ -255,7 +257,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     id_ente_asignados = this.id_ente;
                     lstAsignados.append($("<option />").val(this.id).text(this.apellido + ', ' + this.nombre));
                 });
-                refreshEntes(id_ente_asignados);
+                // refreshEntes(id_ente_asignados);
+                // refreshEntes(id_ente_post);
                 
             }
             ).fail(function(jqXHR, errorText) {
@@ -334,6 +337,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
         refreshAsignados();
+        if (id_ente_post) {
+            refreshEntes(id_ente_post);
+        } else {
+            refreshEntes(id_ente_asignados);
+        }
+        
+        
     });
 </script>
 <script>
