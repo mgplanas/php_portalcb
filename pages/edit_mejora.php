@@ -41,10 +41,12 @@ if(isset($_POST['save'])){
     $apertura = mysqli_real_escape_string($con,(strip_tags($_POST["apertura"],ENT_QUOTES)));
     $cierre = mysqli_real_escape_string($con,(strip_tags($_POST["cierre"],ENT_QUOTES)));
     $implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
+    // Datos de auditoria
+    $aud_instancia = mysqli_real_escape_string($con,(strip_tags($_POST["aud_instancia"],ENT_QUOTES)));
 	
 	// $update_mejora = mysqli_query($con, "UPDATE mejora SET descripcion='$descripcion', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', correccion='$correccion', cierre='$cierre', implementacion='$implementacion', origen='$origen', modificado=NOW(), usuario='$user' WHERE id_mejora='$nik'") or die(mysqli_error());	
 
-	$update_mejora = mysqli_query($con, "UPDATE mejora SET descripcion='$descripcion', matriz='$matriz', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', modificado=NOW(), usuario='$user' WHERE id_mejora='$nik'") or die(mysqli_error());	
+	$update_mejora = mysqli_query($con, "UPDATE mejora SET aud_instancia='$aud_instancia', descripcion='$descripcion', matriz='$matriz', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', modificado=NOW(), usuario='$user' WHERE id_mejora='$nik'") or die(mysqli_error());	
 
     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
 											   VALUES ('2', '9','$nik', now(), '$user', '$nik')") or die(mysqli_error());
@@ -344,7 +346,26 @@ desired effect
                                     <input type="text" class="form-control pull-right" name="implementacion" id="datepicker4" value="<?php echo $row ['implementacion']; ?>">
                                 </div>
                         </div>
-                      </div>
+                    </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="aud_instancia">Ente Auditor / Instancia</label>
+                                <select name="aud_instancia" class="form-control">
+                                    <option value="">Seleccione...</option>
+                                <?php
+                                    $instancia = mysqli_query($con, "SELECT i.*, e.razon_social FROM aud_instancias as i INNER JOIN aud_entes as e on i.id_ente = e.id where i.borrado = 0 ORDER BY fecha_inicio desc;");
+                                    while($row_instancia = mysqli_fetch_array($instancia)){
+                                        if($row_instancia['id']==$row['aud_instancia']) {
+                                            echo "<option value='". $row_instancia['id'] .  "' selected='selected'>" .$row_instancia['razon_social'] . " - " . $row_instancia['nombre']. "</option>";
+                                        }
+                                        else {
+                                            echo "<option value='". $row_instancia['id'] .  "'>" .$row_instancia['razon_social'] . " - " . $row_instancia['nombre']. "</option>";
+                                        }
+                                    }
+                                ?>
+                                </select>
+                            </div>       
+                            </div>                 
                     </div><br>
                     <div class="form-group">
                            <label for="estado">Estado</label>

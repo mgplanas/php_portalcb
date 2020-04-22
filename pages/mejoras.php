@@ -401,21 +401,21 @@ desired effect
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md-6">
-                                    <label for="aud_instancia">Ente Auditor / Instancia</label>
-                                    <select name="aud_instancia" class="form-control">
-                                        <option value="">Seleccione...</option>
-                                    <?php
-                                        $instancia = mysqli_query($con, "SELECT i.*, e.razon_social FROM aud_instancias as i INNER JOIN aud_entes as e on i.id_ente = e.id where i.borrado = 0 ORDER BY fecha_inicio desc;");
-                                        while($row_instancia = mysqli_fetch_array($instancia)){
-                                            if($row_instancia['id']==$row['aud_instancia']) {
-                                                echo "<option value='". $row_instancia['id'] .  "' selected='selected'>" .$row_instancia['razon_social'] . " - " . $row_instancia['nombre']. "</option>";
+                                        <label for="aud_instancia">Ente Auditor / Instancia</label>
+                                        <select name="aud_instancia" class="form-control">
+                                            <option value="">Seleccione...</option>
+                                        <?php
+                                            $instancia = mysqli_query($con, "SELECT i.*, e.razon_social FROM aud_instancias as i INNER JOIN aud_entes as e on i.id_ente = e.id where i.borrado = 0 ORDER BY fecha_inicio desc;");
+                                            while($row_instancia = mysqli_fetch_array($instancia)){
+                                                if($row_instancia['id']==$row['aud_instancia']) {
+                                                    echo "<option value='". $row_instancia['id'] .  "' selected='selected'>" .$row_instancia['razon_social'] . " - " . $row_instancia['nombre']. "</option>";
+                                                }
+                                                else {
+                                                    echo "<option value='". $row_instancia['id'] .  "'>" .$row_instancia['razon_social'] . " - " . $row_instancia['nombre']. "</option>";
+                                                }
                                             }
-                                            else {
-                                                echo "<option value='". $row_instancia['id'] .  "'>" .$row_instancia['razon_social'] . " - " . $row_instancia['nombre']. "</option>";
-                                            }
-                                        }
-                                    ?>
-                                    </select>
+                                        ?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -569,7 +569,7 @@ desired effect
                                         </div>
                                         <div class="col-sm-3">
                                           <label for="responsable">Responsable</label>
-                            <input type="text" class="form-control" name="responsable" id="responsable" value="" readonly>
+                                            <input type="text" class="form-control" name="responsable" id="responsable" value="" readonly>
                                       </div>
                                     </div>
                                     </div><br>
@@ -623,6 +623,10 @@ desired effect
                                             <label for="implementacion">Fecha de Implementación</label>
                             <input type="text" class="form-control" name="implementacion" id="implementacion" value="" readonly>
                                         </div>
+                                        <div class="col-sm-3">
+                                          <label for="instancia">Responsable</label>
+                                            <input type="text" class="form-control" name="instancia" id="aud_instancia" value="" readonly>
+                                        </div>
                                       </div>
                                     </div>
                       
@@ -665,11 +669,13 @@ desired effect
                       </thead>
                       <tbody>
                       <?php
-                      $query = "SELECT i.*, p.nombre, p.apellido, o.descripcion as dorig, op.nombre as opn, op.apellido as opa, mat.nombre as matriznombre  FROM mejora as i 
+                      $query = "SELECT i.*, e.razon_social, ins.nombre as ins_nombre, p.nombre, p.apellido, o.descripcion as dorig, op.nombre as opn, op.apellido as opa, mat.nombre as matriznombre  FROM mejora as i 
                                           LEFT JOIN persona as p on i.responsable = p.id_persona
                                           LEFT JOIN persona as op on i.abierto = op.id_persona
                                           LEFT JOIN origen as o on i.origen = o.id_origen
                                           LEFT JOIN mc_matriz as mat on i.matriz = mat.id
+                                          LEFT JOIN aud_instancias as ins on i.aud_instancia = ins.id
+                                          LEFT JOIN aud_entes as e on ins.id_ente = e.id
                                 WHERE i.borrado='0' ";
                       // AGREGO EL FILTRO DE GERENCIA DEL USUARIO=CIBERSEGURIDAD O LA GERENCIA DEL REFERENTE
                       if ( $per_id_gerencia != 1) {
@@ -704,6 +710,7 @@ desired effect
                             data-evidencia="'.$row['evidencia'].'"
                             data-matriz="'.$row['matriz'].'"
                             data-matriznombre="'.$row['matriznombre'].'"
+                            data-aud_instancia="'.$row['razon_social']. ' - ' .$row['ins_nombre'].  '"
                             title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
                           </td>';
                           echo '
@@ -953,6 +960,7 @@ $(function(){
     $('#costo').val($(this).data('costo'));
     $('#matriz').val($(this).data('matriznombre'));
     $('#implementacion').val($(this).data('implementacion'));
+    $('#aud_instancia').val($(this).data('aud_instancia'));
 	
 	if($(this).data('tipo') == '1') {
 		$('#tipo').val('NC-No Conformidad sin AC')}
