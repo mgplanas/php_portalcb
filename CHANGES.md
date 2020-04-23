@@ -27,10 +27,14 @@ Gestión de entes de auditoría e instancias de las mismas
     - N[pages/aud_insauditores] listado de auditores asignados a la instancia de auditoría
     - N[helpers/aud_abminsauditoresdb] ABM DB de asignación de auditores
 
-
     - M[pages/mejoras] Quito el campo corrección del modal alta y del modal de view
     - M[pages/mejoras] Agrego filtro campo origen
     - M[pages/edit_mejoras] Quito el campo corrección
+    - M[pages/mejoras] Agrego campo Prioridad
+    - M[pages/edit_mejoras] Agrego campo Prioridad
+    - [DB] Se agrega el campo prioridad
+        ALTER TABLE controls.mejora
+        ADD prioridad INT NOT NULL DEFAULT '0' AFTER aud_instancia;
 
 ## FEAT-RIESGOS-VARIOS
 Cambios de permisos en riesgos y varios de Mejora Contínua.

@@ -43,10 +43,11 @@ if(isset($_POST['save'])){
     $implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
     // Datos de auditoria
     $aud_instancia = mysqli_real_escape_string($con,(strip_tags($_POST["aud_instancia"],ENT_QUOTES)));
+    $prioridad = mysqli_real_escape_string($con,(strip_tags($_POST["prioridad"],ENT_QUOTES)));
 	
 	// $update_mejora = mysqli_query($con, "UPDATE mejora SET descripcion='$descripcion', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', correccion='$correccion', cierre='$cierre', implementacion='$implementacion', origen='$origen', modificado=NOW(), usuario='$user' WHERE id_mejora='$nik'") or die(mysqli_error());	
 
-	$update_mejora = mysqli_query($con, "UPDATE mejora SET aud_instancia='$aud_instancia', descripcion='$descripcion', matriz='$matriz', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', modificado=NOW(), usuario='$user' WHERE id_mejora='$nik'") or die(mysqli_error());	
+	$update_mejora = mysqli_query($con, "UPDATE mejora SET prioridad='$prioridad', aud_instancia='$aud_instancia', descripcion='$descripcion', matriz='$matriz', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', modificado=NOW(), usuario='$user' WHERE id_mejora='$nik'") or die(mysqli_error());	
 
     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
 											   VALUES ('2', '9','$nik', now(), '$user', '$nik')") or die(mysqli_error());
@@ -364,8 +365,16 @@ desired effect
                                     }
                                 ?>
                                 </select>
-                            </div>       
-                            </div>                 
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="prioridad">Prioridad</label>
+                                <select name="prioridad" class="form-control">
+                                    <option value='0'<?php if($row['prioridad'] == '0'){ echo 'selected'; } ?>>Baja</option>
+                                    <option value='1'<?php if($row['prioridad'] == '1'){ echo 'selected'; } ?>>Media</option>
+                                    <option value='2'<?php if($row['prioridad'] == '2'){ echo 'selected'; } ?>>Alta</option>
+                                </select>
+                            </div>                                   
+                        </div>                 
                     </div><br>
                     <div class="form-group">
                            <label for="estado">Estado</label>

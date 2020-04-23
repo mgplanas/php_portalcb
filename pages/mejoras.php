@@ -229,8 +229,9 @@ desired effect
                     $implementacion = mysqli_real_escape_string($con,(strip_tags($_POST["implementacion"],ENT_QUOTES)));
                     // Datos de auditoria
                     $aud_instancia = mysqli_real_escape_string($con,(strip_tags($_POST["aud_instancia"],ENT_QUOTES)));
-                            
-                    $insert_mejora = mysqli_query($con, "INSERT INTO mejora SET aud_instancia='$aud_instancia', descripcion='$descripcion', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', creado=NOW(), usuario='$user', matriz='$matriz' ") or die(mysqli_error());	
+                    $prioridad = mysqli_real_escape_string($con,(strip_tags($_POST["prioridad"],ENT_QUOTES)));
+                        
+                    $insert_mejora = mysqli_query($con, "INSERT INTO mejora SET prioridad='$prioridad', aud_instancia='$aud_instancia', descripcion='$descripcion', responsable='$responsable', abierto='$abierto', tipo='$tipo', causa='$causa', plan='$plan', estado='$estado', eficacia='$eficacia', evidencia='$evidencia', esfuerzo='$esfuerzo', costo='$costo', apertura='$apertura', cierre='$cierre', implementacion='$implementacion', origen='$origen', creado=NOW(), usuario='$user', matriz='$matriz' ") or die(mysqli_error());	
 
                             $lastInsert = mysqli_insert_id($con);
                     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
@@ -400,7 +401,7 @@ desired effect
                             </div><br>
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="aud_instancia">Ente Auditor / Instancia</label>
                                         <select name="aud_instancia" class="form-control">
                                             <option value="">Seleccione...</option>
@@ -417,6 +418,14 @@ desired effect
                                         ?>
                                         </select>
                                     </div>
+                                    <div class="col-md-2">
+                                        <label for="prioridad">Prioridad</label>
+                                        <select name="prioridad" class="form-control">
+                                            <option value='0'<?php if($row['prioridad'] == '0'){ echo 'selected'; } ?>>Baja</option>
+                                            <option value='1'<?php if($row['prioridad'] == '1'){ echo 'selected'; } ?>>Media</option>
+                                            <option value='2'<?php if($row['prioridad'] == '2'){ echo 'selected'; } ?>>Alta</option>
+                                        </select>
+                                    </div>                                    
                                 </div>
                             </div>
                             <div class="form-group">
@@ -709,6 +718,7 @@ desired effect
                             data-eficacia="'.$row['eficacia'].'"
                             data-evidencia="'.$row['evidencia'].'"
                             data-matriz="'.$row['matriz'].'"
+                            data-prioridad="'.$row['prioridad'].'"
                             data-matriznombre="'.$row['matriznombre'].'"
                             data-aud_instancia="'.$row['razon_social']. ' - ' .$row['ins_nombre'].  '"
                             title="ver datos" class="ver-itemDialog btn btn-sm"><i class="glyphicon glyphicon-eye-open"></i></a>
