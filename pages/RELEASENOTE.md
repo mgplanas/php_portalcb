@@ -59,23 +59,24 @@ ALTER TABLE controls.mejora
     ADD prioridad INT NOT NULL DEFAULT '0' AFTER aud_instancia;
 
 - Cambios en src
- CHANGES.md                              |  36 ++++
- pages/RELEASENOTE.md                    |  28 +--
  pages/aud_auditores.php                 | 268 +++++++++++++++++++++++
  pages/aud_ente.php                      | 265 +++++++++++++++++++++++
  pages/aud_insauditores.php              | 371 ++++++++++++++++++++++++++++++++
  pages/aud_instancias.php                | 286 ++++++++++++++++++++++++
  pages/edit_mejora.php                   |  44 ++--
+ pages/mejoras.php                       |  71 ++++--
+ pages/site_sidebar.php                  |  27 ++-
+
  pages/helpers/aud_abmauditoresdb.php    |  42 ++++
  pages/helpers/aud_abmentedb.php         |  42 ++++
  pages/helpers/aud_abminsauditoresdb.php |  24 +++
  pages/helpers/aud_abminstanciasdb.php   |  49 +++++
- pages/mejoras.php                       |  71 ++++--
+ 
  pages/modals/aud_abmauditores.js        |  85 ++++++++
  pages/modals/aud_abmauditores.php       |  46 ++++
  pages/modals/aud_abmente.js             |  79 +++++++
  pages/modals/aud_abmente.php            |  45 ++++
  pages/modals/aud_abminstancias.js       | 135 ++++++++++++
  pages/modals/aud_abminstancias.php      |  75 +++++++
- pages/site_sidebar.php                  |  27 ++-
+ 
  site.php                                |  12 ++
