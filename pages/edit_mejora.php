@@ -356,11 +356,13 @@ desired effect
                                 <?php
                                     $instancia = mysqli_query($con, "SELECT i.*, e.razon_social FROM aud_instancias as i INNER JOIN aud_entes as e on i.id_ente = e.id where i.borrado = 0 ORDER BY fecha_inicio desc;");
                                     while($row_instancia = mysqli_fetch_array($instancia)){
+                                        $fecha_inicio = date('d/m/Y',strtotime($row_instancia['fecha_inicio']));
+                                        $fecha_inicio;
                                         if($row_instancia['id']==$row['aud_instancia']) {
-                                            echo "<option value='". $row_instancia['id'] .  "' selected='selected'>" .$row_instancia['razon_social'] . " - " . $row_instancia['nombre']. "</option>";
+                                            echo "<option value='". $row_instancia['id'] .  "' selected='selected'>" .$row_instancia['razon_social'] . " - " . $row_instancia['nombre']. " - " . $fecha_inicio."</option>";
                                         }
                                         else {
-                                            echo "<option value='". $row_instancia['id'] .  "'>" .$row_instancia['razon_social'] . " - " . $row_instancia['nombre']. "</option>";
+                                            echo "<option value='". $row_instancia['id'] .  "'>" .$row_instancia['razon_social'] . " - " . $row_instancia['nombre']. " - " . $fecha_inicio. "</option>";
                                         }
                                     }
                                 ?>
