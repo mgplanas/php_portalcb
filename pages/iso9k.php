@@ -195,8 +195,9 @@ desired effect
                   <th>Descripcion</th>
                   <th>Responsable</th>
                   <th>Referentes</th>
-				          <th>Madurez</th>
+				    <th>Madurez</th>
                   <th>Implementación</th>
+                  <th>Evidencia</th>
                   <?php if ($current_version == $last_version) { echo '<th width="1"></th>';}?>
                 </tr>
                 </thead>
@@ -243,6 +244,7 @@ desired effect
                     echo '<td>'.$row['referentes'].'</td>'; 
                     echo '<td>'.$row['nivel'].'</td>'; 
                     echo '<td>'.$row['implementacion'].'</td>'; 
+                    echo '<td>'.$row['evidencia'].'</td>'; 
                     // href="edit_iso9k.php?nik='.$row['id_item_iso9k'].'&version='. $current_version .'"
                     if ($current_version == $last_version) {
                       echo '
@@ -338,7 +340,7 @@ desired effect
             'dataSrc': [ 0, 1 ]
         },
         'columnDefs': [ {
-            'targets': [ 0, 1 ],
+            'targets': [ 0, 1, 9],
             'visible': false
         } ],
       'dom'         : 'frtipB',

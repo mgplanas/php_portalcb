@@ -1,5 +1,10 @@
 # CHANGES
 
+# FIX-VARIOS
+FIX Login LDAP server
+Muestro columna evidencia en 27001 en xls
+Muestro columna evidencia en 9001 en xls
+
 ## FEAT-MC-AUDITORES
 
 Gestión de entes de auditoría e instancias de las mismas

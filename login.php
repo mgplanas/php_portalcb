@@ -6,7 +6,8 @@ sleep(1);
     $user = strip_tags($_POST["usuariolg"]) .'@arsat.com.ar';
     $pass = stripslashes($_POST["passlg"]);
 
-    $conn = ldap_connect("ldap://srv-int-dc.arsat.com.ar/");
+    #$conn = ldap_connect("ldap://srv-int-dc.arsat.com.ar/");
+    $conn = ldap_connect("ldap://192.168.26.72/");
     if (!$conn)
         echo 'Could not connect to LDAP server';
     else {
