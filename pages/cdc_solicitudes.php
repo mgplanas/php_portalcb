@@ -25,7 +25,7 @@ if(isset($_GET['aksi']) == 'delete'){
 	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
   //Elimino Control
   
-  $delete_control = mysqli_query($con, "UPDATE cdc_solicitud SET borrado='1' WHERE id='$nik'");
+  $delete_control = mysqli_query($con, "UPDATE cdc_solicitudes SET borrado='1' WHERE id='$nik'");
   
   //$delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
   //                  VALUES ('3', '5', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
@@ -75,6 +75,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
   <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
+<!-- bootstrap datepicker -->
+<link rel="stylesheet" href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+
    <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
@@ -221,9 +224,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- /.col -->
         <!-- MODAL Housing -->
         <?php
-            include_once('./modals/sdc_housing_view.php');
-            include_once('./modals/sdc_hosting_view.php');
-            include_once('./modals/cdc_abmcliente.php');
+            include_once('./modals/cdc_abmsolicitudes.php');
         ?>
         <!-- FIN Housing -->        
       </div>
@@ -250,6 +251,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
+<script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- export -->
 <script src="../bower_components/datatables.net/js/dataTables.buttons.min.js"></script>
 <script src="../bower_components/datatables.net/js/buttons.flash.min.js"></script>
@@ -258,9 +260,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
-<script src="./modals/sdc_housing_view.js"></script>      
-<script src="./modals/sdc_hosting_view.js"></script>      
-<script src="./modals/cdc_abmcliente.js"></script>      
+<script src="./modals/cdc_abmsolicitudes.js"></script>      
 <script>
   $(function () {
     $('#solicitudes').DataTable({

@@ -7,6 +7,8 @@ Gestión y seguiiento de Solicitudes de Infraestructura.
     - [pages/site_sidebar] Se agrega el item solicitudes infra en site_sidebar y site
     - [site] Se agrega el item solicitudes infra en site_sidebar y site
     - N[pages/cdc_solicitudes]
+    - N[pages/modals/cdc_abmsolicitudes.php/js]
+    - N[pages/helpers/cdc_abmsolicitudesdb.php]
 
 # FIX-VARIOS
 FIX Login LDAP server
