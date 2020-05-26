@@ -95,6 +95,7 @@
         <li><a href="cdc_organismo.php"><i class="fa fa-building"></i> Organismos</a></li>
         <li><a href="cdc_cliente.php"><i class="fa fa-user"></i> Clientes</a></li>
         <li><a href="cdc_servidores.php"><i class="fa fa-server"></i> Servidores</a></li>
+        <li><a href="cdc_solicitudes.php"><i class="fa fa-edit"></i> Solicitudes Infra</a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-gears"></i> Servicios
             <span class="pull-right-container">

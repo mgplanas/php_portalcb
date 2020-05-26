@@ -1,5 +1,13 @@
 # CHANGES
 
+# FEAT-SI
+Gestión y seguiiento de Solicitudes de Infraestructura.
+*Fecha:* 2020-05-14
+*Cambios:*
+    - [pages/site_sidebar] Se agrega el item solicitudes infra en site_sidebar y site
+    - [site] Se agrega el item solicitudes infra en site_sidebar y site
+    - N[pages/cdc_solicitudes]
+
 # FIX-VARIOS
 FIX Login LDAP server
 Muestro columna evidencia en 27001 en xls
