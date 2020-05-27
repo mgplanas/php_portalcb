@@ -15,10 +15,14 @@
                 
                 <div class="box-body">
                     <div class="form-group">
+                        <label for="requirente">Requirente</label>
+                        <input type="text" class="form-control" name="requirente" placeholder="" id='modal-abm-solicitud-requirente' required="true">
+                    </div>
+                    <!-- <div class="form-group">
                         <label>Requiriente</label>
                         <select name="cliente" class="form-control" id='modal-abm-solicitud-cliente'>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">

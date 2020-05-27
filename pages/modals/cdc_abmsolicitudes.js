@@ -3,33 +3,33 @@ $(function() {
     // ********************************************************************************************
     // Cliente
     // ********************************************************************************************
-    let ddlCliente = $('#modal-abm-solicitud-cliente');
+    // let ddlCliente = $('#modal-abm-solicitud-cliente');
 
-    // refresh DDL
-    function refreshClientes(selectedValue, disabled = false) {
-        // Limpio combos
-        ddlCliente.empty();
+    // // refresh DDL
+    // function refreshClientes(selectedValue, disabled = false) {
+    //     // Limpio combos
+    //     ddlCliente.empty();
 
-        //Populo las Clientes
-        $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM cdc_cliente WHERE borrado = 0 ORDER BY razon_social;' },
-            function(response) {
-                console.log(response.data);
-                $.each(response.data, function() {
-                    if (selectedValue && selectedValue == this.id) {
-                        ddlCliente.append($("<option />").val(this.id).text(this.razon_social).attr('selected', 'selected'));
-                    } else {
-                        ddlCliente.append($("<option />").val(this.id).text(this.razon_social));
-                    }
-                });
-                if (!selectedValue || parseInt(selectedValue) == 0) {
-                    ddlCliente.val('first').change();
-                }
-                ddlCliente.prop('disabled', disabled);
-            }
-        ).fail(function(jqXHR, errorText) {
-            console.log(errorText);
-        });
-    }
+    //     //Populo las Clientes
+    //     $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM cdc_cliente WHERE borrado = 0 ORDER BY razon_social;' },
+    //         function(response) {
+    //             console.log(response.data);
+    //             $.each(response.data, function() {
+    //                 if (selectedValue && selectedValue == this.id) {
+    //                     ddlCliente.append($("<option />").val(this.id).text(this.razon_social).attr('selected', 'selected'));
+    //                 } else {
+    //                     ddlCliente.append($("<option />").val(this.id).text(this.razon_social));
+    //                 }
+    //             });
+    //             if (!selectedValue || parseInt(selectedValue) == 0) {
+    //                 ddlCliente.val('first').change();
+    //             }
+    //             ddlCliente.prop('disabled', disabled);
+    //         }
+    //     ).fail(function(jqXHR, errorText) {
+    //         console.log(errorText);
+    //     });
+    // }
 
     function showHide(value, divid) {
         if (value) {
@@ -86,9 +86,10 @@ $(function() {
                     return callback('No hay datos');
                 }
                 var sol = response.data[0];
-                refreshClientes(sol.id_cliente);
+                // refreshClientes(sol.id_cliente);
                 $('#modal-abm-solicitud-fecha-sol').val(sol.fecha.split(' ')[0].split('-').reverse().join("/"));
                 // $('#modal-abm-solicitud-fecha-sol').val(sol.fecha);
+                $('#modal-abm-solicitud-requirente').val(sol.requirente);
                 $('#modal-abm-solicitud-estado').val(sol.estado);
                 $('#modal-abm-solicitud-convenio').val(sol.tiene_convenio);
                 $('#modal-abm-solicitud-propuesta').prop('checked', (sol.tiene_pc != 0));
@@ -122,10 +123,12 @@ $(function() {
         // Recupero datos del formulario
         let op = $(this).attr('name');
         let id = $('#modal-abm-solicitud-id').val();
-        let id_cliente = ddlCliente.val();
+        let id_cliente = 0;
+        // let id_cliente = ddlCliente.val();
         let fecha = $('#modal-abm-solicitud-fecha-sol').val();
         let titulo = $('#modal-abm-solicitud-titulo').val();
         let estado = $('#modal-abm-solicitud-estado').val();
+        let requirente = $('#modal-abm-solicitud-requirente').val();
         let convenio = $('#modal-abm-solicitud-convenio').val();
         let propuesta = $('#modal-abm-solicitud-propuesta').val();
         let propuesta_detalle = $('#modal-abm-solicitud-propuesta-detalle').val();
@@ -151,6 +154,7 @@ $(function() {
                 operacion: op,
                 id: id,
                 id_cliente: id_cliente,
+                requirente: requirente,
                 fecha: fecha,
                 titulo: titulo,
                 estado: estado,
@@ -184,10 +188,11 @@ $(function() {
     // ==============================================================
     function modalAbmLimpiarCampos() {
         $('#modal-abm-solicitud-id').val(0);
-        refreshClientes(0);
+        // refreshClientes(0);
         $("#modal-abm-solicitud-fecha-sol").datepicker().datepicker("setDate", new Date());
         $('#modal-abm-solicitud-titulo').val('');
         $('#modal-abm-solicitud-estado').val(1);
+        $('#modal-abm-solicitud-requirente').val('');
         $('#modal-abm-solicitud-convenio').val('');
         $('#modal-abm-solicitud-propuesta').prop('checked', false);
         $('#modal-abm-solicitud-propuesta-detalle').val('');

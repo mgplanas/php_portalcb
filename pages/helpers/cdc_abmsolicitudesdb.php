@@ -21,6 +21,7 @@
     $costo = mysqli_real_escape_string($con,(strip_tags($_POST['costo'],ENT_QUOTES)));
     $solicitante = mysqli_real_escape_string($con,(strip_tags($_POST['solicitante'],ENT_QUOTES)));
     $contactos = mysqli_real_escape_string($con,(strip_tags($_POST['contactos'],ENT_QUOTES)));
+    $requirente = mysqli_real_escape_string($con,(strip_tags($_POST['requirente'],ENT_QUOTES)));
     
     $gmtTimezone = new DateTimeZone('GMT');
     date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -49,6 +50,7 @@
                 ,costo
                 ,nombre_solicitante
                 ,contacto_solicitante
+                ,requirente
             ) VALUES (
                 '$dtfechaSol',
                 '$id_cliente',
@@ -65,7 +67,8 @@
                 '$sc',
                 '$costo',
                 '$solicitante',
-                '$contactos'                
+                '$contactos',
+                '$requirente'                
             )";	
                 
             $insert_gerencia = mysqli_query($con, $sql) or die(mysqli_error());
@@ -94,6 +97,7 @@
                 sc_numero = '$sc',
                 costo = '$costo',
                 nombre_solicitante = '$solicitante',
+                requirente = '$requirente',
                 contacto_solicitante = '$contactos'            
                 WHERE id='$id'";
             $lastInsert = mysqli_query($con,$sql) or die(mysqli_error());	

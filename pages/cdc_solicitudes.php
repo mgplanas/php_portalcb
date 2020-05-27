@@ -160,6 +160,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					$query = "SELECT 
                     S.id, 
                     S.fecha, 
+                    S.requirente,
                     S.id_cliente, 
                     O.razon_social as organismo,
                     C.razon_social,
@@ -180,8 +181,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     S.contacto_solicitante, 
                     S.borrado 
                     FROM cdc_solicitudes as S
-                    INNER JOIN cdc_cliente as C on S.id_cliente = C.id
-                    INNER JOIN cdc_organismo as O on C.id_organismo = O.id
+                    left JOIN cdc_cliente as C on S.id_cliente = C.id
+                    left JOIN cdc_organismo as O on C.id_organismo = O.id
                     INNER JOIN cdc_estados_solicitud as E ON S.estado = E.id
                     WHERE S.borrado = 0";
                     if ($id_cliente) {
@@ -198,7 +199,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							
 							echo '<tr>';
 							echo '<td>'. date('d/m/Y' ,strtotime($row['fecha'])) .'</td>';
-							echo '<td>'. $row['razon_social'].'</td>';
+							echo '<td>'. ($row['id_cliente']!=0 ? $row['razon_social'] : $row['requirente']) .'</td>';
 							echo '<td>'. $row['estado_nombre'].'</td>';
 							echo '<td>'. $row['titulo'].'</td>';
 							echo '<td align="center">';
