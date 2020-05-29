@@ -145,87 +145,90 @@ desired effect
       <div class="row">
         <div class="col-md-12">
             <div class="box">
-                <div class="box-header">
-                </div>
-                <div class="col-sm-8" style="text-align:right;">
+                <div class="col-sm-12" style="text-align:right;">
                     <?php
                         echo '<button type="button" id="modal-abm-costos-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-calculator"></i> Nueva Planilla de costos</button>';
                     ?>
                 </div>        
-            </div>
-            <!-- /.box-header -->		
-			<div class="box-body">
-              <table id="planillas" class="display" width="100%">
-                <thead>
-                <tr>
-                  <th rowspan="2">Cliente</th>
-                  <th rowspan="2" style="text-align: center;">Fecha</th>
-                  <th rowspan="2" style="text-align: center;">Meses</th>
-                  <th rowspan="2" style="text-align: center;">Duración</th>
-                  <th colspan="2" style="text-align: center;">Costos (USD)</th>
-                  <th colspan="3" style="text-align: center;">Costos (ARS)</th>
-                  <th colspan="2" style="text-align: center;">Parametro (%)</th>
-                </tr>
-                <tr>
-                  <th style="text-align: right;">recurrente</th>
-                  <th style="text-align: right;">única vez</th>
-                  <th style="text-align: right;">recurrente</th>
-                  <th style="text-align: right;">CM</th>
-                  <th style="text-align: right;">inflación</th>
-                  <th style="text-align: right;">CM</th>
-                  <th style="text-align: right;">inflación</th>
-                </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  $query = "SELECT 
-                    id, 
-                    id_cliente, 
-                    cliente, 
-                    fecha, 
-                    servicio, 
-                    meses_contrato, 
-                    duracion, 
-                    costo_unica_vez, 
-                    costo_recurrente, 
-                    cotizacion_usd, 
-                    inflacion, 
-                    cm 
-                    FROM cdc_costos 
-                    WHERE borrado = 0 ORDER BY fecha desc;";
-                  
-                  $sql = mysqli_query($con, $query);
+            
+                <!-- /.box-header -->		
+                <div class="box-body">
+                    <table id="planillas" class="display" width="100%">
+                        <thead>
+                        <tr>
+                        <th rowspan="2">Cliente</th>
+                        <th rowspan="2" style="text-align: center;">Fecha</th>
+                        <th rowspan="2" style="text-align: center;">Meses</th>
+                        <th rowspan="2" style="text-align: center;">Duración</th>
+                        <th colspan="2" style="text-align: center;">Costos (USD)</th>
+                        <th colspan="3" style="text-align: center;">Costos (ARS)</th>
+                        <th colspan="2" style="text-align: center;">Parametro (%)</th>
+                        <th rowspan="2" style="text-align: right;"></th>
+                        </tr>
+                        <tr>
+                        <th style="text-align: right;">recurrente</th>
+                        <th style="text-align: right;">única vez</th>
+                        <th style="text-align: right;">recurrente</th>
+                        <th style="text-align: right;">CM</th>
+                        <th style="text-align: right;">inflación</th>
+                        <th style="text-align: right;">CM</th>
+                        <th style="text-align: right;">inflación</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        $query = "SELECT 
+                            id, 
+                            id_cliente, 
+                            cliente, 
+                            fecha, 
+                            servicio, 
+                            meses_contrato, 
+                            duracion, 
+                            costo_unica_vez, 
+                            costo_recurrente, 
+                            cotizacion_usd, 
+                            inflacion, 
+                            cm 
+                            FROM cdc_costos 
+                            WHERE borrado = 0 ORDER BY fecha desc;";
+                        
+                        $sql = mysqli_query($con, $query);
 
-                  $no = 1;
-                  while($row = mysqli_fetch_assoc($sql)){
-                    $ars_recurrente = $row['costo_recurrente'] * $row['cotizacion_usd'];
-                    $ars_cm = $ars_recurrente * (1 + $row['cm'] / 100);
-                    $ars_inflacion = $ars_cm * (1 + $row['inflacion'] / 100);
-                    echo '<tr>';
-                    echo '<td>'.$row['cliente']. '</td>'; 
-                    echo '<td style="text-align: center;">'.$row['fecha']. '</td>'; 
-                    echo '<td style="text-align: center;">'.$row['meses_contrato']. '</td>'; 
-                    echo '<td style="text-align: center;">'.$row['duracion']. '</td>'; 
-                    echo '<td style="text-align: right;">'.$row['costo_recurrente']. '</td>'; 
-                    echo '<td style="text-align: right;">'.$row['costo_unica_vez']. '</td>'; 
-                    echo '<td style="text-align: right;">'. round($ars_recurrente,2) . '</td>'; 
-                    echo '<td style="text-align: right;">'. round($ars_cm,2) . '</td>'; 
-                    echo '<td style="text-align: right;">'. round($ars_inflacion,2) . '</td>'; 
-                    echo '<td style="text-align: right;">'.$row['cm']. '</td>'; 
-                    echo '<td style="text-align: right;">'.$row['inflacion']. '</td>'; 
-                    echo '</tr>';
-                    $no++;
-                  }
-                  ?>
-                </tbody>
-              </table>
-            </div>
+                        $no = 1;
+                        while($row = mysqli_fetch_assoc($sql)){
+                            $ars_recurrente = $row['costo_recurrente'] * $row['cotizacion_usd'];
+                            $ars_cm = $ars_recurrente * (1 + $row['cm'] / 100);
+                            $ars_inflacion = $ars_cm * (1 + $row['inflacion'] / 100);
+                            echo '<tr>';
+                            echo '<td>'.$row['cliente']. '</td>'; 
+                            echo '<td style="text-align: center;">'.date('d/m/Y' ,strtotime($row['fecha'])). '</td>'; 
+                            echo '<td style="text-align: center;">'.$row['meses_contrato']. '</td>'; 
+                            echo '<td style="text-align: center;">'.$row['duracion']. '</td>'; 
+                            echo '<td style="text-align: right;">'.$row['costo_recurrente']. '</td>'; 
+                            echo '<td style="text-align: right;">'.$row['costo_unica_vez']. '</td>'; 
+                            echo '<td style="text-align: right;">'. round($ars_recurrente,2) . '</td>'; 
+                            echo '<td style="text-align: right;">'. round($ars_cm,2) . '</td>'; 
+                            echo '<td style="text-align: right;">'. round($ars_inflacion,2) . '</td>'; 
+                            echo '<td style="text-align: right;">'.$row['cm']. '</td>'; 
+                            echo '<td style="text-align: right;">'.$row['inflacion']. '</td>'; 
+                            echo '<td align="right">';
+                            echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-costos-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" ></i></a>';
+                            if ($rq_sec['admin_cli_dc'] == '1') {echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-costos-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';}
+                            echo '</td></tr>';
+                            $no++;
+                        }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
             <!-- /.box-body -->
-          </div>
+            </div>
           <!-- /.box -->
 
           <!-- /.box -->
         </div>
+        
         <!-- /.col -->
         <?php
             include_once('./modals/abmiso9k.php');
@@ -277,7 +280,7 @@ desired effect
       'ordering'    : false,
       'info'        : true,
       'autoWidth'   : true,
-      'dom'         : 'frtipB',
+      'dom'         : 'Bfrtip',
       'buttons'     : [{
                   extend: 'pdfHtml5',
                   orientation: 'landscape',
