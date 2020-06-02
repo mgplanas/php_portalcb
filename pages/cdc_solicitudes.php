@@ -152,6 +152,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Cliente</th>
                     <th>Estado</th>
                     <th>Título</th>
+                    <!-- HIDDEN 4 -->
+                    <th>Posee Convenio</th>
+                    <th>Posee Propuesta Compercial</th>
+                    <th>Detalle Propuesta</th>
+                    <th>Descripción Solicitud</th>
+                    <th># SS</th>
+
+                    <th>Implica Compra de HW</th>
+                    <th>Detalle Compra</th>
+                    <th>Tiene SC</th>
+                    <th># SC</th>
+                    <th>Costo</th>
+                    
+                    <th>Solicitante</th>
+                    <th>Contactos</th>
+                    <!-- HIDDEN 15 -->
                     <th></th>
                 </tr>
                 </thead>
@@ -190,18 +206,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     }
 					
 					$sql = mysqli_query($con, $query);
-
+                    
 					if(mysqli_num_rows($sql) == 0){
-						echo '<tr><td colspan="8">No hay datos.</td></tr>';
+                        echo '<tr><td colspan="8">No hay datos.</td></tr>';
 					}else{
-						$no = 1;
+                        $no = 1;
 						while($row = mysqli_fetch_assoc($sql)){
-							
-							echo '<tr>';
+                            
+                            echo '<tr>';
 							echo '<td>'. date('d/m/Y' ,strtotime($row['fecha'])) .'</td>';
 							echo '<td>'. ($row['id_cliente']!=0 ? $row['razon_social'] : $row['requirente']) .'</td>';
 							echo '<td>'. $row['estado_nombre'].'</td>';
 							echo '<td>'. $row['titulo'].'</td>';
+                            // HIDDEN
+							echo '<td>'. ($row['tiene_convenio']!=0 ? 'Sí' : 'No') .'</td>';
+							echo '<td>'. ($row['tiene_pc']!=0 ? 'Sí' : 'No') .'</td>';
+							echo '<td>'. $row['pc_descripcion'].'</td>';
+							echo '<td>'. $row['descripcion'].'</td>';
+							echo '<td>'. $row['ss'].'</td>';
+							echo '<td>'. ($row['compra_hw']!=0 ? 'Sí' : 'No').'</td>';
+							echo '<td>'. $row['descripcion_compra'].'</td>';
+							echo '<td>'. ($row['tiene_sc']!=0 ? 'Sí' : 'No').'</td>';
+							echo '<td>'. $row['sc_numero'].'</td>';
+							echo '<td>'. $row['costo'].'</td>';
+							echo '<td>'. $row['nombre_solicitante'].'</td>';
+							echo '<td>'. $row['contacto_solicitante'].'</td>';
+                            // HIDDEN
 							echo '<td align="center">';
                             if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
                                 echo '<a 
@@ -266,25 +296,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
   $(function () {
     $('#solicitudes').DataTable({
       'paging'      : true,
-			'pageLength': 20,
+	  'pageLength': 20,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : true,
       'order'       : [[ 0, 'desc' ], [1, 'asc']],
       'info'        : true,
       'autoWidth'   : false,
-      'dom'         : 'frtipB',
-      'buttons'     : [{
-                  extend: 'pdfHtml5',
-                  orientation: 'landscape',
-                  pageSize: 'A4',
-                         
-                     },
-                      {
-            extend: 'excel',
-            text: 'Excel',
-            }]
+      'dom'         : 'Bfrtip',
 
+      'buttons'  : [{
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    },
+                    {
+                    extend: 'excel',
+                    text: 'Excel',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15 ]
+                        }
+                    }],
+      'columnDefs': [{
+          'targets': [ 4,5,6,7,8,9,10,11,12,13,14,15 ],
+          'visible': false
+        }],
     })
   })
 </script>
