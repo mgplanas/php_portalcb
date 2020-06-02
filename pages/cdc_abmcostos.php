@@ -152,163 +152,175 @@ desired effect
 	<!--------------------------
      | Your Page Content Here |
      -------------------------->
-	 <section class="content">
-      <div class="row">
-        <div class="col-md-12">
-            <div class="box">     
-                <!-- /.box-header -->		
-                <div class="box-body">
+	<section class="content">
+        <form method="post" role="form" action="">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">     
+                        <!-- /.box-header -->		
+                        <div class="box-body">
 
-                    <form method="post" role="form" action="">
-                    
-                        <input type="hidden" class="form-control" name="id" placeholder="id" id='modal-abm-costos-id' >
-                        
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="cliente">Cliente</label>
-                                    <input type="text" class="form-control" name="cliente" placeholder="Razón Social" id='modal-abm-costos-cliente' required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="servicio">Servicio</label>
-                                    <input type="text" class="form-control" name="servicio" placeholder="Hosting / Housing.." id='modal-abm-costos-servicio'>
-                                </div>                                
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="fecha">Fecha</label>
-                                    <div class="input-group date" data-provide="modal-abm-costos-fecha">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        <input type="text" class="form-control pull-right" required="required" name="fecha" id="modal-abm-costos-fecha">
-                                    </div>                        
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="meses">Meses de contrato</label>
-                                    <input type="number" min="1" class="form-control" name="meses"  id='modal-abm-costos-meses' required>
-                                </div>     
-                            </div>                   
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="dc">Duracion</label>
-                                    <input type="number" min="0" class="form-control" name="dc"  id='modal-abm-costos-dc'>
-                                </div>                                 
-                            </div>                   
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="cm">CM (%)</label>
-                                    <input type="number" min="0" class="form-control" name="cm"  id='modal-abm-costos-cm'>
-                                </div>                                 
-                            </div>                   
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="inflacion">Inflación (%)</label>
-                                    <input type="number" min="0" class="form-control" name="inflacion"  id='modal-abm-costos-inflacion'>
-                                </div>                                 
-                            </div>                                                 
-                        </div>
-                        <?php if (!$id_planilla) {?>
-                            <div id="modal-abm-costos-crear-div" class="form-group float-md-right">
-                                <div class="col-md-10"></div>
-                                <div class="col-md-1">
-                                    <input type="button" name="AddCliente" class="btn  btn-raised btn-success" value="Guardar" id='modal-abm-costos-submit'>
-                                </div>
-                                <div class="col-md-1">
-                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                                </div>
-                            </div>
-                        <?php } ?>
-                    
-                        <!-- <table id="planillas" class="display" width="100%">
-                            <thead>
-                            <tr>
-                            <th rowspan="2">Cliente</th>
-                            <th rowspan="2" style="text-align: center;">Fecha</th>
-                            <th rowspan="2" style="text-align: center;">Meses</th>
-                            <th rowspan="2" style="text-align: center;">Duración</th>
-                            <th colspan="2" style="text-align: center;">Costos (USD)</th>
-                            <th colspan="3" style="text-align: center;">Costos (ARS)</th>
-                            <th colspan="2" style="text-align: center;">Parametro (%)</th>
-                            <th rowspan="2" style="text-align: right;"></th>
-                            </tr>
-                            <tr>
-                            <th style="text-align: right;">recurrente</th>
-                            <th style="text-align: right;">única vez</th>
-                            <th style="text-align: right;">recurrente</th>
-                            <th style="text-align: right;">CM</th>
-                            <th style="text-align: right;">inflación</th>
-                            <th style="text-align: right;">CM</th>
-                            <th style="text-align: right;">inflación</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            $query = "SELECT 
-                                id, 
-                                id_cliente, 
-                                cliente, 
-                                fecha, 
-                                servicio, 
-                                meses_contrato, 
-                                duracion, 
-                                costo_unica_vez, 
-                                costo_recurrente, 
-                                cotizacion_usd, 
-                                inflacion, 
-                                cm 
-                                FROM cdc_costos 
-                                WHERE borrado = 0 ORDER BY fecha desc;";
+                            <input type="hidden" class="form-control" name="id" placeholder="id" id='modal-abm-costos-id' value="<?= $id_planilla ?>">
                             
-                            $sql = mysqli_query($con, $query);
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="cliente">Cliente</label>
+                                        <input type="text" class="form-control" name="cliente" placeholder="Razón Social" id='modal-abm-costos-cliente' required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="servicio">Servicio</label>
+                                        <input type="text" class="form-control" name="servicio" placeholder="Hosting / Housing.." id='modal-abm-costos-servicio'>
+                                    </div>                                
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="fecha">Fecha</label>
+                                        <div class="input-group date" data-provide="modal-abm-costos-fecha">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" class="form-control pull-right" required="required" name="fecha" id="modal-abm-costos-fecha">
+                                        </div>                        
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="meses">Meses de contrato</label>
+                                        <input type="number" min="1" class="form-control" name="meses"  id='modal-abm-costos-meses' required>
+                                    </div>     
+                                </div>                   
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="dc">Duracion</label>
+                                        <input type="number" min="0" class="form-control" name="dc"  id='modal-abm-costos-dc'>
+                                    </div>                                 
+                                </div>                   
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="cm">CM (%)</label>
+                                        <input type="number" min="0" class="form-control" name="cm"  id='modal-abm-costos-cm'>
+                                    </div>                                 
+                                </div>                   
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="inflacion">Inflación (%)</label>
+                                        <input type="number" min="0" class="form-control" name="inflacion"  id='modal-abm-costos-inflacion'>
+                                    </div>                                 
+                                </div>                                                 
+                            </div>
+                            <?php if (!$id_planilla) {?>
+                                <div id="modal-abm-costos-crear-div" class="form-group float-md-right">
+                                    <div class="col-md-10"></div>
+                                    <div class="col-md-1">
+                                        <input type="button" name="AddCliente" class="btn  btn-raised btn-success" value="Guardar" id='modal-abm-costos-submit'>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        
+                            <!-- <table id="planillas" class="display" width="100%">
+                                <thead>
+                                <tr>
+                                <th rowspan="2">Cliente</th>
+                                <th rowspan="2" style="text-align: center;">Fecha</th>
+                                <th rowspan="2" style="text-align: center;">Meses</th>
+                                <th rowspan="2" style="text-align: center;">Duración</th>
+                                <th colspan="2" style="text-align: center;">Costos (USD)</th>
+                                <th colspan="3" style="text-align: center;">Costos (ARS)</th>
+                                <th colspan="2" style="text-align: center;">Parametro (%)</th>
+                                <th rowspan="2" style="text-align: right;"></th>
+                                </tr>
+                                <tr>
+                                <th style="text-align: right;">recurrente</th>
+                                <th style="text-align: right;">única vez</th>
+                                <th style="text-align: right;">recurrente</th>
+                                <th style="text-align: right;">CM</th>
+                                <th style="text-align: right;">inflación</th>
+                                <th style="text-align: right;">CM</th>
+                                <th style="text-align: right;">inflación</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                $query = "SELECT 
+                                    id, 
+                                    id_cliente, 
+                                    cliente, 
+                                    fecha, 
+                                    servicio, 
+                                    meses_contrato, 
+                                    duracion, 
+                                    costo_unica_vez, 
+                                    costo_recurrente, 
+                                    cotizacion_usd, 
+                                    inflacion, 
+                                    cm 
+                                    FROM cdc_costos 
+                                    WHERE borrado = 0 ORDER BY fecha desc;";
+                                
+                                $sql = mysqli_query($con, $query);
 
-                            $no = 1;
-                            while($row = mysqli_fetch_assoc($sql)){
-                                $ars_recurrente = $row['costo_recurrente'] * $row['cotizacion_usd'];
-                                $ars_cm = $ars_recurrente * (1 + $row['cm'] / 100);
-                                $ars_inflacion = $ars_cm * (1 + $row['inflacion'] / 100);
-                                echo '<tr>';
-                                echo '<td>'.$row['cliente']. '</td>'; 
-                                echo '<td style="text-align: center;">'.date('d/m/Y' ,strtotime($row['fecha'])). '</td>'; 
-                                echo '<td style="text-align: center;">'.$row['meses_contrato']. '</td>'; 
-                                echo '<td style="text-align: center;">'.$row['duracion']. '</td>'; 
-                                echo '<td style="text-align: right;">'.$row['costo_recurrente']. '</td>'; 
-                                echo '<td style="text-align: right;">'.$row['costo_unica_vez']. '</td>'; 
-                                echo '<td style="text-align: right;">'. round($ars_recurrente,2) . '</td>'; 
-                                echo '<td style="text-align: right;">'. round($ars_cm,2) . '</td>'; 
-                                echo '<td style="text-align: right;">'. round($ars_inflacion,2) . '</td>'; 
-                                echo '<td style="text-align: right;">'.$row['cm']. '</td>'; 
-                                echo '<td style="text-align: right;">'.$row['inflacion']. '</td>'; 
-                                echo '<td align="right">';
-                                echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-costos-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" ></i></a>';
-                                if ($rq_sec['admin_cli_dc'] == '1') {echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-costos-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';}
-                                echo '</td></tr>';
-                                $no++;
-                            }
-                            ?>
-                            </tbody>
-                        </table> -->
-                    </form>
+                                $no = 1;
+                                while($row = mysqli_fetch_assoc($sql)){
+                                    $ars_recurrente = $row['costo_recurrente'] * $row['cotizacion_usd'];
+                                    $ars_cm = $ars_recurrente * (1 + $row['cm'] / 100);
+                                    $ars_inflacion = $ars_cm * (1 + $row['inflacion'] / 100);
+                                    echo '<tr>';
+                                    echo '<td>'.$row['cliente']. '</td>'; 
+                                    echo '<td style="text-align: center;">'.date('d/m/Y' ,strtotime($row['fecha'])). '</td>'; 
+                                    echo '<td style="text-align: center;">'.$row['meses_contrato']. '</td>'; 
+                                    echo '<td style="text-align: center;">'.$row['duracion']. '</td>'; 
+                                    echo '<td style="text-align: right;">'.$row['costo_recurrente']. '</td>'; 
+                                    echo '<td style="text-align: right;">'.$row['costo_unica_vez']. '</td>'; 
+                                    echo '<td style="text-align: right;">'. round($ars_recurrente,2) . '</td>'; 
+                                    echo '<td style="text-align: right;">'. round($ars_cm,2) . '</td>'; 
+                                    echo '<td style="text-align: right;">'. round($ars_inflacion,2) . '</td>'; 
+                                    echo '<td style="text-align: right;">'.$row['cm']. '</td>'; 
+                                    echo '<td style="text-align: right;">'.$row['inflacion']. '</td>'; 
+                                    echo '<td align="right">';
+                                    echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-costos-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" ></i></a>';
+                                    if ($rq_sec['admin_cli_dc'] == '1') {echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-costos-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';}
+                                    echo '</td></tr>';
+                                    $no++;
+                                }
+                                ?>
+                                </tbody>
+                            </table> -->
+                        </div>
+                    
+                    </div>
+                <!-- /.box -->
                 </div>
-            
+                
+                <!-- /.col -->
+                <?php
+                    // include_once('./modals/cdc_abmcostos.php');
+                    ?>        
             </div>
-          <!-- /.box -->
+            <?php if ($id_planilla) {?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">     
+                        <!-- /.box-header -->		
+                        <div class="box-header">
+                            <h3>Costeo de productos y servicios</h3>
+                        </div>
+                        <div class="box-body">
 
-          <!-- /.box -->
-        </div>
-        
-        <!-- /.col -->
-        <?php
-            // include_once('./modals/cdc_abmcostos.php');
-        ?>        
-      </div>
-      <!-- /.row -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+            <?php }?>
+        </form>
     </section>
     <!-- /.content -->
   </div>
