@@ -27,6 +27,7 @@ $personas = mysqli_query($con, "SELECT * FROM persona");
    float: right;
    text-align: right;
 }
+
 </style>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -147,7 +148,7 @@ desired effect
             <div class="box">
                 <div class="col-sm-12" style="text-align:right;">
                     <?php
-                        echo '<button type="button" id="modal-abm-costos-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-calculator"></i> Nueva Planilla de costos</button>';
+                        echo '<button type="button" id="modal-abm-costos-btn-alta" class="btn-sm btn-primary"><i class="fa fa-calculator"></i> Nueva Planilla de costos</button>';
                     ?>
                 </div>        
             
@@ -231,7 +232,7 @@ desired effect
         
         <!-- /.col -->
         <?php
-            include_once('./modals/abmiso9k.php');
+            // include_once('./modals/cdc_abmcostos.php');
         ?>        
       </div>
       <!-- /.row -->
@@ -267,10 +268,15 @@ desired effect
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
 <script src="../js/bootstrap-select.min.js"></script>
-<script src="./modals/abmiso9k.js"></script>  
+<!-- <script src="./modals/cdc_abmcostos.js"></script>   -->
       
 <script>
   $(function () {
+
+    $('#modal-abm-costos-btn-alta').on('click', function() {
+        window.location.href='cdc_abmcostos.php?planilla=0';
+    });
+
     $('#planillas').DataTable({
       'language': { 'emptyTable': 'No hay datos' },
       'paging'      : true,
@@ -293,18 +299,6 @@ desired effect
             }]
 
     });
-
-    $('#versionselector').on('change', function() {
-      window.location.href = "iso9k.php?version=".concat(this.value);
-    });    
-
-    // let tableISO = $('#iso9k').dataTable();
-    // tableISO.$('.edicatem').click( function () {
-    //   let data = tableISO.fnGetData( $(this).parents('tr') );
-    //   console.log(data);
-    //   data[3] = 'changed';
-    //   tableISO.fnUpdate(data,$(this).parents('tr'),undefined,false);
-    // });
   });
 </script>
 
