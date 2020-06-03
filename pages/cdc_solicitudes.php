@@ -207,41 +207,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					
 					$sql = mysqli_query($con, $query);
                     
-					if(mysqli_num_rows($sql) == 0){
-                        echo '<tr><td colspan="8">No hay datos.</td></tr>';
-					}else{
-                        $no = 1;
-						while($row = mysqli_fetch_assoc($sql)){
-                            
-                            echo '<tr>';
-							echo '<td>'. date('d/m/Y' ,strtotime($row['fecha'])) .'</td>';
-							echo '<td>'. ($row['id_cliente']!=0 ? $row['razon_social'] : $row['requirente']) .'</td>';
-							echo '<td>'. $row['estado_nombre'].'</td>';
-							echo '<td>'. $row['titulo'].'</td>';
-                            // HIDDEN
-							echo '<td>'. ($row['tiene_convenio']!=0 ? 'Sí' : 'No') .'</td>';
-							echo '<td>'. ($row['tiene_pc']!=0 ? 'Sí' : 'No') .'</td>';
-							echo '<td>'. $row['pc_descripcion'].'</td>';
-							echo '<td>'. $row['descripcion'].'</td>';
-							echo '<td>'. $row['ss'].'</td>';
-							echo '<td>'. ($row['compra_hw']!=0 ? 'Sí' : 'No').'</td>';
-							echo '<td>'. $row['descripcion_compra'].'</td>';
-							echo '<td>'. ($row['tiene_sc']!=0 ? 'Sí' : 'No').'</td>';
-							echo '<td>'. $row['sc_numero'].'</td>';
-							echo '<td>'. $row['costo'].'</td>';
-							echo '<td>'. $row['nombre_solicitante'].'</td>';
-							echo '<td>'. $row['contacto_solicitante'].'</td>';
-                            // HIDDEN
-							echo '<td align="center">';
-                            if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
-                                echo '<a 
-                                data-id="' . $row['id'] . '" 
-                                title="Editar Solicitud" class="modal-abm-solicitud-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
-                                echo '<a href="cdc_solicitudes.php?aksi=delete&nik='.$row['id'].'" title="Borrar Solicitud" onclick="return confirm(\'Esta seguro de borrar la solicitud de '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
-                            }
-                            echo '</td>';
-                            echo '</tr>';
+                    $no = 1;
+                    while($row = mysqli_fetch_assoc($sql)){
+                        
+                        echo '<tr>';
+                        echo '<td>'. date('d/m/Y' ,strtotime($row['fecha'])) .'</td>';
+                        echo '<td>'. ($row['id_cliente']!=0 ? $row['razon_social'] : $row['requirente']) .'</td>';
+                        echo '<td>'. $row['estado_nombre'].'</td>';
+                        echo '<td>'. $row['titulo'].'</td>';
+                        // HIDDEN
+                        echo '<td>'. ($row['tiene_convenio']!=0 ? 'Sí' : 'No') .'</td>';
+                        echo '<td>'. ($row['tiene_pc']!=0 ? 'Sí' : 'No') .'</td>';
+                        echo '<td>'. $row['pc_descripcion'].'</td>';
+                        echo '<td>'. $row['descripcion'].'</td>';
+                        echo '<td>'. $row['ss'].'</td>';
+                        echo '<td>'. ($row['compra_hw']!=0 ? 'Sí' : 'No').'</td>';
+                        echo '<td>'. $row['descripcion_compra'].'</td>';
+                        echo '<td>'. ($row['tiene_sc']!=0 ? 'Sí' : 'No').'</td>';
+                        echo '<td>'. $row['sc_numero'].'</td>';
+                        echo '<td>'. $row['costo'].'</td>';
+                        echo '<td>'. $row['nombre_solicitante'].'</td>';
+                        echo '<td>'. $row['contacto_solicitante'].'</td>';
+                        // HIDDEN
+                        echo '<td align="center">';
+                        if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
+                            echo '<a 
+                            data-id="' . $row['id'] . '" 
+                            title="Editar Solicitud" class="modal-abm-solicitud-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                            echo '<a href="cdc_solicitudes.php?aksi=delete&nik='.$row['id'].'" title="Borrar Solicitud" onclick="return confirm(\'Esta seguro de borrar la solicitud de '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
                         }
+                        echo '</td>';
+                        echo '</tr>';
                     }
 					?>
                 </tbody>
@@ -304,6 +300,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
       'info'        : true,
       'autoWidth'   : false,
       'dom'         : 'Bfrtip',
+      "language": {
+        "emptyTable": "No hay solicitudes"
+        },
 
       'buttons'  : [{
                     extend: 'pdfHtml5',
