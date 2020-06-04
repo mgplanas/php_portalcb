@@ -76,6 +76,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
 
+.sub-categorias {
+    background: #f0f0f0;
+}
+.sub-categorias:hover, .sub-categorias:focus {
+    color: #555 !important;
+    text-decoration: none !important;
+    background-color: #e5e5e5 !important;
+}
+
+.producto-servicio {
+    font-size: .8em;
+}
+.categorias {
+    background: #e0e0e0;
+    font-weight: bold;
+}
+.categorias:hover, .categorias:focus {
+    color: #555 !important;
+    text-decoration: none !important;
+    background-color: #d5d5d5 !important;
+}
 .just-padding {
   padding: 15px;
 }
@@ -109,6 +130,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 .list-group-item .glyphicon {
   margin-right: 5px;
 }
+
+
 
     .example-modal .modal {
       position: relative;
