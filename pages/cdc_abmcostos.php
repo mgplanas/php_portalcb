@@ -75,6 +75,41 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
+
+.just-padding {
+  padding: 15px;
+}
+
+.list-group.list-group-root {
+  padding: 0;
+  overflow: hidden;
+}
+
+.list-group.list-group-root .list-group {
+  margin-bottom: 0;
+}
+
+.list-group.list-group-root .list-group-item {
+  border-radius: 0;
+  border-width: 1px 0 0 0;
+}
+
+.list-group.list-group-root > .list-group-item:first-child {
+  border-top-width: 0;
+}
+
+.list-group.list-group-root > .list-group > .list-group-item {
+  padding-left: 30px;
+}
+
+.list-group.list-group-root > .list-group > .list-group > .list-group-item {
+  padding-left: 45px;
+}
+
+.list-group-item .glyphicon {
+  margin-right: 5px;
+}
+
     .example-modal .modal {
       position: relative;
       top: auto;
@@ -313,7 +348,20 @@ desired effect
                             <h3>Costeo de productos y servicios</h3>
                         </div>
                         <div class="box-body">
-
+                            <div class="row">
+                                <!-- CATEGORIAS -->
+                                <div class="col-md-4">
+                                    <div id="modal-abm-costos-categorias" class="just-padding">
+                                        <div id="modal-abm-costos-categorias-card" class="list-group list-group-root card">
+                                        </div>
+                                    </div>                                
+                                    <!-- <div class="just-padding">
+                                        <div class="list-group list-group-root well">
+                                        </div>
+                                    </div>                                  -->
+                                </div>    
+                                <!-- FIN CATEGORIAS -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -356,6 +404,7 @@ desired effect
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
 <script src="../js/bootstrap-select.min.js"></script>
 <!-- <script src="./modals/cdc_abmcostos.js"></script>   -->
+<script src="./helpers/cdc_abmcostos.js"></script>  
       
 <script>
   $(function () {
