@@ -11,7 +11,7 @@ $(function() {
                 let catIdHtml = 'modal-abm-costos-cat-' + catId;
 
                 let cat = $('<a href="#' + catIdHtml + '" class="list-group-item" data-toggle="collapse"></a>')
-                    .append($('<i class="fa fa-angle-right mr-2"></i>'))
+                    .append($('<i class="glyphicon glyphicon-chevron-right"></i>'))
                     .append(categoria.descripcion);
                 let cat_container = $('<div class="list-group collapse" id="' + catIdHtml + '"></div>');
 
@@ -21,7 +21,7 @@ $(function() {
                     let scatIdHtml = 'modal-abm-costos-scat-' + subcatID;
 
                     let scat = $('<a href="#' + scatIdHtml + '" class="list-group-item" data-toggle="collapse"></a>')
-                        .append($('<i class="fa fa-angle-right mr-2"></i>'))
+                        .append($('<i class="glyphicon glyphicon-chevron-right"></i>'))
                         .append(subcat.descripcion);
                     let scat_container = $('<div class="list-group collapse" id="' + scatIdHtml + '"></div>');
 
@@ -39,24 +39,19 @@ $(function() {
                 container.append(cat);
                 container.append(cat_container);
             });
-            console.log(response.data);
-            compra = response.data[0];
-            // console.log(compra);
-            // $('#modal-abm-compra-id').val(compra.id);
+
+            $('.list-group-item').on('click', function() {
+                $('.glyphicon', this)
+                    .toggleClass('glyphicon-chevron-right')
+                    .toggleClass('glyphicon-chevron-down');
+            });
+
+
         }
     ).fail(function(jqXHR, errorText) {
         console.log(errorText);
     });
 
-    $('.list-group').on('show.bs.collapse', function(event) {
-        console.log('paso');
-        event.stopPropagation();
-    });
-    // $('.list-group-item').on('click', function() {
-    //     $('.fa', this)
-    //         .toggleClass('fa-angle-right')
-    //         .toggleClass('fa-angle-down');
-    // });
 
 
 });
