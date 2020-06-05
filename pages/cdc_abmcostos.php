@@ -283,74 +283,6 @@ desired effect
                                 </div>
                             <?php } ?>
                         
-                            <!-- <table id="planillas" class="display" width="100%">
-                                <thead>
-                                <tr>
-                                <th rowspan="2">Cliente</th>
-                                <th rowspan="2" style="text-align: center;">Fecha</th>
-                                <th rowspan="2" style="text-align: center;">Meses</th>
-                                <th rowspan="2" style="text-align: center;">Duración</th>
-                                <th colspan="2" style="text-align: center;">Costos (USD)</th>
-                                <th colspan="3" style="text-align: center;">Costos (ARS)</th>
-                                <th colspan="2" style="text-align: center;">Parametro (%)</th>
-                                <th rowspan="2" style="text-align: right;"></th>
-                                </tr>
-                                <tr>
-                                <th style="text-align: right;">recurrente</th>
-                                <th style="text-align: right;">única vez</th>
-                                <th style="text-align: right;">recurrente</th>
-                                <th style="text-align: right;">CM</th>
-                                <th style="text-align: right;">inflación</th>
-                                <th style="text-align: right;">CM</th>
-                                <th style="text-align: right;">inflación</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                $query = "SELECT 
-                                    id, 
-                                    id_cliente, 
-                                    cliente, 
-                                    fecha, 
-                                    servicio, 
-                                    meses_contrato, 
-                                    duracion, 
-                                    costo_unica_vez, 
-                                    costo_recurrente, 
-                                    cotizacion_usd, 
-                                    inflacion, 
-                                    cm 
-                                    FROM cdc_costos 
-                                    WHERE borrado = 0 ORDER BY fecha desc;";
-                                
-                                $sql = mysqli_query($con, $query);
-
-                                $no = 1;
-                                while($row = mysqli_fetch_assoc($sql)){
-                                    $ars_recurrente = $row['costo_recurrente'] * $row['cotizacion_usd'];
-                                    $ars_cm = $ars_recurrente * (1 + $row['cm'] / 100);
-                                    $ars_inflacion = $ars_cm * (1 + $row['inflacion'] / 100);
-                                    echo '<tr>';
-                                    echo '<td>'.$row['cliente']. '</td>'; 
-                                    echo '<td style="text-align: center;">'.date('d/m/Y' ,strtotime($row['fecha'])). '</td>'; 
-                                    echo '<td style="text-align: center;">'.$row['meses_contrato']. '</td>'; 
-                                    echo '<td style="text-align: center;">'.$row['duracion']. '</td>'; 
-                                    echo '<td style="text-align: right;">'.$row['costo_recurrente']. '</td>'; 
-                                    echo '<td style="text-align: right;">'.$row['costo_unica_vez']. '</td>'; 
-                                    echo '<td style="text-align: right;">'. round($ars_recurrente,2) . '</td>'; 
-                                    echo '<td style="text-align: right;">'. round($ars_cm,2) . '</td>'; 
-                                    echo '<td style="text-align: right;">'. round($ars_inflacion,2) . '</td>'; 
-                                    echo '<td style="text-align: right;">'.$row['cm']. '</td>'; 
-                                    echo '<td style="text-align: right;">'.$row['inflacion']. '</td>'; 
-                                    echo '<td align="right">';
-                                    echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-costos-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" ></i></a>';
-                                    if ($rq_sec['admin_cli_dc'] == '1') {echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-costos-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';}
-                                    echo '</td></tr>';
-                                    $no++;
-                                }
-                                ?>
-                                </tbody>
-                            </table> -->
                         </div>
                     
                     </div>
@@ -378,12 +310,27 @@ desired effect
                                         <div id="modal-abm-costos-categorias-card" class="list-group list-group-root card">
                                         </div>
                                     </div>                                
-                                    <!-- <div class="just-padding">
-                                        <div class="list-group list-group-root well">
-                                        </div>
-                                    </div>                                  -->
                                 </div>    
                                 <!-- FIN CATEGORIAS -->
+                                <!-- COSTEO -->
+                                <div class="col-md-8">
+                                    <table id="costeo" class="table table-striped" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>cat</th>
+                                            <th>subcat</th>
+                                            <th>Producto/Servicio</th>
+                                            <th>Unidad</th>
+                                            <th>Costo (USD)</th>
+                                            <th>Cantidad</th>
+                                            <th>Costo uv</th>
+                                            <th>Costo recurrente</th>
+                                            <!-- <th width="110px"></th> -->
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <!-- FIN COSTEO -->
                             </div>
                         </div>
                     </div>
@@ -432,28 +379,64 @@ desired effect
 <script>
   $(function () {
     
-    $('#planillas').DataTable({
-      'language': { 'emptyTable': 'No hay datos' },
-      'paging'      : true,
-      'pageLength': 20,
-      'lengthChange': false,
-      'searching'   : true,
-      'ordering'    : false,
-      'info'        : true,
-      'autoWidth'   : true,
-      'dom'         : 'Bfrtip',
-      'buttons'     : [{
-                  extend: 'pdfHtml5',
-                  orientation: 'landscape',
-                  pageSize: 'A4',
-                         
-                     },
-                      {
+    let strquery = 'SELECT cd.id, cd.id_costo, cd.id_costo_item, cd.costo_usd, cd.cantidad, cd.costo_unica_vez, cd.costo_recurrente,';
+    strquery += 'ci.descripcion as descripcion, ci.unidad as unidad, ';
+    strquery += 'cat.descripcion as categoria, cat.id as cat_id,';
+    strquery += 'subcat.descripcion as subcategoria, subcat.id as subcat_id ';
+    strquery += 'FROM cdc_costos_detalle as cd ';
+    strquery += 'INNER JOIN cdc_costos_items as ci ON cd.id_costo_item = ci.id ';
+    strquery += 'INNER JOIN cdc_costos_items as subcat ON ci.parent = subcat.id ';
+    strquery += 'INNER JOIN cdc_costos_items as cat ON subcat.parent = cat.id ';
+    strquery += 'WHERE cd.borrado = 0;';
+
+    $('#costeo').DataTable({
+        "scrollY": 400,
+        "scrollX": true,
+        "paging": true,
+        "deferRender": true,
+        "ajax": {
+            type: 'POST',
+            url: './helpers/getAsyncDataFromDB.php',
+            data: { query: strquery },
+            error: function(jqXHR, ajaxOptions, thrownError) {
+                  alert(thrownError + "\r\n" + jqXHR.statusText + "\r\n" + jqXHR.responseText + "\r\n" + ajaxOptions.responseText);
+            }
+        },
+        "dataSrc": function(json) {
+            console.log(json);
+        },
+        "columns": [
+            { "data": "categoria" },
+            { "data": "subcategoria" },
+            { "data": "descripcion" },
+            { "data": "unidad" },
+            { "data": "costo_usd" },
+            { "data": "cantidad" },
+            { "data": "costo_unica_vez" },
+            { "data": "costo_recurrente" }
+        ],
+        'order': [[0, 'asc'], [1, 'asc']],
+        'rowGroup': {
+            'dataSrc': [ 'categoria', 'subcategoria' ]
+        },
+        'columnDefs': [ {
+            'targets': [ 0, 1 ],
+            'visible': false
+        } ],        
+        'dom'         : 'Bfrtip',
+        'buttons'     : [{
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                            
+                        },
+                        {
             extend: 'excel',
             text: 'Excel',
             }]
 
     });
+
   });
 </script>
 
