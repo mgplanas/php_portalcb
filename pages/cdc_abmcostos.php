@@ -140,6 +140,7 @@ tr.dtrg-group.dtrg-level-1 td, table.dataTable tr.dtrg-group.dtrg-level-2 td {
     padding-bottom: 0.25em;
     padding-left: 2em;
     font-size: 1.1em !important;
+    font-weight: bold !important;
 }
 
 table.dataTable tbody td {

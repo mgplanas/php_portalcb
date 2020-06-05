@@ -13,6 +13,9 @@
                 
                 <input type="hidden" class="form-control" name="id_costo" placeholder="id" id='modal-abm-costodet-id' >
                 <input type="hidden" class="form-control" name="id_costo_item" placeholder="id" id='modal-abm-costodet-id-costo-item' >
+                <input type="hidden" class="form-control" name="id_costo_item" placeholder="id" id='modal-abm-costodet-categoria' >
+                <input type="hidden" class="form-control" name="id_costo_item" placeholder="id" id='modal-abm-costodet-subcategoria' >
+                <input type="hidden" class="form-control" name="id_costo_item" placeholder="id" id='modal-abm-costodet-item' >
                 <!-- <h3 id="modal-abm-costodet-categoria"></h3> -->
                 <h3 id="modal-abm-costodet-producto"></h3>
                 <h4 id="modal-abm-costodet-unidad"></h4>
