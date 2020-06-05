@@ -12,6 +12,7 @@
             <form method="post" role="form" action="">
                 
                 <input type="hidden" class="form-control" name="id_costo" placeholder="id" id='modal-abm-costodet-id' >
+                <input type="hidden" class="form-control" name="id_costo" placeholder="id" id='modal-abm-costodet-row-id' >
                 <!-- <h3 id="modal-abm-costodet-categoria"></h3> -->
                 <h3 id="modal-abm-costodet-producto"></h3>
                 <h4 id="modal-abm-costodet-unidad"></h4>

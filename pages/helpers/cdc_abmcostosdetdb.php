@@ -22,12 +22,18 @@
                                                 VALUES ('$id_costo_item', '$id_costo', '$costo_usd' ,'$cantidad', '$costo_recurrente', '$costo_unica_vez')") or die(mysqli_error());	
             $lastInsert = mysqli_insert_id($con);
             $result->id = $lastInsert;
+            $result->id_costo_item = $id_costo_item;
+            $result->id_costo = $id_costo;
+            $result->costo_usd = $costo_usd;
+            $result->cantidad = $cantidad;
+            $result->costo_recurrente = $costo_recurrente;
+            $result->costo_unica_vez = $costo_unica_vez;
             break;
         
         case 'M':
             //UPDATE
-            // $update_clietne = mysqli_query($con, "UPDATE cdc_cliente SET id_organismo='$id_organismo', razon_social='$razon_social', nombre_corto='$nombre_corto', cuit='$cuit', sector='$sector' 
-            //                                         WHERE id='$id'") or die(mysqli_error());	
+            $update_clietne = mysqli_query($con, "UPDATE cdc_costos_detalle SET cantidad='$cantidad', costo_recurrente='$costo_recurrente', costo_unica_vez='$costo_unica_vez' 
+                                                  WHERE id='$id'") or die(mysqli_error());	
             break;
 
         case 'B':

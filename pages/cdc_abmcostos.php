@@ -334,15 +334,15 @@ desired effect
                                     <table id="costeo" class="table table-striped" width="100%">
                                         <thead>
                                         <tr>
-                                            <th>cat</th>
-                                            <th>subcat</th>
+                                            <th>Categoría</th>
+                                            <th>Subcategoría</th>
                                             <th>Producto/Servicio</th>
                                             <th>Unidad</th>
                                             <th>Costo (USD)</th>
                                             <th>Cantidad</th>
                                             <th>Costo uv</th>
                                             <th>Costo recurrente</th>
-                                            <!-- <th width="110px"></th> -->
+                                            <th width="30px"></th>
                                         </tr>
                                         </thead>
                                     </table>
@@ -393,70 +393,6 @@ desired effect
 <script src="../js/bootstrap-select.min.js"></script>
 <!-- <script src="./modals/cdc_abmcostos.js"></script>   -->
 <script src="./helpers/cdc_abmcostos.js"></script>  
-      
-<script>
-  $(function () {
-    
-    let strquery = 'SELECT cd.id, cd.id_costo, cd.id_costo_item, cd.costo_usd, cd.cantidad, cd.costo_unica_vez, cd.costo_recurrente,';
-    strquery += 'ci.descripcion as descripcion, ci.unidad as unidad, ';
-    strquery += 'cat.descripcion as categoria, cat.id as cat_id,';
-    strquery += 'subcat.descripcion as subcategoria, subcat.id as subcat_id ';
-    strquery += 'FROM cdc_costos_detalle as cd ';
-    strquery += 'INNER JOIN cdc_costos_items as ci ON cd.id_costo_item = ci.id ';
-    strquery += 'INNER JOIN cdc_costos_items as subcat ON ci.parent = subcat.id ';
-    strquery += 'INNER JOIN cdc_costos_items as cat ON subcat.parent = cat.id ';
-    strquery += 'WHERE cd.borrado = 0;';
-
-    $('#costeo').DataTable({
-        "scrollY": 400,
-        "scrollX": true,
-        "paging": true,
-        "deferRender": true,
-        "ajax": {
-            type: 'POST',
-            url: './helpers/getAsyncDataFromDB.php',
-            data: { query: strquery },
-            error: function(jqXHR, ajaxOptions, thrownError) {
-                  alert(thrownError + "\r\n" + jqXHR.statusText + "\r\n" + jqXHR.responseText + "\r\n" + ajaxOptions.responseText);
-            }
-        },
-        "dataSrc": function(json) {
-            console.log(json);
-        },
-        "columns": [
-            { "data": "categoria" },
-            { "data": "subcategoria" },
-            { "data": "descripcion" },
-            { "data": "unidad" },
-            { "data": "costo_usd" },
-            { "data": "cantidad" },
-            { "data": "costo_unica_vez" },
-            { "data": "costo_recurrente" }
-        ],
-        'order': [[0, 'asc'], [1, 'asc']],
-        'rowGroup': {
-            'dataSrc': [ 'categoria', 'subcategoria' ]
-        },
-        'columnDefs': [ {
-            'targets': [ 0, 1 ],
-            'visible': false
-        } ],        
-        'dom'         : 'Bfrtip',
-        'buttons'     : [{
-                    extend: 'pdfHtml5',
-                    orientation: 'landscape',
-                    pageSize: 'A4',
-                            
-                        },
-                        {
-            extend: 'excel',
-            text: 'Excel',
-            }]
-
-    });
-
-  });
-</script>
 
 </body>
 </html>
