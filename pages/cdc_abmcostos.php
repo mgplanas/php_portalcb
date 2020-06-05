@@ -130,6 +130,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
 .list-group-item .glyphicon {
   margin-right: 5px;
 }
+tr.dtrg-group.dtrg-level-0 td {
+    font-weight: bold;
+    font-size: 1.2em !important;
+}
+tr.dtrg-group.dtrg-level-1 td, table.dataTable tr.dtrg-group.dtrg-level-2 td {
+    background-color: #f0f0f0;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    padding-left: 2em;
+    font-size: 1.1em !important;
+}
+
+table.dataTable tbody td {
+    padding: 8px 10px;
+    font-size: 0.9em !important;
+}
 
 
 
@@ -305,7 +321,7 @@ desired effect
                         <div class="box-body">
                             <div class="row">
                                 <!-- CATEGORIAS -->
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div id="modal-abm-costos-categorias" class="just-padding">
                                         <div id="modal-abm-costos-categorias-card" class="list-group list-group-root card">
                                         </div>
@@ -313,7 +329,7 @@ desired effect
                                 </div>    
                                 <!-- FIN CATEGORIAS -->
                                 <!-- COSTEO -->
-                                <div class="col-md-8">
+                                <div class="col-md-9">
                                     <table id="costeo" class="table table-striped" width="100%">
                                         <thead>
                                         <tr>
@@ -338,6 +354,7 @@ desired effect
             </div>
             <!-- /.row -->
             <?php }?>
+            <?php include_once('./modals/cdc_abmcostosdet.php'); ?>
         </form>
     </section>
     <!-- /.content -->

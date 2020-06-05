@@ -6,7 +6,12 @@ Gestion de planillas de costos
 *Fecha:* 2020-05-21
 *Cambios:*
     - [DB] Se crea la tabla de items de costos cdc_costos_items
+    - [DB] Se crea la tabla de items de costos cdc_costos
+    - [DB] Se crea la tabla de items de costos cdc_costos_detalle
     - N[pages/cdc_costos]
+    - N[pages/helpers/cdc_abmcostos.js]
+    - N[pages/modals/cdc_abmcostosdet.js]
+    - N[pages/modals/cdc_abmcostosdet.js]
     - M[pages/site_sidemenu]
     - M[site]
 
