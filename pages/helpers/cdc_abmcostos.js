@@ -1,5 +1,8 @@
 $(function() {
 
+    // ==============================================================
+    // Gestion categorias DOM
+    // ==============================================================
     function addCategory(categoria, parent) {
         let catId = categoria.id;
         let catIdHtml = 'modal-abm-costos-cat-' + catId;
@@ -102,61 +105,110 @@ $(function() {
     // ********************************************************************************************
     // MODAL DE AGREGADO DE PRODUCTOS AL COSTEO
     // ********************************************************************************************
+    // Actualiza el form con los datos del item seleccionado
+    function loadItemCosteo(id, callback) {
+        let strquery = 'SELECT ci.id, ci.descripcion, ci.unidad, ci.costo_unidad,';
+        strquery += 'cat.descripcion as categoria, cat.id as cat_id,';
+        strquery += 'subcat.descripcion as subcategoria, subcat.id as subcat_id ';
+        strquery += 'FROM cdc_costos_items as ci ';
+        strquery += 'INNER JOIN cdc_costos_items as subcat ON ci.parent = subcat.id ';
+        strquery += 'INNER JOIN cdc_costos_items as cat ON subcat.parent = cat.id ';
+        strquery += 'WHERE ci.id = ' + id;
+        $.getJSON("./helpers/getAsyncDataFromDB.php", { query: strquery },
+            function(response) {
+                if (!response.data || !response.data[0]) {
+                    return callback('No hay datos');
+                }
+                var producto = response.data[0];
+                $('#modal-abm-costodet-title').html(producto.categoria + ' <small>[' + producto.subcategoria + ']</small>');
+                $('#modal-abm-costodet-unidad').html('<strong>Unidad: </strong>' + producto.unidad);
+                $('#modal-abm-costodet-producto').html('<strong>Producto: </strong>' + producto.descripcion);
+                $('#modal-abm-costodet-costo').val(producto.costo_unidad);
+                $('#modal-abm-costodet-cantidad').val(1);
+                $('#modal-abm-costodet-costo-recurrente').val(producto.costo_unidad);
+                return callback(null);
+            }
+        ).fail(function(jqXHR, errorText) {
+            console.log(errorText);
+            return callback(errorText);
+        });
+
+    }
+
     function setAMBCosteoTriggers() {
         // ALTA
         // seteo boton trigger para el alta de gerencia
         $('.producto-servicio').click(function() {
             $('#modal-abm-costodet-title').html('Agregar costeo de Producto/Servicio');
             modalAbmCosteoLimpiarCampos();
-            $('#modal-abm-costodet-submit').attr('name', 'A');
-            $("#modal-abm-costodet").modal("show");
+            $('#modal-abm-costodet-id-costo-item').val($(this).data('id'));
+            loadItemCosteo($(this).data('id'), function(err) {
+                if (err) {
+                    return alert(err);
+                } else {
+                    $('#modal-abm-costodet-submit').attr('name', 'A');
+                    $("#modal-abm-costodet").modal("show");
+                }
+            });
+        });
+
+        //cambio de costo/cantidad
+        $('#modal-abm-costodet-costo, #modal-abm-costodet-cantidad').change(function() {
+            let cantidad = $('#modal-abm-costodet-cantidad').val();
+            let costo = $('#modal-abm-costodet-costo').val();
+            $('#modal-abm-costodet-costo-recurrente').val(costo * cantidad);
         });
 
         // EDIT
         // seteo boton trigger para el edit de gerencia
         $('.modal-abm-costodet-btn-edit').click(function() {
-            $('#modal-abm-costodet-title').html('Editar Organismo');
-            modalAbmCosteoLimpiarCampos();
+            // $('#modal-abm-costodet-title').html('Editar Organismo');
+            // modalAbmCosteoLimpiarCampos();
 
-            $('#modal-abm-costodet-id').val($(this).data('id'));
-            $('#modal-abm-costodet-nombre').val($(this).data('nombre'));
-            $('#modal-abm-costodet-sigla').val($(this).data('sigla'));
-            $('#modal-abm-costodet-cuit').val($(this).data('cuit'));
-            if ($(this).data('sector') == 'Privado') {
-                $('#opt-sector-privado').prop("checked", true);
-            }
+            // $('#modal-abm-costodet-id').val($(this).data('id'));
+            // $('#modal-abm-costodet-nombre').val($(this).data('nombre'));
+            // $('#modal-abm-costodet-sigla').val($(this).data('sigla'));
+            // $('#modal-abm-costodet-cuit').val($(this).data('cuit'));
+            // if ($(this).data('sector') == 'Privado') {
+            //     $('#opt-sector-privado').prop("checked", true);
+            // }
 
 
-            $('#modal-abm-costodet-submit').attr('name', 'M');
+            // $('#modal-abm-costodet-submit').attr('name', 'M');
 
-            $("#modal-abm-costodet").modal("show");
+            // $("#modal-abm-costodet").modal("show");
         });
     }
 
 
     // ==============================================================
-    // GUARDAR ORGANISMO
+    // GUARDAR COSTEO
     // ==============================================================
     // ejecución de guardado async
     $('#modal-abm-costodet-submit').click(function() {
         // Recupero datos del formulario
         let op = $(this).attr('name');
         let id = $('#modal-abm-costodet-id').val();
-        let razon_social = $('#modal-abm-costodet-nombre').val();
-        let nombre_corto = $('#modal-abm-costodet-sigla').val();
-        let cuit = $('#modal-abm-costodet-cuit').val();
-        let sector = $("input[name='optSector']:checked").val();
+
+        let id_costo_item = $('#modal-abm-costodet-id-costo-item').val();
+        let id_costo = $('#modal-abm-costos-id').val();
+        let costo_usd = $('#modal-abm-costodet-costo').val();
+        let cantidad = $('#modal-abm-costodet-cantidad').val();
+        let costo_recurrente = $('#modal-abm-costodet-costo-recurrente').val();
+        let costo_unica_vez = $('#modal-abm-costodet-costo-ot').val();
         // Ejecuto
         $.ajax({
             type: 'POST',
-            url: './helpers/cdc_abmorganismodb.php',
+            url: './helpers/cdc_abmcostosdetdb.php',
             data: {
                 operacion: op,
                 id: id,
-                razon_social: razon_social,
-                nombre_corto: nombre_corto,
-                cuit: cuit,
-                sector: sector
+                id_costo_item: id_costo_item,
+                id_costo: id_costo,
+                costo_usd: costo_usd,
+                cantidad: cantidad,
+                costo_recurrente: costo_recurrente,
+                costo_unica_vez: costo_unica_vez
             },
             dataType: 'json',
             success: function(json) {
