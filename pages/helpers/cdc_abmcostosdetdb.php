@@ -38,7 +38,7 @@
 
         case 'B':
             //UPDATE
-            // $update_cliente = mysqli_query($con, "UPDATE cdc_cliente SET borrado='1' WHERE id='$id'") or die(mysqli_error());	
+            $removeCosteo = mysqli_query($con, "UPDATE cdc_costos_detalle SET borrado='1' WHERE id='$id'") or die(mysqli_error());	
             break;
 
         default:

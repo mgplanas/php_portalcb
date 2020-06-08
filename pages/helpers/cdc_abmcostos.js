@@ -157,7 +157,7 @@ $(function() {
     function setAMBCosteoTriggers() {
         // ALTA
         // seteo boton trigger para el alta de gerencia
-        $('.producto-servicio').click(function() {
+        $('.producto-servicio').off('click').on('click', function() {
             $('#modal-abm-costodet-title').html('Agregar costeo de Producto/Servicio');
             modalAbmCosteoLimpiarCampos();
             $('#modal-abm-costodet-id-costo-item').val($(this).data('id'));
@@ -185,9 +185,39 @@ $(function() {
             $('#modal-abm-costodet-costo-recurrente').val(costo * cantidad);
         });
 
+        // BORRAR
+        $('.modal-abm-costodet-btn-baja').off('click').on('click', function(event) {
+            event.stopPropagation();
+            let id = $(this).data('id');
+            let rowID = $(this).data('row');
+            let tr = $(this).closest('tr');
+            let descripcion = $(this).data('descripcion');
+            if (confirm('¿Está seguro que desea eliminar el costeo de ' + descripcion + '?')) {
+                // Ejecuto
+                $.ajax({
+                    type: 'POST',
+                    url: './helpers/cdc_abmcostosdetdb.php',
+                    data: {
+                        operacion: 'B',
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function(json) {
+                        $('#costeo').dataTable().fnDeleteRow(tr);
+                        item_costeo = null;
+                        return;
+                    },
+                    error: function(xhr, status, error) {
+                        item_costeo = null;
+                        return alert(xhr.responseText, error);
+                    }
+                });
+
+            }
+        });
         // EDIT
         // seteo boton trigger para el edit de gerencia
-        $('.modal-abm-costodet-btn-edit').click(function() {
+        $('.modal-abm-costodet-btn-edit').off('click').on('click', function() {
             modalAbmCosteoLimpiarCampos();
             $('#modal-abm-costodet-id').val($(this).data('id'));
             $('#modal-abm-costodet-row-id').val($(this).data('row'));
@@ -361,7 +391,7 @@ $(function() {
                 'render': function(data, type, row, meta) {
 
                     return '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-iditem="' + row.id_costo_item + '" data-idcosto="' + row.id_costo + '" title="editar" class="modal-abm-costodet-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>' +
-                        '<a data-id="' + row.id + '" title="eliminar" class="modal-abm-costodet-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                        '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="' + row.descripcion + '" title="eliminar" class="modal-abm-costodet-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
                 }
             }
         ],
