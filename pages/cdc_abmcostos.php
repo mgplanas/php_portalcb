@@ -326,7 +326,7 @@ desired effect
                                     <div id="modal-abm-costos-categorias" class="just-padding">
                                         <div id="modal-abm-costos-categorias-card" class="list-group list-group-root card">
                                         </div>
-                                    </div>                                
+                                    </div>  
                                 </div>    
                                 <!-- FIN CATEGORIAS -->
                                 <!-- COSTEO -->
@@ -356,6 +356,7 @@ desired effect
             <!-- /.row -->
             <?php }?>
             <?php include_once('./modals/cdc_abmcostosdet.php'); ?>
+            <?php include_once('./modals/cdc_abmcostositem.php'); ?> 
         </form>
     </section>
     <!-- /.content -->

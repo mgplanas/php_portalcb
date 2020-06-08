@@ -20,7 +20,7 @@ $(function() {
             )
             .append(
                 $('<div class="col-sm-1"></div>').append(
-                    $('<a title="Agregar sub-categoría"></a>')
+                    $('<a data-categoria="' + catId + '" title="Agregar sub-categoría" class="modal-abm-costos-subcat-add"></a>')
                     .append($('<i class="fa fa-plus"></i>'))
                 )
             );
@@ -47,7 +47,7 @@ $(function() {
             )
             .append(
                 $('<div class="col-sm-1"></div>').append(
-                    $('<a title="Agregar item"></a>')
+                    $('<a data-subcatdes="' + subcat.descripcion + '" data-subcategoria="' + catId + '" title="Agregar item" class="modal-abm-costos-item-add"></a>')
                     .append($('<i class="fa fa-plus"></i>'))
                 )
             );
@@ -73,6 +73,11 @@ $(function() {
     $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM cdc_costos_items WHERE borrado = 0 ORDER BY nivel, id ' },
         function(response) {
             let container = $('#modal-abm-costos-categorias-card');
+            container.append(
+                $('<button type="button" id="modal-abm-costos-cat-add" class="btn-sm btn-primary"></button>')
+                .append($('<i class="fa fa-calculator"></i>'))
+                .append('Nueva Planilla de costos')
+            );
             let n1 = response.data.filter(v => v.nivel == 1);
             n1.forEach(categoria => {
 
@@ -89,12 +94,6 @@ $(function() {
                         let cat_it = addSubCatItem(cat_item, scat_container);
                     });
                 });
-            });
-
-            $('.action-item').on('click', function() {
-                $('.glyphicon', this)
-                    .toggleClass('glyphicon-chevron-right')
-                    .toggleClass('glyphicon-chevron-down');
             });
 
             setAMBCosteoTriggers();
@@ -189,7 +188,6 @@ $(function() {
         $('.modal-abm-costodet-btn-baja').off('click').on('click', function(event) {
             event.stopPropagation();
             let id = $(this).data('id');
-            let rowID = $(this).data('row');
             let tr = $(this).closest('tr');
             let descripcion = $(this).data('descripcion');
             if (confirm('¿Está seguro que desea eliminar el costeo de ' + descripcion + '?')) {
@@ -245,6 +243,122 @@ $(function() {
                 $('#modal-abm-costodet-submit').attr('name', 'M');
                 $("#modal-abm-costodet").modal("show");
             });
+        });
+
+
+        // ==============================================================
+        // CATEGORIAS / ITEMS
+        // ==============================================================
+        $('.action-item').off('click').on('click', function() {
+            $('.glyphicon', this)
+                .toggleClass('glyphicon-chevron-right')
+                .toggleClass('glyphicon-chevron-down');
+        });
+        // ADD SUB CATEGORY
+        $('.modal-abm-costos-subcat-add').off('click').on('click', function(event) {
+            let catID = $(this).data('categoria');
+            let subcat = prompt('Nombre de la SubCategoría:', '');
+            let cat_container = $('#modal-abm-costos-cat-' + catID);
+            if (subcat) {
+                // Ejecuto
+                $.ajax({
+                    type: 'POST',
+                    url: './helpers/cdc_abmcostositemdb.php',
+                    data: {
+                        operacion: 'A',
+                        id: 0,
+                        parent: catID,
+                        nivel: 2,
+                        descripcion: subcat
+                    },
+                    dataType: 'json',
+                    success: function(json) {
+                        addSubCategory(json, cat_container);
+                        setAMBCosteoTriggers();
+                        return;
+                    },
+                    error: function(xhr, status, error) {
+                        item_costeo = null;
+                        return alert(xhr.responseText, error);
+                    }
+                });
+            }
+        });
+        // ADD ITEM MODAL
+        $('.modal-abm-costos-item-add').off('click').on('click', function(event) {
+
+            modalAbmCosteoItemLimpiarCampos();
+            $('#modal-abm-costoitem-subcat-id').val($(this).data('subcategoria'));
+            $('#modal-abm-costoitem-id').val(0);
+            $('#modal-abm-costoitem-title').html('Agregar nuevo Producto/Servicio');
+            $('#modal-abm-costoitem-subcat').html($(this).data('subcatdes'));
+            $('#modal-abm-costoitem').modal("show");
+        });
+        // ADD ITEM
+        $('#modal-abm-costoitem-submit').off('click').on('click', function(event) {
+            let subcatID = $('#modal-abm-costoitem-subcat-id').val();
+            let container = $('#modal-abm-costos-scat-' + subcatID);
+            let producto = $('#modal-abm-costoitem-descripcion').val();
+            let unidad = $('#modal-abm-costoitem-unidad').val();
+            let costo = $('#modal-abm-costoitem-costo').val();
+            if (producto) {
+                // Ejecuto
+                $.ajax({
+                    type: 'POST',
+                    url: './helpers/cdc_abmcostositemdb.php',
+                    data: {
+                        operacion: 'A',
+                        id: 0,
+                        parent: subcatID,
+                        nivel: 3,
+                        descripcion: producto,
+                        unidad: unidad,
+                        costo_usd: costo
+                    },
+                    dataType: 'json',
+                    success: function(json) {
+                        addSubCatItem(json, container);
+
+                        setAMBCosteoTriggers();
+                        $('#modal-abm-costoitem').modal("hide");
+                        return;
+                    },
+                    error: function(xhr, status, error) {
+                        item_costeo = null;
+                        $('#modal-abm-costoitem').modal("hide");
+                        return alert(xhr.responseText, error);
+                    }
+                });
+            }
+        });
+        // ADD CATEGORY
+        $('#modal-abm-costos-cat-add').off('click').on('click', function(event) {
+            let cat = prompt('Nombre de la Categoría:', '');
+            let container = $('#modal-abm-costos-categorias-card');
+            if (cat) {
+                // Ejecuto
+                $.ajax({
+                    type: 'POST',
+                    url: './helpers/cdc_abmcostositemdb.php',
+                    data: {
+                        operacion: 'A',
+                        id: 0,
+                        parent: null,
+                        nivel: 1,
+                        descripcion: cat
+                    },
+                    dataType: 'json',
+                    success: function(json) {
+                        addCategory(json, container);
+                        setAMBCosteoTriggers();
+                        return;
+                    },
+                    error: function(xhr, status, error) {
+                        item_costeo = null;
+                        return alert(xhr.responseText, error);
+                    }
+                });
+            }
         });
     }
 
@@ -331,6 +445,15 @@ $(function() {
         $('#modal-abm-costodet-costo').val(0);
         $('#modal-abm-costodet-cantidad').val(1);
         $('#modal-abm-costodet-costo-recurrente').val(0);
+    }
+
+    function modalAbmCosteoItemLimpiarCampos() {
+        $('#modal-abm-costoitem-subcat-id').val(0);
+        $('#modal-abm-costoitem-id').val(0);
+        $('#modal-abm-costoitem-title').html('');
+        $('#modal-abm-costoitem-unidad').val('');
+        $('#modal-abm-costoitem-descripcion').val('');
+        $('#modal-abm-costoitem-costo').val(0);
     }
     // ********************************************************************************************
 
