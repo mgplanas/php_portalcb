@@ -118,14 +118,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 .list-group.list-group-root > .list-group-item:first-child {
   border-top-width: 0;
 }
-
-.list-group.list-group-root > .list-group > .list-group-item {
+.list-group-item a {
+    cursor: pointer;
+}
+/* .list-group.list-group-root > .list-group > .list-group-item {
   padding-left: 30px;
 }
 
 .list-group.list-group-root > .list-group > .list-group > .list-group-item {
   padding-left: 45px;
-}
+} */
 
 .list-group-item .glyphicon {
   margin-right: 5px;
@@ -324,7 +326,7 @@ desired effect
                                 <!-- CATEGORIAS -->
                                 <div class="col-md-3">
                                     <div id="modal-abm-costos-categorias" class="just-padding">
-                                        <div id="modal-abm-costos-categorias-card" class="list-group list-group-root card">
+                                        <div id="modal-abm-costos-categorias-card" style="height: 700px; overflow-y : scroll;" class="list-group list-group-root card">
                                         </div>
                                     </div>  
                                 </div>    

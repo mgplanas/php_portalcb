@@ -21,7 +21,7 @@ $(function() {
             .append(
                 $('<div class="col-sm-1"></div>').append(
                     $('<a data-categoria="' + catId + '" title="Agregar sub-categoría" class="modal-abm-costos-subcat-add"></a>')
-                    .append($('<i class="fa fa-plus"></i>'))
+                    .append($('<i class="fa fa-plus-square"></i>'))
                 )
             );
         let cat_container = $('<div class="list-group collapse" id="' + catIdHtml + '"></div>');
@@ -48,7 +48,7 @@ $(function() {
             .append(
                 $('<div class="col-sm-1"></div>').append(
                     $('<a data-subcatdes="' + subcat.descripcion + '" data-subcategoria="' + catId + '" title="Agregar item" class="modal-abm-costos-item-add"></a>')
-                    .append($('<i class="fa fa-plus"></i>'))
+                    .append($('<i class="fa fa-plus-square"></i>'))
                 )
             );
         let cat_container = $('<div class="list-group collapse" id="' + catIdHtml + '"></div>');
@@ -61,23 +61,29 @@ $(function() {
     function addSubCatItem(cat_item, parent) {
         let itemID = cat_item.id;
 
+        let it = $('<div class="list-group-item row"></div>')
+            .append($('<div class="col-sm-10"></div>').append(cat_item.descripcion))
+            .append(
+                $('<div class="col-sm-2 align-middle"></div>')
+                .append(
+                    $('<a title="Agregar a la planilla de costeo" class="producto-servicio"></a>').attr('data-id', cat_item.id)
+                    .append($('<i class="glyphicon glyphicon-chevron-right"></i>'))
+                )
+            );
+
         let itcat = $('<a class="list-group-item producto-servicio"></a>')
             .append(cat_item.descripcion);
         itcat.attr('data-id', cat_item.id);
-        parent.append(itcat);
+        parent.append(it);
 
-        return itcat;
+        return it;
     }
 
     //Populo los campos
     $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM cdc_costos_items WHERE borrado = 0 ORDER BY nivel, id ' },
         function(response) {
             let container = $('#modal-abm-costos-categorias-card');
-            container.append(
-                $('<button type="button" id="modal-abm-costos-cat-add" class="btn-sm btn-primary"></button>')
-                .append($('<i class="fa fa-calculator"></i>'))
-                .append('Nueva Planilla de costos')
-            );
+
             let n1 = response.data.filter(v => v.nivel == 1);
             n1.forEach(categoria => {
 
@@ -95,6 +101,15 @@ $(function() {
                     });
                 });
             });
+
+            $('#modal-abm-costos-categorias').prepend(
+                $('<div class="text-right"></div>')
+                .append('Nueva Categoría')
+                .append(
+                    $('<a type="button" id="modal-abm-costos-cat-add" class="btn"></a>')
+                    .append($('<i class="fa fa-plus-square primary"></i>'))
+                )
+            );
 
             setAMBCosteoTriggers();
         }
@@ -472,9 +487,10 @@ $(function() {
     strquery += 'WHERE cd.borrado = 0;';
 
     var tbCosteos = $('#costeo').DataTable({
-        "scrollY": 400,
+        "scrollY": "100vh",
         "scrollX": true,
-        "paging": true,
+        "scrollCollapse": true,
+        "paging": false,
         "deferRender": true,
         "ajax": {
             type: 'POST',
@@ -518,7 +534,7 @@ $(function() {
                 }
             }
         ],
-        'dom': 'Bfrtip',
+        'dom': 'frtipB',
         'buttons': [{
                 extend: 'pdfHtml5',
                 orientation: 'landscape',
