@@ -169,8 +169,10 @@ $(function() {
     }
 
     function setAMBCosteoTriggers() {
+        // ==============================================================
+        // GESTION DE ITEMS DE COSTEO
+        // ==============================================================
         // ALTA
-        // seteo boton trigger para el alta de gerencia
         $('.producto-servicio').off('click').on('click', function() {
             $('#modal-abm-costodet-title').html('Agregar costeo de Producto/Servicio');
             modalAbmCosteoLimpiarCampos();
@@ -375,78 +377,122 @@ $(function() {
                 });
             }
         });
+
+        // ==============================================================
+        // GUARDAR ITEM DE COSTEO
+        // ==============================================================
+        // ejecución de guardado async
+        $('#modal-abm-costodet-submit').off('click').on(function() {
+            // Recupero datos del formulario
+            let op = $(this).attr('name');
+            let id = $('#modal-abm-costodet-id').val();
+            let row_id = $('#modal-abm-costodet-row-id').val();
+            let id_costo_item = item_costeo.id;
+            let id_costo = $('#modal-abm-costos-id').val();
+            let costo_usd = $('#modal-abm-costodet-costo').val();
+            let cantidad = $('#modal-abm-costodet-cantidad').val();
+            let costo_recurrente = $('#modal-abm-costodet-costo-recurrente').val();
+            let costo_unica_vez = $('#modal-abm-costodet-costo-ot').val();
+            // Ejecuto
+            $.ajax({
+                type: 'POST',
+                url: './helpers/cdc_abmcostosdetdb.php',
+                data: {
+                    operacion: op,
+                    id: id,
+                    id_costo_item: id_costo_item,
+                    id_costo: id_costo,
+                    costo_usd: costo_usd,
+                    cantidad: cantidad,
+                    costo_recurrente: costo_recurrente,
+                    costo_unica_vez: costo_unica_vez
+                },
+                dataType: 'json',
+                success: function(json) {
+                    $("#modal-abm-costodet").modal("hide");
+                    if (op == 'A') {
+                        $('#costeo').dataTable().fnAddData([{
+                            "id": json.id,
+                            "id_costo_item": json.id_costo_item,
+                            "id_costo": json.id_costo,
+                            "categoria": item_costeo.categoria,
+                            "subcategoria": item_costeo.subcategoria,
+                            "descripcion": item_costeo.descripcion,
+                            "unidad": item_costeo.unidad,
+                            "costo_usd": costo_usd,
+                            "cantidad": cantidad,
+                            "costo_unica_vez": costo_unica_vez,
+                            "costo_recurrente": costo_recurrente
+                        }]);
+                    } else {
+                        $('#costeo').dataTable().fnUpdate({
+                            "id": id,
+                            "id_costo_item": id_costo_item,
+                            "id_costo": id_costo,
+                            "categoria": item_costeo.categoria,
+                            "subcategoria": item_costeo.subcategoria,
+                            "descripcion": item_costeo.descripcion,
+                            "unidad": item_costeo.unidad,
+                            "costo_usd": costo_usd,
+                            "cantidad": cantidad,
+                            "costo_unica_vez": costo_unica_vez,
+                            "costo_recurrente": costo_recurrente
+                        }, row_id);
+                    }
+                    item_costeo = null;
+                },
+                error: function(xhr, status, error) {
+                    item_costeo = null;
+                    alert(xhr.responseText, error);
+                }
+            });
+        });
+
+        // ==============================================================
+        // ALTA / ACTUALIZACION PLANILLA
+        // ==============================================================
+        // ALTA
+        $('#modal-abm-costos-submit').off('click').on('click', function() {
+            // Recupero datos del formulario
+            let op = $(this).attr('name');
+            let id = $('#modal-abm-costos-id').val();
+            let cliente = $('#modal-abm-costos-cliente').val();
+            let servicio = $('#modal-abm-costos-servicio').val();
+            let fecha = $('#modal-abm-costos-fecha').val();
+            let meses = $('#modal-abm-costos-meses').val();
+            let duracion = $('#modal-abm-costos-dc').val();
+            let cm = $('#modal-abm-costos-cm').val();
+            let inflacion = $('#modal-abm-costos-inflacion').val();
+            let cotizacion_usd = $('#modal-abm-costos-usd').val();
+            // Ejecuto
+            $.ajax({
+                type: 'POST',
+                url: './helpers/cdc_abmcostosdb.php',
+                data: {
+                    operacion: op,
+                    id: id,
+                    cliente: cliente,
+                    servicio: servicio,
+                    fecha: fecha,
+                    meses_contrato: meses,
+                    duracion: duracion,
+                    cm: cm,
+                    cotizacion_usd: cotizacion_usd,
+                    inflacion: inflacion
+                },
+                dataType: 'json',
+                success: function(json) {
+                    location.href = 'cdc_abmcostos.php?planilla=' + json.id;
+                },
+                error: function(xhr, status, error) {
+                    item_costeo = null;
+                    alert(xhr.responseText, error);
+                }
+            });
+        });
     }
 
 
-    // ==============================================================
-    // GUARDAR COSTEO
-    // ==============================================================
-    // ejecución de guardado async
-    $('#modal-abm-costodet-submit').click(function() {
-        // Recupero datos del formulario
-        let op = $(this).attr('name');
-        let id = $('#modal-abm-costodet-id').val();
-        let row_id = $('#modal-abm-costodet-row-id').val();
-        let id_costo_item = item_costeo.id;
-        let id_costo = $('#modal-abm-costos-id').val();
-        let costo_usd = $('#modal-abm-costodet-costo').val();
-        let cantidad = $('#modal-abm-costodet-cantidad').val();
-        let costo_recurrente = $('#modal-abm-costodet-costo-recurrente').val();
-        let costo_unica_vez = $('#modal-abm-costodet-costo-ot').val();
-        // Ejecuto
-        $.ajax({
-            type: 'POST',
-            url: './helpers/cdc_abmcostosdetdb.php',
-            data: {
-                operacion: op,
-                id: id,
-                id_costo_item: id_costo_item,
-                id_costo: id_costo,
-                costo_usd: costo_usd,
-                cantidad: cantidad,
-                costo_recurrente: costo_recurrente,
-                costo_unica_vez: costo_unica_vez
-            },
-            dataType: 'json',
-            success: function(json) {
-                $("#modal-abm-costodet").modal("hide");
-                if (op == 'A') {
-                    $('#costeo').dataTable().fnAddData([{
-                        "id": json.id,
-                        "id_costo_item": json.id_costo_item,
-                        "id_costo": json.id_costo,
-                        "categoria": item_costeo.categoria,
-                        "subcategoria": item_costeo.subcategoria,
-                        "descripcion": item_costeo.descripcion,
-                        "unidad": item_costeo.unidad,
-                        "costo_usd": costo_usd,
-                        "cantidad": cantidad,
-                        "costo_unica_vez": costo_unica_vez,
-                        "costo_recurrente": costo_recurrente
-                    }]);
-                } else {
-                    $('#costeo').dataTable().fnUpdate({
-                        "id": id,
-                        "id_costo_item": id_costo_item,
-                        "id_costo": id_costo,
-                        "categoria": item_costeo.categoria,
-                        "subcategoria": item_costeo.subcategoria,
-                        "descripcion": item_costeo.descripcion,
-                        "unidad": item_costeo.unidad,
-                        "costo_usd": costo_usd,
-                        "cantidad": cantidad,
-                        "costo_unica_vez": costo_unica_vez,
-                        "costo_recurrente": costo_recurrente
-                    }, row_id);
-                }
-                item_costeo = null;
-            },
-            error: function(xhr, status, error) {
-                item_costeo = null;
-                alert(xhr.responseText, error);
-            }
-        });
-    });
 
     // ==============================================================
     // AUXILIARES
@@ -476,6 +522,7 @@ $(function() {
     // ==============================================================
     // TABLE FUNCTIONS
     // ==============================================================
+    let id = $('#modal-abm-costos-id').val();
     let strquery = 'SELECT cd.id, cd.id_costo, cd.id_costo_item, cd.costo_usd, cd.cantidad, cd.costo_unica_vez, cd.costo_recurrente,';
     strquery += 'ci.descripcion as descripcion, ci.unidad as unidad, ';
     strquery += 'cat.descripcion as categoria, cat.id as cat_id,';
@@ -484,7 +531,7 @@ $(function() {
     strquery += 'INNER JOIN cdc_costos_items as ci ON cd.id_costo_item = ci.id ';
     strquery += 'INNER JOIN cdc_costos_items as subcat ON ci.parent = subcat.id ';
     strquery += 'INNER JOIN cdc_costos_items as cat ON subcat.parent = cat.id ';
-    strquery += 'WHERE cd.borrado = 0;';
+    strquery += 'WHERE cd.borrado = 0 AND cd.id_costo = ' + id + ';';
 
     var tbCosteos = $('#costeo').DataTable({
         "scrollY": "100vh",
@@ -549,6 +596,12 @@ $(function() {
 
     });
 
+    $('#modal-abm-costos-fecha').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        todayHighlight: true,
+        daysOfWeekDisabled: [0, 6]
+    });
     tbCosteos.on('draw', function() {
         setAMBCosteoTriggers();
     });

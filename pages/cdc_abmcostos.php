@@ -289,12 +289,18 @@ desired effect
                                         <input type="number" min="0" class="form-control" name="inflacion"  id='modal-abm-costos-inflacion'>
                                     </div>                                 
                                 </div>                                                 
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="usd">Cotización USD</label>
+                                        <input type="number" min="0" class="form-control" name="usd"  id='modal-abm-costos-usd'>
+                                    </div>                                 
+                                </div>                                                 
                             </div>
                             <?php if (!$id_planilla) {?>
                                 <div id="modal-abm-costos-crear-div" class="form-group float-md-right">
                                     <div class="col-md-10"></div>
                                     <div class="col-md-1">
-                                        <input type="button" name="AddCliente" class="btn  btn-raised btn-success" value="Guardar" id='modal-abm-costos-submit'>
+                                        <input type="button" name="<?= ($id_planilla ? 'M' : 'A') ?>" class="btn  btn-raised btn-success" value="Guardar" id='modal-abm-costos-submit'>
                                     </div>
                                     <div class="col-md-1">
                                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
