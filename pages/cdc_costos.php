@@ -10,6 +10,14 @@ if (!isset($_SESSION['usuario'])){
 $page_catle="Costeo";
 $user=$_SESSION['usuario'];
 
+if(isset($_GET['aksi']) == 'delete'){
+	// escaping, additionally removing everything that could be (html/javascript-) code
+	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+    $delete = mysqli_query($con, "UPDATE cdc_costos SET borrado=1 WHERE id='$nik'");
+    if(!$delete){
+        $_SESSION['formSubmitted'] = 9;
+    }
+}
 //Get user query
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user' AND borrado = 0");
 $rowp = mysqli_fetch_assoc($persona);
@@ -214,8 +222,8 @@ desired effect
                             echo '<td style="text-align: right;">'.$row['cm']. '</td>'; 
                             echo '<td style="text-align: right;">'.$row['inflacion']. '</td>'; 
                             echo '<td align="right">';
-                            echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-costos-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" ></i></a>';
-                            if ($rq_sec['admin_cli_dc'] == '1') {echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-costos-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';}
+                            echo '<a href="cdc_abmcostos.php?planilla='.$row['id'].'" data-id="'.$row['id'].'" title="editar" class="modal-abm-costos-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" ></i></a>';
+                            if ($rq_sec['admin_cli_dc'] == '1') {echo '<a data-id="'.$row['id'].'" href="cdc_costos.php?aksi=delete&nik='.$row['id'].'" title="eliminar planilla" onclick="return confirm(\'Esta seguro de eliminar la planilla del cliente '.$row['cliente'].'?\')" class="modal-abm-costos-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';}
                             echo '</td></tr>';
                             $no++;
                         }
