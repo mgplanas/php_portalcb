@@ -516,85 +516,88 @@ $(function() {
         $('#modal-abm-costoitem-descripcion').val('');
         $('#modal-abm-costoitem-costo').val(0);
     }
-    // ********************************************************************************************
-
 
     // ==============================================================
     // TABLE FUNCTIONS
     // ==============================================================
-    let id = $('#modal-abm-costos-id').val();
-    let strquery = 'SELECT cd.id, cd.id_costo, cd.id_costo_item, cd.costo_usd, cd.cantidad, cd.costo_unica_vez, cd.costo_recurrente,';
-    strquery += 'ci.descripcion as descripcion, ci.unidad as unidad, ';
-    strquery += 'cat.descripcion as categoria, cat.id as cat_id,';
-    strquery += 'subcat.descripcion as subcategoria, subcat.id as subcat_id ';
-    strquery += 'FROM cdc_costos_detalle as cd ';
-    strquery += 'INNER JOIN cdc_costos_items as ci ON cd.id_costo_item = ci.id ';
-    strquery += 'INNER JOIN cdc_costos_items as subcat ON ci.parent = subcat.id ';
-    strquery += 'INNER JOIN cdc_costos_items as cat ON subcat.parent = cat.id ';
-    strquery += 'WHERE cd.borrado = 0 AND cd.id_costo = ' + id + ';';
+    function createTableCosteo() {
+        let id = $('#modal-abm-costos-id').val();
+        let strquery = 'SELECT cd.id, cd.id_costo, cd.id_costo_item, cd.costo_usd, cd.cantidad, cd.costo_unica_vez, cd.costo_recurrente,';
+        strquery += 'ci.descripcion as descripcion, ci.unidad as unidad, ';
+        strquery += 'cat.descripcion as categoria, cat.id as cat_id,';
+        strquery += 'subcat.descripcion as subcategoria, subcat.id as subcat_id ';
+        strquery += 'FROM cdc_costos_detalle as cd ';
+        strquery += 'INNER JOIN cdc_costos_items as ci ON cd.id_costo_item = ci.id ';
+        strquery += 'INNER JOIN cdc_costos_items as subcat ON ci.parent = subcat.id ';
+        strquery += 'INNER JOIN cdc_costos_items as cat ON subcat.parent = cat.id ';
+        strquery += 'WHERE cd.borrado = 0 AND cd.id_costo = ' + id + ';';
 
-    var tbCosteos = $('#costeo').DataTable({
-        "scrollY": "100vh",
-        "scrollX": true,
-        "scrollCollapse": true,
-        "paging": false,
-        "deferRender": true,
-        "ajax": {
-            type: 'POST',
-            url: './helpers/getAsyncDataFromDB.php',
-            data: { query: strquery },
-            error: function(jqXHR, ajaxOptions, thrownError) {
-                alert(thrownError + "\r\n" + jqXHR.statusText + "\r\n" + jqXHR.responseText + "\r\n" + ajaxOptions.responseText);
-            }
-        },
-        "dataSrc": function(json) {
-            // console.log(json);
-        },
-        "columns": [
-            { "data": "categoria" },
-            { "data": "subcategoria" },
-            { "data": "descripcion" },
-            { "data": "unidad" },
-            { "data": "costo_usd" },
-            { "data": "cantidad" },
-            { "data": "costo_unica_vez" },
-            { "data": "costo_recurrente" },
-            { "data": "unidad" }
-        ],
-        'order': [
-            [0, 'asc'],
-            [1, 'asc']
-        ],
-        'rowGroup': {
-            'dataSrc': ['categoria', 'subcategoria']
-        },
-        'columnDefs': [{
-                'targets': [0, 1],
-                'visible': false
-            },
-            {
-                'targets': [-1],
-                'render': function(data, type, row, meta) {
-
-                    return '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-iditem="' + row.id_costo_item + '" data-idcosto="' + row.id_costo + '" title="editar" class="modal-abm-costodet-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>' +
-                        '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="' + row.descripcion + '" title="eliminar" class="modal-abm-costodet-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+        return $('#costeo').DataTable({
+            "scrollY": "100vh",
+            "scrollX": true,
+            "scrollCollapse": true,
+            "paging": false,
+            "deferRender": true,
+            "ajax": {
+                type: 'POST',
+                url: './helpers/getAsyncDataFromDB.php',
+                data: { query: strquery },
+                error: function(jqXHR, ajaxOptions, thrownError) {
+                    alert(thrownError + "\r\n" + jqXHR.statusText + "\r\n" + jqXHR.responseText + "\r\n" + ajaxOptions.responseText);
                 }
-            }
-        ],
-        'dom': 'frtipB',
-        'buttons': [{
-                extend: 'pdfHtml5',
-                orientation: 'landscape',
-                pageSize: 'A4',
-
             },
-            {
-                extend: 'excel',
-                text: 'Excel',
-            }
-        ]
+            "dataSrc": function(json) {
+                // console.log(json);
+            },
+            "columns": [
+                { "data": "categoria" },
+                { "data": "subcategoria" },
+                { "data": "descripcion" },
+                { "data": "unidad" },
+                { "data": "costo_usd" },
+                { "data": "cantidad" },
+                { "data": "costo_unica_vez" },
+                { "data": "costo_recurrente" },
+                { "data": "unidad" }
+            ],
+            'order': [
+                [0, 'asc'],
+                [1, 'asc']
+            ],
+            'rowGroup': {
+                'dataSrc': ['categoria', 'subcategoria']
+            },
+            'columnDefs': [{
+                    'targets': [0, 1],
+                    'visible': false
+                },
+                {
+                    'targets': [-1],
+                    'render': function(data, type, row, meta) {
 
-    });
+                        return '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-iditem="' + row.id_costo_item + '" data-idcosto="' + row.id_costo + '" title="editar" class="modal-abm-costodet-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>' +
+                            '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="' + row.descripcion + '" title="eliminar" class="modal-abm-costodet-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                    }
+                }
+            ],
+            'dom': 'rtipB',
+            'buttons': [{
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel',
+                }
+            ]
+
+        });
+
+    }
+
+    var tbCosteos = createTableCosteo();
 
     $('#modal-abm-costos-fecha').datepicker({
         autoclose: true,
@@ -604,6 +607,15 @@ $(function() {
     });
     tbCosteos.on('draw', function() {
         setAMBCosteoTriggers();
+    });
+
+    $('#modal-abm-costos-search-btn').on('click', function() {
+        let texto_a_buscar = $('#modal-abm-costos-search-text').val();
+        $('#costeo').dataTable().fnFilter(texto_a_buscar);
+    });
+    $('#modal-abm-costos-search-text').on('keyup', function() {
+        let texto_a_buscar = $('#modal-abm-costos-search-text').val();
+        $('#costeo').dataTable().fnFilter(texto_a_buscar);
     });
     setAMBCosteoTriggers();
 

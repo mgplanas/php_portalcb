@@ -219,10 +219,20 @@ desired effect
 		$_SESSION['formSubmitted'] = 0;
 	}?>	
 	<section class="content-header">
-      <h1>
-        Planillas de Costos - CND
-        <small><?=($id_planilla ? 'General' : 'Nueva') ?></small>
-      </h1>
+        <div id="modal-abm-costos-crear-div" class="form-group float-md-right">
+            <div class="col-md-10">
+                <h2 style="margin-top: 0px !Important;">
+                    Planillas de Costos - CND
+                    <small><?=($id_planilla ? 'General' : 'Nueva') ?></small>
+                </h2>
+            </div>
+            <div class="col-md-1 align-bottom">
+                <input type="button" name="<?= ($id_planilla ? 'M' : 'A') ?>" class="btn  btn-raised btn-success" value="Guardar" id='modal-abm-costos-submit'>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
     </section>
     <!-- Main content -->
     <section class="content container-fluid">
@@ -296,18 +306,6 @@ desired effect
                                     </div>                                 
                                 </div>                                                 
                             </div>
-                            <?php if (!$id_planilla) {?>
-                                <div id="modal-abm-costos-crear-div" class="form-group float-md-right">
-                                    <div class="col-md-10"></div>
-                                    <div class="col-md-1">
-                                        <input type="button" name="<?= ($id_planilla ? 'M' : 'A') ?>" class="btn  btn-raised btn-success" value="Guardar" id='modal-abm-costos-submit'>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-                                    </div>
-                                </div>
-                            <?php } ?>
-                        
                         </div>
                     
                     </div>
@@ -325,7 +323,15 @@ desired effect
                     <div class="box">     
                         <!-- /.box-header -->		
                         <div class="box-header">
-                            <h3>Costeo de productos y servicios</h3>
+                            <div class="col-md-8">
+                                <h3 style="margin-top: 0px !Important;">Costeo de productos y servicios</h3>
+                            </div>
+                            <div class="col-md-4 input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" id="modal-abm-costos-search-btn"><i class="fa fa-search"></i> Buscar</button>
+                                </div>
+                                <input type="text" class="form-control" id="modal-abm-costos-search-text">
+                            </div>   
                         </div>
                         <div class="box-body">
                             <div class="row">
