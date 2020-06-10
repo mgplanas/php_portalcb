@@ -17,6 +17,10 @@
     $cm = $_POST['cm'];
     $costeo = $_POST['costeo'];
 
+    $gmtTimezone = new DateTimeZone('GMT');
+    date_default_timezone_set('America/Argentina/Buenos_Aires');
+    $fecha = date('Y-m-d',strtotime(str_replace('/', '-', $fecha)));
+
     $result = new stdClass();
     $result->ok = false;
 

@@ -208,26 +208,8 @@ $(function() {
             let tr = $(this).closest('tr');
             let descripcion = $(this).data('descripcion');
             if (confirm('¿Está seguro que desea eliminar el costeo de ' + descripcion + '?')) {
-                // Ejecuto
-                $.ajax({
-                    type: 'POST',
-                    url: './helpers/cdc_abmcostosdetdb.php',
-                    data: {
-                        operacion: 'B',
-                        id: id
-                    },
-                    dataType: 'json',
-                    success: function(json) {
-                        $('#costeo').dataTable().fnDeleteRow(tr);
-                        item_costeo = null;
-                        return;
-                    },
-                    error: function(xhr, status, error) {
-                        item_costeo = null;
-                        return alert(xhr.responseText, error);
-                    }
-                });
-
+                $('#costeo').dataTable().fnDeleteRow(tr);
+                item_costeo = null;
             }
         });
         // EDIT
@@ -267,29 +249,6 @@ $(function() {
 
             $('#modal-abm-costodet-submit').attr('name', 'M');
             $("#modal-abm-costodet").modal("show");
-            // findDetalleCosteo($(this).data('id'), function(err, item) {
-            //     if (err) return alert(err);
-
-            //     item_costeo = {
-            //         id: item.id_costo_item,
-            //         descripcion: item.descripcion,
-            //         unidad: item.unidad,
-            //         costo_unidad: item.costo_unidad,
-            //         categoria: item.categoria,
-            //         subcategoria: item.subcategoria,
-            //     };
-            //     $('#modal-abm-costodet-id-costo-item').val(item.id_costo_item);
-            //     $('#modal-abm-costodet-title').html(item.categoria + ' <small>[' + item.subcategoria + ']</small>');
-            //     $('#modal-abm-costodet-unidad').html('<strong>Unidad: </strong>' + item.unidad);
-            //     $('#modal-abm-costodet-producto').html('<strong>Producto: </strong>' + item.descripcion);
-            //     $('#modal-abm-costodet-costo').val(item.costo_unidad);
-            //     $('#modal-abm-costodet-costo-ot').val(item.costo_unica_vez);
-            //     $('#modal-abm-costodet-cantidad').val(item.cantidad);
-            //     $('#modal-abm-costodet-costo-recurrente').val(item.costo_recurrente);
-
-            //     $('#modal-abm-costodet-submit').attr('name', 'M');
-            //     $("#modal-abm-costodet").modal("show");
-            // });
         });
 
 
