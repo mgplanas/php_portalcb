@@ -237,29 +237,59 @@ $(function() {
             $('#modal-abm-costodet-id').val($(this).data('id'));
             $('#modal-abm-costodet-row-id').val($(this).data('row'));
 
-            findDetalleCosteo($(this).data('id'), function(err, item) {
-                if (err) return alert(err);
+            let item_id_costo_item = $(this).data('item_id_costo_item');
+            let item_categoria = $(this).data('item_categoria');
+            let item_subcategoria = $(this).data('item_subcategoria');
+            let item_unidad = $(this).data('item_unidad');
+            let item_descripcion = $(this).data('item_descripcion');
+            let item_costo_usd = $(this).data('item_costo_usd');
+            let item_costo_unica_vez = $(this).data('item_costo_unica_vez');
+            let item_cantidad = $(this).data('item_cantidad');
+            let item_costo_recurrente = $(this).data('item_costo_recurrente');
 
-                item_costeo = {
-                    id: item.id_costo_item,
-                    descripcion: item.descripcion,
-                    unidad: item.unidad,
-                    costo_unidad: item.costo_unidad,
-                    categoria: item.categoria,
-                    subcategoria: item.subcategoria,
-                };
-                $('#modal-abm-costodet-id-costo-item').val(item.id_costo_item);
-                $('#modal-abm-costodet-title').html(item.categoria + ' <small>[' + item.subcategoria + ']</small>');
-                $('#modal-abm-costodet-unidad').html('<strong>Unidad: </strong>' + item.unidad);
-                $('#modal-abm-costodet-producto').html('<strong>Producto: </strong>' + item.descripcion);
-                $('#modal-abm-costodet-costo').val(item.costo_unidad);
-                $('#modal-abm-costodet-costo-ot').val(item.costo_unica_vez);
-                $('#modal-abm-costodet-cantidad').val(item.cantidad);
-                $('#modal-abm-costodet-costo-recurrente').val(item.costo_recurrente);
+            item_costeo = {
+                id: item_id_costo_item,
+                descripcion: item_descripcion,
+                unidad: item_unidad,
+                costo_unidad: item_costo_usd,
+                categoria: item_categoria,
+                subcategoria: item_subcategoria,
+            };
 
-                $('#modal-abm-costodet-submit').attr('name', 'M');
-                $("#modal-abm-costodet").modal("show");
-            });
+            $('#modal-abm-costodet-id-costo-item').val(item_id_costo_item);
+            $('#modal-abm-costodet-title').html(item_categoria + ' <small>[' + item_subcategoria + ']</small>');
+            $('#modal-abm-costodet-unidad').html('<strong>Unidad: </strong>' + item_unidad);
+            $('#modal-abm-costodet-producto').html('<strong>Producto: </strong>' + item_descripcion);
+            $('#modal-abm-costodet-costo').val(item_costo_usd);
+            $('#modal-abm-costodet-costo-ot').val(item_costo_unica_vez);
+            $('#modal-abm-costodet-cantidad').val(item_cantidad);
+            $('#modal-abm-costodet-costo-recurrente').val(item_costo_recurrente);
+
+            $('#modal-abm-costodet-submit').attr('name', 'M');
+            $("#modal-abm-costodet").modal("show");
+            // findDetalleCosteo($(this).data('id'), function(err, item) {
+            //     if (err) return alert(err);
+
+            //     item_costeo = {
+            //         id: item.id_costo_item,
+            //         descripcion: item.descripcion,
+            //         unidad: item.unidad,
+            //         costo_unidad: item.costo_unidad,
+            //         categoria: item.categoria,
+            //         subcategoria: item.subcategoria,
+            //     };
+            //     $('#modal-abm-costodet-id-costo-item').val(item.id_costo_item);
+            //     $('#modal-abm-costodet-title').html(item.categoria + ' <small>[' + item.subcategoria + ']</small>');
+            //     $('#modal-abm-costodet-unidad').html('<strong>Unidad: </strong>' + item.unidad);
+            //     $('#modal-abm-costodet-producto').html('<strong>Producto: </strong>' + item.descripcion);
+            //     $('#modal-abm-costodet-costo').val(item.costo_unidad);
+            //     $('#modal-abm-costodet-costo-ot').val(item.costo_unica_vez);
+            //     $('#modal-abm-costodet-cantidad').val(item.cantidad);
+            //     $('#modal-abm-costodet-costo-recurrente').val(item.costo_recurrente);
+
+            //     $('#modal-abm-costodet-submit').attr('name', 'M');
+            //     $("#modal-abm-costodet").modal("show");
+            // });
         });
 
 
@@ -382,7 +412,7 @@ $(function() {
         // GUARDAR ITEM DE COSTEO
         // ==============================================================
         // ejecución de guardado async
-        $('#modal-abm-costodet-submit').off('click').on(function() {
+        $('#modal-abm-costodet-submit').off('click').on('click', function() {
             // Recupero datos del formulario
             let op = $(this).attr('name');
             let id = $('#modal-abm-costodet-id').val();
@@ -394,58 +424,90 @@ $(function() {
             let costo_recurrente = $('#modal-abm-costodet-costo-recurrente').val();
             let costo_unica_vez = $('#modal-abm-costodet-costo-ot').val();
             // Ejecuto
-            $.ajax({
-                type: 'POST',
-                url: './helpers/cdc_abmcostosdetdb.php',
-                data: {
-                    operacion: op,
-                    id: id,
-                    id_costo_item: id_costo_item,
-                    id_costo: id_costo,
-                    costo_usd: costo_usd,
-                    cantidad: cantidad,
-                    costo_recurrente: costo_recurrente,
-                    costo_unica_vez: costo_unica_vez
-                },
-                dataType: 'json',
-                success: function(json) {
-                    $("#modal-abm-costodet").modal("hide");
-                    if (op == 'A') {
-                        $('#costeo').dataTable().fnAddData([{
-                            "id": json.id,
-                            "id_costo_item": json.id_costo_item,
-                            "id_costo": json.id_costo,
-                            "categoria": item_costeo.categoria,
-                            "subcategoria": item_costeo.subcategoria,
-                            "descripcion": item_costeo.descripcion,
-                            "unidad": item_costeo.unidad,
-                            "costo_usd": costo_usd,
-                            "cantidad": cantidad,
-                            "costo_unica_vez": costo_unica_vez,
-                            "costo_recurrente": costo_recurrente
-                        }]);
-                    } else {
-                        $('#costeo').dataTable().fnUpdate({
-                            "id": id,
-                            "id_costo_item": id_costo_item,
-                            "id_costo": id_costo,
-                            "categoria": item_costeo.categoria,
-                            "subcategoria": item_costeo.subcategoria,
-                            "descripcion": item_costeo.descripcion,
-                            "unidad": item_costeo.unidad,
-                            "costo_usd": costo_usd,
-                            "cantidad": cantidad,
-                            "costo_unica_vez": costo_unica_vez,
-                            "costo_recurrente": costo_recurrente
-                        }, row_id);
-                    }
-                    item_costeo = null;
-                },
-                error: function(xhr, status, error) {
-                    item_costeo = null;
-                    alert(xhr.responseText, error);
-                }
-            });
+            $("#modal-abm-costodet").modal("hide");
+            if (op == 'A') {
+                $('#costeo').dataTable().fnAddData([{
+                    "id": id,
+                    "id_costo_item": id_costo_item,
+                    "id_costo": id_costo,
+                    "categoria": item_costeo.categoria,
+                    "subcategoria": item_costeo.subcategoria,
+                    "descripcion": item_costeo.descripcion,
+                    "unidad": item_costeo.unidad,
+                    "costo_usd": costo_usd,
+                    "cantidad": cantidad,
+                    "costo_unica_vez": costo_unica_vez,
+                    "costo_recurrente": costo_recurrente
+                }]);
+            } else {
+                $('#costeo').dataTable().fnUpdate({
+                    "id": id,
+                    "id_costo_item": id_costo_item,
+                    "id_costo": id_costo,
+                    "categoria": item_costeo.categoria,
+                    "subcategoria": item_costeo.subcategoria,
+                    "descripcion": item_costeo.descripcion,
+                    "unidad": item_costeo.unidad,
+                    "costo_usd": costo_usd,
+                    "cantidad": cantidad,
+                    "costo_unica_vez": costo_unica_vez,
+                    "costo_recurrente": costo_recurrente
+                }, row_id);
+            }
+            item_costeo = null;
+
+            // $.ajax({
+            //     type: 'POST',
+            //     url: './helpers/cdc_abmcostosdetdb.php',
+            //     data: {
+            //         operacion: op,
+            //         id: id,
+            //         id_costo_item: id_costo_item,
+            //         id_costo: id_costo,
+            //         costo_usd: costo_usd,
+            //         cantidad: cantidad,
+            //         costo_recurrente: costo_recurrente,
+            //         costo_unica_vez: costo_unica_vez
+            //     },
+            //     dataType: 'json',
+            //     success: function(json) {
+            //         $("#modal-abm-costodet").modal("hide");
+            //         if (op == 'A') {
+            //             $('#costeo').dataTable().fnAddData([{
+            //                 "id": json.id,
+            //                 "id_costo_item": json.id_costo_item,
+            //                 "id_costo": json.id_costo,
+            //                 "categoria": item_costeo.categoria,
+            //                 "subcategoria": item_costeo.subcategoria,
+            //                 "descripcion": item_costeo.descripcion,
+            //                 "unidad": item_costeo.unidad,
+            //                 "costo_usd": costo_usd,
+            //                 "cantidad": cantidad,
+            //                 "costo_unica_vez": costo_unica_vez,
+            //                 "costo_recurrente": costo_recurrente
+            //             }]);
+            //         } else {
+            //             $('#costeo').dataTable().fnUpdate({
+            //                 "id": id,
+            //                 "id_costo_item": id_costo_item,
+            //                 "id_costo": id_costo,
+            //                 "categoria": item_costeo.categoria,
+            //                 "subcategoria": item_costeo.subcategoria,
+            //                 "descripcion": item_costeo.descripcion,
+            //                 "unidad": item_costeo.unidad,
+            //                 "costo_usd": costo_usd,
+            //                 "cantidad": cantidad,
+            //                 "costo_unica_vez": costo_unica_vez,
+            //                 "costo_recurrente": costo_recurrente
+            //             }, row_id);
+            //         }
+            //         item_costeo = null;
+            //     },
+            //     error: function(xhr, status, error) {
+            //         item_costeo = null;
+            //         alert(xhr.responseText, error);
+            //     }
+            // });
         });
 
         // ==============================================================
@@ -454,7 +516,7 @@ $(function() {
         // ALTA
         $('#modal-abm-costos-submit').off('click').on('click', function() {
             // Recupero datos del formulario
-            // console.log(tbCosteos.rows().data());
+            let costeo = tbCosteos.rows().data().toArray();
             let op = $(this).attr('name');
             let id = $('#modal-abm-costos-id').val();
             let cliente = $('#modal-abm-costos-cliente').val();
@@ -479,7 +541,8 @@ $(function() {
                     duracion: duracion,
                     cm: cm,
                     cotizacion_usd: cotizacion_usd,
-                    inflacion: inflacion
+                    inflacion: inflacion,
+                    costeo: costeo
                 },
                 dataType: 'json',
                 success: function(json) {
@@ -575,9 +638,25 @@ $(function() {
                 {
                     'targets': [-1],
                     'render': function(data, type, row, meta) {
-
-                        return '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-iditem="' + row.id_costo_item + '" data-idcosto="' + row.id_costo + '" title="editar" class="modal-abm-costodet-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>' +
+                        let btns = '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-iditem="' + row.id_costo_item + '" data-idcosto="' + row.id_costo + '" ';
+                        btns += 'data-item_cantidad="' + row.cantidad + '" ';
+                        btns += 'data-item_cat_id="' + row.cat_id + '" ';
+                        btns += 'data-item_categoria="' + row.categoria + '" ';
+                        btns += 'data-item_costo_recurrente="' + row.costo_recurrente + '" ';
+                        btns += 'data-item_costo_unica_vez="' + row.costo_unica_vez + '" ';
+                        btns += 'data-item_costo_usd="' + row.costo_usd + '" ';
+                        btns += 'data-item_descripcion="' + row.descripcion + '" ';
+                        btns += 'data-item_id="' + row.id + '" ';
+                        btns += 'data-item_id_costo="' + row.id_costo + '" ';
+                        btns += 'data-item_id_costo_item="' + row.id_costo_item + '" ';
+                        btns += 'data-item_subcat_id="' + row.subcat_id + '" ';
+                        btns += 'data-item_subcategoria="' + row.subcategoria + '" ';
+                        btns += 'data-item_unidad="' + row.unidad + '" ';
+                        btns += 'title="editar" class="modal-abm-costodet-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>' +
                             '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="' + row.descripcion + '" title="eliminar" class="modal-abm-costodet-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                        return btns;
+                        // return '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-iditem="' + row.id_costo_item + '" data-idcosto="' + row.id_costo + '" title="editar" class="modal-abm-costodet-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>' +
+                        //     '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="' + row.descripcion + '" title="eliminar" class="modal-abm-costodet-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
                     }
                 }
             ],
@@ -619,6 +698,5 @@ $(function() {
         $('#costeo').dataTable().fnFilter(texto_a_buscar);
     });
     setAMBCosteoTriggers();
-
 
 });
