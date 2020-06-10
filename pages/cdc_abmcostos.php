@@ -24,9 +24,11 @@ $id_rowp = $rowp['id_persona'];
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);
 
-//Get Personas
-$personas = mysqli_query($con, "SELECT * FROM persona");
-				
+
+// GET PLANILLA
+$planilla_query = mysqli_query($con, "SELECT * FROM cdc_costos WHERE id = '$id_planilla';");
+$planilla_costeo = mysqli_fetch_assoc($planilla_query);
+
 ?>
 <style>
 .dataTables_filter {
@@ -253,13 +255,13 @@ desired effect
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="cliente">Cliente</label>
-                                        <input type="text" class="form-control" name="cliente" placeholder="Razón Social" id='modal-abm-costos-cliente' required>
+                                        <input type="text" class="form-control" name="cliente" placeholder="Razón Social" id='modal-abm-costos-cliente' required value="<?= ($id_planilla ? $planilla_costeo['cliente'] : "") ?>">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="servicio">Servicio</label>
-                                        <input type="text" class="form-control" name="servicio" placeholder="Hosting / Housing.." id='modal-abm-costos-servicio'>
+                                        <input type="text" class="form-control" name="servicio" placeholder="Hosting / Housing.." id='modal-abm-costos-servicio' value="<?= ($id_planilla ? $planilla_costeo['servicio'] : "") ?>">
                                     </div>                                
                                 </div>
                             </div>
@@ -271,38 +273,38 @@ desired effect
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input type="text" class="form-control pull-right" required="required" name="fecha" id="modal-abm-costos-fecha">
+                                            <input type="text" class="form-control pull-right" required="required" name="fecha" id="modal-abm-costos-fecha" value="<?= ($id_planilla ? $planilla_costeo['fecha'] : "") ?>">
                                         </div>                        
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="meses">Meses de contrato</label>
-                                        <input type="number" min="1" class="form-control" name="meses"  id='modal-abm-costos-meses' required>
+                                        <input type="number" min="1" class="form-control" name="meses"  id='modal-abm-costos-meses' required value="<?= ($id_planilla ? $planilla_costeo['meses_contrato'] : "") ?>">
                                     </div>     
                                 </div>                   
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="dc">Duracion</label>
-                                        <input type="number" min="0" class="form-control" name="dc"  id='modal-abm-costos-dc'>
+                                        <input type="number" min="0" class="form-control" name="dc"  id='modal-abm-costos-dc' value="<?= ($id_planilla ? $planilla_costeo['duracion'] : "") ?>">
                                     </div>                                 
                                 </div>                   
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="cm">CM (%)</label>
-                                        <input type="number" min="0" class="form-control" name="cm"  id='modal-abm-costos-cm'>
+                                        <input type="number" min="0" class="form-control" name="cm"  id='modal-abm-costos-cm' value="<?= ($id_planilla ? $planilla_costeo['cm'] : "") ?>">
                                     </div>                                 
                                 </div>                   
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="inflacion">Inflación (%)</label>
-                                        <input type="number" min="0" class="form-control" name="inflacion"  id='modal-abm-costos-inflacion'>
+                                        <input type="number" min="0" class="form-control" name="inflacion"  id='modal-abm-costos-inflacion' value="<?= ($id_planilla ? $planilla_costeo['inflacion'] : "") ?>">
                                     </div>                                 
                                 </div>                                                 
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="usd">Cotización USD</label>
-                                        <input type="number" min="0" class="form-control" name="usd"  id='modal-abm-costos-usd'>
+                                        <input type="number" min="0" class="form-control" name="usd"  id='modal-abm-costos-usd' value="<?= ($id_planilla ? $planilla_costeo['cotizacion_usd'] : "") ?>">
                                     </div>                                 
                                 </div>                                                 
                             </div>

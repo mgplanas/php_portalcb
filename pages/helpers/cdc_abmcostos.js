@@ -454,6 +454,7 @@ $(function() {
         // ALTA
         $('#modal-abm-costos-submit').off('click').on('click', function() {
             // Recupero datos del formulario
+            // console.log(tbCosteos.rows().data());
             let op = $(this).attr('name');
             let id = $('#modal-abm-costos-id').val();
             let cliente = $('#modal-abm-costos-cliente').val();
