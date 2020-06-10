@@ -273,7 +273,7 @@ desired effect
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input type="text" class="form-control pull-right" required="required" name="fecha" id="modal-abm-costos-fecha" value="<?= ($id_planilla ? $planilla_costeo['fecha'] : "") ?>">
+                                            <input type="text" class="form-control pull-right" required="required" name="fecha" id="modal-abm-costos-fecha" value="<?= ($id_planilla ? date('d/m/Y' ,strtotime($planilla_costeo['fecha'])) : "") ?>">
                                         </div>                        
                                     </div>
                                 </div>
