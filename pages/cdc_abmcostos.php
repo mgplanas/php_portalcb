@@ -232,7 +232,7 @@ desired effect
                 <input type="button" name="<?= ($id_planilla ? 'M' : 'A') ?>" class="btn  btn-raised btn-success" value="Guardar" id='modal-abm-costos-submit'>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                <a href="cdc_costos.php" type="button" class="btn btn-default pull-left">Salir</a>
             </div>
         </div>
     </section>
@@ -244,7 +244,7 @@ desired effect
 	<section class="content">
         <form method="post" role="form" action="">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-9">
                     <div class="box">     
                         <!-- /.box-header -->		
                         <div class="box-body">
@@ -258,15 +258,13 @@ desired effect
                                         <input type="text" class="form-control" name="cliente" placeholder="Razón Social" id='modal-abm-costos-cliente' required value="<?= ($id_planilla ? $planilla_costeo['cliente'] : "") ?>">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="servicio">Servicio</label>
                                         <input type="text" class="form-control" name="servicio" placeholder="Hosting / Housing.." id='modal-abm-costos-servicio' value="<?= ($id_planilla ? $planilla_costeo['servicio'] : "") ?>">
                                     </div>                                
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="fecha">Fecha</label>
                                         <div class="input-group date" data-provide="modal-abm-costos-fecha">
@@ -276,10 +274,14 @@ desired effect
                                             <input type="text" class="form-control pull-right" required="required" name="fecha" id="modal-abm-costos-fecha" value="<?= ($id_planilla ? date('d/m/Y' ,strtotime($planilla_costeo['fecha'])) : "") ?>">
                                         </div>                        
                                     </div>
-                                </div>
+                                </div>                                
+                            </div>
+                            <div class="row">
+                                
+                                <div class="col-md-2"></div>          
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="meses">Meses de contrato</label>
+                                        <label for="meses">Meses de cto.</label>
                                         <input type="number" min="1" class="form-control" name="meses"  id='modal-abm-costos-meses' required value="<?= ($id_planilla ? $planilla_costeo['meses_contrato'] : "") ?>">
                                     </div>     
                                 </div>                   
@@ -288,7 +290,7 @@ desired effect
                                         <label for="dc">Duracion</label>
                                         <input type="number" min="0" class="form-control" name="dc"  id='modal-abm-costos-dc' value="<?= ($id_planilla ? $planilla_costeo['duracion'] : "") ?>">
                                     </div>                                 
-                                </div>                   
+                                </div>         
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="cm">CM (%)</label>
@@ -315,9 +317,42 @@ desired effect
                 </div>
                 
                 <!-- /.col -->
-                <?php
-                    // include_once('./modals/cdc_abmcostos.php');
-                    ?>        
+                <div class="col-md-3">
+                    <div class="box">     
+                        <!-- /.box-header -->		
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12"><strong>Costo en USD</strong><hr style="margin-top: 2px;margin-bottom: 2px;"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">Recurrente</div>
+                                <div id="modal-abm-costos-tot-rec-usd" class="col-md-6 text-right">-</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">Por única vez</div>
+                                <div id="modal-abm-costos-tot-ot-usd" class="col-md-6 text-right">-</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12"><hr style="margin-top: 2px;margin-bottom: 4px;"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12"><strong>Costo en ARS</strong><hr style="margin-top: 2px;margin-bottom: 2px;"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">Recurrente</div>
+                                <div id="modal-abm-costos-tot-rec-ars" class="col-md-6 text-right">-</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">Con CM</div>
+                                <div id="modal-abm-costos-tot-rec-cm" class="col-md-6 text-right">-</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">Con Inflación</div>
+                                <div id="modal-abm-costos-tot-rec-inflacion" class="col-md-6 text-right">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <?php if ($id_planilla) {?>
             <div class="row">

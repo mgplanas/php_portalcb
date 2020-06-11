@@ -38,8 +38,8 @@
             $result->id = $id;
             mysqli_autocommit($con, false);
             $resultado = true;
-            $resultado = mysqli_query($con, "UPDATE cdc_costos SET cliente='$cliente',fecha='$fecha',servicio='$servicio',meses_contrato='$meses_contrato',duracion='$duracion',inflacion='$inflacion',cm='$cm', cotizacion_usd='$cotizacion_usd'
-                               WHERE id='$id'");
+            $upd_qry = "UPDATE cdc_costos SET costo_recurrente='$costo_recurrente', costo_unica_vez='$costo_unica_vez', cliente='$cliente',fecha='$fecha',servicio='$servicio',meses_contrato='$meses_contrato',duracion='$duracion',inflacion='$inflacion',cm='$cm', cotizacion_usd='$cotizacion_usd' WHERE id='$id'";
+            $resultado = mysqli_query($con, $upd_qry);
             
             if ($resultado) {
               

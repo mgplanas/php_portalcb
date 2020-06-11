@@ -195,9 +195,14 @@ $(function() {
         });
 
         //cambio de costo/cantidad
-        $('#modal-abm-costodet-costo, #modal-abm-costodet-cantidad').change(function() {
-            let cantidad = $('#modal-abm-costodet-cantidad').val();
-            let costo = $('#modal-abm-costodet-costo').val();
+        $('#modal-abm-costodet-costo, #modal-abm-costodet-cantidad').off('change').on('change', function() {
+            let cantidad = ($('#modal-abm-costodet-cantidad').val() ? $('#modal-abm-costodet-cantidad').val() : 0);
+            let costo = ($('#modal-abm-costodet-costo').val() ? parseFloat($('#modal-abm-costodet-costo').val()) : 0);
+            $('#modal-abm-costodet-costo-recurrente').val(costo * cantidad);
+        });
+        $('#modal-abm-costodet-costo, #modal-abm-costodet-cantidad').off('keyup').on('keyup', function() {
+            let cantidad = ($('#modal-abm-costodet-cantidad').val() ? $('#modal-abm-costodet-cantidad').val() : 0);
+            let costo = ($('#modal-abm-costodet-costo').val() ? parseFloat($('#modal-abm-costodet-costo').val()) : 0);
             $('#modal-abm-costodet-costo-recurrente').val(costo * cantidad);
         });
 
@@ -209,6 +214,7 @@ $(function() {
             let descripcion = $(this).data('descripcion');
             if (confirm('¿Está seguro que desea eliminar el costeo de ' + descripcion + '?')) {
                 $('#costeo').dataTable().fnDeleteRow(tr);
+                updateTotals();
                 item_costeo = null;
             }
         });
@@ -382,6 +388,9 @@ $(function() {
             let cantidad = $('#modal-abm-costodet-cantidad').val();
             let costo_recurrente = $('#modal-abm-costodet-costo-recurrente').val();
             let costo_unica_vez = $('#modal-abm-costodet-costo-ot').val();
+
+            if (!costo_recurrente) { costo_recurrente = 0; }
+            if (!costo_unica_vez) { costo_unica_vez = 0; }
             // Ejecuto
             $("#modal-abm-costodet").modal("hide");
             if (op == 'A') {
@@ -413,60 +422,9 @@ $(function() {
                     "costo_recurrente": costo_recurrente
                 }, row_id);
             }
+            updateTotals();
             item_costeo = null;
 
-            // $.ajax({
-            //     type: 'POST',
-            //     url: './helpers/cdc_abmcostosdetdb.php',
-            //     data: {
-            //         operacion: op,
-            //         id: id,
-            //         id_costo_item: id_costo_item,
-            //         id_costo: id_costo,
-            //         costo_usd: costo_usd,
-            //         cantidad: cantidad,
-            //         costo_recurrente: costo_recurrente,
-            //         costo_unica_vez: costo_unica_vez
-            //     },
-            //     dataType: 'json',
-            //     success: function(json) {
-            //         $("#modal-abm-costodet").modal("hide");
-            //         if (op == 'A') {
-            //             $('#costeo').dataTable().fnAddData([{
-            //                 "id": json.id,
-            //                 "id_costo_item": json.id_costo_item,
-            //                 "id_costo": json.id_costo,
-            //                 "categoria": item_costeo.categoria,
-            //                 "subcategoria": item_costeo.subcategoria,
-            //                 "descripcion": item_costeo.descripcion,
-            //                 "unidad": item_costeo.unidad,
-            //                 "costo_usd": costo_usd,
-            //                 "cantidad": cantidad,
-            //                 "costo_unica_vez": costo_unica_vez,
-            //                 "costo_recurrente": costo_recurrente
-            //             }]);
-            //         } else {
-            //             $('#costeo').dataTable().fnUpdate({
-            //                 "id": id,
-            //                 "id_costo_item": id_costo_item,
-            //                 "id_costo": id_costo,
-            //                 "categoria": item_costeo.categoria,
-            //                 "subcategoria": item_costeo.subcategoria,
-            //                 "descripcion": item_costeo.descripcion,
-            //                 "unidad": item_costeo.unidad,
-            //                 "costo_usd": costo_usd,
-            //                 "cantidad": cantidad,
-            //                 "costo_unica_vez": costo_unica_vez,
-            //                 "costo_recurrente": costo_recurrente
-            //             }, row_id);
-            //         }
-            //         item_costeo = null;
-            //     },
-            //     error: function(xhr, status, error) {
-            //         item_costeo = null;
-            //         alert(xhr.responseText, error);
-            //     }
-            // });
         });
 
         // ==============================================================
@@ -486,6 +444,7 @@ $(function() {
             let cm = $('#modal-abm-costos-cm').val();
             let inflacion = $('#modal-abm-costos-inflacion').val();
             let cotizacion_usd = $('#modal-abm-costos-usd').val();
+            let totales = getTotals();
             // Ejecuto
             $.ajax({
                 type: 'POST',
@@ -501,7 +460,9 @@ $(function() {
                     cm: cm,
                     cotizacion_usd: cotizacion_usd,
                     inflacion: inflacion,
-                    costeo: costeo
+                    costeo: costeo,
+                    costo_unica_vez: totales.tot_ot_usd,
+                    costo_recurrente: totales.tot_recurrente_usd
                 },
                 dataType: 'json',
                 success: function(json) {
@@ -538,6 +499,47 @@ $(function() {
         $('#modal-abm-costoitem-unidad').val('');
         $('#modal-abm-costoitem-descripcion').val('');
         $('#modal-abm-costoitem-costo').val(0);
+    }
+
+    function getTotals() {
+        let costeo = tbCosteos.rows().data().toArray();
+
+        let cotizacion_usd = ($('#modal-abm-costos-usd').val() ? parseFloat($('#modal-abm-costos-usd').val()) : 0);
+        let cm = ($('#modal-abm-costos-cm').val() ? parseFloat($('#modal-abm-costos-cm').val()) : 0);
+        let inflacion = ($('#modal-abm-costos-inflacion').val() ? parseFloat($('#modal-abm-costos-inflacion').val()) : 0);
+        let tot_recurrente_usd = costeo.reduce((p, c) => parseFloat(c.costo_recurrente) + p, 0);
+        let tot_ot_usd = costeo.reduce((p, c) => parseFloat(c.costo_unica_vez) + p, 0);
+        let tot_recurrente_ars = 0;
+        let tot_recurrente_cm = 0;
+        let tot_cm_infla = 0;
+
+        if (cotizacion_usd) {
+            tot_recurrente_ars = tot_recurrente_usd * cotizacion_usd;
+            tot_recurrente_cm = tot_recurrente_ars * (1 + (cm / 100));
+            tot_cm_infla = tot_recurrente_cm * (1 + (inflacion / 100));
+        }
+
+        return {
+            cotizacion_usd: cotizacion_usd.toFixed(2),
+            cm: cm.toFixed(2),
+            inflacion: inflacion.toFixed(2),
+            tot_recurrente_usd: tot_recurrente_usd.toFixed(2),
+            tot_ot_usd: tot_ot_usd.toFixed(2),
+            tot_recurrente_ars: tot_recurrente_ars.toFixed(2),
+            tot_recurrente_cm: tot_recurrente_cm.toFixed(2),
+            tot_cm_infla: tot_cm_infla.toFixed(2)
+        };
+    }
+
+    function updateTotals() {
+        let totals = getTotals();
+
+        $('#modal-abm-costos-tot-rec-usd').html(totals.tot_recurrente_usd);
+        $('#modal-abm-costos-tot-ot-usd').html(totals.tot_ot_usd);
+        $('#modal-abm-costos-tot-rec-ars').html(totals.tot_recurrente_ars);
+        $('#modal-abm-costos-tot-rec-cm').html(totals.tot_recurrente_cm);
+        $('#modal-abm-costos-tot-rec-inflacion').html(totals.tot_cm_infla);
+
     }
 
     // ==============================================================
@@ -646,6 +648,17 @@ $(function() {
     });
     tbCosteos.on('draw', function() {
         setAMBCosteoTriggers();
+    });
+    tbCosteos.on('init.dt', function() {
+        updateTotals();
+    });
+
+    //Recálculo de totales
+    $('#modal-abm-costos-usd, #modal-abm-costos-cm, #modal-abm-costos-inflacion').on('change', function() {
+        updateTotals();
+    });
+    $('#modal-abm-costos-usd, #modal-abm-costos-cm, #modal-abm-costos-inflacion').on('keyup', function() {
+        updateTotals();
     });
 
     $('#modal-abm-costos-search-btn').on('click', function() {
