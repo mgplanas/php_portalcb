@@ -21,7 +21,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="costo">Costo USD </label>
-                                <input type="number" min="0" class="form-control" name="costo"  id='modal-abm-costodet-costo' required>
+                                <input type="number" min="0" class="form-control" name="costo"  id='modal-abm-costodet-costo' required disabled>
                             </div>
                         </div>
                         <div class="col-md-1">
