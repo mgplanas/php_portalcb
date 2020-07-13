@@ -285,7 +285,7 @@ desired effect
                                   <label for="tipo">Tipo</label>
                                     <select name="tipo" class="form-control">
                                         <option value='1'<?php if($row['tipo'] == '1'){ echo 'selected'; } ?>>NC-No Conformidad sin AC</option>
-                                        <option value='2'<?php if($row['tipo'] == '2'){ echo 'selected'; } ?>>AC-Acción Correctiva</option>
+                                        <option value='2'<?php if($row['tipo'] == '2'){ echo 'selected'; } ?>>AC-No conformidad con AC</option>
                                         <option value='3'<?php if($row['tipo'] == '3'){ echo 'selected'; } ?>>AM-Acción Mejora</option>
                                     </select>
                                 </div>
@@ -744,7 +744,7 @@ desired effect
                             echo '<td>NC-No Conformidad sin AC</td>';
                           }
                           else if ($row['tipo'] == '2' ){
-                            echo '<td>AC-Acción Correctiva</td>';
+                            echo '<td>AC-No conformidad con AC</td>';
                           }
                           else if ($row['tipo'] == '3' ){
                             echo '<td>AM-Acción Mejora</td>';
@@ -975,7 +975,7 @@ $(function(){
 	if($(this).data('tipo') == '1') {
 		$('#tipo').val('NC-No Conformidad sin AC')}
 	else if($(this).data('tipo') == '2'){
-		$('#tipo').val('AC-Acción Correctiva')}
+		$('#tipo').val('AC-No conformidad con AC')}
 	else if($(this).data('tipo') == '3'){
 		$('#tipo').val('AM-Acción Mejora')};
     

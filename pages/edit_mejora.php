@@ -236,7 +236,7 @@ desired effect
                            <label for="tipo">Tipo</label>
                             <select name="tipo" class="form-control">
                                 <option value='1'<?php if($row['tipo'] == '1'){ echo 'selected'; } ?>>NC-No Conformidad sin AC</option>
-                                <option value='2'<?php if($row['tipo'] == '2'){ echo 'selected'; } ?>>AC-Acción Correctiva</option>
+                                <option value='2'<?php if($row['tipo'] == '2'){ echo 'selected'; } ?>>AC-No conformidad con AC</option>
                                 <option value='3'<?php if($row['tipo'] == '3'){ echo 'selected'; } ?>>AM-Acción Mejora</option>
                              </select>
                         </div>
