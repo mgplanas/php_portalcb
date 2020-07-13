@@ -8,12 +8,18 @@ Gestion de planillas de costos
     - [DB] Se crea la tabla de items de costos cdc_costos_items
     - [DB] Se crea la tabla de items de costos cdc_costos
     - [DB] Se crea la tabla de items de costos cdc_costos_detalle
-    - N[pages/cdc_costos]
-    - N[pages/helpers/cdc_abmcostos.js]
-    - N[pages/modals/cdc_abmcostosdet.js]
-    - N[pages/modals/cdc_abmcostosdet.js]
-    - M[pages/site_sidemenu]
-    - M[site]
+    - CHANGES.md                            |  16 +
+    - pages/cdc_abmcostos.php               | 450 +++++++++++++++++++++++
+    - pages/cdc_costos.php                  | 314 ++++++++++++++++
+    - pages/helpers/cdc_abmcostos.js        | 674 ++++++++++++++++++++++++++++++++++
+    - pages/helpers/cdc_abmcostosdb.php     |  77 ++++
+    - pages/helpers/cdc_abmcostosdetdb.php  |  51 +++
+    - pages/helpers/cdc_abmcostositemdb.php |  45 +++
+    - pages/mejoras.php                     |   4 +-
+    - pages/modals/cdc_abmcostosdet.php     |  71 ++++
+    - pages/modals/cdc_abmcostositem.php    |  57 +++
+    - pages/site_sidebar.php                |   1 +
+    - site.php                              |   1 +
 
 # FEAT-SI
 Gestión y seguiiento de Solicitudes de Infraestructura.
