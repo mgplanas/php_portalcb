@@ -1,5 +1,20 @@
 # CHANGES
 
+## FEAT-COSTEO
+
+Gestion de planillas de costos
+*Fecha:* 2020-05-21
+*Cambios:*
+    - [DB] Se crea la tabla de items de costos cdc_costos_items
+    - [DB] Se crea la tabla de items de costos cdc_costos
+    - [DB] Se crea la tabla de items de costos cdc_costos_detalle
+    - N[pages/cdc_costos]
+    - N[pages/helpers/cdc_abmcostos.js]
+    - N[pages/modals/cdc_abmcostosdet.js]
+    - N[pages/modals/cdc_abmcostosdet.js]
+    - M[pages/site_sidemenu]
+    - M[site]
+
 # FEAT-SI
 Gestión y seguiiento de Solicitudes de Infraestructura.
 *Fecha:* 2020-05-14
@@ -9,6 +24,7 @@ Gestión y seguiiento de Solicitudes de Infraestructura.
     - N[pages/cdc_solicitudes]
     - N[pages/modals/cdc_abmsolicitudes.php/js]
     - N[pages/helpers/cdc_abmsolicitudesdb.php]
+
 
 # FIX-VARIOS
 FIX Login LDAP server
