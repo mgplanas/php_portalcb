@@ -145,10 +145,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT H.id, H.id_cliente, H.m2, H.sala, H.fila, H.rack, H.observaciones, H.energia, H.fecha_alta, H.evidencia, H.modalidad, C.razon_social as cliente, O.razon_social as organismo
+					$query = "SELECT H.id, H.id_cliente, H.m2, H.sala, H.fila, H.rack, H.observaciones, H.energia, H.fecha_alta, H.evidencia, H.modalidad, M.descripcion as modalidad_desc, C.razon_social as cliente, O.razon_social as organismo
                                 FROM sdc_housing as H
                                 INNER JOIN cdc_cliente as C ON H.id_cliente = C.id
                                 LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
+                                LEFT JOIN sdc_housing_modalidad as M ON H.modalidad = M.id
                                 WHERE H.borrado = 0"; 
 					
 					$sql = mysqli_query($con, $query);
@@ -170,13 +171,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td align="center">'. $row['fecha_alta'].'</td>';
 							echo '<td align="center">'. $row['evidencia'].'</td>';
                             echo '<td align="center">'. $row['observaciones'].'</td>';
-                            if ($row['modalidad'] == 1) {
-                                echo '<td align="center">Sala</td>';
-                            } elseif ($row['modalidad'] == 2) {
-                                echo '<td align="center">Rack</td>';
-                            } else {
-                                echo '<td align="center"></td>';
-                            }
+                            echo '<td align="center">'. $row['modalidad_desc'].'</td>';
+
               echo '<td align="center">';
               if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ 
                 echo '<a 

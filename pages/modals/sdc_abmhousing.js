@@ -29,6 +29,7 @@ $(function() {
             $('#modal-abm-housing-alta').val($(this).data('alta'));
             $('#modal-abm-housing-observaciones').val($(this).data('observaciones'));
             $("#modal-abm-housing-cliente").val($(this).data('cliente')).change();
+            $("#modal-abm-housing-modalidad").val($(this).data('modalidad')).change();
 
 
             $('#modal-abm-housing-submit').attr('name', 'M');
@@ -47,6 +48,7 @@ $(function() {
         let op = $(this).attr('name');
         let id = $('#modal-abm-housing-id').val();
         let id_cliente = $('#modal-abm-housing-cliente').val();
+        let modalidad = $('#modal-abm-housing-modalidad').val();
         let m2 = $('#modal-abm-housing-m2').val();
         let sala = $('#modal-abm-housing-sala').val();
         let fila = $('#modal-abm-housing-fila').val();
@@ -70,7 +72,8 @@ $(function() {
                 energia: energia,
                 evidencia: evidencia,
                 alta: alta,
-                observaciones: observaciones
+                observaciones: observaciones,
+                modalidad: modalidad
             },
             dataType: 'json',
             success: function(json) {
@@ -97,6 +100,7 @@ $(function() {
         $('#modal-abm-housing-alta').val('');
         $('#modal-abm-housing-observaciones').val('');
         $("#modal-abm-housing-cliente").prop("selectedIndex", 0);
+        $("#modal-abm-housing-modalidad").prop("selectedIndex", 0);
         // $("#modal-abm-housing-cliente").val(0).change();
     }
     // ********************************************************************************************
