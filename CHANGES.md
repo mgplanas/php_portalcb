@@ -11,6 +11,7 @@ Nuevo servicio DC IAAS
 
 - Se visualiza con marca en la grilla
 - Se actualiza abm y modal
+- Nuevo campo modalidad en sdc_housing int = 0 [1: Sala, 2: rack]
 
 ## FEAT-COSTEO
 
