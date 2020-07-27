@@ -140,6 +140,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Alias/Sigla</th>
                     <th>CUIT</th>
                     <th>Sector</th>
+                    <th><i class="fa fa-briefcase" title="Convenio" style="font-size: 20px;"></i></th>
                     <th><i class="fa fa-home" title="Housing" style="font-size: 20px;"></i></th>
                     <th><i class="fa fa-server" title="Hosting" style="font-size: 20px;"></i></th>
                     <th></th>
@@ -147,7 +148,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT C.id_organismo, C.id, C.razon_social, O.razon_social as organismo, C.cuit, C.nombre_corto, C.sector, 
+					$query = "SELECT C.id_organismo, C.id, C.razon_social, O.razon_social as organismo, C.cuit, C.nombre_corto, C.sector, C.con_convenio,
                     (SELECT COUNT(1) FROM sdc_hosting as HO where HO.id_cliente = C.id AND HO.borrado=0) as hosting,
                     (SELECT COUNT(1) FROM sdc_housing as HU where HU.id_cliente = C.id AND HU.borrado=0) as housing
                   FROM cdc_cliente as C 
@@ -168,6 +169,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td align="center">'. $row['nombre_corto'].'</td>';
 							echo '<td align="center">'. $row['cuit'].'</td>';
               echo '<td align="center">'. $row['sector'].'</td>';
+              echo '<td align="center">'. ($row['con_convenio'] ? '<i class="fa fa-check"></i>' : '') .'</td>';
               echo '<td align="center">';
               if ($row['housing'] > 0) {
                 echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicio de Housing" class="modal-abm-housing-view btn">' . $row['housing'] . '</a>';
@@ -187,6 +189,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   data-cuit="' . $row['cuit'] . '" 
                   data-organismo="' . $row['id_organismo'] . '" 
                   data-sector="' . $row['sector'] . '" 
+                  data-convenio="' . $row['convenio'] . '" 
                   title="Editar Cliente" class="modal-abm-cliente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
                   if ($row['housing'] == 0 AND $row['hosting'] == 0) {
                     echo '<a href="cdc_cliente.php?aksi=delete&nik='.$row['id'].'" title="Borrar Cliente" onclick="return confirm(\'Esta seguro de borrar el cliente '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
