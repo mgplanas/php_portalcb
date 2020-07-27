@@ -191,7 +191,7 @@
                         T.uuid,
                         T.`Sistema Operativo`
                         FROM sdc_hosting_temp AS T
-                        INNER JOIN cdc_cliente AS C ON T.id_cliente = C.cuit';
+                        INNER JOIN cdc_cliente AS C ON T.id_cliente = C.cuit and C.borrado =0';
         $sqlRes = mysqli_query($con, $sql);
         if(!isset($sqlRes)){
             $result->error = mysqli_error($con); 
