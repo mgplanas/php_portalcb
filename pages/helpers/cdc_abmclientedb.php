@@ -9,6 +9,7 @@
     $nombre_corto = $_POST['nombre_corto'];
     $cuit = $_POST['cuit'];
     $sector = $_POST['sector'];
+    $convenio = $_POST['convenio'];
 
     $result = new stdClass();
     $result->ok = false;
@@ -16,8 +17,8 @@
     switch ($op) {
         case 'A':
             // INSERT
-            $insert_cliente = mysqli_query($con, "INSERT INTO cdc_cliente(id_organismo, razon_social, nombre_corto,cuit, sector) 
-                                                VALUES ('$id_organismo', '$razon_social', '$nombre_corto','$cuit', '$sector')") or die(mysqli_error());	
+            $insert_cliente = mysqli_query($con, "INSERT INTO cdc_cliente(id_organismo, razon_social, nombre_corto,cuit, sector, con_convenio) 
+                                                VALUES ('$id_organismo', '$razon_social', '$nombre_corto','$cuit', '$sector', '$convenio')") or die(mysqli_error());	
             $lastInsert = mysqli_insert_id($con);
             $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                 VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
@@ -26,7 +27,7 @@
         
         case 'M':
             //UPDATE
-            $update_clietne = mysqli_query($con, "UPDATE cdc_cliente SET id_organismo='$id_organismo', razon_social='$razon_social', nombre_corto='$nombre_corto', cuit='$cuit', sector='$sector' 
+            $update_clietne = mysqli_query($con, "UPDATE cdc_cliente SET id_organismo='$id_organismo', razon_social='$razon_social', nombre_corto='$nombre_corto', cuit='$cuit', sector='$sector' , con_convenio='$convenio'
                                                     WHERE id='$id'") or die(mysqli_error());	
             $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                 VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());

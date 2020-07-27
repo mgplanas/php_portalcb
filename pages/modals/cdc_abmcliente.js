@@ -26,6 +26,9 @@ $(function() {
             if ($(this).data('sector') == 'Privado') {
                 $('#opt-sector-privado').prop("checked", true);
             }
+            if ($(this).data('convenio') == '1') {
+                $('#modal-abm-cliente-convenio').prop("checked", true);
+            }
             $("#modal-abm-cliente-organismo").val($(this).data('organismo')).change();
 
 
@@ -49,6 +52,10 @@ $(function() {
         let nombre_corto = $('#modal-abm-cliente-sigla').val();
         let cuit = $('#modal-abm-cliente-cuit').val();
         let sector = $("input[name='optSector']:checked").val();
+        let convenio = 0;
+        if ($("#modal-abm-cliente-convenio").is(':checked')) {
+            convenio = 1;
+        }
         // Ejecuto
         $.ajax({
             type: 'POST',
@@ -60,7 +67,8 @@ $(function() {
                 razon_social: razon_social,
                 nombre_corto: nombre_corto,
                 cuit: cuit,
-                sector: sector
+                sector: sector,
+                convenio: convenio
             },
             dataType: 'json',
             success: function(json) {
@@ -82,6 +90,7 @@ $(function() {
         $('#modal-abm-cliente-sigla').val('');
         $('#modal-abm-cliente-cuit').val('');
         $('#opt-sector-publico').prop("checked", true);
+        $('#modal-abm-cliente-convenio').prop("checked", false);
         $("#modal-abm-cliente-organismo").val('first').change();
     }
     // ********************************************************************************************

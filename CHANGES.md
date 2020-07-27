@@ -9,7 +9,8 @@ Nuevo servicio DC IAAS
 * Nuevo campo Estado en clientes
 - [DB] Se crea el campo con_convenio int = 0 en cdc_cliente
 
-- Se visualiza con marca en la grilla~~~~
+- Se visualiza con marca en la grilla
+- Se actualiza abm y modal
 
 ## FEAT-COSTEO
 

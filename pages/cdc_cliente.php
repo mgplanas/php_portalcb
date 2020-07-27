@@ -189,7 +189,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   data-cuit="' . $row['cuit'] . '" 
                   data-organismo="' . $row['id_organismo'] . '" 
                   data-sector="' . $row['sector'] . '" 
-                  data-convenio="' . $row['convenio'] . '" 
+                  data-convenio="' . $row['con_convenio'] . '" 
                   title="Editar Cliente" class="modal-abm-cliente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
                   if ($row['housing'] == 0 AND $row['hosting'] == 0) {
                     echo '<a href="cdc_cliente.php?aksi=delete&nik='.$row['id'].'" title="Borrar Cliente" onclick="return confirm(\'Esta seguro de borrar el cliente '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';

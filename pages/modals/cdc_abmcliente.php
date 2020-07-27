@@ -39,11 +39,20 @@
                         <input type="text" class="form-control" name="cuit" placeholder="CUIT" id='modal-abm-cliente-cuit'>
                     </div>                    
                     <div class="form-group">
-                        <div class="radio">
-                            <label><input type="radio" name="optSector" id="opt-sector-publico" value="Publico" checked="">Sector Público</label>
+                        <div class="col-md-6">
+                            <div class="radio">
+                                <label><input type="radio" name="optSector" id="opt-sector-publico" value="Publico" checked="">Sector Público</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="optSector" id="opt-sector-privado" value="Privado" checked="">Sector Privado</label>
+                            </div>
                         </div>
-                        <div class="radio">
-                            <label><input type="radio" name="optSector" id="opt-sector-privado" value="Privado" checked="">Sector Privado</label>
+                        <div class="col-md-6">
+                            <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id='modal-abm-cliente-convenio'> Con convenio
+                            </label>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
