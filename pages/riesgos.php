@@ -1637,7 +1637,11 @@ desired effect
                                                   echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
                                                   echo '<td>'.$row['ref_apellido'].' '.$row['ref_nombre']. '</td>'; 
                                                   echo '<td>'.$row['gerencia'].'</td>'; 
-                                                  echo '<td>'.$row['alta'].'</td>'; 
+                                                  
+                                                  //FIX SORT
+                                                  $timestamp = strtotime(str_replace('/', '.', $row['alta']));
+                                                  $mysql_date = date('Y-m-d', $timestamp);                                                   
+                                                  echo '<td data-sort="'. $mysql_date .'">'.$row['alta'].'</td>'; 
                                                 //   echo '<td>'.$row['tipo'].'</td>';
                                                 //   echo '<td>'.$row['n_riesgo'].'</td>';
                                                 //   echo '<td>'.$row['valoracion'].'</td>';
