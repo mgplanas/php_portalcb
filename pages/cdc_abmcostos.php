@@ -303,10 +303,10 @@ desired effect
                                         <input type="number" min="0" class="form-control" name="inflacion"  id='modal-abm-costos-inflacion' value="<?= ($id_planilla ? $planilla_costeo['inflacion'] : "") ?>">
                                     </div>                                 
                                 </div>                                                 
-                                <div class="col-md-2">
+                                <div style="display:none">
                                     <div class="form-group">
                                         <label for="usd">Cotización USD</label>
-                                        <input type="number" min="0" class="form-control" name="usd"  id='modal-abm-costos-usd' value="<?= ($id_planilla ? $planilla_costeo['cotizacion_usd'] : "") ?>">
+                                        <input type="number" min="0" class="form-control" name="usd"  id='modal-abm-costos-usd' value="<?= ($id_planilla ? $planilla_costeo['cotizacion_usd'] : "") ?>" disabled>
                                     </div>                                 
                                 </div>                                                 
                             </div>
