@@ -18,6 +18,12 @@ NO IMPLEMENTAR SIN ANTES HABER IMPLEMENTADO LA PRIMERA REL200603
 * Elimino la gestión de categorías/sub categorías en planilla de costeo
   * helpers/cdc_abmcostos.js
   * pages/cdc_abmcostos.php
+* Cambios menores solicitados por Esteban en la reunión con comercial
+  * Agregar número Ceres en pantalla de cotización
+    * Se agrega campo oportunidad_comercial en
+  * Agregar SS de máximo
+  * Formatear los montos con miles
+  * Deshabilitar la cotización en USD
 
 ## FEAT-COSTEO
 

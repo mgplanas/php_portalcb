@@ -520,14 +520,14 @@ $(function() {
         }
 
         return {
-            cotizacion_usd: cotizacion_usd.toFixed(2),
-            cm: cm.toFixed(2),
-            inflacion: inflacion.toFixed(2),
-            tot_recurrente_usd: tot_recurrente_usd.toFixed(2),
-            tot_ot_usd: tot_ot_usd.toFixed(2),
-            tot_recurrente_ars: tot_recurrente_ars.toFixed(2),
-            tot_recurrente_cm: tot_recurrente_cm.toFixed(2),
-            tot_cm_infla: tot_cm_infla.toFixed(2)
+            cotizacion_usd: cotizacion_usd.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            cm: cm.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            inflacion: inflacion.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            tot_recurrente_usd: tot_recurrente_usd.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            tot_ot_usd: tot_ot_usd.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            tot_recurrente_ars: tot_recurrente_ars.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            tot_recurrente_cm: tot_recurrente_cm.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            tot_cm_infla: tot_cm_infla.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
         };
     }
 
@@ -545,6 +545,10 @@ $(function() {
     // ==============================================================
     // TABLE FUNCTIONS
     // ==============================================================
+    function renderCurrencyField(value) {
+        return parseFloat(value).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
     function createTableCosteo() {
         let id = $('#modal-abm-costos-id').val();
         let strquery = 'SELECT cd.id, cd.id_costo, cd.id_costo_item, cd.costo_usd, cd.cantidad, cd.costo_unica_vez, cd.costo_recurrente,';
@@ -558,6 +562,10 @@ $(function() {
         strquery += 'WHERE cd.borrado = 0 AND cd.id_costo = ' + id + ';';
 
         return $('#costeo').DataTable({
+            "language": {
+                "decimal": ",",
+                "thousands": ".",
+            },
             "scrollY": "100vh",
             "scrollX": true,
             "scrollCollapse": true,
@@ -579,10 +587,10 @@ $(function() {
                 { "data": "subcategoria" },
                 { "data": "descripcion" },
                 { "data": "unidad" },
-                { "data": "costo_usd" },
+                { "data": "costo_usd", "render": (data) => renderCurrencyField(data) },
                 { "data": "cantidad" },
-                { "data": "costo_unica_vez" },
-                { "data": "costo_recurrente" },
+                { "data": "costo_unica_vez", "render": (data) => renderCurrencyField(data) },
+                { "data": "costo_recurrente", "render": (data) => renderCurrencyField(data) },
                 { "data": "unidad" }
             ],
             'order': [
@@ -595,6 +603,14 @@ $(function() {
             'columnDefs': [{
                     'targets': [0, 1],
                     'visible': false
+                },
+                {
+                    'targets': [4, 6, 7],
+                    'className': 'dt-body-right'
+                },
+                {
+                    'targets': [5],
+                    'className': 'dt-body-center'
                 },
                 {
                     'targets': [-1],

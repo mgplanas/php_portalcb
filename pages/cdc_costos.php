@@ -214,13 +214,13 @@ desired effect
                             echo '<td style="text-align: center;">'.date('d/m/Y' ,strtotime($row['fecha'])). '</td>'; 
                             echo '<td style="text-align: center;">'.$row['meses_contrato']. '</td>'; 
                             echo '<td style="text-align: center;">'.$row['duracion']. '</td>'; 
-                            echo '<td style="text-align: right;">'.$row['costo_recurrente']. '</td>'; 
-                            echo '<td style="text-align: right;">'.$row['costo_unica_vez']. '</td>'; 
-                            echo '<td style="text-align: right;">'. round($ars_recurrente,2) . '</td>'; 
-                            echo '<td style="text-align: right;">'. round($ars_cm,2) . '</td>'; 
-                            echo '<td style="text-align: right;">'. round($ars_inflacion,2) . '</td>'; 
-                            echo '<td style="text-align: right;">'.$row['cm']. '</td>'; 
-                            echo '<td style="text-align: right;">'.$row['inflacion']. '</td>'; 
+                            echo '<td style="text-align: right;">'.number_format($row['costo_recurrente'],2,",","."). '</td>'; 
+                            echo '<td style="text-align: right;">'.number_format($row['costo_unica_vez'],2,",","."). '</td>'; 
+                            echo '<td style="text-align: right;">'. number_format(round($ars_recurrente,2),2,",",".") . '</td>'; 
+                            echo '<td style="text-align: right;">'. number_format(round($ars_cm,2),2,",",".") . '</td>'; 
+                            echo '<td style="text-align: right;">'. number_format(round($ars_inflacion,2),2,",",".") . '</td>'; 
+                            echo '<td style="text-align: right;">'.number_format($row['cm'],2,",","."). '</td>'; 
+                            echo '<td style="text-align: right;">'.number_format($row['inflacion'],2,",","."). '</td>'; 
                             echo '<td align="right">';
                             echo '<a href="cdc_abmcostos.php?planilla='.$row['id'].'" data-id="'.$row['id'].'" title="editar" class="modal-abm-costos-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" ></i></a>';
                             if ($rq_sec['admin_cli_dc'] == '1') {echo '<a data-id="'.$row['id'].'" href="cdc_costos.php?aksi=delete&nik='.$row['id'].'" title="eliminar planilla" onclick="return confirm(\'Esta seguro de eliminar la planilla del cliente '.$row['cliente'].'?\')" class="modal-abm-costos-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';}
