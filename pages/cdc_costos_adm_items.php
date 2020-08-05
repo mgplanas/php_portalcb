@@ -73,6 +73,76 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
+
+.sub-categorias {
+    background: #f0f0f0;
+}
+.sub-categorias:hover, .sub-categorias:focus {
+    color: #555 !important;
+    text-decoration: none !important;
+    background-color: #e5e5e5 !important;
+}
+
+.producto-servicio {
+    font-size: .8em;
+}
+.categorias {
+    background: #e0e0e0;
+    font-weight: bold;
+}
+.categorias:hover, .categorias:focus {
+    color: #555 !important;
+    text-decoration: none !important;
+    background-color: #d5d5d5 !important;
+}
+.just-padding {
+  padding: 15px;
+}
+
+.list-group.list-group-root {
+  padding: 0;
+  overflow: hidden;
+}
+
+.list-group.list-group-root .list-group {
+  margin-bottom: 0;
+}
+
+.list-group.list-group-root .list-group-item {
+  border-radius: 0;
+  border-width: 1px 0 0 0;
+}
+
+.list-group.list-group-root > .list-group-item:first-child {
+  border-top-width: 0;
+}
+.list-group-item a {
+    cursor: pointer;
+}
+/* .list-group.list-group-root > .list-group > .list-group-item {
+  padding-left: 30px;
+}
+
+.list-group.list-group-root > .list-group > .list-group > .list-group-item {
+  padding-left: 45px;
+} */
+
+.list-group-item .glyphicon {
+  margin-right: 5px;
+}
+tr.dtrg-group.dtrg-level-0 td {
+    font-weight: bold;
+    font-size: 1.2em !important;
+}
+tr.dtrg-group.dtrg-level-1 td, table.dataTable tr.dtrg-group.dtrg-level-2 td {
+    background-color: #f0f0f0;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    padding-left: 2em;
+    font-size: 1.1em !important;
+    font-weight: bold !important;
+}
+
     .example-modal .modal {
       position: relative;
       top: auto;
@@ -141,7 +211,7 @@ desired effect
 	}?>	
 	<section class="content-header">
       <h1>
-        categorias de Costos - CND
+        Categorias de Productos y Servicios - CND
         <small>General</small>
       </h1>
     </section>
@@ -154,28 +224,19 @@ desired effect
       <div class="row">
         <div class="col-md-12">
             <div class="box">
-                <div class="col-sm-12" style="text-align:right;">
-                    <?php
-                        echo '<button type="button" id="modal-abm-categorias-btn-alta" class="btn-sm btn-primary"><i class="fa fa-bars"></i> Nueva Producto</button>';
-                    ?>
-                </div>        
             
                 <!-- /.box-header -->		
                 <div class="box-body">
-                    <table id="categorias" class="table table-striped" width="100%">
-                        <thead>
-                        <tr>
-                            <th>Categoría</th>
-                            <th>Subcategoría</th>
-                            <th>Producto/Servicio</th>
-                            <th>Unidad</th>
-                            <th>Costo (USD)</th>
-                            <th>Descripción</th>
-                            <th>Observaciones</th>
-                            <th width="30px"></th>
-                        </tr>
-                        </thead>
-                    </table>
+                    <div class="row">
+                        <!-- CATEGORIAS -->
+                        <div class="col-md-8">
+                            <div id="modal-abm-costos-categorias" class="just-padding">
+                                <div id="modal-abm-costos-categorias-card" style="height: 700px; overflow-y : scroll;" class="list-group list-group-root card">
+                                </div>
+                            </div>  
+                        </div>    
+                        <!-- FIN CATEGORIAS -->
+                    </div>
                 </div>
             <!-- /.box-body -->
             </div>
