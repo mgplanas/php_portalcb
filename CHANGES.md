@@ -21,9 +21,13 @@ NO IMPLEMENTAR SIN ANTES HABER IMPLEMENTADO LA PRIMERA REL200603
 * Cambios menores solicitados por Esteban en la reunión con comercial
   * Agregar número Ceres en pantalla de cotización
     * [DB] Se agrega campo oportunidad_comercial en cdc_costos
+    * pages/cdc_abmcostos.php
+    * helpers/cdc_abmcostosdb.php
   * Agregar SS de máximo
     * [DB] Se agrega campo solicitud_servicio en cdc_costos
     * `ALTER TABLE controls.cdc_costos ADD oportunidad_comercial VARCHAR(20) AFTER estado, ADD solicitud_servicio VARCHAR(20);`
+    * pages/cdc_abmcostos.php
+    * helpers/cdc_abmcostosdb.php
   * Formatear los montos con miles
     * pages/cdc_costos.php
     * pages/cdc_abmcostos.php

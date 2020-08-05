@@ -444,6 +444,8 @@ $(function() {
             let cm = $('#modal-abm-costos-cm').val();
             let inflacion = $('#modal-abm-costos-inflacion').val();
             let cotizacion_usd = $('#modal-abm-costos-usd').val();
+            let oportunidad_comercial = $('#modal-abm-costos-oportunidad').val();
+            let solicitud_servicio = $('#modal-abm-costos-ss').val();
             let totales = getTotals();
             // Ejecuto
             $.ajax({
@@ -457,6 +459,8 @@ $(function() {
                     fecha: fecha,
                     meses_contrato: meses,
                     duracion: duracion,
+                    oportunidad_comercial: oportunidad_comercial,
+                    solicitud_servicio: solicitud_servicio,
                     cm: cm,
                     cotizacion_usd: cotizacion_usd,
                     inflacion: inflacion,
