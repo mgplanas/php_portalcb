@@ -11,6 +11,10 @@ NO IMPLEMENTAR SIN ANTES HABER IMPLEMENTADO LA PRIMERA REL200603
 *Cambios* :
 
 * Separación de la gestion de categorías aparte.
+  * pages/cdc_costos_adm_items.php
+  * helpers/cdc_abmcostos_items.js
+  * site.php
+  * pages/site_sidebar.php
 
 ## FEAT-COSTEO
 
