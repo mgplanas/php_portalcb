@@ -15,12 +15,16 @@ NO IMPLEMENTAR SIN ANTES HABER IMPLEMENTADO LA PRIMERA REL200603
   * helpers/cdc_abmcostos_items.js
   * site.php
   * pages/site_sidebar.php
+* Elimino la gestión de categorías/sub categorías en planilla de costeo
+  * helpers/cdc_abmcostos.js
+  * pages/cdc_abmcostos.php
 
 ## FEAT-COSTEO
 
 Gestion de planillas de costos
 *Fecha:* 2020-05-21
 *Cambios:*
+
 - [DB] Se crea la tabla de items de costos cdc_costos_items
 - [DB] Se crea la tabla de items de costos cdc_costos
 - [DB] Se crea la tabla de items de costos cdc_costos_detalle
@@ -42,6 +46,7 @@ Gestion de planillas de costos
 Gestión y seguiiento de Solicitudes de Infraestructura.
 *Fecha:* 2020-05-14
 *Cambios:*
+
 - [pages/site_sidebar] Se agrega el item solicitudes infra en site_sidebar y site
 - [site] Se agrega el item solicitudes infra en site_sidebar y site
 - N[pages/cdc_solicitudes]
@@ -59,14 +64,15 @@ Muestro columna evidencia en 9001 en xls
 Gestión de entes de auditoría e instancias de las mismas
 *Fecha:* 2020-04-13
 *Cambios:*
+
 - [DB] Se crea la tabla aud_entes
 - [DB] Se crea la tabla aud_auditores
 - [DB] Se crea la tabla aud_instancias
 - [DB] Se crea la tabla aud_rel_ins_aud
 - [DB] Se agregan campos de ente y instancia en mejoras
-ALTER TABLE controls.mejora
-ADD aud_ente INT AFTER matriz,
-ADD aud_instancia INT;
+  ALTER TABLE controls.mejora
+  ADD aud_ente INT AFTER matriz,
+  ADD aud_instancia INT;
 - N[pages/aud_ente] listado de entes de auditoria
 - N[modals/aud_abmente(js/php)] Modal de entes de auditoria
 - N[helpers/aud_abmentedb] ABM DB de entes de auditoria
@@ -80,15 +86,15 @@ ADD aud_instancia INT;
 - N[helpers/aud_abminstanciasdb] ABM DB de instancias
 - N[pages/aud_insauditores] listado de auditores asignados a la instancia de auditoría
 - N[helpers/aud_abminsauditoresdb] ABM DB de asignación de auditores
-
 - M[pages/mejoras] Quito el campo corrección del modal alta y del modal de view
 - M[pages/mejoras] Agrego filtro campo origen
 - M[pages/edit_mejoras] Quito el campo corrección
 - M[pages/mejoras] Agrego campo Prioridad
 - M[pages/edit_mejoras] Agrego campo Prioridad
 - [DB] Se agrega el campo prioridad
-    ALTER TABLE controls.mejora
-    ADD prioridad INT NOT NULL DEFAULT '0' AFTER aud_instancia;
+  ALTER TABLE controls.mejora
+  ADD prioridad INT NOT NULL DEFAULT '0' AFTER aud_instancia;
+
 ## FEAT-RIESGOS-VARIOS
 
 Cambios de permisos en riesgos y varios de Mejora Contínua.
@@ -139,73 +145,79 @@ M[helpers\abmservidoresdb.php]
 
 Reprogramación de proyectos mediante avance.
 *Cambios:*
+
 - Se agrega la categoría de Reprogramación
-[pages/edit_proyectos.php]
+  [pages/edit_proyectos.php]
 - Se agega campo fecha en el avance y se muestra cuando se selecciona solo la categoría Reprogramacion
-[pages/edit_proyectos.php]
+  [pages/edit_proyectos.php]
 
 ALTER TABLE controls.proyecto
 ADD repro_date VARCHAR(10) AFTER porcentaje_estimado;
 
 - Se habilita la modificacion del titulo
 - Visualizo fecha de reprogramación en grilla proyectos
-[pages/proyectos]
+  [pages/proyectos]
 - Se pone los botones export en scs_hosting/housing
-[pages/sds_hosting/Housing]
+  [pages/sds_hosting/Housing]
+
 ## FIX-CONTROLES
 
 Con el cambio de año comenzaron a aparecer errores referidos a fechas.
 *Cambios:*
+
 - Se saca el filtro de fechas para el cálculo de cantidad de controles pendientes.
-[pages/controles.php]
+  [pages/controles.php]
 - Generar referencias de controles según la periodicidad y el último mes generado para el año actual
-[helpers/gen_controles.php]
+  [helpers/gen_controles.php]
 - Modificar vista de referencias. Incluir Año y ordenarlos por fecha decremental
-[pages/controles.php]
+  [pages/controles.php]
 - Arreglar gráfico de indicadores de cumplimiento. Poner al año anterior vs año actual
-[pages/controles.php]
+  [pages/controles.php]
 - Arreglar grafico s inicio y metricas y filtrar por año actual al mes actual.
-[pages/met_controles.php]
-[pages/site.php]
+  [pages/met_controles.php]
+  [pages/site.php]
 - Arreglar calendario de controles
-[pages/cal_controles.php]
+  [pages/cal_controles.php]
 
 ## FEAT-INVENTARIO
 
 Inventario de servidores DC
 *Cambios:*
-- Agrego item menú en cdc
-[pages/site_sidebar.php]
-[pages/cdc_servidores.php]
-[pages/modals/cdc_abmservers.php]
-[pages/modals/cdc_abmservers.js]
-[pages/helpers/cdc_abmservidoresdb.js]
-[site.php]
 
+- Agrego item menú en cdc
+  [pages/site_sidebar.php]
+  [pages/cdc_servidores.php]
+  [pages/modals/cdc_abmservers.php]
+  [pages/modals/cdc_abmservers.js]
+  [pages/helpers/cdc_abmservidoresdb.js]
+  [site.php]
 - ABM de servicores DC. Se reutilizan los permisos de cdc y admin cdc
+
 ## FEAT-COM-VARIOS
 
 *Cambios:*
+
 - Se agregan Estado "STAND BY"
-[DB] Se agrega estado en tabla adm_com_pasos el estado STAND BY (6)
+  [DB] Se agrega estado en tabla adm_com_pasos el estado STAND BY (6)
 - Se crea otro indicador.
-[pages/compras.php]
+  [pages/compras.php]
 - Borrar compras
-[pages/compras.php]
-[pages/modals/abmcompras.js]
+  [pages/compras.php]
+  [pages/modals/abmcompras.js]
 
 ## FEAT-BCRA
 
 Se implementa la matriz BCRA (Compliance)
 *Fecha:* 2019-11-22
 *Cambios:*
+
 - [DB] Se crean las tablas de referentes items y version
-M[site.php]
-M[pages/bcra.php]
-M[pages/site_sidebar.php]
-M[pages/modals/abmbcra.php]
-M[pages/modals/abmbcra.js]
-M[pages/helpers/abmbcradb.php]
+  M[site.php]
+  M[pages/bcra.php]
+  M[pages/site_sidebar.php]
+  M[pages/modals/abmbcra.php]
+  M[pages/modals/abmbcra.js]
+  M[pages/helpers/abmbcradb.php]
 
 ## FEAT-RGO-METRICA
 
@@ -214,62 +226,66 @@ En cuento a los cerrados son aquellos cerrados que se han abierto en el mismo a�
 "_ Incluir dos gráficos similares a los existentes (adjunto) pero que muestres los Riesgos Abiertos y Cerrados en el año vigente (Ejemplo Abiertos en 2019 y Cerrados en 2019 (solo de los que se abrieron en ese mismo año)"
 *Fecha:* 2019-11-20
 *Cambios:*
+
 - Se agregan las métricas de riesgos
-M[pages/met_riesgos.php]
+  M[pages/met_riesgos.php]
 - Se agregan las métricas de compras y se actualiza el menú lateral
-M[pages/met_compras.php]
-M[pages/site_sidebar.php]
-N[site.php]
+  M[pages/met_compras.php]
+  M[pages/site_sidebar.php]
+  N[site.php]
 - Riesgos Muesto v_actual en vez de inicial
-M[pages/riesgos.php]
+  M[pages/riesgos.php]
 
 ## FEAT-COMPRAS
 
 Se agrega el módulo de administración y seguimiento de compras
 *Fecha:* 2019-11-05
 *Cambios:*
+
 - Se agrega el perfil compras y admin_compras para el acceso y administración del módulo de compras.
-M [pages/admin.php]
-M [pages/setPermiso.php]
+  M [pages/admin.php]
+  M [pages/setPermiso.php]
 - Se agrega el menú lateral
-M [site.php]
-M [pages/site_sidebar.php]
-N [pages/compras.php]
+  M [site.php]
+  M [pages/site_sidebar.php]
+  N [pages/compras.php]
 - ABM Compras modal
-N [pages/modals/abmcompra.php]
-N [pages/modals/abmcompra.js]
-N [pages/helpers/abmcompradb.php]
+  N [pages/modals/abmcompra.php]
+  N [pages/modals/abmcompra.js]
+  N [pages/helpers/abmcompradb.php]
 - ABM Comentrios
-N [pages/compras.php]
-N [pages/helpers/abmcompracomentariodb.php]
+  N [pages/compras.php]
+  N [pages/helpers/abmcompracomentariodb.php]
 - Indicadores
-N [pages/compras.php]
+  N [pages/compras.php]
 - Adjudicadas
-N [pages/compras.php]
+  N [pages/compras.php]
 - Plazo en indicadores
-N [pages/modals/abmcompra.php]
-db: fecha_fin_contrato
+  N [pages/modals/abmcompra.php]
+  db: fecha_fin_contrato
 - Alta proveedores
-N [pages/helpers/abmroveedordb.php]
+  N [pages/helpers/abmroveedordb.php]
 - Quito paso siguiente
 - Calculo promedio
 
 ## FIX RIESGOS FECHA VENCIMEINTO
 
 - Corrijo el cálculo y la cantidad de días
-M [pages/riesgos.php]
+  M [pages/riesgos.php]
+
 ## FIX-VARIAS
 
 *Fecha:* 2019-11-01
 *Cambios:*
+
 - Sacar el botón de borrar en mejora
-M[pages/mejoras.php]
+  M[pages/mejoras.php]
 - Cambiar la numeración secuencial por el id en controles
-M [pages/controles.php]
+  M [pages/controles.php]
 - En la edicion de activos el combo de tipos no muestra todos los registros. Sí lo hace en el alta
-M [pages/edit_activos.php]
+  M [pages/edit_activos.php]
 - Riegos: Sacar los campos en la grilla de Categoría, Riesgo y Acción e Incluir Referente y Fecha Alta
-M [pages/riesgos.php]
+  M [pages/riesgos.php]
 
 ## FEAT-PROY-MEJORAS
 
@@ -277,18 +293,21 @@ M [pages/riesgos.php]
 
 *Fecha:* 2019-11-04
 *Cambios:*
+
 - Agregar estado Cancelado
 - Se agregan las más categorias en el avance. Se reutiliza el campo "reunion"
+
 0) Avance
 1) Reunión
 2) Riesgo
 3) Problema
-M [pages/edit_proyecto]
+   M [pages/edit_proyecto]
+
 - Cambio campo Porcentaje de Avance a "porcentaje de avance real"
 - Agrego campo Porcentaje de avance estimado
 - Quito columna "avance"
-M [pages/edit_proyecto]
-M [pages/proyectos]
+  M [pages/edit_proyecto]
+  M [pages/proyectos]
 
 ## FIX-HOUSING
 
@@ -296,8 +315,9 @@ M [pages/proyectos]
 
 *Fecha:* 2019-10-04
 *Cambios:*
+
 - Se corrige orden de columnas servicios housing. Organismos->cliente
-M[pages/sdc_housing.php]
+  M[pages/sdc_housing.php]
 
 ## FEAT-CALENDAR
 
@@ -325,13 +345,14 @@ M[pages/sdc_housing.php]
 
 *Fecha:* 2019-10-03
 *Cambios:*
+
 - Un Combo para filtar los indicadores por gerencia si es admin.
-M[pages/proyectos.php]
+  M[pages/proyectos.php]
 - Paso la generacion de gráficos a dinámito ajax.
-M[pages/proyectos.php]
+  M[pages/proyectos.php]
 - Actualizo las consultas de los gráficos de asignacion y estado de proyectos para que tomen todas las gerencias (=0).
-M[pages/getProyResp.php]
-M[pages/getProyRespStat.php]
+  M[pages/getProyResp.php]
+  M[pages/getProyRespStat.php]
 
 ## FEAT-CAL-RIESGOS
 
@@ -339,38 +360,42 @@ M[pages/getProyRespStat.php]
 
 *Fecha:* 2019-09-06
 *Cambios:*
+
 - Se agrega un nuevo calendario de riesgos para representar los cerrados
-M[pages/cal_riegos.php]
+  M[pages/cal_riegos.php]
 - Se agregan las columnas de acumulado previo y posterior en el calendario de riesgos
-M[pages/cal_riegos.php]
+  M[pages/cal_riegos.php]
 - Se agregan las columnas de acumulado previo y posterior en el calendario de riesgos cerrados
-M[pages/cal_riegos.php]
+  M[pages/cal_riegos.php]
 - Se corrige el calendario de acumulado de controles
-M[pages/cal_controles.php]
+  M[pages/cal_controles.php]
 - Cuando se cierra el riesgo mediante un avance planchar la fecha de vencimiento del riesgo
-M[pages/edit_riesgo.php]
+  M[pages/edit_riesgo.php]
 
 ## FEAT-PROY-AVIEW
 
 Vista para ver todos los proyectos
 *Fecha:* 2019-10-02
 *Cambios:*
+
 - Se agrega la columna gerencia en el tab de proyectos si es Rol[admin]
-M[proyetos.php]
+  M[proyetos.php]
 
 ## FEAT-RAUL
 
 Dashboad CLientes
 *Fecha:* 2019-09-28
 *Cambios:*
+
 - Pasar el módulo de activos dentro de los permisos de compliance
-M[pages/site_sidebar.php]
-M[site.php]
+  M[pages/site_sidebar.php]
+  M[site.php]
 - Cambio SI por GITyS en header, footer y login
 - Header -incluyo el logo en el header
-M[pages/site_header.php]
+  M[pages/site_header.php]
 - cambio en todas las páginas eso y tag de TITLE GITyS-ARSAT[$page_tile] 
-$page_title="Activos";
+  $page_title="Activos";
+
 <title>GITyS-ARSAT[<?=$page_title?>]</title>
 extraigo footer a site_footer.php:
 <?php include_once('./site_footer.php'); ?>
@@ -436,8 +461,6 @@ UPDATE sdc_housing SET energia = REPLACE(energia, "KVA", "");
 
 #4) Cambio el tipo de dato a INT DEFAULT 0
 
-
-
 #B) M2
 #1) Actualizo los NULL a 0
 UPDATE sdc_housing SET m2 = 0 WHERE m2 IS NULL OR m2 = "";
@@ -451,91 +474,92 @@ ALTER TABLE controls.sdc_housing
 CHANGE m2 m2 DECIMAL(8,2) DEFAULT '0';
 
 - Se crean los totales para los servicios de Housing
-M[pages/cdc_dashboard]
+  M[pages/cdc_dashboard]
 - Se adaptan los formularios de ABM para adaptarse a los nuevos cambios.
-M[pages/sdc_housing.php]
-M[pages/modals/sdc_abmhousing.php]
-
+  M[pages/sdc_housing.php]
+  M[pages/modals/sdc_abmhousing.php]
 - Aplico permisos de "compliance" a los tableros del inicio.
-M[site.php]
+  M[site.php]
+
 ## FEAT-CLI-DC2
 
 Correcciones y mejoras POST Producción
 *Fecha:* 2019-09-27
 *Cambios:*
+
 - Agregar permiso para permitir el borrado
-ALTER TABLE controls.permisos
-ADD admin_cli_dc INT DEFAULT '0' AFTER cli_dc;
+  ALTER TABLE controls.permisos
+  ADD admin_cli_dc INT DEFAULT '0' AFTER cli_dc;
 - Modificar grilla de permisos y asignación
-M[pages/admin.php]
-M[pages/setPermiso.php]
+  M[pages/admin.php]
+  M[pages/setPermiso.php]
 - Limitar la edicion solo para admin_cli_dc
-M[pages/cdc_cliente.php]
-M[pages/cdc_organismo.php]
-M[pages/sdc_housing.php]
+  M[pages/cdc_cliente.php]
+  M[pages/cdc_organismo.php]
+  M[pages/sdc_housing.php]
 - Agregar opcion de borrado en todas las grillas (menos hosting)
-M[pages/sdc_housing.php]
-M[pages/cdc_cliente.php]
-M[pages/cdc_organismo.php]
+  M[pages/sdc_housing.php]
+  M[pages/cdc_cliente.php]
+  M[pages/cdc_organismo.php]
 - Agregar el refresco de la página al actualizar info en todas las paginas
-M[pages/modals/sdc_ambhousing.js]
-M[pages/modals/sdc_ambcliente.js]
-M[pages/modals/sdc_amborgnaismo.js]
+  M[pages/modals/sdc_ambhousing.js]
+  M[pages/modals/sdc_ambcliente.js]
+  M[pages/modals/sdc_amborgnaismo.js]
 - al importar borrar todo antes
-M[pages/helpers/sdc_importhosting.php]
-M[pages/modals/sdc_importhosting.js]
+  M[pages/helpers/sdc_importhosting.php]
+  M[pages/modals/sdc_importhosting.js]
 
-    DUPLICAR ESTRUCTURA DE TABLA HOSTING A SDC_HOSTING_BCK SIN CONSTRAINS
-    CREATE TABLE `sdc_hosting_bck` (
-    `id` int(11),
-    `id_cliente` int(11) NOT NULL,
-    `tipo` varchar(20) DEFAULT NULL,
-    `nombre` varchar(255) DEFAULT NULL,
-    `displayName` varchar(255) DEFAULT NULL,
-    `proyecto` varchar(255) DEFAULT NULL,
-    `datacenter` varchar(255) DEFAULT NULL,
-    `fecha` datetime DEFAULT NULL,
-    `hipervisor` varchar(255) DEFAULT NULL,
-    `hostname` varchar(255) DEFAULT NULL,
-    `pool` varchar(255) DEFAULT NULL,
-    `uuid` varchar(255) DEFAULT NULL,
-    `VCPU` double DEFAULT NULL,
-    `RAM` double DEFAULT NULL,
-    `storage` double DEFAULT NULL,
-    `SO` varchar(255) DEFAULT NULL,
-    `borrado` int(11) NOT NULL DEFAULT '0'
-    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+  DUPLICAR ESTRUCTURA DE TABLA HOSTING A SDC_HOSTING_BCK SIN CONSTRAINS
+  CREATE TABLE `sdc_hosting_bck` (
+  `id` int(11),
+  `id_cliente` int(11) NOT NULL,
+  `tipo` varchar(20) DEFAULT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  `displayName` varchar(255) DEFAULT NULL,
+  `proyecto` varchar(255) DEFAULT NULL,
+  `datacenter` varchar(255) DEFAULT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `hipervisor` varchar(255) DEFAULT NULL,
+  `hostname` varchar(255) DEFAULT NULL,
+  `pool` varchar(255) DEFAULT NULL,
+  `uuid` varchar(255) DEFAULT NULL,
+  `VCPU` double DEFAULT NULL,
+  `RAM` double DEFAULT NULL,
+  `storage` double DEFAULT NULL,
+  `SO` varchar(255) DEFAULT NULL,
+  `borrado` int(11) NOT NULL DEFAULT '0'
+  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 - Corregir tema de desaparicion de menu en firefox
-    Problema específico en máquina de Tissera
-
+  Problema específico en máquina de Tissera
 - Se corrige el cáculo de fechas de vto en proyectos
-    M[pages/proyectos.php]
--Arreglo links de gestion de proyectos
-    M[pages/calendario_guardias.php]
-    M[pages/controlfw.php]
-    M[pages/edit_activo.php]
-    M[pages/edit_conexion.php]
-    M[pages/edit_control.php]
-    M[pages/edit_dispositivo.php]
-    M[pages/edit_iso27k.php]
-    M[pages/edit_mejora.php]
-    M[pages/edit_persona.php]
-    M[pages/edit_proyecto.php]
-    M[pages/edit_referencia.php]
-    M[pages/edit_riesgo.php]
+  M[pages/proyectos.php]
+  -Arreglo links de gestion de proyectos
+  M[pages/calendario_guardias.php]
+  M[pages/controlfw.php]
+  M[pages/edit_activo.php]
+  M[pages/edit_conexion.php]
+  M[pages/edit_control.php]
+  M[pages/edit_dispositivo.php]
+  M[pages/edit_iso27k.php]
+  M[pages/edit_mejora.php]
+  M[pages/edit_persona.php]
+  M[pages/edit_proyecto.php]
+  M[pages/edit_referencia.php]
+  M[pages/edit_riesgo.php]
+
 ## FIX-CLI-DC
 
 Correcciones POST Producción
 *Fecha:* 2019-09-27
 *Cambios:*
+
 - Se corrige el menú lateral del inicio (Se saca la opción de dashboard en modulo de clientes)
-M[site.php]
+  M[site.php]
 - Se agrega un script al final de cada una de las páginas que hace que se mantenga en menú del side bar correspondiente abierto
--[sdc_hosting/housing]
--[cdc_cliente/organismo]
+  -[sdc_hosting/housing]
+  -[cdc_cliente/organismo]
 - housing refrescar la pagina al guardar o modiciar
-M[modals/sdc_abmhousing.js]
+  M[modals/sdc_abmhousing.js]
 
 >>>>>>> devel
 >>>>>>>
@@ -550,20 +574,22 @@ M[modals/sdc_abmhousing.js]
 Modificaciones post produccion
 *Fecha:* 2019-09-26
 *Cambios:*
+
 - Se agrupan los items del menu de controles, riesgos, isos y mejoras dentro del permiso compliance
-M[pages/site_sidebar.php]
-M[site.php]
+  M[pages/site_sidebar.php]
+  M[site.php]
 
 ## FEAT-CDC-HOUSING
 
 Modificaciones post produccion
 *Fecha:* 2019-09-26
 *Cambios:*
+
 - Se cambia la visualización de housing por la cantidad de servicios que posea el cleinte
-M[pages/cdc_cliente.php]
+  M[pages/cdc_cliente.php]
 - Se cambia el popup para visualizar grilla con la cantidad de servicios de housing.
-M[pages/modals/sdc_housing_view.js]
-M[pages/modals/sdc_housing_view.php]
+  M[pages/modals/sdc_housing_view.js]
+  M[pages/modals/sdc_housing_view.php]
 
 ## FEAT-CLI-DC
 
@@ -572,56 +598,57 @@ M[pages/modals/sdc_housing_view.php]
 Gererar portal para consulta de clientes/servicios dc basados en una base access
 *Fecha:* 2019-05-28
 *Cambios:*
+
 - Se crea la estructura de menu lateral
-M[pages/site_sidebar.php]
-M[site.php]
-N[pages/cdc_dashboard.php]
-N[pages/cdc_cliente.php]
-N[pages/cdc_organismo.php]
-N[pages/sdc_housing.php]
-N[pages/sdc_hosting.php]
+  M[pages/site_sidebar.php]
+  M[site.php]
+  N[pages/cdc_dashboard.php]
+  N[pages/cdc_cliente.php]
+  N[pages/cdc_organismo.php]
+  N[pages/sdc_housing.php]
+  N[pages/sdc_hosting.php]
 - Se crean los modales para vicualización de servicios de housing/hosting
-N[pages/modals/*.js]
-N[pages/modals/*.php]
-N[pages/helpers/*.php]
+  N[pages/modals/*.js]
+  N[pages/modals/*.php]
+  N[pages/helpers/*.php]
 - AM Clientes
-N[pages/modals/cdc_abmcliente.php]
-N[pages/modals/cdc_abmcliente.js]
-N[pages/helpers/cdc_abmclientedb.php]
+  N[pages/modals/cdc_abmcliente.php]
+  N[pages/modals/cdc_abmcliente.js]
+  N[pages/helpers/cdc_abmclientedb.php]
 - AM Organismos
-N[pages/modals/cdc_abmorganismo.php]
-N[pages/modals/cdc_abmorganismo.js]
-N[pages/helpers/cdc_abmorganismodb.php]
+  N[pages/modals/cdc_abmorganismo.php]
+  N[pages/modals/cdc_abmorganismo.js]
+  N[pages/helpers/cdc_abmorganismodb.php]
 - AM Servicio de Housing
-N[pages/modals/sdc_abmhousing.php]
-N[pages/modals/sdc_abmhousing.js]
-N[pages/helpers/sdc_abmhousingdb.php]
-M[pages/sdc_housing.php]
+  N[pages/modals/sdc_abmhousing.php]
+  N[pages/modals/sdc_abmhousing.js]
+  N[pages/helpers/sdc_abmhousingdb.php]
+  M[pages/sdc_housing.php]
 - Importación masiva de Servicios de Hosting via csv
-M[pages/sdc_hosting.php]
-bd: sdc_hosting_temp
+  M[pages/sdc_hosting.php]
+  bd: sdc_hosting_temp
 - Se crean los campos energía, evidencia y fecha_alta para housing
-N[pages/modals/sdc_abmhousing.php]
-N[pages/modals/sdc_abmhousing.js]
-N[pages/helpers/sdc_abmhousingdb.php]
-M[pages/sdc_housing.php]
+  N[pages/modals/sdc_abmhousing.php]
+  N[pages/modals/sdc_abmhousing.js]
+  N[pages/helpers/sdc_abmhousingdb.php]
+  M[pages/sdc_housing.php]
 - Agrego permisos especial para dar acceso a módulo de clientes DC
-ALTER TABLE permisos
-ADD cli_dc INT(11) DEFAULT '0' AFTER admin_per;
+  ALTER TABLE permisos
+  ADD cli_dc INT(11) DEFAULT '0' AFTER admin_per;
 - Se agrega en la tabla de permisos la columna de Admin proy con la funcionalidad de actualizar onclick
-M[pages/admin.php]
-M[pages/setPermiso.php]
+  M[pages/admin.php]
+  M[pages/setPermiso.php]
 - Se actualiza los permisos del menu lateral
-M[pages/sitte_sidebar.php]
-M[site.php]
+  M[pages/sitte_sidebar.php]
+  M[site.php]
 - Arreglo permisos en páginas:
-M[admin.php]
-M[calendario.php]
-M[inventario.php]
-M[iso27k.php]
-M[iso9k.php]
-M[novedades.php]
-M[topologia.php]
+  M[admin.php]
+  M[calendario.php]
+  M[inventario.php]
+  M[iso27k.php]
+  M[iso9k.php]
+  M[novedades.php]
+  M[topologia.php]
 
 ## FIX-MC
 
@@ -631,9 +658,10 @@ M[topologia.php]
 
 >>>>>>> devel
 >>>>>>> =======
+>>>>>>>
 >>>>>>> - Se indica el id en vez de la referencia al editar
 >>>>>>> - Se muestra la totalidad de los responsables en editar_mejora por si estubo dado de baja.
->>>>>>> devel
+>>>>>>>   devel
 >>>>>>>
 >>>>>>
 >>>>>
@@ -647,18 +675,19 @@ M[topologia.php]
 
 *Fecha:* 2019-09-17
 *Cambios:*
+
 - Se agregan el campo en la base de permisos admin_proy para administrar proyectos y "proyectos" para dar acceso al módulo independientemente el permiso SOC
-ALTER TABLE controls.permisos
-ADD admin_proy INT(11) AFTER guardias; [DEFAULT 0]
-ALTER TABLE controls.permisos
-ADD proy INT(11) DEFAULT '0' AFTER admin_proy;
+  ALTER TABLE controls.permisos
+  ADD admin_proy INT(11) AFTER guardias; [DEFAULT 0]
+  ALTER TABLE controls.permisos
+  ADD proy INT(11) DEFAULT '0' AFTER admin_proy;
 - Se agrega en la tabla de permisos la columna de Admin proy con la funcionalidad de actualizar onclick
-M[pages/admin.php]
-M[pages/setPermiso.php]
+  M[pages/admin.php]
+  M[pages/setPermiso.php]
 - Se actualizan los permisos de aquellos que hoy en día son admin
-update permisos set admin_proy = 1 where admin = 1;
+  update permisos set admin_proy = 1 where admin = 1;
 - Se actualiza la página de proyectos para que tome como admin el campo admin_proy
-M[pages/proyectos.php]
+  M[pages/proyectos.php]
 - Aplico el filtro de gerencias en proyectos a la solapa de Proyectos, completados e indicadores
 - Proyetos
 - Completos
@@ -670,24 +699,24 @@ M[pages/proyectos.php]
 - Completados
 - Asignación de proyectos M[pages/getProyResp.php] (le paso id_gerencia por POST)
 - Estado de proyectos M[pages/getProyRespStat.php] (le paso id_gerencia por POST)
-M[pages/proyectos.php]
+  M[pages/proyectos.php]
 - Limpio el campo de grupo al cambio de gerencia en persona. M[pages/edit_persona.php]
-TEST   - Se aplica el acceso al módulo de proyectos para los permisos "proy"
+  TEST   - Se aplica el acceso al módulo de proyectos para los permisos "proy"
 - Se le dan los permisos de proyecto a los de soc
-update permisos set proy = 1 where soc = 1;
-M[pages/site_sidebar.php]
-M[site.php]
+  update permisos set proy = 1 where soc = 1;
+  M[pages/site_sidebar.php]
+  M[site.php]
 - Permitir en el AM de peronas poder seleccionar el grupo.
-M[pages/admin.php]  OK
-M[pages/edit_persona.php]   OK
+  M[pages/admin.php]  OK
+  M[pages/edit_persona.php]   OK
 - Agrega el campo id_gerencia a la base de datos para dar la posibilidad de generar grupos por gerencia.
-ALTER TABLE controls.grupo
-ADD id_gerencia INT NOT NULL DEFAULT '0' AFTER id_grupo;
-Se actualizan los grupos actuales con la generecia de CiberSeguridad:
-update grupo set id_gerencia = 1;
+  ALTER TABLE controls.grupo
+  ADD id_gerencia INT NOT NULL DEFAULT '0' AFTER id_grupo;
+  Se actualizan los grupos actuales con la generecia de CiberSeguridad:
+  update grupo set id_gerencia = 1;
 - Se agrega la columna del permiso "proy"
-M[admin.php]
-M[setPermiso.php]
+  M[admin.php]
+  M[setPermiso.php]
 - Se aplica el filtro estrico de gerencias.
 - Proyetos
 - Completos
@@ -702,24 +731,24 @@ M[setPermiso.php]
 - Se actualiza el modal de "nuevo acceso" M[admin.php]
 - FEAT-ADMIN-PER:
 - Se agregan el campo en la base de permisos admin_per para administrar personal y accesos
-ALTER TABLE controls.permisos
-ADD admin_per INT(11) DEFAULT '0' AFTER proy;
+  ALTER TABLE controls.permisos
+  ADD admin_per INT(11) DEFAULT '0' AFTER proy;
 - Se agrega en la tabla de permisos la columna de Admin proy con la funcionalidad de actualizar onclick
-M[pages/admin.php]
-M[pages/setPermiso.php]
+  M[pages/admin.php]
+  M[pages/setPermiso.php]
 - Se actualizan los permisos de aquellos que hoy en día son admin
-update permisos set admin_per = 1 where admin = 1;
+  update permisos set admin_per = 1 where admin = 1;
 - Se actualiza la página de sit_header para que tome como admin el campo admin_per
-M[pages/site_header.php]
-M[site.php]
+  M[pages/site_header.php]
+  M[site.php]
 - Se adapta el modal de nuevo proyecto y edición de proyecto para que se visualicen los grupos de la gerencia a la cual pertenecen
-M[proyectos.php]
-M[edit_proyecto.php]
+  M[proyectos.php]
+  M[edit_proyecto.php]
 - Ordeno los accessos por apellido
-M[admin.php]
+  M[admin.php]
 - Cambio el link de los indicadores del header
-M[site_header.php]
-M[site.php]
+  M[site_header.php]
+  M[site.php]
 
 >>>>>>> devel
 >>>>>>>
@@ -775,6 +804,7 @@ En vez de por área por responsable
 
 *Fecha:* 2019-09-16
 *Cambios:*
+
 - Se agrega una nueva página de metricas para mejoras N[met_mejoras]
 - Se actualizan los links en site y sidebar M[/site.php] M[site_sidebar.php]
 - Se crean los graficos para AMy NC totales y por origen
@@ -800,18 +830,19 @@ En vez de por área por responsable
 
 *Fecha:* 2019-09-04
 *Cambios:*
+
 - Se agregan los estados 3 y 4 ("Controlado con obs alta" y "Controlado con obs baja"en la edición de las instancias de controles
-M[pages/edit_referencia.php]
+  M[pages/edit_referencia.php]
 - Se actualiza la visualización en la grilla de instancias del control.
 - Se actualizan los indicadores de cumplimiento (Gráfico de tortas)
-M[pages/control.php]
+  M[pages/control.php]
 - Se actualizan los graficos de métricas
-M[pages/met_controles.php]
-M[site.php]
+  M[pages/met_controles.php]
+  M[site.php]
 - Se agrega el campo de búsqueda en la grilla de controles
-M[pages/controles.php]
+  M[pages/controles.php]
 - Se corrige el calendario de controles para alojar los nuevos estados.
-M[pages/cal_controles]
+  M[pages/cal_controles]
 
 ## FIX-ISO9K1
 
@@ -819,15 +850,16 @@ M[pages/cal_controles]
 
 *Fecha:* 2019-07-23
 *Cambios:*
+
 - Se duplican las estructuras de datos para alojar la informacion de la ISO9K1
-M[BBDD]
+  M[BBDD]
 - Se duplica la existete funcionalidad de la iso 27k1 para la 90001
-N[helpers/abmiso9k.php]
-N[modals/abmiso9k.js]
-N[modals/abmiso9k.php]
-N[iso9k.php]
+  N[helpers/abmiso9k.php]
+  N[modals/abmiso9k.js]
+  N[modals/abmiso9k.php]
+  N[iso9k.php]
 - Creo estructura de menu para alojar las matrices
-M[site_sidebar.php]
+  M[site_sidebar.php]
 
 ## FIX-ISO27K
 
@@ -835,14 +867,15 @@ M[site_sidebar.php]
 
 *Fecha:* 2019-07-23
 *Cambios:*
+
 - Se oculta el botón de borrado
-M[iso27k.php]
+  M[iso27k.php]
 - Se actualiza la fecha de la versión de la matriz al actualizar cualquier item
-M[helpers/abmiso27kdb.php]
+  M[helpers/abmiso27kdb.php]
 - Se oculta la funcionalidad de alta
-M[iso27k.php]
+  M[iso27k.php]
 - Error al abrir popup cuando hay un solo referente
-M[iso27k.php]
+  M[iso27k.php]
 
 ## FEAT-PROY-TAREAS
 
@@ -850,9 +883,10 @@ M[iso27k.php]
 
 *Fecha:* 2019-07-22
 *Cambios:*
+
 - Cambio L&F de las tablas
 - Agregado de filtro en campo categoría en tabla Completados
-M[proyetos.php]
+  M[proyetos.php]
 
 ## FEAT-ISO271K
 
@@ -860,33 +894,34 @@ M[proyetos.php]
 
 *Fecha:* 2019-07-04
 *Cambios:*
+
 - Cambio L&F de las tablas
-M[iso271k.php]
+  M[iso271k.php]
 - Poder seleccionar multiples referentes.
-M[edit_iso27k.php]
+  M[edit_iso27k.php]
 - Agrego columna referentes a la grilla y cambio label referente por responsable
-M[iso271k.php]
+  M[iso271k.php]
 - Agrego campos de nivel y parent para agrupar los items
-M[iso271k.php]
-N[datatable.rougroup.css/js]
+  M[iso271k.php]
+  N[datatable.rougroup.css/js]
 - Agrego campo de versión y selector de la misma
-M[iso271k.php]
-M[edit-iso27.php]
+  M[iso271k.php]
+  M[edit-iso27.php]
 - Corrijo metricas del dashboard principal y particular de iso
-M[site.php]
-M[met_iso27k.php]
+  M[site.php]
+  M[met_iso27k.php]
 - Corrijo redireccion de edit_iso27k.php
-M[edit_iso27k.php]
+  M[edit_iso27k.php]
 - Muestro acciones solo para la última version de la matriz
-M[iso27k.php]
+  M[iso27k.php]
 - ABM ItemISO
-N[modals]
-N[helpers]
-N[modals/abmiso27k.js/php]
-N[helpers/abmiso27kdb.php]
-N[helpers/getAsyncDataFromDB.php]
-N[..css/boostrap-select.min.css]
-N[..js/boostrap-select.min.js]
+  N[modals]
+  N[helpers]
+  N[modals/abmiso27k.js/php]
+  N[helpers/abmiso27kdb.php]
+  N[helpers/getAsyncDataFromDB.php]
+  N[..css/boostrap-select.min.css]
+  N[..js/boostrap-select.min.js]
 
 ## FEAT-PROYECTOS
 
@@ -894,15 +929,16 @@ N[..js/boostrap-select.min.js]
 
 *Fecha:* 2019-07-02
 *Cambios:*
+
 - Cambio L&F de las tablas
-M[proyecto.php]
+  M[proyecto.php]
 - Agregar Campo "Tipo de proyecto" a las tablas
-M[proyecto.php]
--Agregar campo tipo en formularios de alta/modif
-M[proyecto.php]
-M[edit_proyecto.php]
+  M[proyecto.php]
+  -Agregar campo tipo en formularios de alta/modif
+  M[proyecto.php]
+  M[edit_proyecto.php]
 - Agregar Marca de Reunión en el avance y campo de tiempo en minutos.
-M[edit_proyecto.php]
+  M[edit_proyecto.php]
 
 ## FEAT-FIL-GERENCIA2
 
@@ -910,12 +946,13 @@ M[edit_proyecto.php]
 
 *Fecha:* 2019-06-13
 *Cambios:*
+
 - Implementación de filtro de gerencia en el modulo de Mejoras
-M[mejora.php]
+  M[mejora.php]
 - Implementación de filtro de gerencia en el modulo de Activos
-M[activos.php]
+  M[activos.php]
 - Se agrega el indicador de la gerencia en el dropdown del perfil
-M[site_header.php]
+  M[site_header.php]
 
 ## FEAT-METRICAS
 
@@ -923,20 +960,21 @@ M[site_header.php]
 
 *Fecha:* 2019-06-11
 *Cambios:*
+
 - Riesgos abiertos por gerencia y nivel
-M[met_riesgos.php]
+  M[met_riesgos.php]
 - Riesgos abiertos por gerencia y nivel
-M[met_riesgos.php]
+  M[met_riesgos.php]
 - Riesgo: Calendario de riesgos por gerencia
-N[cal_riesgos.php]
-M[riesgos.php]
+  N[cal_riesgos.php]
+  M[riesgos.php]
 - Activos: Activos por gerencia.
-M[met_activos.php]
+  M[met_activos.php]
 - Controles: Nuevo calendario de controles: Cantidad de controles por gerencia
-M[cal_controles.php]
+  M[cal_controles.php]
 - Arreglo del gráfico de torta. Estaba desactualizado con los tipos de activo
-M[met_activos.php]
-M[site.php]
+  M[met_activos.php]
+  M[site.php]
 
 ## FEAT-MEJORAS
 
@@ -944,15 +982,16 @@ M[site.php]
 
 *Fecha:* 2019-05-31
 *Cambios:*
+
 - Pongo número de referencia en el título en vez del id
-M[mejoras.php]
-M[edit_mejora.php]
+  M[mejoras.php]
+  M[edit_mejora.php]
 - Cambio L&F datatable, agrego ordering
-M[mejoras.php]
--filtro por estado, responsable y tipo
-M[mejoras.php]
--agrego demás campos en la grilla (ocultos) para que se puedan exportar
-M[mejoras.php]
+  M[mejoras.php]
+  -filtro por estado, responsable y tipo
+  M[mejoras.php]
+  -agrego demás campos en la grilla (ocultos) para que se puedan exportar
+  M[mejoras.php]
 
 >>>>>>> devel
 >>>>>>>
@@ -996,6 +1035,7 @@ M[mejoras.php]
 
 *Fecha:* 2019-04-16
 *Cambios:*
+
 - Mostrar campo justificación en los avances de 100% M[edit_riesgo.php]
 - Agregar Filtro en Grilla de Riesgos M[riesgos.php]
 - Cambiar paginación de grillas a 20 elementos:

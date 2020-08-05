@@ -16,14 +16,14 @@ $(function() {
                 )
             )
             .append(
-                $('<div class="col-sm-8"></div>').append(categoria.descripcion)
-            )
-            .append(
-                $('<div class="col-sm-1"></div>').append(
-                    $('<a data-categoria="' + catId + '" title="Agregar sub-categoría" class="modal-abm-costos-subcat-add"></a>')
-                    .append($('<i class="fa fa-plus-square"></i>'))
-                )
+                $('<div class="col-sm-9"></div>').append(categoria.descripcion)
             );
+        // .append(
+        //     $('<div class="col-sm-1"></div>').append(
+        //         $('<a data-categoria="' + catId + '" title="Agregar sub-categoría" class="modal-abm-costos-subcat-add"></a>')
+        //         .append($('<i class="fa fa-plus-square"></i>'))
+        //     )
+        // );
         let cat_container = $('<div class="list-group collapse" id="' + catIdHtml + '"></div>');
 
         parent.append(cat);
@@ -43,14 +43,14 @@ $(function() {
                 )
             )
             .append(
-                $('<div class="col-sm-8"></div>').append(subcat.descripcion)
-            )
-            .append(
-                $('<div class="col-sm-1"></div>').append(
-                    $('<a data-subcatdes="' + subcat.descripcion + '" data-subcategoria="' + catId + '" title="Agregar item" class="modal-abm-costos-item-add"></a>')
-                    .append($('<i class="fa fa-plus-square"></i>'))
-                )
+                $('<div class="col-sm-9"></div>').append(subcat.descripcion)
             );
+        // .append(
+        //     $('<div class="col-sm-1"></div>').append(
+        //         $('<a data-subcatdes="' + subcat.descripcion + '" data-subcategoria="' + catId + '" title="Agregar item" class="modal-abm-costos-item-add"></a>')
+        //         .append($('<i class="fa fa-plus-square"></i>'))
+        //     )
+        // );
         let cat_container = $('<div class="list-group collapse" id="' + catIdHtml + '"></div>');
 
         parent.append(cat);
@@ -102,14 +102,14 @@ $(function() {
                 });
             });
 
-            $('#modal-abm-costos-categorias').prepend(
-                $('<div class="text-right"></div>')
-                .append('Nueva Categoría')
-                .append(
-                    $('<a type="button" id="modal-abm-costos-cat-add" class="btn"></a>')
-                    .append($('<i class="fa fa-plus-square primary"></i>'))
-                )
-            );
+            // $('#modal-abm-costos-categorias').prepend(
+            //     $('<div class="text-right"></div>')
+            //     .append('Nueva Categoría')
+            //     .append(
+            //         $('<a type="button" id="modal-abm-costos-cat-add" class="btn"></a>')
+            //         .append($('<i class="fa fa-plus-square primary"></i>'))
+            //     )
+            // );
 
             setAMBCosteoTriggers();
         }

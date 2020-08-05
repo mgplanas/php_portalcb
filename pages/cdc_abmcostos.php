@@ -375,7 +375,7 @@ desired effect
                                 <!-- CATEGORIAS -->
                                 <div class="col-md-3">
                                     <div id="modal-abm-costos-categorias" class="just-padding">
-                                        <div id="modal-abm-costos-categorias-card" style="height: 700px; overflow-y : scroll;" class="list-group list-group-root card">
+                                        <div id="modal-abm-costos-categorias-card" style="margin-top: 43px; height: 700px; overflow-y : scroll;" class="list-group list-group-root card">
                                         </div>
                                     </div>  
                                 </div>    
