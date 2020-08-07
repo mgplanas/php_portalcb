@@ -16,6 +16,8 @@
     $inflacion = $_POST['inflacion'];
     $cm = $_POST['cm'];
     $costeo = $_POST['costeo'];
+    $oportunidad_comercial = $_POST['oportunidad_comercial'];
+    $solicitud_servicio = $_POST['solicitud_servicio'];
 
     $gmtTimezone = new DateTimeZone('GMT');
     date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -27,8 +29,8 @@
     switch ($op) {
         case 'A':
             // INSERT
-            $insert_item = mysqli_query($con, "INSERT INTO cdc_costos(cliente,fecha,servicio,meses_contrato,duracion,inflacion,cm, cotizacion_usd) 
-                                                VALUES ('$cliente','$fecha','$servicio','$meses_contrato','$duracion','$inflacion','$cm', '$cotizacion_usd')") or die(mysqli_error());	
+            $insert_item = mysqli_query($con, "INSERT INTO cdc_costos(cliente,fecha,servicio,meses_contrato,duracion,inflacion,cm, cotizacion_usd, solicitud_servicio, oportunidad_comercial) 
+                                                VALUES ('$cliente','$fecha','$servicio','$meses_contrato','$duracion','$inflacion','$cm', '$cotizacion_usd', '$solicitud_servicio', '$oportunidad_comercial')") or die(mysqli_error());	
             $lastInsert = mysqli_insert_id($con);
             $result->id = $lastInsert;
             break;
@@ -38,13 +40,13 @@
             $result->id = $id;
             mysqli_autocommit($con, false);
             $resultado = true;
-            $upd_qry = "UPDATE cdc_costos SET costo_recurrente='$costo_recurrente', costo_unica_vez='$costo_unica_vez', cliente='$cliente',fecha='$fecha',servicio='$servicio',meses_contrato='$meses_contrato',duracion='$duracion',inflacion='$inflacion',cm='$cm', cotizacion_usd='$cotizacion_usd' WHERE id='$id'";
+            $upd_qry = "UPDATE cdc_costos SET costo_recurrente='$costo_recurrente', costo_unica_vez='$costo_unica_vez', cliente='$cliente',fecha='$fecha',servicio='$servicio',meses_contrato='$meses_contrato',duracion='$duracion',inflacion='$inflacion',cm='$cm', cotizacion_usd='$cotizacion_usd', solicitud_servicio='$solicitud_servicio', oportunidad_comercial='$oportunidad_comercial' WHERE id='$id'";
             $resultado = mysqli_query($con, $upd_qry);
             
             if ($resultado) {
               
                 $resultado = mysqli_query($con, "DELETE FROM cdc_costos_detalle WHERE id_costo ='$id'");
-                if ($resultado) {
+                if ($resultado && $costeo) {
           
                     foreach ($costeo as $itc) {
                         $sDet = "INSERT INTO cdc_costos_detalle(id_costo_item, id_costo, costo_usd ,cantidad, costo_recurrente, costo_unica_vez) VALUES ";

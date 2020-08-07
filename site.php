@@ -438,6 +438,9 @@ desired effect
                 <li><a href="./pages/cdc_servidores.php"><i class="fa fa-server"></i> Servidores</a></li>
                 <li><a href="./pages/cdc_solicitudes.php"><i class="fa fa-edit"></i> Solicitudes Infra</a></li>
                 <li><a href="./pages/cdc_costos.php"><i class="fa fa-calculator"></i> Costeo</a></li>
+                <?php if ($rq_sec['admin_cli_dc']=='1'){ ?>
+                    <li><a href="./pages/cdc_costos_adm_items.php"><i class="fa fa-bars"></i>Productos</a></li>
+                <?php } ?>
                 <li class="treeview">
                   <a href="#"><i class="fa fa-gears"></i> Servicios
                     <span class="pull-right-container">

@@ -7,7 +7,7 @@ session_start();
 if (!isset($_SESSION['usuario'])){
 	header('Location: ../index.html');
 }
-$page_catle="Costeo";
+$page_title="Categorias";
 $user=$_SESSION['usuario'];
 
 if(isset($_GET['aksi']) == 'delete'){
@@ -45,7 +45,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>GITyS-ARSAT[<?=$page_catle?>]</title>
+  <title>GITyS-ARSAT[<?=$page_title?>]</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -73,6 +73,76 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
+
+.sub-categorias {
+    background: #f0f0f0;
+}
+.sub-categorias:hover, .sub-categorias:focus {
+    color: #555 !important;
+    text-decoration: none !important;
+    background-color: #e5e5e5 !important;
+}
+
+.producto-servicio {
+    font-size: .8em;
+}
+.categorias {
+    background: #e0e0e0;
+    font-weight: bold;
+}
+.categorias:hover, .categorias:focus {
+    color: #555 !important;
+    text-decoration: none !important;
+    background-color: #d5d5d5 !important;
+}
+.just-padding {
+  padding: 15px;
+}
+
+.list-group.list-group-root {
+  padding: 0;
+  overflow: hidden;
+}
+
+.list-group.list-group-root .list-group {
+  margin-bottom: 0;
+}
+
+.list-group.list-group-root .list-group-item {
+  border-radius: 0;
+  border-width: 1px 0 0 0;
+}
+
+.list-group.list-group-root > .list-group-item:first-child {
+  border-top-width: 0;
+}
+.list-group-item a {
+    cursor: pointer;
+}
+/* .list-group.list-group-root > .list-group > .list-group-item {
+  padding-left: 30px;
+}
+
+.list-group.list-group-root > .list-group > .list-group > .list-group-item {
+  padding-left: 45px;
+} */
+
+.list-group-item .glyphicon {
+  margin-right: 5px;
+}
+tr.dtrg-group.dtrg-level-0 td {
+    font-weight: bold;
+    font-size: 1.2em !important;
+}
+tr.dtrg-group.dtrg-level-1 td, table.dataTable tr.dtrg-group.dtrg-level-2 td {
+    background-color: #f0f0f0;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    padding-left: 2em;
+    font-size: 1.1em !important;
+    font-weight: bold !important;
+}
+
     .example-modal .modal {
       position: relative;
       top: auto;
@@ -141,7 +211,7 @@ desired effect
 	}?>	
 	<section class="content-header">
       <h1>
-        Planillas de Costos - CND
+        Categorias de Productos y Servicios - CND
         <small>General</small>
       </h1>
     </section>
@@ -154,82 +224,19 @@ desired effect
       <div class="row">
         <div class="col-md-12">
             <div class="box">
-                <div class="col-sm-12" style="text-align:right;">
-                    <?php
-                        echo '<button type="button" id="modal-abm-costos-btn-alta" class="btn-sm btn-primary"><i class="fa fa-calculator"></i> Nueva Planilla de costos</button>';
-                    ?>
-                </div>        
             
                 <!-- /.box-header -->		
                 <div class="box-body">
-                    <table id="planillas" class="display" width="100%">
-                        <thead>
-                        <tr>
-                        <th rowspan="2">Cliente</th>
-                        <th rowspan="2" style="text-align: center;">Fecha</th>
-                        <th rowspan="2" style="text-align: center;">Meses</th>
-                        <th rowspan="2" style="text-align: center;">Duración</th>
-                        <th colspan="2" style="text-align: center;">Costos (USD)</th>
-                        <th colspan="3" style="text-align: center;">Costos (ARS)</th>
-                        <th colspan="2" style="text-align: center;">Parametro (%)</th>
-                        <th rowspan="2" style="text-align: right;"></th>
-                        </tr>
-                        <tr>
-                        <th style="text-align: right;">recurrente</th>
-                        <th style="text-align: right;">única vez</th>
-                        <th style="text-align: right;">recurrente</th>
-                        <th style="text-align: right;">CM</th>
-                        <th style="text-align: right;">inflación</th>
-                        <th style="text-align: right;">CM</th>
-                        <th style="text-align: right;">inflación</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        $query = "SELECT 
-                            id, 
-                            id_cliente, 
-                            cliente, 
-                            fecha, 
-                            servicio, 
-                            meses_contrato, 
-                            duracion, 
-                            costo_unica_vez, 
-                            costo_recurrente, 
-                            cotizacion_usd, 
-                            inflacion, 
-                            cm 
-                            FROM cdc_costos 
-                            WHERE borrado = 0 ORDER BY fecha desc;";
-                        
-                        $sql = mysqli_query($con, $query);
-
-                        $no = 1;
-                        while($row = mysqli_fetch_assoc($sql)){
-                            $ars_recurrente = $row['costo_recurrente'] * $row['cotizacion_usd'];
-                            $ars_cm = $ars_recurrente * (1 + $row['cm'] / 100);
-                            $ars_inflacion = $ars_cm * (1 + $row['inflacion'] / 100);
-                            echo '<tr>';
-                            echo '<td>'.$row['cliente']. '</td>'; 
-                            echo '<td style="text-align: center;">'.date('d/m/Y' ,strtotime($row['fecha'])). '</td>'; 
-                            echo '<td style="text-align: center;">'.$row['meses_contrato']. '</td>'; 
-                            echo '<td style="text-align: center;">'.$row['duracion']. '</td>'; 
-                            echo '<td style="text-align: right;">'.number_format($row['costo_recurrente'],2,",","."). '</td>'; 
-                            echo '<td style="text-align: right;">'.number_format($row['costo_unica_vez'],2,",","."). '</td>'; 
-                            echo '<td style="text-align: right;">'. number_format(round($ars_recurrente,2),2,",",".") . '</td>'; 
-                            echo '<td style="text-align: right;">'. number_format(round($ars_cm,2),2,",",".") . '</td>'; 
-                            echo '<td style="text-align: right;">'. number_format(round($ars_inflacion,2),2,",",".") . '</td>'; 
-                            echo '<td style="text-align: right;">'.number_format($row['cm'],2,",","."). '</td>'; 
-                            echo '<td style="text-align: right;">'.number_format($row['inflacion'],2,",","."). '</td>'; 
-                            echo '<td align="right">';
-                            echo '<a href="cdc_abmcostos.php?planilla='.$row['id'].'" data-id="'.$row['id'].'" title="editar" class="modal-abm-costos-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit" ></i></a>';
-                            if ($rq_sec['admin_cli_dc'] == '1') {echo '<a data-id="'.$row['id'].'" href="cdc_costos.php?aksi=delete&nik='.$row['id'].'" title="eliminar planilla" onclick="return confirm(\'Esta seguro de eliminar la planilla del cliente '.$row['cliente'].'?\')" class="modal-abm-costos-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';}
-                            echo '</td></tr>';
-                            $no++;
-                        }
-                        ?>
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        <!-- CATEGORIAS -->
+                        <div class="col-md-8">
+                            <div id="modal-abm-costos-categorias" class="just-padding">
+                                <div id="modal-abm-costos-categorias-card" style="height: 700px; overflow-y : scroll;" class="list-group list-group-root card">
+                                </div>
+                            </div>  
+                        </div>    
+                        <!-- FIN CATEGORIAS -->
+                    </div>
                 </div>
             <!-- /.box-body -->
             </div>
@@ -276,39 +283,7 @@ desired effect
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
 <script src="../js/bootstrap-select.min.js"></script>
-<!-- <script src="./modals/cdc_abmcostos.js"></script>   -->
-      
-<script>
-  $(function () {
-
-    $('#modal-abm-costos-btn-alta').on('click', function() {
-        window.location.href='cdc_abmcostos.php?planilla=0';
-    });
-
-    $('#planillas').DataTable({
-      'language': { 'emptyTable': 'No hay datos' },
-      'paging'      : true,
-      'pageLength': 20,
-      'lengthChange': false,
-      'searching'   : true,
-      'ordering'    : false,
-      'info'        : true,
-      'autoWidth'   : true,
-      'dom'         : 'Bfrtip',
-      'buttons'     : [{
-                  extend: 'pdfHtml5',
-                  orientation: 'landscape',
-                  pageSize: 'A4',
-                         
-                     },
-                      {
-            extend: 'excel',
-            text: 'Excel',
-            }]
-
-    });
-  });
-</script>
+<script src="./helpers/cdc_abmcostos_items.js"></script>  
 
 </body>
 </html>

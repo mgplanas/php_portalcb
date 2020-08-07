@@ -278,7 +278,18 @@ desired effect
                             </div>
                             <div class="row">
                                 
-                                <div class="col-md-2"></div>          
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="oportunidad">#CERES</label>
+                                        <input type="text" class="form-control" name="oportunidad"  id='modal-abm-costos-oportunidad' required value="<?= ($id_planilla ? $planilla_costeo['oportunidad_comercial'] : "") ?>">
+                                    </div>                                       
+                                </div>          
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="ss">SS</label>
+                                        <input placeholder="SS...." type="text" class="form-control" name="ss"  id='modal-abm-costos-ss' required value="<?= ($id_planilla ? $planilla_costeo['solicitud_servicio'] : "") ?>">
+                                    </div>                                     
+                                </div>          
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="meses">Meses de cto.</label>
@@ -303,10 +314,10 @@ desired effect
                                         <input type="number" min="0" class="form-control" name="inflacion"  id='modal-abm-costos-inflacion' value="<?= ($id_planilla ? $planilla_costeo['inflacion'] : "") ?>">
                                     </div>                                 
                                 </div>                                                 
-                                <div class="col-md-2">
+                                <div style="display:none">
                                     <div class="form-group">
                                         <label for="usd">Cotización USD</label>
-                                        <input type="number" min="0" class="form-control" name="usd"  id='modal-abm-costos-usd' value="<?= ($id_planilla ? $planilla_costeo['cotizacion_usd'] : "") ?>">
+                                        <input type="number" min="0" class="form-control" name="usd"  id='modal-abm-costos-usd' value="<?= ($id_planilla ? $planilla_costeo['cotizacion_usd'] : "") ?>" disabled>
                                     </div>                                 
                                 </div>                                                 
                             </div>
@@ -375,7 +386,7 @@ desired effect
                                 <!-- CATEGORIAS -->
                                 <div class="col-md-3">
                                     <div id="modal-abm-costos-categorias" class="just-padding">
-                                        <div id="modal-abm-costos-categorias-card" style="height: 700px; overflow-y : scroll;" class="list-group list-group-root card">
+                                        <div id="modal-abm-costos-categorias-card" style="margin-top: 43px; height: 700px; overflow-y : scroll;" class="list-group list-group-root card">
                                         </div>
                                     </div>  
                                 </div>    

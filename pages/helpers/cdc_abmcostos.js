@@ -16,14 +16,14 @@ $(function() {
                 )
             )
             .append(
-                $('<div class="col-sm-8"></div>').append(categoria.descripcion)
-            )
-            .append(
-                $('<div class="col-sm-1"></div>').append(
-                    $('<a data-categoria="' + catId + '" title="Agregar sub-categoría" class="modal-abm-costos-subcat-add"></a>')
-                    .append($('<i class="fa fa-plus-square"></i>'))
-                )
+                $('<div class="col-sm-9"></div>').append(categoria.descripcion)
             );
+        // .append(
+        //     $('<div class="col-sm-1"></div>').append(
+        //         $('<a data-categoria="' + catId + '" title="Agregar sub-categoría" class="modal-abm-costos-subcat-add"></a>')
+        //         .append($('<i class="fa fa-plus-square"></i>'))
+        //     )
+        // );
         let cat_container = $('<div class="list-group collapse" id="' + catIdHtml + '"></div>');
 
         parent.append(cat);
@@ -43,14 +43,14 @@ $(function() {
                 )
             )
             .append(
-                $('<div class="col-sm-8"></div>').append(subcat.descripcion)
-            )
-            .append(
-                $('<div class="col-sm-1"></div>').append(
-                    $('<a data-subcatdes="' + subcat.descripcion + '" data-subcategoria="' + catId + '" title="Agregar item" class="modal-abm-costos-item-add"></a>')
-                    .append($('<i class="fa fa-plus-square"></i>'))
-                )
+                $('<div class="col-sm-9"></div>').append(subcat.descripcion)
             );
+        // .append(
+        //     $('<div class="col-sm-1"></div>').append(
+        //         $('<a data-subcatdes="' + subcat.descripcion + '" data-subcategoria="' + catId + '" title="Agregar item" class="modal-abm-costos-item-add"></a>')
+        //         .append($('<i class="fa fa-plus-square"></i>'))
+        //     )
+        // );
         let cat_container = $('<div class="list-group collapse" id="' + catIdHtml + '"></div>');
 
         parent.append(cat);
@@ -102,14 +102,14 @@ $(function() {
                 });
             });
 
-            $('#modal-abm-costos-categorias').prepend(
-                $('<div class="text-right"></div>')
-                .append('Nueva Categoría')
-                .append(
-                    $('<a type="button" id="modal-abm-costos-cat-add" class="btn"></a>')
-                    .append($('<i class="fa fa-plus-square primary"></i>'))
-                )
-            );
+            // $('#modal-abm-costos-categorias').prepend(
+            //     $('<div class="text-right"></div>')
+            //     .append('Nueva Categoría')
+            //     .append(
+            //         $('<a type="button" id="modal-abm-costos-cat-add" class="btn"></a>')
+            //         .append($('<i class="fa fa-plus-square primary"></i>'))
+            //     )
+            // );
 
             setAMBCosteoTriggers();
         }
@@ -444,6 +444,8 @@ $(function() {
             let cm = $('#modal-abm-costos-cm').val();
             let inflacion = $('#modal-abm-costos-inflacion').val();
             let cotizacion_usd = $('#modal-abm-costos-usd').val();
+            let oportunidad_comercial = $('#modal-abm-costos-oportunidad').val();
+            let solicitud_servicio = $('#modal-abm-costos-ss').val();
             let totales = getTotals();
             // Ejecuto
             $.ajax({
@@ -457,6 +459,8 @@ $(function() {
                     fecha: fecha,
                     meses_contrato: meses,
                     duracion: duracion,
+                    oportunidad_comercial: oportunidad_comercial,
+                    solicitud_servicio: solicitud_servicio,
                     cm: cm,
                     cotizacion_usd: cotizacion_usd,
                     inflacion: inflacion,
@@ -520,14 +524,14 @@ $(function() {
         }
 
         return {
-            cotizacion_usd: cotizacion_usd.toFixed(2),
-            cm: cm.toFixed(2),
-            inflacion: inflacion.toFixed(2),
-            tot_recurrente_usd: tot_recurrente_usd.toFixed(2),
-            tot_ot_usd: tot_ot_usd.toFixed(2),
-            tot_recurrente_ars: tot_recurrente_ars.toFixed(2),
-            tot_recurrente_cm: tot_recurrente_cm.toFixed(2),
-            tot_cm_infla: tot_cm_infla.toFixed(2)
+            cotizacion_usd: cotizacion_usd.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            cm: cm.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            inflacion: inflacion.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            tot_recurrente_usd: tot_recurrente_usd.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            tot_ot_usd: tot_ot_usd.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            tot_recurrente_ars: tot_recurrente_ars.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            tot_recurrente_cm: tot_recurrente_cm.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            tot_cm_infla: tot_cm_infla.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
         };
     }
 
@@ -545,6 +549,10 @@ $(function() {
     // ==============================================================
     // TABLE FUNCTIONS
     // ==============================================================
+    function renderCurrencyField(value) {
+        return parseFloat(value).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
     function createTableCosteo() {
         let id = $('#modal-abm-costos-id').val();
         let strquery = 'SELECT cd.id, cd.id_costo, cd.id_costo_item, cd.costo_usd, cd.cantidad, cd.costo_unica_vez, cd.costo_recurrente,';
@@ -558,6 +566,10 @@ $(function() {
         strquery += 'WHERE cd.borrado = 0 AND cd.id_costo = ' + id + ';';
 
         return $('#costeo').DataTable({
+            "language": {
+                "decimal": ",",
+                "thousands": ".",
+            },
             "scrollY": "100vh",
             "scrollX": true,
             "scrollCollapse": true,
@@ -579,10 +591,10 @@ $(function() {
                 { "data": "subcategoria" },
                 { "data": "descripcion" },
                 { "data": "unidad" },
-                { "data": "costo_usd" },
+                { "data": "costo_usd", "render": (data) => renderCurrencyField(data) },
                 { "data": "cantidad" },
-                { "data": "costo_unica_vez" },
-                { "data": "costo_recurrente" },
+                { "data": "costo_unica_vez", "render": (data) => renderCurrencyField(data) },
+                { "data": "costo_recurrente", "render": (data) => renderCurrencyField(data) },
                 { "data": "unidad" }
             ],
             'order': [
@@ -595,6 +607,14 @@ $(function() {
             'columnDefs': [{
                     'targets': [0, 1],
                     'visible': false
+                },
+                {
+                    'targets': [4, 6, 7],
+                    'className': 'dt-body-right'
+                },
+                {
+                    'targets': [5],
+                    'className': 'dt-body-center'
                 },
                 {
                     'targets': [-1],
