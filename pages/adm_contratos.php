@@ -124,14 +124,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <!-- /.box-header -->
 			<div class="box-body">
-              <table id="vtos" class="table table-bordered table-hover">
+              <table id="vtos" class="table table-hover" width="100%">
                 <thead>
                 <tr>
 				  <th>SubGerencia</th>
                   <th>Proveedor</th>
                   <th>Mantenimiento/Soporte</th>
-                  <th></th>
-                  <th><i class="fa fa-clock-o" title="Días de Atrazo/Restante"></i></th>
+                  <th>OC</th>
+                  <th>Estado</th>
+                  <th style="text-align: center;"><i class="fa fa-clock-o" title="Días de Atrazo/Restante"></i></th>
                   <th>Vencimiento</th>
                   <th></th>
                 </tr>
@@ -169,6 +170,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- SlimScroll -->
 <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- bootstrap datepicker -->
+<script src="../bower_components/moment/min/moment.min.js"></script>
 <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- FastClick -->
 <script src="../bower_components/fastclick/lib/fastclick.js"></script>
@@ -184,11 +186,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
 <script src="./modals/adm_contratos.js"></script>         
-<script>
-  $(function () {
-    
-  });
-</script>
+
 <script>
     window.onload = function() {
         history.replaceState("", "", "adm_contratos.php");

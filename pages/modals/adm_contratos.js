@@ -74,7 +74,7 @@ $(function() {
         // Ejecuto
         $.ajax({
             type: 'POST',
-            url: './helpers/cdc_abmclientedb.php',
+            url: './helpers/adm_contratosdb.php',
             data: {
                 operacion: op,
                 id: id,
@@ -122,4 +122,131 @@ $(function() {
 
     setAMBTriggers();
 
+    // ==============================================================
+    // TABLE FUNCTIONS
+    // ==============================================================
+    function createTableContrato() {
+        let strquery = 'SELECT c.id, c.id_proveedor, c.id_subgerencia, c.oc, c.tipo_mantenimiento, c.vencimiento, ';
+        strquery += 's.nombre as subgerencia, ';
+        strquery += 'p.razon_social as proveedor, ';
+        strquery += 'datediff(c.vencimiento, now()) as dias ';
+        strquery += 'FROM adm_contratos_vto as c ';
+        strquery += 'INNER JOIN subgerencia as s ON c.id_subgerencia = s.id_subgerencia ';
+        strquery += 'INNER JOIN adm_com_proveedores as p ON c.id_proveedor = p.id ';
+        strquery += 'WHERE c.borrado = 0;';
+
+        return $('#vtos').DataTable({
+            "paging": false,
+            "deferRender": true,
+            "ajax": {
+                type: 'POST',
+                url: './helpers/getAsyncDataFromDB.php',
+                data: { query: strquery },
+                error: function(jqXHR, ajaxOptions, thrownError) {
+                    alert(thrownError + "\r\n" + jqXHR.statusText + "\r\n" + jqXHR.responseText + "\r\n" + ajaxOptions.responseText);
+                }
+            },
+            "dataSrc": function(json) {
+                // console.log(json);
+            },
+            "columns": [
+                { "data": "subgerencia" },
+                { "data": "proveedor" },
+                { "data": "tipo_mantenimiento" },
+                { "data": "oc" },
+                { "data": "dias" },
+                { "data": "dias" },
+                { "data": "vencimiento" },
+                { "data": "dias" },
+            ],
+            'order': [
+                [0, 'asc'],
+                [1, 'asc']
+            ],
+            // 'rowGroup': {
+            //     'dataSrc': ['categoria', 'subcategoria']
+            // },
+            'columnDefs': [
+                // {
+                //     'targets': [0, 1],
+                //     'visible': false
+                // },
+                // {
+                //     'targets': [4, 6, 7],
+                //     'className': 'dt-body-right'
+                // },
+                {
+                    'targets': [4],
+                    'className': 'dt-body-center',
+                    render: function(data) {
+                        let abs = Math.abs(data);
+                        if (data < 0) {
+                            return '<span class="badge bg-red">Vencido</span>';
+                        } else if (data < 150) {
+                            return '<span class="badge bg-yellow">Renovar</span>';
+                        } else {
+                            return '';
+                        }
+                    }
+                },
+                {
+                    'targets': [5],
+                    'className': 'dt-body-center',
+                    render: function(data) {
+                        let abs = Math.abs(data);
+                        if (data < 0) {
+                            return '<span title="' + abs + ' día(s) de vencido">' + abs + '</span>';
+                        } else {
+                            return '<span title="faltan ' + abs + ' día(s)">' + abs + '</span>';
+                        }
+                    }
+                },
+                {
+                    'targets': [6],
+                    'className': 'dt-body-center',
+                    render: function(data) { return moment(data).format('DD/MM/YYYY'); }
+                },
+                {
+                    'targets': [-1],
+                    'render': function(data, type, row, meta) {
+                        let btns = '<a data-row="' + meta.row + '" data-id="' + row.id;
+                        btns += 'data-subgerencia="' + row.id_subgerencia + '" ';
+                        btns += 'data-proveedor="' + row.id_proveedor + '" ';
+                        btns += 'data-vencimiento="' + row.vencimiento + '" ';
+                        btns += 'data-oc="' + row.oc + '" ';
+                        btns += 'data-tipo="' + row.tipo_mantenimiento + '" ';
+                        btns += 'title="editar" class="modal-abm-contrato-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>' +
+                            '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="' + row.descripcion + '" title="eliminar" class="modal-abm-contrato-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                        return btns;
+                        // return '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-iditem="' + row.id_costo_item + '" data-idcosto="' + row.id_costo + '" title="editar" class="modal-abm-contrato-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>' +
+                        //     '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="' + row.descripcion + '" title="eliminar" class="modal-abm-contrato-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                    }
+                }
+            ],
+            'dom': 'Bfrtip',
+            'buttons': [{
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel',
+                }
+            ]
+
+        });
+
+    }
+
+    var tbCosteos = createTableContrato();
+    // *******************************************************************************
+
+    $('#modal-abm-contrato-vencimiento').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        todayHighlight: true,
+        daysOfWeekDisabled: [0, 6]
+    });
 });
