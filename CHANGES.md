@@ -7,6 +7,10 @@ ABM seguimiento de contratos
 *Cambios:*
 
 - [DB] Se crea la tabla adm_contratos_vto
+- pages/adm_contratos.php
+- pages/modals/adm_contratos.php
+- pages/modals/adm_contratos.js
+- pages/helpers/adm_contratosdb.php
 
 
 ##FEAT-RGO-SORT
