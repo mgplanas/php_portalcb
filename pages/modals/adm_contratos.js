@@ -68,6 +68,16 @@ $(function() {
             let oc = $('#modal-abm-contrato-oc').val();
             if (!oc) return;
 
+            let existe = false;
+            tbCosteos.rows().every(function(rowIdx, tableLoop, rowLoop) {
+                if (oc == this.data().oc) {
+                    alert('Ya existe un seguimiento para dicha OC');
+                    existe = true;
+                    return;
+                }
+            });
+            if (existe) return;
+
             let strquery = "SELECT * FROM adm_compras ";
             strquery += "WHERE nro_oc = '" + oc + "' AND borrado = 0";
             $.getJSON("./helpers/getAsyncDataFromDB.php", { query: strquery },
