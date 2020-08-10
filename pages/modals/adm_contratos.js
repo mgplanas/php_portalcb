@@ -6,7 +6,7 @@ $(function() {
     function setAMBTriggers() {
         // ALTA
         // seteo boton trigger para el alta de gerencia
-        $('#modal-abm-contrato-btn-alta').click(function() {
+        $('#modal-abm-contrato-btn-alta').off('click').on('click', function() {
             $('#modal-abm-contrato-title').html('Nuevo Seguimiento de contrato');
             modalAbmLimpiarCampos();
             $('#modal-abm-contrato-submit').attr('name', 'A');
@@ -15,23 +15,55 @@ $(function() {
 
         // EDIT
         // seteo boton trigger para el edit de gerencia
-        $('.modal-abm-contrato-btn-edit').click(function() {
+        $('.modal-abm-contrato-btn-edit').off('click').on('click', function() {
             $('#modal-abm-contrato-title').html('Editar Seguimiento de contrato');
             modalAbmLimpiarCampos();
 
             $('#modal-abm-contrato-id').val($(this).data('id'));
             $('#modal-abm-contrato-proveedor').val($(this).data('proveedor'));
             $('#modal-abm-contrato-subgerencia').val($(this).data('subgerencia'));
-            $('#modal-abm-contrato-vencimiento').val($(this).data('vencimiento'));
+            $('#modal-abm-contrato-vencimiento').val(moment($(this).data('vencimiento')).format('DD/MM/YYYY'));
             $('#modal-abm-contrato-oc').val($(this).data('oc'));
+            $('#modal-abm-contrato-tipo').val($(this).data('tipo'));
 
             $('#modal-abm-contrato-submit').attr('name', 'M');
 
             $("#modal-abm-contrato").modal("show");
         });
 
+        // ==============================================================
+        // BAJA
+        // ==============================================================
+        $('.modal-abm-contrato-btn-baja').off('click').on('click', function() {
+            if (confirm('Esta seguro de borrar el seguimiento del contrato?')) {
+                let id = $(this).data('id');
+                // Ejecuto
+                $.ajax({
+                    type: 'POST',
+                    url: './helpers/adm_contratosdb.php',
+                    data: {
+                        operacion: 'B',
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function(json) {
+                        if (!json.ok) {
+                            alert(json.err);
+                        } else {
+                            location.reload();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert(xhr.responseText, error);
+                    }
+                });
+
+            }
+        });
+
+
         // Busqueda OC
-        $('#modal-abm-contrato-oc-search-btn').click(function() {
+        $('#modal-abm-contrato-oc-search-btn').off('click').on('click', function() {
             // Recupero datos del oc
             let oc = $('#modal-abm-contrato-oc').val();
             if (!oc) return;
@@ -120,8 +152,6 @@ $(function() {
     }
     // ********************************************************************************************
 
-    setAMBTriggers();
-
     // ==============================================================
     // TABLE FUNCTIONS
     // ==============================================================
@@ -209,14 +239,14 @@ $(function() {
                 {
                     'targets': [-1],
                     'render': function(data, type, row, meta) {
-                        let btns = '<a data-row="' + meta.row + '" data-id="' + row.id;
+                        let btns = '<a data-row="' + meta.row + '" data-id="' + row.id + '" ';
                         btns += 'data-subgerencia="' + row.id_subgerencia + '" ';
                         btns += 'data-proveedor="' + row.id_proveedor + '" ';
                         btns += 'data-vencimiento="' + row.vencimiento + '" ';
                         btns += 'data-oc="' + row.oc + '" ';
                         btns += 'data-tipo="' + row.tipo_mantenimiento + '" ';
-                        btns += 'title="editar" class="modal-abm-contrato-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>' +
-                            '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="' + row.descripcion + '" title="eliminar" class="modal-abm-contrato-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                        btns += 'title="editar" class="modal-abm-contrato-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
+                        btns += '<a data-row="' + meta.row + '" data-id="' + row.id + '" title="eliminar" class="modal-abm-contrato-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
                         return btns;
                         // return '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-iditem="' + row.id_costo_item + '" data-idcosto="' + row.id_costo + '" title="editar" class="modal-abm-contrato-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>' +
                         //     '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="' + row.descripcion + '" title="eliminar" class="modal-abm-contrato-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
@@ -241,6 +271,9 @@ $(function() {
     }
 
     var tbCosteos = createTableContrato();
+    tbCosteos.on('draw', function() {
+        setAMBTriggers();
+    });
     // *******************************************************************************
 
     $('#modal-abm-contrato-vencimiento').datepicker({
@@ -249,4 +282,6 @@ $(function() {
         todayHighlight: true,
         daysOfWeekDisabled: [0, 6]
     });
+
+    setAMBTriggers();
 });
