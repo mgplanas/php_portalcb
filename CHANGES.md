@@ -1,6 +1,15 @@
 # CHANGES
 
-FEAT-RGO-SORT
+## FEAT-DC-CONTRATOS
+
+ABM seguimiento de contratos
+*Fecha:* 2020-08-07
+*Cambios:*
+
+- [DB] Se crea la tabla adm_contratos_vto
+
+
+##FEAT-RGO-SORT
 
 FIX en ordenamiento de fechas
 *Fecha:* 2020-07-28
