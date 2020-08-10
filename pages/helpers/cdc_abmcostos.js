@@ -524,25 +524,25 @@ $(function() {
         }
 
         return {
-            cotizacion_usd: cotizacion_usd.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-            cm: cm.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-            inflacion: inflacion.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-            tot_recurrente_usd: tot_recurrente_usd.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-            tot_ot_usd: tot_ot_usd.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-            tot_recurrente_ars: tot_recurrente_ars.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-            tot_recurrente_cm: tot_recurrente_cm.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-            tot_cm_infla: tot_cm_infla.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+            cotizacion_usd: cotizacion_usd,
+            cm: cm,
+            inflacion: inflacion,
+            tot_recurrente_usd: tot_recurrente_usd,
+            tot_ot_usd: tot_ot_usd,
+            tot_recurrente_ars: tot_recurrente_ars,
+            tot_recurrente_cm: tot_recurrente_cm,
+            tot_cm_infla: tot_cm_infla
         };
     }
 
     function updateTotals() {
         let totals = getTotals();
 
-        $('#modal-abm-costos-tot-rec-usd').html(totals.tot_recurrente_usd);
-        $('#modal-abm-costos-tot-ot-usd').html(totals.tot_ot_usd);
-        $('#modal-abm-costos-tot-rec-ars').html(totals.tot_recurrente_ars);
-        $('#modal-abm-costos-tot-rec-cm').html(totals.tot_recurrente_cm);
-        $('#modal-abm-costos-tot-rec-inflacion').html(totals.tot_cm_infla);
+        $('#modal-abm-costos-tot-rec-usd').html(totals.tot_recurrente_usd.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $('#modal-abm-costos-tot-ot-usd').html(totals.tot_ot_usd.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $('#modal-abm-costos-tot-rec-ars').html(totals.tot_recurrente_ars.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $('#modal-abm-costos-tot-rec-cm').html(totals.tot_recurrente_cm.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $('#modal-abm-costos-tot-rec-inflacion').html(totals.tot_cm_infla.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
 
     }
 
