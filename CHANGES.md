@@ -43,6 +43,17 @@ NO IMPLEMENTAR SIN ANTES HABER IMPLEMENTADO LA PRIMERA REL200603
     * pages/cdc_costos.php
     * pages/cdc_abmcostos.php
 
+    
+## FEAT-CMP-CANCEL
+
+Nuevo paso Cancelado con indicador
+*Fecha:* 2020-07-28
+*Cambios:*
+
+- [DB] Agrega nuevo registro en tabla de adm_com_pasos
+- Se previene de que ese paso calcule advertencia de promedio
+- Se crea indicador de reloj [compras.php]
+
 ## FEAT-COSTEO
 
 Gestion de planillas de costos
@@ -578,6 +589,7 @@ Correcciones y mejoras POST Producción
 Correcciones POST Producción
 *Fecha:* 2019-09-27
 *Cambios:*
+<<<<<<< HEAD
 
 - Se corrige el menú lateral del inicio (Se saca la opción de dashboard en modulo de clientes)
   M[site.php]
@@ -589,6 +601,19 @@ Correcciones POST Producción
 
  devel
 
+=======
+
+- Se corrige el menú lateral del inicio (Se saca la opción de dashboard en modulo de clientes)
+  M[site.php]
+- Se agrega un script al final de cada una de las páginas que hace que se mantenga en menú del side bar correspondiente abierto
+  -[sdc_hosting/housing]
+  -[cdc_cliente/organismo]
+- housing refrescar la pagina al guardar o modiciar
+  M[modals/sdc_abmhousing.js]
+
+>>>>>>> devel
+>>>>>>>
+>>>>>>> FEAT-CMP-CANCEL
 >>>>>>
 >>>>>
 >>>>
@@ -680,8 +705,25 @@ Gererar portal para consulta de clientes/servicios dc basados en una base access
 
 ### Correcciónes MC
 
+<<<<<<< HEAD
  - Se indica el id en vez de la referencia al editar
  - Se muestra la totalidad de los responsables en editar_mejora por si estubo dado de baja.
+=======
+<<<<<<< HEAD
+
+>>>>>>> devel
+>>>>>>> =======
+>>>>>>>
+>>>>>>> - Se indica el id en vez de la referencia al editar
+>>>>>>> - Se muestra la totalidad de los responsables en editar_mejora por si estubo dado de baja.
+>>>>>>>   devel
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
+>>>>>>> FEAT-CMP-CANCEL
 
 ## FEAT-PROY-GTI (CON FEAT-ADMIN-PER)
 
@@ -764,8 +806,13 @@ Gererar portal para consulta de clientes/servicios dc basados en una base access
   M[site_header.php]
   M[site.php]
 
+<<<<<<< HEAD
  devel
 
+=======
+>>>>>>> devel
+>>>>>>>
+>>>>>>> FEAT-CMP-CANCEL
 >>>>>>
 >>>>>
 >>>>
@@ -818,6 +865,10 @@ En vez de por área por responsable
 
 *Fecha:* 2019-09-16
 *Cambios:*
+<<<<<<< HEAD
+=======
+
+>>>>>>> FEAT-CMP-CANCEL
 - Se agrega una nueva página de metricas para mejoras N[met_mejoras]
 - Se actualizan los links en site y sidebar M[/site.php] M[site_sidebar.php]
 - Se crean los graficos para AMy NC totales y por origen
@@ -829,8 +880,13 @@ En vez de por área por responsable
 - Se limitan los orígenes de mejora a solo AI,AE y NE [mejoras.php] [edit_mejora.php]
 - Se muestra como número de mejora el mismo id [mejora.php]
 
+<<<<<<< HEAD
  devel
 
+=======
+>>>>>>> devel
+>>>>>>>
+>>>>>>> FEAT-CMP-CANCEL
 >>>>>>
 >>>>>
 >>>>
@@ -1006,9 +1062,30 @@ En vez de por área por responsable
   -agrego demás campos en la grilla (ocultos) para que se puedan exportar
   M[mejoras.php]
 
+<<<<<<< HEAD
 
 ## FIX-PROD
 
+=======
+>>>>>>> devel
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
+
+## FIX-PROD
+
+>>>>>>> devel
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
+
+>>>>>>> FEAT-CMP-CANCEL
 - Se crea página para mostrar el calendario anual de los cntroles
   N[cal_controles.php]
 - Agrego el link en controles.php
@@ -1033,6 +1110,10 @@ En vez de por área por responsable
 
 *Fecha:* 2019-04-16
 *Cambios:*
+<<<<<<< HEAD
+=======
+
+>>>>>>> FEAT-CMP-CANCEL
 - Mostrar campo justificación en los avances de 100% M[edit_riesgo.php]
 - Agregar Filtro en Grilla de Riesgos M[riesgos.php]
 - Cambiar paginación de grillas a 20 elementos:

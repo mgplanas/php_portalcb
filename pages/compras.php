@@ -26,6 +26,7 @@ $sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='3',1,null)) as
 $sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='4',1,null)) as Dictamen ";
 $sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='5',1,null)) as adjudicacion ";
 $sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='6',1,null)) as standby ";
+$sqlindicadores = $sqlindicadores . ",COUNT(IF( c.id_paso_actual='7',1,null)) as cancelado ";
 $sqlindicadores = $sqlindicadores . ",COUNT(1) as total ";
 $sqlindicadores = $sqlindicadores . "FROM adm_compras as c  ";
 $sqlindicadores = $sqlindicadores . "WHERE c.borrado='0' AND c.id_estado = 1  ";
@@ -61,6 +62,10 @@ else {$i_adjudicacion_color = '#f39c12';}
 if ($rq_indicadores['standby'] <= $__LOW) {$i_standby_color = '#00a65a';}
 else if ($rq_indicadores['standby'] >= $__HIGH) {$i_standby_color = '#f56954';}
 else {$i_standby_color = '#f39c12';}
+
+if ($rq_indicadores['cancelado'] <= $__LOW) {$i_cancelado_color = '#00a65a';}
+else if ($rq_indicadores['cancelado'] >= $__HIGH) {$i_cancelado_color = '#f56954';}
+else {$i_cancelado_color = '#f39c12';}
 
 
 // $sql = "SELECT id_paso, COUNT(1) as cuenta, FLOOR(AVG(DATEDIFF(now(), fecha))) as promedio
@@ -253,7 +258,7 @@ desired effect
       <!-- INDICADORES -->
       <div class="row">
         <!-- /.box-header -->
-          <div class="col-xs-12 col-md-6"><h1>Gestión de Compras &nbsp;&nbsp;<small>Total de compras en proceso:&nbsp;<?=$rq_indicadores['total'] ?></small></h1></div>
+          <div class="col-xs-12 col-md-5"><h1>Gestión de Compras &nbsp;&nbsp;<small>Total:&nbsp;<?=$rq_indicadores['total'] ?></small></h1></div>
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_standby" type="text" class="knob" value="<?= (int)($rq_indicadores['standby']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_standby_color ?>">
             <div class="knob-label direct-search">Stand by</div>
@@ -277,6 +282,10 @@ desired effect
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_adjudicacion" type="text" class="knob" value="<?= (int)($rq_indicadores['adjudicacion']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_adjudicacion_color ?>">
             <div class="knob-label direct-search">Adjudicación</div>
+          </div>
+          <div class="col-xs-6 col-md-1 text-center">
+            <input id="knob_cancelado" type="text" class="knob" value="<?= (int)($rq_indicadores['cancelado']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_cancelado_color ?>">
+            <div class="knob-label direct-search">Cancelado</div>
           </div>
         <!-- /.box-body -->
       </div>             
@@ -333,7 +342,7 @@ desired effect
                                                   </thead>
                                                   <tbody>
                                                       <?php
-                                                          $query = "SELECT C.*, sub.nombre as subgerencia, mon.sigla as moneda, cur_step.descripcion as cur_step_desc
+                                                          $query = "SELECT C.*, sub.nombre as subgerencia, mon.sigla as moneda,cur_step.calculo as cur_step_calc, cur_step.descripcion as cur_step_desc
                                                           , (SELECT COUNT(1) FROM adm_compras_comments as com WHERE C.id = com.id_compra) as comentarios
                                                           , (SELECT datediff(MAX(hist.fecha), now()) FROM adm_compras_pasos_hist as hist WHERE hist.id_compra = C.id AND hist.id_paso = C.id_paso_actual) as dias
                                                           , (SELECT FLOOR(AVG(DATEDIFF(now(), hist2.fecha))) as promedio FROM adm_compras_pasos_hist as hist2 WHERE  hist2.id_paso = C.id_paso_actual) as promedio
@@ -362,14 +371,23 @@ desired effect
                                                               echo '<td>'. $row['concepto'] .'</td>';
                                                               echo '<td align="center">'. $row['moneda'] . '</td>';
                                                               echo '<td align="right">' . $row['pre_monto'] . '</td>';
-                                                              echo '<td align="center">'. $row['cur_step_desc'] .'</td>';
-                                                              $dias = ($row['dias'] ? abs($row['dias']) : 0);
-                                                              $promedio = ($row['promedio'] ? abs($row['promedio']) : 0);
-                                                              $diff = $dias - $promedio;
-                                                              if ($diff >= $__DIFF_DAYS) {
-                                                                echo '<td align="center"><span class="badge bg-red" title="Atrazo de ' . strval($diff). ' día(s) con respecto al promedio ('. strval($promedio).' día(s))">'. strVal($dias) .'</span></td>';
+                                                              // CANCELADO
+                                                              if ($row['id_paso_actual'] == 7) {
+                                                                echo '<td align="center"><span class="badge bg-red">' . $row['cur_step_desc'] .'</span></td>';
                                                               } else {
-                                                                echo '<td align="center">'. strVal($dias) .'</td>';
+                                                                echo '<td align="center">'. $row['cur_step_desc'] .'</td>';
+                                                              }
+                                                              if ($row['cur_step_calc']) {
+                                                                  $dias = ($row['dias'] ? abs($row['dias']) : 0);
+                                                                  $promedio = ($row['promedio'] ? abs($row['promedio']) : 0);
+                                                                  $diff = $dias - $promedio;
+                                                                  if ($diff >= $__DIFF_DAYS) {
+                                                                    echo '<td align="center"><span class="badge bg-red" title="Atrazo de ' . strval($diff). ' día(s) con respecto al promedio ('. strval($promedio).' día(s))">'. strVal($dias) .'</span></td>';
+                                                                  } else {
+                                                                    echo '<td align="center">'. strVal($dias) .'</td>';
+                                                                  }
+                                                              } else {
+                                                                echo '<td align="center"></td>';
                                                               }
                                                               // echo '<td align="center">'. $row['next_step_desc'] .'</td>';
                                                               echo '<td align="right">';
@@ -705,6 +723,8 @@ desired effect
     $("#knob_dictamen").attr('disabled','disabled');
     $('#knob_adjudicacion').val(<?=$rq_indicadores['adjudicacion'] ?>);
     $("#knob_adjudicacion").attr('disabled','disabled');
+    $('#knob_cancelado').val(<?=$rq_indicadores['cancelado'] ?>);
+    $("#knob_cancelado").attr('disabled','disabled');
 
     $('#btn-showhide-comments').prop('disabled', 'true');
 
