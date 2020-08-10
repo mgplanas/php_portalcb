@@ -70,7 +70,9 @@ $(function() {
 
             let existe = false;
             tbCosteos.rows().every(function(rowIdx, tableLoop, rowLoop) {
-                if (oc == this.data().oc) {
+                // if (oc == this.data().oc) {
+                // console.log(this.data());
+                if (oc == this.data()[3]) {
                     alert('Ya existe un seguimiento para dicha OC');
                     existe = true;
                     return;
@@ -178,30 +180,29 @@ $(function() {
         return $('#vtos').DataTable({
             "paging": false,
             "deferRender": true,
-            "ajax": {
-                type: 'POST',
-                url: './helpers/getAsyncDataFromDB.php',
-                data: { query: strquery },
-                error: function(jqXHR, ajaxOptions, thrownError) {
-                    alert(thrownError + "\r\n" + jqXHR.statusText + "\r\n" + jqXHR.responseText + "\r\n" + ajaxOptions.responseText);
-                }
-            },
-            "dataSrc": function(json) {
-                // console.log(json);
-            },
-            "columns": [
-                { "data": "subgerencia" },
-                { "data": "proveedor" },
-                { "data": "tipo_mantenimiento" },
-                { "data": "oc" },
-                { "data": "dias" },
-                { "data": "dias" },
-                { "data": "vencimiento" },
-                { "data": "dias" },
-            ],
+            // "ajax": {
+            //     type: 'POST',
+            //     url: './helpers/getAsyncDataFromDB.php',
+            //     data: { query: strquery },
+            //     error: function(jqXHR, ajaxOptions, thrownError) {
+            //         alert(thrownError + "\r\n" + jqXHR.statusText + "\r\n" + jqXHR.responseText + "\r\n" + ajaxOptions.responseText);
+            //     }
+            // },
+            // "dataSrc": function(json) {
+            //     // console.log(json);
+            // },
+            // "columns": [
+            //     { "data": "subgerencia" },
+            //     { "data": "proveedor" },
+            //     { "data": "tipo_mantenimiento" },
+            //     { "data": "oc" },
+            //     { "data": "dias" },
+            //     { "data": "dias" },
+            //     { "data": "vencimiento" },
+            //     { "data": "dias" },
+            // ],
             'order': [
-                [0, 'asc'],
-                [1, 'asc']
+                [6, 'asc'],
             ],
             // 'rowGroup': {
             //     'dataSrc': ['categoria', 'subcategoria']
@@ -215,53 +216,53 @@ $(function() {
                 //     'targets': [4, 6, 7],
                 //     'className': 'dt-body-right'
                 // },
-                {
-                    'targets': [4],
-                    'className': 'dt-body-center',
-                    render: function(data) {
-                        let abs = Math.abs(data);
-                        if (data < 0) {
-                            return '<span class="badge bg-red">Vencido</span>';
-                        } else if (data < 150) {
-                            return '<span class="badge bg-yellow">Renovar</span>';
-                        } else {
-                            return '';
-                        }
-                    }
-                },
-                {
-                    'targets': [5],
-                    'className': 'dt-body-center',
-                    render: function(data) {
-                        let abs = Math.abs(data);
-                        if (data < 0) {
-                            return '<span title="' + abs + ' día(s) de vencido">' + abs + '</span>';
-                        } else {
-                            return '<span title="faltan ' + abs + ' día(s)">' + abs + '</span>';
-                        }
-                    }
-                },
-                {
-                    'targets': [6],
-                    'className': 'dt-body-center',
-                    render: function(data) { return moment(data).format('DD/MM/YYYY'); }
-                },
-                {
-                    'targets': [-1],
-                    'render': function(data, type, row, meta) {
-                        let btns = '<a data-row="' + meta.row + '" data-id="' + row.id + '" ';
-                        btns += 'data-subgerencia="' + row.id_subgerencia + '" ';
-                        btns += 'data-proveedor="' + row.id_proveedor + '" ';
-                        btns += 'data-vencimiento="' + row.vencimiento + '" ';
-                        btns += 'data-oc="' + row.oc + '" ';
-                        btns += 'data-tipo="' + row.tipo_mantenimiento + '" ';
-                        btns += 'title="editar" class="modal-abm-contrato-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
-                        btns += '<a data-row="' + meta.row + '" data-id="' + row.id + '" title="eliminar" class="modal-abm-contrato-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
-                        return btns;
-                        // return '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-iditem="' + row.id_costo_item + '" data-idcosto="' + row.id_costo + '" title="editar" class="modal-abm-contrato-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>' +
-                        //     '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="' + row.descripcion + '" title="eliminar" class="modal-abm-contrato-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
-                    }
-                }
+                // {
+                //     'targets': [4],
+                //     'className': 'dt-body-center',
+                //     render: function(data) {
+                //         let abs = Math.abs(data);
+                //         if (data < 0) {
+                //             return '<span class="badge bg-red">Vencido</span>';
+                //         } else if (data < 150) {
+                //             return '<span class="badge bg-yellow">Renovar</span>';
+                //         } else {
+                //             return '';
+                //         }
+                //     }
+                // },
+                // {
+                //     'targets': [5],
+                //     'className': 'dt-body-center',
+                //     render: function(data) {
+                //         let abs = Math.abs(data);
+                //         if (data < 0) {
+                //             return '<span title="' + abs + ' día(s) de vencido">' + abs + '</span>';
+                //         } else {
+                //             return '<span title="faltan ' + abs + ' día(s)">' + abs + '</span>';
+                //         }
+                //     }
+                // },
+                // {
+                //     'targets': [6],
+                //     'className': 'dt-body-center',
+                //     render: function(data) { return moment(data).format('DD/MM/YYYY'); }
+                // },
+                // {
+                //     'targets': [-1],
+                //     'render': function(data, type, row, meta) {
+                //         let btns = '<a data-row="' + meta.row + '" data-id="' + row.id + '" ';
+                //         btns += 'data-subgerencia="' + row.id_subgerencia + '" ';
+                //         btns += 'data-proveedor="' + row.id_proveedor + '" ';
+                //         btns += 'data-vencimiento="' + row.vencimiento + '" ';
+                //         btns += 'data-oc="' + row.oc + '" ';
+                //         btns += 'data-tipo="' + row.tipo_mantenimiento + '" ';
+                //         btns += 'title="editar" class="modal-abm-contrato-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
+                //         btns += '<a data-row="' + meta.row + '" data-id="' + row.id + '" title="eliminar" class="modal-abm-contrato-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                //         return btns;
+                //         // return '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-iditem="' + row.id_costo_item + '" data-idcosto="' + row.id_costo + '" title="editar" class="modal-abm-contrato-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>' +
+                //         //     '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="' + row.descripcion + '" title="eliminar" class="modal-abm-contrato-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                //     }
+                // }
             ],
             'dom': 'Bfrtip',
             'buttons': [{

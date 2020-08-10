@@ -137,6 +137,73 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <th></th>
                 </tr>
                 </thead>
+                <tbody>
+                <?php
+                    $query = "SELECT c.id, c.id_proveedor, c.id_subgerencia, c.oc, c.tipo_mantenimiento, c.vencimiento,
+                                    s.nombre as subgerencia, 
+                                    p.razon_social as proveedor, 
+                                    datediff(c.vencimiento, now()) as dias 
+                                FROM adm_contratos_vto as c 
+                                INNER JOIN subgerencia as s ON c.id_subgerencia = s.id_subgerencia 
+                                INNER JOIN adm_com_proveedores as p ON c.id_proveedor = p.id 
+                                WHERE c.borrado = 0;";
+					
+					$sql = mysqli_query($con, $query);
+
+					if(mysqli_num_rows($sql) == 0){
+						echo '<tr><td colspan="8">No hay datos.</td></tr>';
+					}else{
+						$no = 1;
+						while($row = mysqli_fetch_assoc($sql)){
+							
+							echo '<tr>';
+							echo '<td>'. $row['subgerencia'].'</td>';
+							echo '<td>'. $row['proveedor'].'</td>';
+							echo '<td>'. $row['tipo_mantenimiento'].'</td>';
+                            echo '<td>'. $row['oc'].'</td>';
+                            // estado
+                            echo '<td>';
+                            if ($row['dias'] < 0) {
+                                echo '<span class="badge bg-red">Vencido</span>';
+                            } else if ($row['dias'] < 150) {
+                                echo '<span class="badge bg-yellow">Renovar</span>';
+                            } else {
+                                echo '<span class="badge bg-green">Vigente</span>';
+                            }                             
+                            echo '</td>';
+                            // FIN ESTADO
+                            // DIAS DE VENCIDO/FALTANTE
+                            echo '<td>'; 
+                            $abs = abs($row['dias']);
+                            if ($row['dias'] < 0) {
+                                echo '<span title="' . $abs . ' día(s) de vencido">' . $abs . '</span>';
+                            } else {
+                                echo '<span title="faltan ' . $abs . ' día(s)">' . $abs . '</span>';
+                            }                            
+                            echo'</td>';
+                            // DIAS DE VENCIDO/FALTANTE
+                            // VENCIMIENTO
+                            $timestamp = strtotime(str_replace('/', '.', $row['vencimiento']));
+                            $mysql_date = date('Y-m-d', $timestamp);                                                   
+                            echo '<td data-sort="'. $mysql_date .'">'.date("d/m/Y", strtotime($row['vencimiento'])).'</td>'; 
+                            
+                            echo '<td>'; 
+                            if ($rq_sec['admin']=='1' OR $rq_sec['admin_contrato']=='1'){
+                                echo '<a data-id="' . $row["id"] . '" ';
+                                echo 'data-subgerencia="' . $row["id_subgerencia"] . '" ';
+                                echo 'data-proveedor="' . $row["id_proveedor"] . '" ';
+                                echo 'data-vencimiento="' . $row["vencimiento"] . '" ';
+                                echo 'data-oc="' . $row["oc"] . '" ';
+                                echo 'data-tipo="' . $row["tipo_mantenimiento"] . '" ';
+                                echo 'title="editar" class="modal-abm-contrato-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
+                                echo '<a data-id="' . $row["id"] . '" title="eliminar" class="modal-abm-contrato-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                            }
+                            echo '</td></tr>';
+                        }
+                    }
+					?>
+
+                </tbody>
               </table>
             </div>
             <!-- /.box-body -->
