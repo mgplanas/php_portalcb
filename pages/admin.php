@@ -227,6 +227,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">Compras</th>
                                                 <th width="1">Admin Compras</th>
                                                 <th width="1">Admin Riesgo</th>
+                                                <th width="1">Admin Cto</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>
@@ -301,6 +302,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 </div></td>'; 
                                                   echo '<td>
                                                           <div class="checkbox">
+                                                            <label><input name="admin_contratos" type="checkbox" onclick="updatePerm(13, '.$row['id_permiso'].');" value="1"'; if($row['admin_contratos'] == '1'){ echo 'checked'; } echo'></label>
+                                                                </div></td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
                                                             <label><input name="edicion" type="checkbox" onclick="updatePerm(4, '.$row['id_permiso'].');" value="1"'; if($row['edicion'] == '1'){ echo 'checked'; } echo'></label>
                                                           </div></td>'; 
                                                   echo '<td align="center">
@@ -322,16 +327,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="100">Usuario</th>
                                                 <th width="100">Correo</th>
                                                 <th width="1">Admin</th>
-                                                <th width="1">Admin Per</th>
+                                                <th width="1">A. Per</th>
                                                 <th width="1">Proyectos</th>
-                                                <th width="1">Admin Proy</th>
+                                                <th width="1">A. Proy</th>
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
                                                 <th width="1">Cli. DC</th>
-                                                <th width="1">Admin CDC</th>
+                                                <th width="1">A. CDC</th>
                                                 <th width="1">Compras</th>
-                                                <th width="1">Admin Compras</th>                                                
-                                                <th width="1">Admin Riesgos</th>                                                
+                                                <th width="1">A. Compras</th>                                                
+                                                <th width="1">A. Riesgos</th>                                                
+                                                <th width="1">A. Ctos</th>                                                
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>
@@ -445,6 +451,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <div class="checkbox">
                                                             <label>
                                                                 <input name="admin_riesgos" type="checkbox" value="1"> Admin. Riesgo
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="admin_contratos" type="checkbox" value="1"> Admin. Contratos
                                                             </label>
                                                         </div>
 

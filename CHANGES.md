@@ -11,6 +11,12 @@ ABM seguimiento de contratos
 - pages/modals/adm_contratos.php
 - pages/modals/adm_contratos.js
 - pages/helpers/adm_contratosdb.php
+- nuevo permiso para adm
+    - [DB] Se crea el campo adm_contratos en permisos
+    ALTER TABLE controls.permisos
+    ADD admin_contratos INT AFTER admin_riesgos;
+- pages/admin.php
+- pages/setPermiso.php
 
 
 ##FEAT-RGO-SORT
