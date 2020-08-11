@@ -40,6 +40,7 @@
     <?php } ?>
 
     <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
+        <li><a href="procesos.php"><i class="fa fa-gear"></i> <span>Procesos</span></a></li>
         <li><a href="activos.php"><i class="fa fa-archive"></i> <span>Activos</span></a></li>
         <li><a href="controles.php"><i class="fa fa-retweet"></i> <span>Controles</span></a></li>
         <li><a href="iso27k.php"><i class="fa fa-crosshairs"></i> <span>ISO 27001</span></a></li>

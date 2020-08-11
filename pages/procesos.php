@@ -124,7 +124,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.box-header -->
 	
 			<div class="box-body">
-              <table id="procesos" class="table table-bordered table-hover">
+              <table id="procesos" class="table table-hover">
                 <thead>
                 <tr>
 				  <th>Nombre</th>
