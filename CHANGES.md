@@ -12,6 +12,10 @@ ABM procesos y aplicar a riesgos
     * pages/helpers/abmprocesosdb.php
     * pages/site_sidemenu.php
     * site.php
+    * [DB] se agrega campo proceso a riesgos 
+    * `ALTER TABLE controls.riesgo ADD proceso INT AFTER justificacion_cierre;`
+    * Se agrega a la lista de riesgos
+        * pages/riesgos.php
 
 ## FEAT-RGO-SORT
 

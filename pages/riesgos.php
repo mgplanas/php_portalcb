@@ -47,30 +47,33 @@ if(isset($_GET['aksi']) == 'filter'){
   $t=$_GET["t"];      //0=inherente;1=residual
   
   if($t == 0){
-  $query = "SELECT i.*, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido, c.tipo, g.nombre as gerencia 
+  $query = "SELECT i.*, pr.nombre as proceso_nombre, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido, c.tipo, g.nombre as gerencia 
             FROM riesgo as i 
             LEFT JOIN categoria as c on i.categoria = c.id_categoria 
             LEFT JOIN persona as p on i.responsable = p.id_persona
             LEFT JOIN persona as ref on i.referente = ref.id_persona
             LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia 
+            LEFT JOIN procesos as pr on i.proceso = pr.id 
             WHERE i.borrado='0' AND probabilidad=$p AND i_result=$i ";
 	}else if($t == 1){
-		$query = "SELECT i.*, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido,c.tipo, g.nombre as gerencia
+		$query = "SELECT i.*,pr.nombre as proceso_nombre, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido,c.tipo, g.nombre as gerencia
               FROM riesgo as i 
 		          LEFT JOIN categoria as c on i.categoria = c.id_categoria 
               LEFT JOIN persona as p on i.responsable = p.id_persona
               LEFT JOIN persona as ref on i.referente = ref.id_persona
               LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia 
+              LEFT JOIN procesos as pr on i.proceso = pr.id
               WHERE i.borrado='0' AND p_resid=$p AND i_resid=$i ";
 		}
 	
 }else{
-    $query = "SELECT i.*, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido,c.tipo, g.nombre as gerencia 
+    $query = "SELECT i.*,pr.nombre as proceso_nombre, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido,c.tipo, g.nombre as gerencia 
               FROM riesgo as i 
               LEFT JOIN categoria as c on i.categoria = c.id_categoria 
 				      LEFT JOIN persona as p on i.responsable = p.id_persona
                       LEFT JOIN persona as ref on i.referente = ref.id_persona 
               LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia
+              LEFT JOIN procesos as pr on i.proceso = pr.id
               WHERE i.borrado='0' ";
 }
 
@@ -813,103 +816,7 @@ desired effect
                                     <!-- /.modal-dialog -->
                                 </div>
                                 <!-- FIN MODAL RIESGO -->
-                                <!-- MODAL PERSONA -->
-                                <div class="modal fade" id="modal-persona">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span></button>
-                                                <h2 class="modal-title">Nueva Persona</h2>
-                                                <?php
-                                                $gerencias = mysqli_query($con, "SELECT * FROM gerencia ORDER BY nombre ASC");
-                                                if(isset($_POST['Addp'])){
-                                                  $legajo = mysqli_real_escape_string($con,(strip_tags($_POST["legajo"],ENT_QUOTES)));//Escanpando caracteres
-                                                  $nombre = mysqli_real_escape_string($con,(strip_tags($_POST["nombre"],ENT_QUOTES)));//Escanpando caracteres
-                                                  $apellido = mysqli_real_escape_string($con,(strip_tags($_POST["apellido"],ENT_QUOTES)));//Escanpando caracteres 
-                                                  $cargo = mysqli_real_escape_string($con,(strip_tags($_POST["cargo"],ENT_QUOTES)));//Escanpando caracteres 
-                                                  $gerencia = mysqli_real_escape_string($con,(strip_tags($_POST["gerencia"],ENT_QUOTES)));//Escanpando caracteres 
-                                                  $email = mysqli_real_escape_string($con,(strip_tags($_POST["email"],ENT_QUOTES)));//Escanpando caracteres 
-                                                  //Inserto Control
-                                                  $insert_persona = mysqli_query($con, "INSERT INTO persona(legajo, nombre, apellido, cargo, gerencia, email) VALUES ('$legajo','$nombre','$apellido', '$cargo', '$gerencia', '$email')") or die(mysqli_error());	
-                                                  $lastInsert = mysqli_insert_id($con);
-                                                  $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
-                                                                VALUES ('1', '2', '$lastInsert', now(), '$user')") or die(mysqli_error());
-                                                  unset($_POST);
-                                                  if($insert_persona){
-                                                    $_SESSION['formSubmitted'] = 3;
-                                                    echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-                                                  }else{
-                                                    $_SESSION['formSubmitted'] = 9;
-                                                    echo '<META HTTP-EQUIV="Refresh" Content="0; URL='.$location.'">';
-                                                  }				
-                                                }				
-                                                ?>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- form start -->
-                                                <form method="post" role="form" action="">
-                                                    <div class="box-body">
-                                                        <div class="form-group">
-                                                            <label for="legajo">Legajo</label>
-                                                            <input type="text" class="form-control" name="legajo"
-                                                                placeholder="Legajo">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="nombre">Nombre</label>
-                                                            <input type="text" class="form-control" name="nombre"
-                                                                placeholder="Nombre">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="apellido">Apellido</label>
-                                                            <input type="text" class="form-control" name="apellido"
-                                                                placeholder="Apellido">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="email">Dirección E-mail</label>
-                                                            <input type="text" class="form-control" name="email"
-                                                                placeholder="E-mail corporativo">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="cargo">Cargo</label>
-                                                            <input type="text" class="form-control" name="cargo"
-                                                                placeholder="Cargo">
-                                                        </div>
 
-                                                        <div class="form-group">
-                                                            <label>Gerencia</label>
-                                                            <select name="gerencia" class="form-control">
-                                                                <?php
-                                                                  while($rowg = mysqli_fetch_array($gerencias)){
-                                                                      echo "<option value=". $rowg['id_gerencia'] . ">" .$rowg['nombre'] . "</option>";
-                                                                        }
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="col-sm-3">
-                                                                <input type="submit" name="Addp"
-                                                                    class="btn  btn-raised btn-success"
-                                                                    value="Guardar datos">
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <button type="button" class="btn btn-default pull-left"
-                                                                    data-dismiss="modal">Cancelar</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </form>
-
-                                            </div>
-
-                                        </div>
-                                        <!-- /.modal-content -->
-                                    </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
-                                <!-- FIN MODAL PERSONA -->
                                 <!-- MODAL MATRIZ INHERENTE -->
                                 <div class="modal fade" id="modal-inherente">
                                     <div class="modal-dialog">
@@ -1584,7 +1491,7 @@ desired effect
                                 <!-- FIN MODAL VER -->
 
                                 <div class="box-body">
-                                    <table id="riesgos" class="table table-bordered table-hover">
+                                    <table id="riesgos" class="table table-hover">
                                         <thead>
                                             <tr>
                                                 <!--<th width="1">Ver</th> -->
@@ -1594,6 +1501,7 @@ desired effect
                                                 <th>Responsable</th>
                                                 <th>Referente</th>
                                                 <th>Gerencia</th>
+                                                <th>Proceso</th>
                                                 <th>F.Alta</th>
                                                 <!--<th>Activos</th> -->
                                                 <!-- <th>Categoría</th> -->
@@ -1637,6 +1545,7 @@ desired effect
                                                   echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
                                                   echo '<td>'.$row['ref_apellido'].' '.$row['ref_nombre']. '</td>'; 
                                                   echo '<td>'.$row['gerencia'].'</td>'; 
+                                                  echo '<td>'.$row['proceso_nombre'].'</td>'; 
                                                   
                                                   //FIX SORT
                                                   $timestamp = strtotime(str_replace('/', '.', $row['alta']));
@@ -1735,6 +1644,7 @@ desired effect
                                                 <th>Responsable</th>
                                                 <th>Referente</th>
                                                 <th>Gerencia</th>
+                                                <th>Proceso</th>
                                                 <th>F.Alta</th>
                                                 <!--<th>Activos</th>-->
                                                 <!-- <th>Categoría</th> -->
@@ -1840,7 +1750,7 @@ desired effect
                 var table = $('#riesgos').DataTable();
 
                 // Si son las columnas de filtro creo el ddl
-                if (colIdx == 5 || colIdx == 8 || colIdx == 9) {
+                if (colIdx == 5 || colIdx == 9 || colIdx == 10) {
                     var select = $('<select style="width: 100%;"><option value=""></option></select>')
                     .on( 'change', function () {
                         table
