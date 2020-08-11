@@ -329,14 +329,15 @@ desired effect
                                                     $i_resid = mysqli_real_escape_string($con,(strip_tags($_POST["i_resid"],ENT_QUOTES)));//Escapando caracteres
                                                     $observacion = mysqli_real_escape_string($con,(strip_tags($_POST["observacion"],ENT_QUOTES)));//Escapando caracteres
                                                     $alta = mysqli_real_escape_string($con,(strip_tags($_POST["alta"],ENT_QUOTES)));//Escapando caracteres
-                                                              $identificado = mysqli_real_escape_string($con,(strip_tags($_POST["identificado"],ENT_QUOTES)));//Escapando caracteres
-                                                              $vencimiento = mysqli_real_escape_string($con,(strip_tags($_POST["vencimiento"],ENT_QUOTES)));//Escapando caracteres
-                                                              $estado = mysqli_real_escape_string($con,(strip_tags($_POST["estado"],ENT_QUOTES)));//Escapando caracteres
-                                                              $incidente = mysqli_real_escape_string($con,(strip_tags($_POST["incidente"],ENT_QUOTES)));//Escapando caracteres
-                                                              $avance = mysqli_real_escape_string($con,(strip_tags($_POST["avance"],ENT_QUOTES)));//Escapando caracteres
-                                                              $referente = mysqli_real_escape_string($con,(strip_tags($_POST["referente"],ENT_QUOTES)));//Escapando caracteres
-                                                              
-                                                              $preventivo = '0';
+                                                    $identificado = mysqli_real_escape_string($con,(strip_tags($_POST["identificado"],ENT_QUOTES)));//Escapando caracteres
+                                                    $vencimiento = mysqli_real_escape_string($con,(strip_tags($_POST["vencimiento"],ENT_QUOTES)));//Escapando caracteres
+                                                    $estado = mysqli_real_escape_string($con,(strip_tags($_POST["estado"],ENT_QUOTES)));//Escapando caracteres
+                                                    $incidente = mysqli_real_escape_string($con,(strip_tags($_POST["incidente"],ENT_QUOTES)));//Escapando caracteres
+                                                    $avance = mysqli_real_escape_string($con,(strip_tags($_POST["avance"],ENT_QUOTES)));//Escapando caracteres
+                                                    $referente = mysqli_real_escape_string($con,(strip_tags($_POST["referente"],ENT_QUOTES)));//Escapando caracteres
+                                                    $proceso = mysqli_real_escape_string($con,(strip_tags($_POST["proceso"],ENT_QUOTES)));//Escapando caracteres
+                                                    
+                                                    $preventivo = '0';
                                                     $detectivo = '0';
                                                                         
                                                     if ($_POST["t_control"] == 1){
@@ -347,7 +348,7 @@ desired effect
                                                     $insert_riesgo = mysqli_query($con, "INSERT INTO riesgo SET amenaza='$amenaza', vulnerabilidad='$vulnerabilidad', creado = NOW(),
                                                     responsable='$responsable', categoria='$categoria', probabilidad='$probabilidad', i_conf='$i_conf', i_int='$i_int',
                                                     i_disp='$i_disp', control='$control', estrategia='$estrategia', plan='$plan', p_resid='$p_resid', i_resid='$i_resid',
-                                                    observacion='$observacion', c_prev='$preventivo', c_detec='$detectivo', usuario='$user', alta='$alta', identificado='$identificado', vencimiento='$vencimiento', estado='$estado', incidente='$incidente', avance='$avance', referente='$referente'") or die(mysqli_error());
+                                                    observacion='$observacion', c_prev='$preventivo', c_detec='$detectivo', usuario='$user', alta='$alta', identificado='$identificado', vencimiento='$vencimiento', estado='$estado', incidente='$incidente', avance='$avance', referente='$referente', proceso='$proceso'") or die(mysqli_error());
                                                     
                                                     $lastInsert = mysqli_insert_id($con);
                                                     
@@ -777,12 +778,30 @@ desired effect
                                                                         <!-- /.col-lg-6 -->
                                                                     </div>
                                                                     <br>
-                                                                    <div class="form-group">
-                                                                        <label class="label-custom label-custom-info">%
-                                                                            Avance</label>
-                                                                        <input type="text" name="avance"
-                                                                            value="<?php echo $row ['avance']; ?>"
-                                                                            class="form-control">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="label-custom label-custom-info">%
+                                                                                    Avance</label>
+                                                                                <input type="text" name="avance"
+                                                                                    value="<?php echo $row ['avance']; ?>"
+                                                                                    class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label>Proceso</label>
+                                                                                <select name="proceso" class="form-control" id="ddlproceso">
+                                                                                    <?php
+                                                                                        $proceso = mysqli_query($con, "SELECT * FROM procesos WHERE borrado=0;");
+                                                                                        echo "<option value=''></option>";
+                                                                                        while($rowproc = mysqli_fetch_array($proceso)){
+                                                                                            echo "<option value='". $rowproc['id'] . "'>" .$rowproc['nombre'] ."</option>";										
+                                                                                        }
+                                                                                    ?>
+                                                                                </select>
+                                                                            </div>                                                                            
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
