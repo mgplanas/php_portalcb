@@ -34,9 +34,10 @@ if(isset($_GET['akav']) == 'delete'){
 
 
 $nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
-$sql = mysqli_query($con, "SELECT i.*, p.nombre, p.apellido, c.tipo FROM riesgo as i 
+$sql = mysqli_query($con, "SELECT i.*, pr.id as proceso_id, pr.nombre as proceso_nombre, p.nombre, p.apellido, c.tipo FROM riesgo as i 
 								LEFT JOIN categoria as c on i.categoria = c.id_categoria 
 								LEFT JOIN persona as p on i.responsable = p.id_persona 
+                                LEFT JOIN procesos as pr on i.proceso = pr.id 
 								WHERE i.borrado='0' AND i.id_riesgo='$nik'");
 
 							  
@@ -67,6 +68,7 @@ if(isset($_POST['save'])){
     $incidente = mysqli_real_escape_string($con,(strip_tags($_POST["incidente"],ENT_QUOTES)));//Escapando caracteres
     $avance = mysqli_real_escape_string($con,(strip_tags($_POST["avance"],ENT_QUOTES)));//Escapando caracteres
     $referente = mysqli_real_escape_string($con,(strip_tags($_POST["referente"],ENT_QUOTES)));//Escapando caracteres
+    $proceso = mysqli_real_escape_string($con,(strip_tags($_POST["proceso"],ENT_QUOTES)));//Escapando caracteres
     
 	$preventivo = '0';
 	$detectivo = '0';
@@ -79,7 +81,7 @@ if(isset($_POST['save'])){
 	$update_riesgo = mysqli_query($con, "UPDATE riesgo SET amenaza='$amenaza', vulnerabilidad='$vulnerabilidad', creado = NOW(),
 	responsable='$responsable', categoria='$categoria', probabilidad='$probabilidad', i_conf='$i_conf', i_int='$i_int',
 	i_disp='$i_disp', control='$control', estrategia='$estrategia', plan='$plan', p_resid='$p_resid', i_resid='$i_resid',
-	observacion='$observacion', c_prev='$preventivo', c_detec='$detectivo', usuario='$user', alta='$alta', identificado='$identificado', vencimiento='$vencimiento', estado='$estado', incidente='$incidente', avance='$avance', referente='$referente'
+	observacion='$observacion', c_prev='$preventivo', c_detec='$detectivo', usuario='$user', alta='$alta', identificado='$identificado', vencimiento='$vencimiento', estado='$estado', incidente='$incidente', avance='$avance', referente='$referente', proceso='$proceso'
     WHERE id_riesgo='$nik'") or die(mysqli_error());
 	
 	//Update activos/riesgo en tabla de relación
@@ -621,6 +623,25 @@ desired effect
                                     <div class="form-group">
                                         <label class="label-custom label-custom-info">Plazo</label>
                                             <input type="text" name="avance" value="<?php echo $days2ven; ?>" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="label-custom label-custom-info">Proceso</label>
+                                        <select name="proceso" class="form-control">
+                                            <?php
+                                            $proceso = mysqli_query($con, "SELECT * FROM procesos where borrado = 0;");
+                                            echo "<option value=''></option>";  
+                                            while($rowpr = mysqli_fetch_array($proceso)){
+                                                if($rowpr['id']==$row['proceso_id']) {
+                                                    echo "<option value='". $rowpr['id'] . "' selected='selected'>" .$rowpr['nombre'] . "</option>";
+                                                }
+                                                else {
+                                                    echo "<option value='". $rowpr['id'] . "'>" .$rowpr['nombre'] . "</option>";										
+                                                } 
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
