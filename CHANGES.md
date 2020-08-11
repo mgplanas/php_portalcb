@@ -1,6 +1,19 @@
 # CHANGES
 
-FEAT-RGO-SORT
+## FEAT-RGO-PROCESOS
+ABM procesos y aplicar a riesgos
+*Fecha:* 2020-08-11
+*Cambios:*
+    
+    * [DB] se crea la tabla de procesos
+    * pages/procesos.php
+    * pages/modal/abmprocesos.php
+    * pages/modal/abmprocesos.js
+    * pages/helpers/abmprocesosdb.php
+    * pages/site_sidemenu.php
+    * site.php
+
+## FEAT-RGO-SORT
 
 FIX en ordenamiento de fechas
 *Fecha:* 2020-07-28
