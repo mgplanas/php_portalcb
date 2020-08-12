@@ -272,6 +272,14 @@ $(function() {
     // ==============================================================
     // MANEJO DE EVENTOS DEL FORM
     // ==============================================================
+    $("#modal-abm-compra-presupuesto").blur(function() {
+        this.value = parseFloat(this.value).toFixed(0);
+    });
+    $("#modal-abm-compra-monto-oc").blur(function() {
+        this.value = parseFloat(this.value).toFixed(0);
+    });
+
+
     // Cargo subgerencias
     ddlGerencias.on('change', function() {
         let idgerencia = $('option:selected', this).val();
@@ -409,7 +417,7 @@ $(function() {
                 compra = response.data[0];
                 console.log(compra);
                 $('#modal-abm-compra-id').val(compra.id);
-                $('#modal-abm-compra-fecha-sol').val(compra.fecha_solicitud);
+                $('#modal-abm-compra-fecha-sol').val(compra.fecha_solicitud.split('-').reverse().join('/'));
                 $('#modal-abm-compra-solicitud').val(compra.nro_solicitud);
                 $('#modal-abm-compra-concepto').val(compra.concepto);
                 $('#modal-abm-compra-presupuesto').val(compra.pre_monto);

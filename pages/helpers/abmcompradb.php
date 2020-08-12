@@ -112,7 +112,7 @@
                 ,id_paso_actual = '$id_paso_actual'
                 ,id_gerencia = '$gerencia'
                 ,id_estado = '$id_estado'
-                ,fecha_solicitud = '$fecha'
+                ,fecha_solicitud = '$dtfechaSol'
                 ,fecha_oc = '$fecha_oc'
                 ,concepto = '$concepto'
                 ,capex_opex = '$capexopex' 
