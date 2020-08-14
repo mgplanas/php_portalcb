@@ -143,6 +143,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th><i class="fa fa-briefcase" title="Convenio" style="font-size: 20px;"></i></th>
                     <th><i class="fa fa-home" title="Housing" style="font-size: 20px;"></i></th>
                     <th><i class="fa fa-server" title="Hosting" style="font-size: 20px;"></i></th>
+                    <th><i class="fa fa-cloud" title="IAAS" style="font-size: 20px;"></i></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -150,7 +151,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					<?php
 					$query = "SELECT C.id_organismo, C.id, C.razon_social, O.razon_social as organismo, C.cuit, C.nombre_corto, C.sector, C.con_convenio,
                     (SELECT COUNT(1) FROM sdc_hosting as HO where HO.id_cliente = C.id AND HO.borrado=0) as hosting,
-                    (SELECT COUNT(1) FROM sdc_housing as HU where HU.id_cliente = C.id AND HU.borrado=0) as housing
+                    (SELECT COUNT(1) FROM sdc_housing as HU where HU.id_cliente = C.id AND HU.borrado=0) as housing,
+                    (SELECT COUNT(1) FROM sdc_iaas as IA where IA.id_cliente = C.id AND IA.borrado=0) as iaas
                   FROM cdc_cliente as C 
                   LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
                   WHERE C.borrado = 0";
@@ -168,34 +170,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td>'. $row['razon_social'].'</td>';
 							echo '<td align="center">'. $row['nombre_corto'].'</td>';
 							echo '<td align="center">'. $row['cuit'].'</td>';
-              echo '<td align="center">'. $row['sector'].'</td>';
-              echo '<td align="center">'. ($row['con_convenio'] ? '<i class="fa fa-check"></i>' : '') .'</td>';
-              echo '<td align="center">';
-              if ($row['housing'] > 0) {
-                echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicio de Housing" class="modal-abm-housing-view btn">' . $row['housing'] . '</a>';
-              }
-              echo '</td>';
-              echo '<td align="center">';
-              if ($row['hosting'] > 0) {
-                echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicios de Hosting" class="modal-abm-hosting-view btn">' . $row['hosting'] . '</a>';
-              }
-              echo '</td>';
+                            echo '<td align="center">'. $row['sector'].'</td>';
+                            echo '<td align="center">'. ($row['con_convenio'] ? '<i class="fa fa-check"></i>' : '') .'</td>';
+                            echo '<td align="center">';
+                            if ($row['housing'] > 0) {
+                                echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicio de Housing" class="modal-abm-housing-view btn">' . $row['housing'] . '</a>';
+                            }
+                            echo '</td>';
+                            echo '<td align="center">';
+                            if ($row['hosting'] > 0) {
+                                echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicios de Hosting" class="modal-abm-hosting-view btn">' . $row['hosting'] . '</a>';
+                            }
+                            echo '<td align="center">';
+                            if ($row['iaas'] > 0) {
+                                echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicios de IAAS" class="modal-abm-iaas-view btn">' . $row['iaas'] . '</a>';
+                            }
+                            echo '</td>';
 							echo '<td align="center">';
-              if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
-                echo '<a 
-                  data-id="' . $row['id'] . '" 
-                  data-nombre="' . $row['razon_social'] . '" 
-                  data-sigla="' . $row['nombre_corto'] . '" 
-                  data-cuit="' . $row['cuit'] . '" 
-                  data-organismo="' . $row['id_organismo'] . '" 
-                  data-sector="' . $row['sector'] . '" 
-                  data-convenio="' . $row['con_convenio'] . '" 
-                  title="Editar Cliente" class="modal-abm-cliente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
-                  if ($row['housing'] == 0 AND $row['hosting'] == 0) {
-                    echo '<a href="cdc_cliente.php?aksi=delete&nik='.$row['id'].'" title="Borrar Cliente" onclick="return confirm(\'Esta seguro de borrar el cliente '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
-                  }
-              }
-              echo '</td>
+                            if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
+                                echo '<a 
+                                data-id="' . $row['id'] . '" 
+                                data-nombre="' . $row['razon_social'] . '" 
+                                data-sigla="' . $row['nombre_corto'] . '" 
+                                data-cuit="' . $row['cuit'] . '" 
+                                data-organismo="' . $row['id_organismo'] . '" 
+                                data-sector="' . $row['sector'] . '" 
+                                data-convenio="' . $row['con_convenio'] . '" 
+                                title="Editar Cliente" class="modal-abm-cliente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+                                if ($row['housing'] == 0 AND $row['hosting'] == 0 AND $row['iaas'] == 0) {
+                                    echo '<a href="cdc_cliente.php?aksi=delete&nik='.$row['id'].'" title="Borrar Cliente" onclick="return confirm(\'Esta seguro de borrar el cliente '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                                }
+                            }
+                            echo '</td>
 							</tr>
 							';
 						}

@@ -22,6 +22,8 @@ Nuevo servicio DC IAAS
     - pages/helpers/sdc_abmiaasdb.php
     - pages/site_sidemenu.php
     - site.php
+- suma de servicios en clientes y ink
+    - pages/cdc_clientes
 
 ## FEAT-COSTEO
 
