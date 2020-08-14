@@ -14,6 +14,14 @@ Nuevo servicio DC IAAS
 - [DB] Nuevo campo modalidad en sdc_housing int = 0
 - [DB] Nueva tabla sdc_housing_modalidad
 - Se actualiza grilla sdc_housing y abms helper y modal
+- [DB] Nueva tabla sdc_iaas
+- CRUD iaas
+    - pages/sdc_iaas.php
+    - pages/modals/sdc_abmiaas.php
+    - pages/modals/sdc_abmiaas.js
+    - pages/helpers/sdc_abmiaasdb.php
+    - pages/site_sidemenu.php
+    - site.php
 
 ## FEAT-COSTEO
 
