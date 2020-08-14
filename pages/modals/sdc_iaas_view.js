@@ -1,5 +1,8 @@
 $(function() {
 
+    function renderCurrencyField(value) {
+        return parseFloat(value).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
     let tbiaas = $('#iaas');
 
     // ==============================================================
@@ -31,12 +34,16 @@ $(function() {
             "columns": [
                 { "data": "plataforma" },
                 { "data": "reserva" },
-                { "data": "ram_capacidad" },
-                { "data": "storage_capacidad" },
-                { "data": "ram_uso" },
-                { "data": "storage_uso" },
+                { "data": "ram_capacidad", "render": (data) => renderCurrencyField(data) },
+                { "data": "storage_capacidad", "render": (data) => renderCurrencyField(data) },
+                { "data": "ram_uso", "render": (data) => renderCurrencyField(data) },
+                { "data": "storage_uso", "render": (data) => renderCurrencyField(data) },
                 { "data": "observaciones" }
-            ]
+            ],
+            "columnDefs": [{
+                "targets": [2, 3, 4, 5],
+                "className": "dt-body-right"
+            }]
         });
 
         $("#modal-abm-iaas").modal("show");
