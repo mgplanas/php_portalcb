@@ -179,7 +179,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 data-storage_uso="' . $row['storage_uso'] . '" 
                                 data-observaciones="' . $row['observaciones'] . '" 
                                 title="Editar Reserva" class="modal-abm-iaas-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-                                <a href="sdc_housing.php?aksi=delete&nik='.$row['id'].'" title="Borrar Reserva" onclick="return confirm(\'Esta seguro de borrar la reserva de VRA?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                                <a href="sdc_iaas.php?aksi=delete&nik='.$row['id'].'" title="Borrar Reserva" onclick="return confirm(\'Esta seguro de borrar la reserva de VRA?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
                             }
                             echo '</td>
                             </tr>';

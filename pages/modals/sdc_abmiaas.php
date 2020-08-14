@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="form-group">
                             <label>Cliente</label>
-                            <select name="cliente" class="form-control" id='modal-abm-iaas-cliente'>
+                            <select name="cliente" class="form-control" id='modal-abm-iaas-id_cliente'>
                                 <?php
                                 $organismos = mysqli_query($con, "SELECT * FROM cdc_cliente WHERE borrado = 0 ORDER BY razon_social");
                                 while($rowper = mysqli_fetch_assoc($organismos)){

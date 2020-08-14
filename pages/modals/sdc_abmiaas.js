@@ -101,8 +101,8 @@ $(function() {
 
     setAMBTriggers();
 
-    $('.floatNumber').on('blur', function() {
-        this.value = this.value.replace(/[^0-9]/g, '');
+    $(".floatNumber").blur(function() {
+        this.value = parseFloat(this.value).toFixed(0);
     });
 
     $('#iaas').DataTable({
