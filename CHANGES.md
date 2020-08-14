@@ -18,6 +18,9 @@ ABM procesos y aplicar a riesgos
         * pages/riesgos.php
     * Se agrega en el alta y consulta
         * pages/riesgos.php
+    * Se cambia gerencia por subgerencia en grilla , alta y edición
+        * pages/riesgos.php
+        * pages/edit_riesgo.php
 
 ## FEAT-RGO-SORT
 

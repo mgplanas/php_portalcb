@@ -295,16 +295,17 @@ desired effect
 						  <label>Responsable</label>
 						  <select name="responsable" class="form-control" id="ddlresponsable">
 								<?php
-                  $personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia 
-                  FROM persona as p 
-                  LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
-                  WHERE p.borrado=0 ORDER BY p.apellido, p.nombre");
+                                    $personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia, s.nombre as subgerencia 
+                                    FROM persona as p 
+                                    LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
+                                    LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia
+                                    WHERE p.borrado=0 ORDER BY p.apellido, p.nombre");
 									while($rowps = mysqli_fetch_array($personasn)){
 										if($rowps['id_persona']==$row['responsable']) {
-											echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
+											echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
 										}
 										else {
-											echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+											echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
 										}
 									}
 								?>
@@ -322,16 +323,17 @@ desired effect
 						  <label>Identificado por</label>
 						  <select name="identificado" class="form-control" id="ddlidentificado">
 								<?php
-									$personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia 
-                  FROM persona as p 
-                  LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
-                  WHERE p.borrado=0 ORDER BY p.apellido, p.nombre");
+									$personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia, s.nombre as subgerencia 
+                                    FROM persona as p 
+                                    LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia
+                                    LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia 
+                                    WHERE p.borrado=0 ORDER BY p.apellido, p.nombre");
 									while($rowps = mysqli_fetch_array($personasn)){
 										if($rowps['id_persona']==$row['identificado']) {
-											echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
+											echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
 										}
 										else {
-											echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+											echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
 										}
 									}
 								?>
@@ -349,16 +351,17 @@ desired effect
 						  <label>Referente</label>
 						  <select name="referente" class="form-control" id="ddlreferente">
 								<?php
-									$personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia 
-                  FROM persona as p 
-                  LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
-                  WHERE p.borrado=0 ORDER BY p.apellido, p.nombre");
+									$personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia, s.nombre as subgerencia 
+                                    FROM persona as p 
+                                    LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
+                                    LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia
+                                    WHERE p.borrado=0 ORDER BY p.apellido, p.nombre");
 									while($rowps = mysqli_fetch_array($personasn)){
 										if($rowps['id_persona']==$row['referente']) {
-											echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
+											echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "' selected='selected'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";
 										}
 										else {
-											echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+											echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
 										}
 									}
 								?>

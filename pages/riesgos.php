@@ -47,32 +47,35 @@ if(isset($_GET['aksi']) == 'filter'){
   $t=$_GET["t"];      //0=inherente;1=residual
   
   if($t == 0){
-  $query = "SELECT i.*, pr.nombre as proceso_nombre, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido, c.tipo, g.nombre as gerencia 
+  $query = "SELECT i.*, pr.nombre as proceso_nombre, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido, c.tipo, g.nombre as gerencia, s.nombre as subgerencia 
             FROM riesgo as i 
             LEFT JOIN categoria as c on i.categoria = c.id_categoria 
             LEFT JOIN persona as p on i.responsable = p.id_persona
             LEFT JOIN persona as ref on i.referente = ref.id_persona
             LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia 
+            LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia 
             LEFT JOIN procesos as pr on i.proceso = pr.id 
             WHERE i.borrado='0' AND probabilidad=$p AND i_result=$i ";
 	}else if($t == 1){
-		$query = "SELECT i.*,pr.nombre as proceso_nombre, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido,c.tipo, g.nombre as gerencia
+        $query = "SELECT i.*,pr.nombre as proceso_nombre, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido,c.tipo, g.nombre as gerencia, s.nombre as subgerencia
               FROM riesgo as i 
 		          LEFT JOIN categoria as c on i.categoria = c.id_categoria 
               LEFT JOIN persona as p on i.responsable = p.id_persona
               LEFT JOIN persona as ref on i.referente = ref.id_persona
               LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia 
+              LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia 
               LEFT JOIN procesos as pr on i.proceso = pr.id
               WHERE i.borrado='0' AND p_resid=$p AND i_resid=$i ";
 		}
-	
-}else{
-    $query = "SELECT i.*,pr.nombre as proceso_nombre, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido,c.tipo, g.nombre as gerencia 
+        
+    }else{
+        $query = "SELECT i.*,pr.nombre as proceso_nombre, p.nombre, p.apellido, ref.nombre as ref_nombre, ref.apellido as ref_apellido,c.tipo, g.nombre as gerencia , s.nombre as subgerencia
               FROM riesgo as i 
               LEFT JOIN categoria as c on i.categoria = c.id_categoria 
 				      LEFT JOIN persona as p on i.responsable = p.id_persona
                       LEFT JOIN persona as ref on i.referente = ref.id_persona 
               LEFT JOIN gerencia as g on p.gerencia = g.id_gerencia
+              LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia 
               LEFT JOIN procesos as pr on i.proceso = pr.id
               WHERE i.borrado='0' ";
 }
@@ -431,12 +434,13 @@ desired effect
                                                                     <label>Responsable</label>
                                                                     <select name="responsable" class="form-control" id="ddlresponsable">
                                                                         <?php
-                                                                            $personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia 
+                                                                            $personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia, s.nombre as subgerencia 
                                                                                                                FROM persona as p 
-                                                                                                               LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
+                                                                                                               LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia
+                                                                                                               LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia 
                                                                                                              WHERE p.borrado=0 ");
                                                                             while($rowps = mysqli_fetch_array($personasn)){
-                                                                              echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+                                                                              echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
                                                                               }
                                                                         ?>
                                                                     </select>
@@ -444,7 +448,7 @@ desired effect
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <label class="label-custom label-custom-info">Gerencia</label>
+                                                                        <label class="label-custom label-custom-info">SubGerencia</label>
                                                                         <input id="txtgerenciaresponsable" type="text" name="gerencia_responsable" value="" readonly class="form-control">
                                                                     </div>
                                                                 </div>
@@ -453,12 +457,13 @@ desired effect
                                                                     <label>Identificado por</label>
                                                                     <select name="identificado" class="form-control" id="ddlidentificado">
                                                                         <?php
-                                                                            $personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia 
+                                                                            $personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia, s.nombre as subgerencia
                                                                             FROM persona as p 
                                                                             LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
+                                                                            LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia
                                                                             WHERE p.borrado=0 ");
                                                                             while($rowps = mysqli_fetch_array($personasn)){
-                                                                              echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+                                                                              echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
                                                                               }
                                                                         ?>
                                                                     </select>
@@ -466,7 +471,7 @@ desired effect
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <label class="label-custom label-custom-info">Gerencia</label>
+                                                                        <label class="label-custom label-custom-info">SubGerencia</label>
                                                                         <input id="txtgerenciaidentificado" type="text" name="gerencia_responsable" value="" readonly class="form-control">
                                                                     </div>
                                                                 </div>          
@@ -475,12 +480,13 @@ desired effect
                                                                     <label>Referente</label>
                                                                     <select name="referente" class="form-control" id="ddlreferente">
                                                                         <?php
-                                                                            $personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia 
+                                                                            $personasn = mysqli_query($con, "SELECT p.*, g.nombre as gerencia, s.nombre as subgerencia 
                                                                             FROM persona as p 
                                                                             LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
+                                                                            LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia
                                                                             WHERE p.borrado=0 ");
                                                                             while($rowps = mysqli_fetch_array($personasn)){
-                                                                              echo "<option gerencia='" . $rowps['gerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+                                                                              echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
                                                                               }
                                                                         ?>
                                                                     </select>
@@ -488,7 +494,7 @@ desired effect
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <label class="label-custom label-custom-info">Gerencia</label>
+                                                                        <label class="label-custom label-custom-info">SubGerencia</label>
                                                                         <input id="txtgerenciareferente" type="text" name="gerencia_responsable" value="" readonly class="form-control">
                                                                     </div>
                                                                 </div>                                                                 
@@ -1519,7 +1525,7 @@ desired effect
                                                 <th>Amenaza</th>
                                                 <th>Responsable</th>
                                                 <th>Referente</th>
-                                                <th>Gerencia</th>
+                                                <th>SubGerencia</th>
                                                 <th>Proceso</th>
                                                 <th>F.Alta</th>
                                                 <!--<th>Activos</th> -->
@@ -1563,7 +1569,7 @@ desired effect
                                                   echo '<td>'.$row['amenaza'].'</td>';
                                                   echo '<td>'.$row['apellido'].' '.$row['nombre']. '</td>'; 
                                                   echo '<td>'.$row['ref_apellido'].' '.$row['ref_nombre']. '</td>'; 
-                                                  echo '<td>'.$row['gerencia'].'</td>'; 
+                                                  echo '<td>'.$row['subgerencia'].'</td>'; 
                                                   echo '<td>'.$row['proceso_nombre'].'</td>'; 
                                                   
                                                   //FIX SORT
@@ -1662,7 +1668,7 @@ desired effect
                                                 <th>Amenaza</th>
                                                 <th>Responsable</th>
                                                 <th>Referente</th>
-                                                <th>Gerencia</th>
+                                                <th>SubGerencia</th>
                                                 <th>Proceso</th>
                                                 <th>F.Alta</th>
                                                 <!--<th>Activos</th>-->
