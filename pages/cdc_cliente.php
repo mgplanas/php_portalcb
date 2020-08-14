@@ -220,6 +220,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <?php
             include_once('./modals/sdc_housing_view.php');
             include_once('./modals/sdc_hosting_view.php');
+            include_once('./modals/sdc_iaas_view.php');
             include_once('./modals/cdc_abmcliente.php');
         ?>
         <!-- FIN Housing -->        
@@ -257,6 +258,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
 <script src="./modals/sdc_housing_view.js"></script>      
 <script src="./modals/sdc_hosting_view.js"></script>      
+<script src="./modals/sdc_iaas_view.js"></script>      
 <script src="./modals/cdc_abmcliente.js"></script>      
 <script>
   $(function () {

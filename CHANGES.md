@@ -24,6 +24,8 @@ Nuevo servicio DC IAAS
     - site.php
 - suma de servicios en clientes y ink
     - pages/cdc_clientes
+    - pages/modals/sdc_iaas_view.php
+    - pages/modals/sdc_iaas_view.js
 
 ## FEAT-COSTEO
 
