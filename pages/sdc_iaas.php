@@ -160,10 +160,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td>'. $row['cliente'].'</td>';
 							echo '<td>'. $row['plataforma'].'</td>';
 							echo '<td>'. $row['reserva'].'</td>';
-							echo '<td align="center">'. $row['ram_capacidad'].'</td>';
-							echo '<td align="center">'. $row['storage_capacidad'].'</td>';
-							echo '<td align="center">'. $row['ram_uso'].'</td>';
-							echo '<td align="center">'. $row['storage_uso'].'</td>';
+							echo '<td align="center">'. number_format($row['ram_capacidad'],0,",",".").'</td>';
+							echo '<td align="center">'. number_format($row['storage_capacidad'],0,",",".").'</td>';
+							echo '<td align="center">'. number_format($row['ram_uso'],0,",",".").'</td>';
+							echo '<td align="center">'. number_format($row['storage_uso'],0,",",".").'</td>';
                             echo '<td>'. $row['observaciones'].'</td>';
 
                             echo '<td align="center">';
@@ -173,10 +173,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 data-id_cliente="' . $row['id_cliente'] . '" 
                                 data-plataforma="' . $row['plataforma'] . '" 
                                 data-reserva="' . $row['reserva'] . '" 
-                                data-ram_capacidad="' . $row['ram_capacidad'] . '" 
-                                data-storage_capacidad="' . $row['storage_capacidad'] . '" 
-                                data-ram_uso="' . $row['ram_uso'] . '" 
-                                data-storage_uso="' . $row['storage_uso'] . '" 
+                                data-ram_capacidad="' . number_format($row['ram_capacidad'],0,",","."). '" 
+                                data-storage_capacidad="' . number_format($row['storage_capacidad'],0,",",".") . '" 
+                                data-ram_uso="' . number_format($row['ram_uso'],0,",",".") . '" 
+                                data-storage_uso="' . number_format($row['storage_uso'],0,",",".") . '" 
                                 data-observaciones="' . $row['observaciones'] . '" 
                                 title="Editar Reserva" class="modal-abm-iaas-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
                                 <a href="sdc_iaas.php?aksi=delete&nik='.$row['id'].'" title="Borrar Reserva" onclick="return confirm(\'Esta seguro de borrar la reserva de VRA?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
