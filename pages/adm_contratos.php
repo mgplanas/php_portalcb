@@ -38,6 +38,9 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
    float: right;
    text-align: right;
 }
+.modal-abm-contrato-oc-show {
+    cursor: pointer;
+}
 </style>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -160,7 +163,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td>'. $row['subgerencia'].'</td>';
 							echo '<td>'. $row['proveedor'].'</td>';
 							echo '<td>'. $row['tipo_mantenimiento'].'</td>';
-                            echo '<td>'. $row['oc'].'</td>';
+                            if ($row['oc']) {
+                                echo '<td><a class="modal-abm-contrato-oc-show" data-oc="' . $row['oc'] . '">'. $row['oc'].'</a></td>';
+                            } else {
+                                echo '<td>'. $row['oc'].'</td>';
+                            }
                             // estado
                             echo '<td>';
                             if ($row['dias'] < 0) {
@@ -215,6 +222,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- /.col -->
         <?php
             include_once('./modals/adm_contratos.php');
+            include_once('./modals/adm_contratos_oc.php');
         ?>        
       </div>
       <!-- /.row -->

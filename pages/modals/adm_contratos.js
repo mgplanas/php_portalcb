@@ -4,6 +4,32 @@ $(function() {
     // GERENCIAS
     // ********************************************************************************************
     function setAMBTriggers() {
+        // MODAL OC
+        $('.modal-abm-contrato-oc-show').off('click').on('click', function() {
+            let oc = $(this).data('oc');
+            $('#modal-abm-contrato-oc-show-title').html('Detalle ' + oc);
+
+            let strquery = "SELECT c.fecha_oc, c.fecha_fin_contrato, CONCAT(m.sigla, ' ', c.oc_monto) as monto, p.razon_social, r.descripcion as proceso  FROM adm_compras as c ";
+            strquery += "LEFT JOIN adm_com_proveedores as p ON c.id_proveedor = p.id ";
+            strquery += "LEFT JOIN adm_com_procesos as r ON c.id_proceso = r.id ";
+            strquery += "LEFT JOIN adm_monedas as m ON c.oc_id_moneda = m.id ";
+            strquery += "WHERE c.nro_oc = '" + oc + "';";
+            $.getJSON("./helpers/getAsyncDataFromDB.php", { query: strquery },
+                function(response) {
+                    if (!response.data || !response.data[0]) {
+                        alert('No existe OC');
+                        return;
+                    }
+                    actualizarModaleOC(response.data[0]);
+                    $("#modal-abm-contrato-oc-show").modal("show");
+                    return;
+                }
+            ).fail(function(jqXHR, errorText) {
+                console.log(errorText);
+                return alert(errorText);
+            });
+
+        });
         // ALTA
         // seteo boton trigger para el alta de gerencia
         $('#modal-abm-contrato-btn-alta').off('click').on('click', function() {
@@ -161,6 +187,14 @@ $(function() {
         $('#modal-abm-contrato-tipo').val(compra.concepto);
         $("#modal-abm-contrato-proveedor").val(compra.id_proveedor).change();
         $("#modal-abm-contrato-subgerencia").val(compra.id_subgerencia).change();
+    }
+    // Actualiza el modal con los campos de la OC
+    function actualizarModaleOC(compra) {
+        $('#modal-abm-contrato-oc-show-fecha').html(compra.fecha_oc.split('-').reverse().join('/'));
+        $('#modal-abm-contrato-oc-show-vto').html(compra.fecha_fin_contrato.split('-').reverse().join('/'));
+        $('#modal-abm-contrato-oc-show-monto').html(compra.monto);
+        $("#modal-abm-contrato-oc-show-proveedor").html(compra.razon_social);
+        $("#modal-abm-contrato-oc-show-proceso").html(compra.proceso);
     }
     // ********************************************************************************************
 
