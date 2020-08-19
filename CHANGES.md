@@ -1,5 +1,32 @@
 # CHANGES
 
+## FEAT-IAAS
+
+Nuevo servicio DC IAAS
+*Fecha:* 2020-07-27
+*Cambios:*
+
+* Nuevo campo Estado en clientes
+- [DB] Se crea el campo con_convenio int = 0 en cdc_cliente
+
+- Se visualiza con marca en la grilla
+- Se actualiza abm y modal
+- [DB] Nuevo campo modalidad en sdc_housing int = 0
+- [DB] Nueva tabla sdc_housing_modalidad
+- Se actualiza grilla sdc_housing y abms helper y modal
+- [DB] Nueva tabla sdc_iaas
+- CRUD iaas
+    - pages/sdc_iaas.php
+    - pages/modals/sdc_abmiaas.php
+    - pages/modals/sdc_abmiaas.js
+    - pages/helpers/sdc_abmiaasdb.php
+    - pages/site_sidemenu.php
+    - site.php
+- suma de servicios en clientes y ink
+    - pages/cdc_clientes
+    - pages/modals/sdc_iaas_view.php
+    - pages/modals/sdc_iaas_view.js
+
 ## FEAT-RGO-PROCESOS
 ABM procesos y aplicar a riesgos
 *Fecha:* 2020-08-11
@@ -75,6 +102,7 @@ Nuevo paso Cancelado con indicador
 - [DB] Agrega nuevo registro en tabla de adm_com_pasos
 - Se previene de que ese paso calcule advertencia de promedio
 - Se crea indicador de reloj [compras.php]
+
 
 ## FEAT-COSTEO
 
@@ -612,6 +640,7 @@ Correcciones POST Producción
 *Fecha:* 2019-09-27
 *Cambios:*
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 - Se corrige el menú lateral del inicio (Se saca la opción de dashboard en modulo de clientes)
   M[site.php]
@@ -624,6 +653,8 @@ Correcciones POST Producción
  devel
 
 =======
+=======
+>>>>>>> FEAT-IAAS
 
 - Se corrige el menú lateral del inicio (Se saca la opción de dashboard en modulo de clientes)
   M[site.php]
@@ -635,7 +666,10 @@ Correcciones POST Producción
 
 >>>>>>> devel
 >>>>>>>
+<<<<<<< HEAD
 >>>>>>> FEAT-CMP-CANCEL
+=======
+>>>>>>> FEAT-IAAS
 >>>>>>
 >>>>>
 >>>>
@@ -728,10 +762,13 @@ Gererar portal para consulta de clientes/servicios dc basados en una base access
 ### Correcciónes MC
 
 <<<<<<< HEAD
+<<<<<<< HEAD
  - Se indica el id en vez de la referencia al editar
  - Se muestra la totalidad de los responsables en editar_mejora por si estubo dado de baja.
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> FEAT-IAAS
 
 >>>>>>> devel
 >>>>>>> =======
@@ -745,7 +782,10 @@ Gererar portal para consulta de clientes/servicios dc basados en una base access
 >>>>
 >>>
 >>
+<<<<<<< HEAD
 >>>>>>> FEAT-CMP-CANCEL
+=======
+>>>>>>> FEAT-IAAS
 
 ## FEAT-PROY-GTI (CON FEAT-ADMIN-PER)
 
@@ -829,12 +869,17 @@ Gererar portal para consulta de clientes/servicios dc basados en una base access
   M[site.php]
 
 <<<<<<< HEAD
+<<<<<<< HEAD
  devel
 
 =======
 >>>>>>> devel
 >>>>>>>
 >>>>>>> FEAT-CMP-CANCEL
+=======
+>>>>>>> devel
+>>>>>>>
+>>>>>>> FEAT-IAAS
 >>>>>>
 >>>>>
 >>>>
@@ -888,9 +933,13 @@ En vez de por área por responsable
 *Fecha:* 2019-09-16
 *Cambios:*
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> FEAT-CMP-CANCEL
+=======
+
+>>>>>>> FEAT-IAAS
 - Se agrega una nueva página de metricas para mejoras N[met_mejoras]
 - Se actualizan los links en site y sidebar M[/site.php] M[site_sidebar.php]
 - Se crean los graficos para AMy NC totales y por origen
@@ -903,12 +952,17 @@ En vez de por área por responsable
 - Se muestra como número de mejora el mismo id [mejora.php]
 
 <<<<<<< HEAD
+<<<<<<< HEAD
  devel
 
 =======
 >>>>>>> devel
 >>>>>>>
 >>>>>>> FEAT-CMP-CANCEL
+=======
+>>>>>>> devel
+>>>>>>>
+>>>>>>> FEAT-IAAS
 >>>>>>
 >>>>>
 >>>>
@@ -1073,6 +1127,19 @@ En vez de por área por responsable
 
 *Fecha:* 2019-05-31
 *Cambios:*
+<<<<<<< HEAD
+=======
+
+- Pongo número de referencia en el título en vez del id
+  M[mejoras.php]
+  M[edit_mejora.php]
+- Cambio L&F datatable, agrego ordering
+  M[mejoras.php]
+  -filtro por estado, responsable y tipo
+  M[mejoras.php]
+  -agrego demás campos en la grilla (ocultos) para que se puedan exportar
+  M[mejoras.php]
+>>>>>>> FEAT-IAAS
 
 - Pongo número de referencia en el título en vez del id
   M[mejoras.php]
@@ -1107,7 +1174,10 @@ En vez de por área por responsable
 >>>
 >>
 
+<<<<<<< HEAD
 >>>>>>> FEAT-CMP-CANCEL
+=======
+>>>>>>> FEAT-IAAS
 - Se crea página para mostrar el calendario anual de los cntroles
   N[cal_controles.php]
 - Agrego el link en controles.php
@@ -1133,9 +1203,13 @@ En vez de por área por responsable
 *Fecha:* 2019-04-16
 *Cambios:*
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> FEAT-CMP-CANCEL
+=======
+
+>>>>>>> FEAT-IAAS
 - Mostrar campo justificación en los avances de 100% M[edit_riesgo.php]
 - Agregar Filtro en Grilla de Riesgos M[riesgos.php]
 - Cambiar paginación de grillas a 20 elementos:

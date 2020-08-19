@@ -7,16 +7,17 @@ session_start();
 if (!isset($_SESSION['usuario'])){
 	header('Location: ../index.html');
 }
-$page_title="Clientes DC";
+$page_title="IAAS"; 
 $user=$_SESSION['usuario'];
 
-/// BORRADO DE CLIENTE (SOLO SI NO TIEN SERVICIOS ASOCIADOS)
+
+/// BORRADO DE SERVICIO DE IAAS
 if(isset($_GET['aksi']) == 'delete'){
 	// escaping, additionally removing everything that could be (html/javascript-) code
 	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
   //Elimino Control
   
-  $delete_control = mysqli_query($con, "UPDATE cdc_cliente SET borrado='1' WHERE id='$nik'");
+  $delete_control = mysqli_query($con, "UPDATE sdc_iaas SET borrado='1' WHERE id='$nik'");
   
   //$delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
   //                  VALUES ('3', '5', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
@@ -24,6 +25,7 @@ if(isset($_GET['aksi']) == 'delete'){
     $_SESSION['formSubmitted'] = 9;
   }
 }
+
 
 //Get user query
 $persona = mysqli_query($con, "SELECT * FROM persona WHERE email='$user'  AND borrado = 0");
@@ -65,7 +67,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
-  <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
    <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
@@ -82,13 +83,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     .example-modal .modal {
       background: transparent !important;
     }
-
-      .dataTables_scrollHeadInner {
-  width: 100% !important;
-  }
-  .dataTables_scrollHeadInner table {
-  width: 100% !important;
-  }    
   </style>
 </head>
 
@@ -107,7 +101,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 	<section class="content-header">
-      <h1>Gestión de Clientes</h1>
+      <h1>Servicios de IAAS</h1>
     </section>
     <!-- Main content -->
     <section class="content container-fluid">
@@ -120,11 +114,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="box">
             <div class="box-header">
 				<div class="col-sm-6" style="text-align:left">
-					<h2 class="box-title">Listado de Clientes</h2>
+					<h2 class="box-title">Listado de Reservas</h2>
 				</div>
          <div class="col-sm-6" style="text-align:right;">
           <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
-            <button type="button" id="modal-abm-cliente-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-user"></i> Nuevo Cliente</button>
+          <button type="button" id="modal-abm-iaas-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-cloud"></i> Nueva Reserva de IAAS</button>
           <?php } ?>
 				</div>
             </div>
@@ -132,78 +126,63 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.box-header -->
 	
 			<div class="box-body">
-              <table id="clientes" class="display">
+              <table id="iaas" class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Organismo</th>
-                    <th>Cliente</th>
-                    <th>Alias/Sigla</th>
-                    <th>CUIT</th>
-                    <th>Sector</th>
-                    <th><i class="fa fa-briefcase" title="Convenio" style="font-size: 20px;"></i></th>
-                    <th><i class="fa fa-home" title="Housing" style="font-size: 20px;"></i></th>
-                    <th><i class="fa fa-server" title="Hosting" style="font-size: 20px;"></i></th>
-                    <th><i class="fa fa-cloud" title="IAAS" style="font-size: 20px;"></i></th>
-                    <th></th>
+                  <th>Organismo</th>
+                  <th>Cliente</th>
+                  <th>Plataforma</th>
+                  <th>Reserva</th>
+                  <th>RAM [GB]</th>
+                  <th>Storage [GB]</th>
+                  <th>Uso RAM [GB]</th>
+                  <th>Uso Storage [GB]</th>
+                  <th>Observaciones</th>
+                  <th width="100">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT C.id_organismo, C.id, C.razon_social, O.razon_social as organismo, C.cuit, C.nombre_corto, C.sector, C.con_convenio,
-                    (SELECT COUNT(1) FROM sdc_hosting as HO where HO.id_cliente = C.id AND HO.borrado=0) as hosting,
-                    (SELECT COUNT(1) FROM sdc_housing as HU where HU.id_cliente = C.id AND HU.borrado=0) as housing,
-                    (SELECT COUNT(1) FROM sdc_iaas as IA where IA.id_cliente = C.id AND IA.borrado=0) as iaas
-                  FROM cdc_cliente as C 
-                  LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
-                  WHERE C.borrado = 0";
+					$query = "SELECT H.id, H.id_cliente, H.plataforma, H.reserva, H.ram_capacidad, H.ram_uso, H.storage_capacidad, H.storage_uso, H.observaciones, C.razon_social as cliente, O.razon_social as organismo
+                                FROM sdc_iaas as H
+                                INNER JOIN cdc_cliente as C ON H.id_cliente = C.id
+                                LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
+                                WHERE H.borrado = 0"; 
 					
 					$sql = mysqli_query($con, $query);
 
-					if(mysqli_num_rows($sql) == 0){
-						echo '<tr><td colspan="8">No hay datos.</td></tr>';
-					}else{
+					if(mysqli_num_rows($sql) > 0){
 						$no = 1;
 						while($row = mysqli_fetch_assoc($sql)){
 							
 							echo '<tr>';
 							echo '<td>'. $row['organismo'].'</td>';
-							echo '<td>'. $row['razon_social'].'</td>';
-							echo '<td align="center">'. $row['nombre_corto'].'</td>';
-							echo '<td align="center">'. $row['cuit'].'</td>';
-                            echo '<td align="center">'. $row['sector'].'</td>';
-                            echo '<td align="center">'. ($row['con_convenio'] ? '<i class="fa fa-check"></i>' : '') .'</td>';
+							echo '<td>'. $row['cliente'].'</td>';
+							echo '<td>'. $row['plataforma'].'</td>';
+							echo '<td>'. $row['reserva'].'</td>';
+							echo '<td align="center">'. number_format($row['ram_capacidad'],0,",",".").'</td>';
+							echo '<td align="center">'. number_format($row['storage_capacidad'],0,",",".").'</td>';
+							echo '<td align="center">'. number_format($row['ram_uso'],0,",",".").'</td>';
+							echo '<td align="center">'. number_format($row['storage_uso'],0,",",".").'</td>';
+                            echo '<td>'. $row['observaciones'].'</td>';
+
                             echo '<td align="center">';
-                            if ($row['housing'] > 0) {
-                                echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicio de Housing" class="modal-abm-housing-view btn">' . $row['housing'] . '</a>';
-                            }
-                            echo '</td>';
-                            echo '<td align="center">';
-                            if ($row['hosting'] > 0) {
-                                echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicios de Hosting" class="modal-abm-hosting-view btn">' . $row['hosting'] . '</a>';
-                            }
-                            echo '<td align="center">';
-                            if ($row['iaas'] > 0) {
-                                echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicios de IAAS" class="modal-abm-iaas-view btn">' . $row['iaas'] . '</a>';
-                            }
-                            echo '</td>';
-							echo '<td align="center">';
-                            if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
+                            if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ 
                                 echo '<a 
                                 data-id="' . $row['id'] . '" 
-                                data-nombre="' . $row['razon_social'] . '" 
-                                data-sigla="' . $row['nombre_corto'] . '" 
-                                data-cuit="' . $row['cuit'] . '" 
-                                data-organismo="' . $row['id_organismo'] . '" 
-                                data-sector="' . $row['sector'] . '" 
-                                data-convenio="' . $row['con_convenio'] . '" 
-                                title="Editar Cliente" class="modal-abm-cliente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
-                                if ($row['housing'] == 0 AND $row['hosting'] == 0 AND $row['iaas'] == 0) {
-                                    echo '<a href="cdc_cliente.php?aksi=delete&nik='.$row['id'].'" title="Borrar Cliente" onclick="return confirm(\'Esta seguro de borrar el cliente '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
-                                }
+                                data-id_cliente="' . $row['id_cliente'] . '" 
+                                data-plataforma="' . $row['plataforma'] . '" 
+                                data-reserva="' . $row['reserva'] . '" 
+                                data-ram_capacidad="' . number_format($row['ram_capacidad'],0,",","."). '" 
+                                data-storage_capacidad="' . number_format($row['storage_capacidad'],0,",",".") . '" 
+                                data-ram_uso="' . number_format($row['ram_uso'],0,",",".") . '" 
+                                data-storage_uso="' . number_format($row['storage_uso'],0,",",".") . '" 
+                                data-observaciones="' . $row['observaciones'] . '" 
+                                title="Editar Reserva" class="modal-abm-iaas-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                                <a href="sdc_iaas.php?aksi=delete&nik='.$row['id'].'" title="Borrar Reserva" onclick="return confirm(\'Esta seguro de borrar la reserva de VRA?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
                             }
                             echo '</td>
-							</tr>
-							';
+                            </tr>';
 						}
 					}
 					?>
@@ -212,18 +191,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             <!-- /.box-body -->
           </div>
+          <!-- /.box -->
 
           <!-- /.box -->
         </div>
         <!-- /.col -->
-        <!-- MODAL Housing -->
         <?php
-            include_once('./modals/sdc_housing_view.php');
-            include_once('./modals/sdc_hosting_view.php');
-            include_once('./modals/sdc_iaas_view.php');
-            include_once('./modals/cdc_abmcliente.php');
-        ?>
-        <!-- FIN Housing -->        
+            include_once('./modals/sdc_abmiaas.php');
+        ?>        
       </div>
       <!-- /.row -->
     </section>
@@ -241,7 +216,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- DataTables -->
 <script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<!-- <script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script> -->
+<script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -256,39 +231,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
-<script src="./modals/sdc_housing_view.js"></script>      
-<script src="./modals/sdc_hosting_view.js"></script>      
-<script src="./modals/sdc_iaas_view.js"></script>      
-<script src="./modals/cdc_abmcliente.js"></script>      
+<script src="./modals/sdc_abmiaas.js"></script>
+      
 <script>
-  $(function () {
-    $('#clientes').DataTable({
-      'paging'      : true,
-			'pageLength': 20,
-      'lengthChange': false,
-      'searching'   : true,
-      'ordering'    : true,
-      'order'       : [[ 0, 'desc' ], [1, 'asc']],
-      'info'        : true,
-      'autoWidth'   : false,
-      'dom'         : 'frtipB',
-      'buttons'     : [{
-                  extend: 'pdfHtml5',
-                  orientation: 'landscape',
-                  pageSize: 'A4',
-                         
-                     },
-                      {
-            extend: 'excel',
-            text: 'Excel',
-            }]
 
-    })
-  })
 </script>
 <script>
     window.onload = function() {
-        history.replaceState("", "", "cdc_cliente.php");
+        history.replaceState("", "", "sdc_iaas.php");
     }
 </script>
 <script>

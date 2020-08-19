@@ -451,6 +451,7 @@ desired effect
                   <ul class="treeview-menu">
                     <li><a href="./pages/sdc_housing.php"><i class="fa fa-home"></i> Housing</a></li>
                     <li><a href="./pages/sdc_hosting.php"><i class="fa fa-server"></i> Hosting</a></li>
+                    <li><a href="./pages/sdc_iaas.php"><i class="fa fa-cloud"></i> IAAS</a></li>
                   </ul>
                 </li>
               </ul>

@@ -26,24 +26,45 @@
                         </select>
                     </div>                    
                     <div class="form-group">
-                        <label for="energia">Energia (KVA)</label>
-                        <input type="number" min="0" step="1" class="form-control floatNumber" name="energia" placeholder="KVA" id='modal-abm-housing-energia'>
+                        <div class="col-md-4">
+                            <label for="energia">Energia (KVA)</label>
+                            <input type="number" min="0" step="1" class="form-control floatNumber" name="energia" placeholder="KVA" id='modal-abm-housing-energia'>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Modalidad</label>
+                            <select name="modalidad" class="form-control" id='modal-abm-housing-modalidad'>
+                                <?php
+                                $modalidad = mysqli_query($con, "SELECT * FROM sdc_housing_modalidad WHERE borrado = 0");
+                                while($rowm = mysqli_fetch_assoc($modalidad)){
+                                    echo "<option value=". $rowm['id'] . ">" . $rowm['descripcion'] . "</option>";
+                                }
+                                ?>
+                            </select>             
+                        </div>           
+                        <div class="col-md-4">
+                            <div class="form-group floatNumber">
+                                <label for="m2">M2</label>
+                                <input type="number" min="0" class="form-control" name="m2" placeholder="Metros cuadrados" id='modal-abm-housing-m2' required>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group floatNumber">
-                        <label for="m2">M2</label>
-                        <input type="number" min="0" class="form-control" name="m2" placeholder="Metros cuadrados" id='modal-abm-housing-m2' required>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="sala">Sala</label>
+                            <input type="text" class="form-control" name="sala" placeholder="sala" id='modal-abm-housing-sala'>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="sala">Sala</label>
-                        <input type="text" class="form-control" name="sala" placeholder="sala" id='modal-abm-housing-sala'>
-                    </div>
-                    <div class="form-group">
-                        <label for="fila">Fila</label>
-                        <input type="text" class="form-control" name="fila" placeholder="fila" id='modal-abm-housing-fila'>
-                    </div>                    
-                    <div class="form-group">
-                        <label for="rack">Rack</label>
-                        <input type="text" class="form-control" name="rack" placeholder="rack" id='modal-abm-housing-rack'>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="fila">Fila</label>
+                            <input type="text" class="form-control" name="fila" placeholder="fila" id='modal-abm-housing-fila'>
+                        </div>             
+                    </div>             
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="rack">Rack</label>
+                            <input type="text" class="form-control" name="rack" placeholder="rack" id='modal-abm-housing-rack'>
+                        </div>                    
                     </div>                    
                     <div class="form-group">
                         <label for="alta">Fecha Alta</label>

@@ -13,12 +13,45 @@
 - Backup /pages
 - Cambios en DB
 
+    ADD field con_convenio INT NOT NULL = 0 en CDC_CLIENTE
+    ADD field modalidad INT NOT NULL = 0 en SDC_HOUSING
+    ADD table sdc_housing_modalidad
+        CREATE TABLE `sdc_housing_modalidad` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `descripcion` varchar(25) NOT NULL,
+        `borrado` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+    MIGRAR DATOS DE MODALIDADES
+        id	descripcion	borrado
+        1	Rack	0
+        2	Sala	0
+
+    ADD table scd_iaas
+        CREATE TABLE `sdc_iaas` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `id_cliente` int(11) NOT NULL,
+        `plataforma` varchar(20) NOT NULL DEFAULT 'VRA',
+        `reserva` varchar(50) NOT NULL,
+        `ram_capacidad` int(11) NOT NULL,
+        `storage_capacidad` int(11) NOT NULL,
+        `ram_uso` int(11) NOT NULL,
+        `storage_uso` int(11) NOT NULL,
+        `observaciones` varchar(255) DEFAULT NULL,
+        `borrado` int(11) NOT NULL DEFAULT '0',
+        PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 - Cambios en src
- pages/cdc_solicitudes.php              | 344 +++++++++++++++++++++++++++++++++
- pages/helpers/cdc_abmsolicitudesdb.php | 119 ++++++++++++
- pages/modals/cdc_abmsolicitudes.js     | 225 +++++++++++++++++++++
- pages/modals/cdc_abmsolicitudes.php    | 143 ++++++++++++++
- pages/site_sidebar.php                 |   1 +
- site.php  
+- Se actualiza grilla sdc_housing y abms helper y modal
+    - pages/sdc_iaas.php
+    - pages/modals/sdc_abmiaas.php
+    - pages/modals/sdc_abmiaas.js
+    - pages/helpers/sdc_abmiaasdb.php
+    - pages/site_sidemenu.php
+    - site.php
+- suma de servicios en clientes y ink
+    - pages/cdc_clientes
+    - pages/modals/sdc_iaas_view.php
+    - pages/modals/sdc_iaas_view.js 
