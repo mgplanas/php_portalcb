@@ -56,3 +56,22 @@
     - pages/cdc_clientes
     - pages/modals/sdc_iaas_view.php
     - pages/modals/sdc_iaas_view.js 
+
+ CHANGES.md                         |  77 +++++++++++++
+ pages/RELEASENOTE.md               |  50 +++++++--
+ pages/cdc_cliente.php              |  65 ++++++-----
+ pages/helpers/cdc_abmclientedb.php |   7 +-
+ pages/helpers/sdc_abmhousingdb.php |   7 +-
+ pages/helpers/sdc_abmiaasdb.php    |  46 ++++++++
+ pages/modals/cdc_abmcliente.js     |  11 +-
+ pages/modals/cdc_abmcliente.php    |  17 ++-
+ pages/modals/sdc_abmhousing.js     |   6 +-
+ pages/modals/sdc_abmhousing.php    |  53 ++++++---
+ pages/modals/sdc_abmiaas.js        | 131 ++++++++++++++++++++++
+ pages/modals/sdc_abmiaas.php       |  88 +++++++++++++++
+ pages/modals/sdc_iaas_view.js      |  69 ++++++++++++
+ pages/modals/sdc_iaas_view.php     |  56 ++++++++++
+ pages/sdc_housing.php              |   9 +-
+ pages/sdc_iaas.php                 | 261 ++++++++++++++++++++++++++++++++++++++++++++
+ pages/site_sidebar.php             |   1 +
+ site.php                           |   1 +
