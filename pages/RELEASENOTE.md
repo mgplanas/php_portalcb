@@ -4,7 +4,7 @@
 
 ### Features
 
-- FEAT-SI
+- FEAT-IAAS
 
 ### Pasos
 
@@ -13,21 +13,21 @@
 - Backup /pages
 - Cambios en DB
 
-    ADD field con_convenio INT NOT NULL = 0 en CDC_CLIENTE
-    ADD field modalidad INT NOT NULL = 0 en SDC_HOUSING
-    ADD table sdc_housing_modalidad
+    OK ADD field con_convenio INT NOT NULL = 0 en CDC_CLIENTE
+    OK ADD field modalidad INT NOT NULL = 0 en SDC_HOUSING
+    OK ADD table sdc_housing_modalidad
         CREATE TABLE `sdc_housing_modalidad` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `descripcion` varchar(25) NOT NULL,
         `borrado` int(11) NOT NULL DEFAULT '0',
         PRIMARY KEY (`id`)
         ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-    MIGRAR DATOS DE MODALIDADES
+    OK MIGRAR DATOS DE MODALIDADES
         id	descripcion	borrado
         1	Rack	0
         2	Sala	0
 
-    ADD table scd_iaas
+    OK ADD table scd_iaas
         CREATE TABLE `sdc_iaas` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `id_cliente` int(11) NOT NULL,
@@ -42,6 +42,7 @@
         PRIMARY KEY (`id`)
         ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+    MIGRAR PLANILLA DE VRA
 
 - Cambios en src
 - Se actualiza grilla sdc_housing y abms helper y modal
