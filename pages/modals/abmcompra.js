@@ -173,7 +173,7 @@ $(function() {
         ddlProveedor.empty();
 
         //Populo las areas
-        $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM adm_com_proveedores WHERE borrado = 0' },
+        $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM adm_com_proveedores WHERE borrado = 0 ORDER BY razon_social' },
             function(response) {
                 $.each(response.data, function() {
                     if (selectedValue && selectedValue == this.id) {

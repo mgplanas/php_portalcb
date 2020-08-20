@@ -18,6 +18,7 @@ ABM seguimiento de contratos
 - pages/site_sidebar.php
 - pages/adm_contratos.php
 
+- pages/modals/abmcompras.js
 - pages/modals/adm_contratos.php
 - pages/modals/adm_contratos.js
 - pages/modals/adm_contratos_oc.php
