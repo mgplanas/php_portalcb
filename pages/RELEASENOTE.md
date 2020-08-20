@@ -4,7 +4,7 @@
 
 ### Features
 
-- FEAT-IAAS
+- FEAT-DC-CONTRATOS
 
 ### Pasos
 
@@ -13,54 +13,28 @@
 - Backup /pages
 - Cambios en DB
 
-    PR OK ADD field con_convenio INT NOT NULL = 0 en CDC_CLIENTE
-    PR OK ADD field modalidad INT NOT NULL = 0 en SDC_HOUSING
-    PR OK ADD table sdc_housing_modalidad
-        CREATE TABLE `sdc_housing_modalidad` (
-        `id` int(11) NOT NULL AUTO_INCREMENT,
-        `descripcion` varchar(25) NOT NULL,
-        `borrado` int(11) NOT NULL DEFAULT '0',
-        PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-    PR OK MIGRAR DATOS DE MODALIDADES
-        id	descripcion	borrado
-        1	Rack	0
-        2	Sala	0
+    CREATE TABLE `adm_contratos_vto` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `id_subgerencia` int(11) NOT NULL,
+    `id_proveedor` int(11) DEFAULT NULL,
+    `tipo_mantenimiento` varchar(255) DEFAULT NULL,
+    `vencimiento` datetime NOT NULL,
+    `oc` varchar(20) DEFAULT NULL,
+    `borrado` int(11) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
-    PR OK ADD table scd_iaas
-        CREATE TABLE `sdc_iaas` (
-        `id` int(11) NOT NULL AUTO_INCREMENT,
-        `id_cliente` int(11) NOT NULL,
-        `plataforma` varchar(20) NOT NULL DEFAULT 'VRA',
-        `reserva` varchar(50) NOT NULL,
-        `ram_capacidad` int(11) NOT NULL,
-        `storage_capacidad` int(11) NOT NULL,
-        `ram_uso` int(11) NOT NULL,
-        `storage_uso` int(11) NOT NULL,
-        `observaciones` varchar(255) DEFAULT NULL,
-        `borrado` int(11) NOT NULL DEFAULT '0',
-        PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
-    PR MIGRAR PLANILLA DE VRA
+    ALTER TABLE controls.permisos
+    ADD admin_contratos INT AFTER admin_riesgos;
 
 - Cambios en src
 
- CHANGES.md                         |  77 +++++++++++++
- pages/RELEASENOTE.md               |  50 +++++++--
- - pages/cdc_cliente.php              |  65 ++++++-----
- - pages/sdc_housing.php              |   9 +-
- - pages/sdc_iaas.php                 | 261 ++++++++++++++++++++++++++++++++++++++++++++
- - pages/site_sidebar.php             |   1 +
- - pages/helpers/cdc_abmclientedb.php |   7 +-
- - pages/helpers/sdc_abmhousingdb.php |   7 +-
- - pages/helpers/sdc_abmiaasdb.php    |  46 ++++++++
- - pages/modals/cdc_abmcliente.js     |  11 +-
- - pages/modals/cdc_abmcliente.php    |  17 ++-
- - pages/modals/sdc_abmhousing.js     |   6 +-
- - pages/modals/sdc_abmhousing.php    |  53 ++++++---
- - pages/modals/sdc_abmiaas.js        | 131 ++++++++++++++++++++++
- - pages/modals/sdc_abmiaas.php       |  88 +++++++++++++++
- - pages/modals/sdc_iaas_view.js      |  69 ++++++++++++
- - pages/modals/sdc_iaas_view.php     |  56 ++++++++++
- - site.php                           |   1 +
+    CHANGES.md                        |  28 +++++++++++
+    pages/RELEASENOTE.md              |  42 +++++++++-------
+    pages/admin.php                   |  21 ++++++--
+    pages/helpers/adm_contratosdb.php |  48 +++++++++++++++++++
+    pages/modals/abmcompra.js         |   2 +-
+    pages/modals/adm_contratos.php    |  84 ++++++++++++++++++++++++++++++++
+    pages/modals/adm_contratos_oc.php |  71 +++++++++++++++++++++++++++
+    pages/setPermiso.php              |  11 +++++
+    pages/site_sidebar.php            |   1 +

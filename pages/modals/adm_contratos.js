@@ -212,7 +212,8 @@ $(function() {
         strquery += 'WHERE c.borrado = 0;';
 
         return $('#vtos').DataTable({
-            "paging": false,
+            "paging": true,
+            'pageLength': 30,
             "deferRender": true,
             // "ajax": {
             //     type: 'POST',
