@@ -147,5 +147,16 @@
             $sel1=mysqli_query($con, $sel);
         }
     }    
+    else if ($f=='13'){
+        $admin = $check['admin_contratos'];
+        if ($admin == '0'){
+            $sel="update permisos set admin_contratos='1' where id_permiso='$s'";
+            $sel1=mysqli_query($con, $sel);
+        }
+        else{
+            $sel="update permisos set admin_contratos='0' where id_permiso='$s'";
+            $sel1=mysqli_query($con, $sel);
+        }
+    }    
     
 ?>

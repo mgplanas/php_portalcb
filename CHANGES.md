@@ -1,5 +1,29 @@
 # CHANGES
 
+## FEAT-DC-CONTRATOS
+
+ABM seguimiento de contratos
+*Fecha:* 2020-08-07
+*Cambios:*
+
+- [DB] Se crea la tabla adm_contratos_vto
+- nuevo permiso para adm
+    - [DB] Se crea el campo adm_contratos en permisos
+    ALTER TABLE controls.permisos
+    ADD admin_contratos INT AFTER admin_riesgos;
+
+- site.php
+- pages/admin.php
+- pages/setPermiso.php
+- pages/site_sidebar.php
+- pages/adm_contratos.php
+
+- pages/modals/adm_contratos.php
+- pages/modals/adm_contratos.js
+- pages/modals/adm_contratos_oc.php
+
+- pages/helpers/adm_contratosdb.php
+
 ## FEAT-IAAS
 
 Nuevo servicio DC IAAS
@@ -50,6 +74,9 @@ ABM procesos y aplicar a riesgos
         * pages/edit_riesgo.php
 
 ## FEAT-RGO-SORT
+
+
+##FEAT-RGO-SORT
 
 FIX en ordenamiento de fechas
 *Fecha:* 2020-07-28
