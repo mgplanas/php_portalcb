@@ -148,7 +148,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     datediff(c.vencimiento, now()) as dias 
                                 FROM adm_contratos_vto as c 
                                 INNER JOIN subgerencia as s ON c.id_subgerencia = s.id_subgerencia 
-                                INNER JOIN adm_com_proveedores as p ON c.id_proveedor = p.id 
+                                LEFT JOIN adm_com_proveedores as p ON c.id_proveedor = p.id 
                                 WHERE c.borrado = 0;";
 					
 					$sql = mysqli_query($con, $query);
