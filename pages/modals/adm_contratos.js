@@ -191,7 +191,7 @@ $(function() {
     // Actualiza el modal con los campos de la OC
     function actualizarModaleOC(compra) {
         $('#modal-abm-contrato-oc-show-fecha').html(compra.fecha_oc.split('-').reverse().join('/'));
-        $('#modal-abm-contrato-oc-show-vto').html(compra.fecha_fin_contrato.split('-').reverse().join('/'));
+        $('#modal-abm-contrato-oc-show-vto').html(compra.fecha_fin_contrato ? compra.fecha_fin_contrato.split('-').reverse().join('/') : 'Sin Fecha de finalización');
         $('#modal-abm-contrato-oc-show-monto').html(compra.monto);
         $("#modal-abm-contrato-oc-show-proveedor").html(compra.razon_social);
         $("#modal-abm-contrato-oc-show-proceso").html(compra.proceso);
