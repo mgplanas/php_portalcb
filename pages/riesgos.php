@@ -438,7 +438,7 @@ desired effect
                                                                                                                FROM persona as p 
                                                                                                                LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia
                                                                                                                LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia 
-                                                                                                             WHERE p.borrado=0 ");
+                                                                                                             WHERE p.borrado=0 ORDER BY p.apellido, p.nombre");
                                                                             while($rowps = mysqli_fetch_array($personasn)){
                                                                               echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
                                                                               }
@@ -461,7 +461,7 @@ desired effect
                                                                             FROM persona as p 
                                                                             LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
                                                                             LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia
-                                                                            WHERE p.borrado=0 ");
+                                                                            WHERE p.borrado=0 ORDER BY p.apellido, p.nombre");
                                                                             while($rowps = mysqli_fetch_array($personasn)){
                                                                               echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
                                                                               }
@@ -484,7 +484,7 @@ desired effect
                                                                             FROM persona as p 
                                                                             LEFT JOIN gerencia as g ON p.gerencia = g.id_gerencia 
                                                                             LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia
-                                                                            WHERE p.borrado=0 ");
+                                                                            WHERE p.borrado=0 ORDER BY p.apellido, p.nombre");
                                                                             while($rowps = mysqli_fetch_array($personasn)){
                                                                               echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
                                                                               }
