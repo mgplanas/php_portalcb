@@ -314,7 +314,7 @@ desired effect
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="label-custom label-custom-info">Gerencia</label>
+                    <label class="label-custom label-custom-info">SubGerencia</label>
                     <input id="txtgerenciaresponsable" type="text" name="gerencia_responsable" value="" readonly class="form-control">
                 </div>
             </div>
@@ -342,7 +342,7 @@ desired effect
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="label-custom label-custom-info">Gerencia</label>
+                    <label class="label-custom label-custom-info">SubGerencia</label>
                     <input id="txtgerenciaidentificado" type="text" name="gerencia_identificado" value="" readonly class="form-control">
                 </div>
             </div>  
@@ -370,7 +370,7 @@ desired effect
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="label-custom label-custom-info">Gerencia</label>
+                    <label class="label-custom label-custom-info">SubGerencia</label>
                     <input id="txtgerenciareferente" type="text" name="gerencia_responsable" value="" readonly class="form-control">
                 </div>
             </div>      
