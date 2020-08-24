@@ -119,7 +119,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					<h2 class="box-title">Listado de Contratos</h2>
 				</div>
                 <div class="col-sm-6" style="text-align:right;">
-                    <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_contrato']=='1'){ ?>
+                    <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_contratos']=='1'){ ?>
                         <button type="button" id="modal-abm-contrato-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-calendar-plus-o"></i> Nuevo Vto. Contrato</button>
                     <?php } ?>
 				</div>
@@ -195,7 +195,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             echo '<td data-sort="'. $mysql_date .'">'.date("d/m/Y", strtotime($row['vencimiento'])).'</td>'; 
                             
                             echo '<td>'; 
-                            if ($rq_sec['admin']=='1' OR $rq_sec['admin_contrato']=='1'){
+                            if ($rq_sec['admin']=='1' OR $rq_sec['admin_contratos']=='1'){
                                 echo '<a data-id="' . $row["id"] . '" ';
                                 echo 'data-subgerencia="' . $row["id_subgerencia"] . '" ';
                                 echo 'data-proveedor="' . $row["id_proveedor"] . '" ';
