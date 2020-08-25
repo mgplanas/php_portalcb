@@ -332,7 +332,7 @@ desired effect
                                 <?php echo "<textarea class=form-control name=descripcion>{$row['descripcion']}</textarea>"; ?>
                             </div>
                             <div class="form-group">
-                                <label for="causa">Análisis de causas</label>
+                                <label for="causa">Análisis de causas / Objetivo de la Mejora</label>
                                   <?php echo "<textarea class=form-control name=causa>{$row['causa']}</textarea>"; ?>
                             </div>
                             <div class="form-group">
@@ -587,7 +587,7 @@ desired effect
                         <textarea class="form-control" rows="3" name="descripcion" id="descripcion" value="" readonly></textarea>
                       </div>
                                     <div class="form-group">
-                        <label for="causa">Análisis de causas</label>
+                        <label for="causa">Análisis de causas / Objetivo de la Mejora</label>
                         <textarea class="form-control" rows="3" name="causa" id="causa" value="" readonly></textarea>
                       </div>
                       <div class="form-group">

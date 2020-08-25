@@ -5,7 +5,6 @@
 ### Features
 
 - FEAT-DC-CONTRATOS
-
 ### Pasos
 
 - Entorno
@@ -38,3 +37,4 @@
     pages/modals/adm_contratos_oc.php |  71 +++++++++++++++++++++++++++
     pages/setPermiso.php              |  11 +++++
     pages/site_sidebar.php            |   1 +
+    - Incluir mejoras.php
