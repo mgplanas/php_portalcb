@@ -368,7 +368,7 @@ desired effect
         <li class="header">MENU</li>
         <!-- Optionally, you can add icons to the links -->
         <li class="active"><a href="#"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
-        <?php if ($rq_sec['admin']=='1' OR $rq_sec['compras']=='1'){ ?>
+        <?php if ($rq_sec['admin']=='1' OR $rq_sec['compras']=='1' OR $rq_sec['contratos']=='1'){ ?>
           <li class="treeview">
             <a href="#">
               <i class="fa fa-edit"></i><span>Administración</span>
@@ -377,9 +377,12 @@ desired effect
               </span>
             </a>
             <ul class="treeview-menu">
-              <?php if ($rq_sec['admin']=='1' OR $rq_sec['compras']=='1'){ ?>
-                <li><a href="./pages/compras.php"><i class="fa fa-cart-plus"></i>Compras</a></li>
-              <?php } ?>
+                <?php if ($rq_sec['admin']=='1' OR $rq_sec['compras']=='1'){ ?>
+                    <li><a href="./pages/compras.php"><i class="fa fa-cart-plus"></i>Compras</a></li>
+                <?php } ?>
+                <?php if ($rq_sec['admin']=='1' OR $rq_sec['contratos']=='1' ){ ?>
+                    <li><a href="./pages/adm_contratos.php"><i class="fa fa-calendar"></i>Vto. Contratos</a></li>
+                <?php } ?>              
             </ul>
           </li>
         <?php } ?>        
@@ -436,7 +439,6 @@ desired effect
                 <li><a href="./pages/cdc_dashboard.php"><i class="fa fa-pie-chart"></i> Dashboard</a></li>
                 <li><a href="./pages/cdc_organismo.php"><i class="fa fa-building"></i> Organismos</a></li>
                 <li><a href="./pages/cdc_cliente.php"><i class="fa fa-user"></i> Clientes</a></li>
-                <li><a href="./pages/adm_contratos.php"><i class="fa fa-calendar"></i>Vto. Contratos</a></li>
                 <li><a href="./pages/cdc_servidores.php"><i class="fa fa-server"></i> Servidores</a></li>
                 <li><a href="./pages/cdc_solicitudes.php"><i class="fa fa-edit"></i> Solicitudes Infra</a></li>
                 <li><a href="./pages/cdc_costos.php"><i class="fa fa-calculator"></i> Costeo</a></li>

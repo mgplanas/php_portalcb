@@ -227,6 +227,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">Compras</th>
                                                 <th width="1">Admin Compras</th>
                                                 <th width="1">Admin Riesgo</th>
+                                                <th width="1">Cto</th>
                                                 <th width="1">Admin Cto</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
@@ -302,6 +303,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 </div></td>'; 
                                                   echo '<td>
                                                           <div class="checkbox">
+                                                            <label><input name="contratos" type="checkbox" onclick="updatePerm(14, '.$row['id_permiso'].');" value="1"'; if($row['contratos'] == '1'){ echo 'checked'; } echo'></label>
+                                                                </div></td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
                                                             <label><input name="admin_contratos" type="checkbox" onclick="updatePerm(13, '.$row['id_permiso'].');" value="1"'; if($row['admin_contratos'] == '1'){ echo 'checked'; } echo'></label>
                                                                 </div></td>'; 
                                                   echo '<td>
@@ -365,8 +370,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     $compras = mysqli_real_escape_string($con,(strip_tags($_POST["compras"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $admin_compras = mysqli_real_escape_string($con,(strip_tags($_POST["admin_compras"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $admin_riesgo = mysqli_real_escape_string($con,(strip_tags($_POST["admin_riesgos"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $contratos = mysqli_real_escape_string($con,(strip_tags($_POST["contratos"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $admin_contratos = mysqli_real_escape_string($con,(strip_tags($_POST["admin_contratos"],ENT_QUOTES)));//Escanpando caracteres 
                                                     //Inserto Control
-                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy, cli_dc,compras, admin_compras, admin_riesgos) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy', '$clidc', '$compras', '$admin_compras', '$admin_riesgo')") or die(mysqli_error());	
+                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy, cli_dc,compras, admin_compras, admin_riesgos, contratos, admin_contratos) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy', '$clidc', '$compras', '$admin_compras', '$admin_riesgo', '$contratos', '$admin_contratos')") or die(mysqli_error());	
                                                     $lastInsert = mysqli_insert_id($con);
                                                     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                                   VALUES ('1', '16', '$lastInsert', now(), '$user')") or die(mysqli_error());
@@ -451,6 +458,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <div class="checkbox">
                                                             <label>
                                                                 <input name="admin_riesgos" type="checkbox" value="1"> Admin. Riesgo
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="contratos" type="checkbox" value="1"> Contratos
                                                             </label>
                                                         </div>
                                                         <div class="checkbox">
@@ -746,6 +758,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="../bower_components/fastclick/lib/fastclick.js"></script>
     <!-- AdminLTE App -->
     <script src="../dist/js/adminlte.min.js"></script>
+    <!-- export -->
+    <script src="../bower_components/datatables.net/js/dataTables.buttons.min.js"></script>
+    <script src="../bower_components/datatables.net/js/buttons.flash.min.js"></script>
+    <script src="../bower_components/datatables.net/js/jszip.min.js"></script>
+    <script src="../bower_components/datatables.net/js/buttons.html5.min.js"></script>
+    <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
+    <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
+    <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>    
     <!-- MODAL ABM GERENCIAS  -->
     <script src="./modals/abmestructura.js"></script>
     <script src="./modals/abmpersona.js"></script>
@@ -782,10 +802,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $('#personas').DataTable({
             'paging'      : true,
             'lengthChange': false,
-            'searching'   : false,
+            'searching'   : true,
             'ordering'    : true,
             'info'        : true,
-            'autoWidth'   : true
+            'autoWidth'   : true,
+            'dom'         : 'Bfrtip',
+            'buttons'     : [{
+                  extend: 'pdfHtml5',
+                  orientation: 'landscape',
+                  pageSize: 'A4',
+                         
+                     },
+                      {
+            extend: 'excel',
+            text: 'Excel',
+            }]
             })
         })
     </script>
@@ -794,10 +825,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $('#permisos').DataTable({
             'paging': true,
             'lengthChange': false,
-            'searching': false,
+            'searching': true,
             'ordering': false,
             'info': true,
-            'autoWidth': false
+            'autoWidth': false,
+            'dom'         : 'frtip',
+
         })
     })
     </script>

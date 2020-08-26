@@ -26,6 +26,9 @@
     ALTER TABLE controls.permisos
     ADD admin_contratos INT AFTER admin_riesgos;
 
+    ALTER TABLE controls.permisos
+    ADD contratos INT AFTER admin_contratos;
+    
 - Cambios en src
 
     CHANGES.md                        |  28 +++++++++++
