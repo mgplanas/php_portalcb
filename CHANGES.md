@@ -13,17 +13,17 @@ ABM seguimiento de contratos
     ADD admin_contratos INT AFTER admin_riesgos;
 
 - site.php
-- pages/admin.php
-- pages/setPermiso.php
+    - pages/admin.php
+    - pages/setPermiso.php
 - pages/site_sidebar.php
-- pages/adm_contratos.php
+    - pages/adm_contratos.php
 
-- pages/modals/abmcompras.js
-- pages/modals/adm_contratos.php
-- pages/modals/adm_contratos.js
-- pages/modals/adm_contratos_oc.php
+    - pages/modals/abmcompras.js
+    - pages/modals/adm_contratos.php
+    - pages/modals/adm_contratos.js
+    - pages/modals/adm_contratos_oc.php
 
-- pages/helpers/adm_contratosdb.php
+    - pages/helpers/adm_contratosdb.php
 
 ## FEAT-IAAS
 
