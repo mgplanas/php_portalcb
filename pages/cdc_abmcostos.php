@@ -15,6 +15,10 @@ if (isset($_GET["planilla"])){
     $id_planilla = mysqli_real_escape_string($con,(strip_tags($_GET["planilla"],ENT_QUOTES)));
 }
 
+// Configuracionn de valores del CM 
+$cm_min_value=20;
+$cm_max_value=50;
+$cm_step_value=5;
 
 $user=$_SESSION['usuario'];
 //Get user query
@@ -305,7 +309,17 @@ desired effect
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="cm">CM (%)</label>
-                                        <input type="number" min="0" class="form-control" name="cm"  id='modal-abm-costos-cm' value="<?= ($id_planilla ? $planilla_costeo['cm'] : "") ?>">
+                                        <select name="cm" class="form-control" id="modal-abm-costos-cm">
+                                            <?php
+                                                for ($i=$cm_min_value; $i <= $cm_max_value ; $i+=$cm_step_value) { 
+                                                    if ($id_planilla && $planilla_costeo['cm'] == $i) {
+                                                        echo "<option value='". $i . "' selected='selected'>" .$i ."</option>";										
+                                                    } else {
+                                                        echo "<option value='". $i . "'>" .$i ."</option>";										
+                                                    }
+                                                }
+                                            ?>
+                                        </select>                                        
                                     </div>                                 
                                 </div>                   
                                 <div class="col-md-2">

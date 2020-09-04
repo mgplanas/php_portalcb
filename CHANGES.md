@@ -8,6 +8,7 @@ Se corrije la exportación a Excel los formatos de números ya que solicitron la
 - helpers/cdc_abmcostos.js
 - site.php
 - site_sidebar.php
+- cdc_abmcostos.php cambio CM por DDL 20-50
 
 ## FEAT-DC-CONTRATOS
 
