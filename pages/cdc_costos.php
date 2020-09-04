@@ -296,15 +296,26 @@ desired effect
       'autoWidth'   : true,
       'dom'         : 'Bfrtip',
       'buttons'     : [{
-                  extend: 'pdfHtml5',
-                  orientation: 'landscape',
-                  pageSize: 'A4',
-                         
-                     },
-                      {
-            extend: 'excel',
-            text: 'Excel',
-            }]
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        },
+                        {
+                        extend: 'excel',
+                        text: 'Excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7,8,9,10],
+                            format: {
+                                body: function (data, row, column, node ) {
+                                    let formatedData = data;
+                                    if ([4,5,6,7,8,9,10].includes(column)) {
+                                        formatedData = data.replace('.','').replace(',','.');
+                                    }
+                                    return formatedData;
+                                    }
+                                }
+                            }
+                        }]
 
     });
   });

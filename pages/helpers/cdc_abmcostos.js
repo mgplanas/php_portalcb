@@ -651,6 +651,18 @@ $(function() {
                 {
                     extend: 'excel',
                     text: 'Excel',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                        format: {
+                            body: function(data, row, column, node) {
+                                let formatedData = data;
+                                if ([4, 5, 6, 7].includes(column)) {
+                                    formatedData = data.replace('.', '').replace(',', '.');
+                                }
+                                return formatedData;
+                            }
+                        }
+                    }
                 }
             ]
 

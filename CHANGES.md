@@ -1,5 +1,14 @@
 # CHANGES
 
+## FIX-COSTOS
+Se corrije la exportación a Excel los formatos de números ya que solicitron la visualización de formatos custom en las grillas.
+*Fecha* 2020-09-04
+*Cambios*
+- cdc_costos.php
+- helpers/cdc_abmcostos.js
+- site.php
+- site_sidebar.php
+
 ## FEAT-DC-CONTRATOS
 
 ABM seguimiento de contratos
