@@ -309,7 +309,7 @@ desired effect
                                 body: function (data, row, column, node ) {
                                     let formatedData = data;
                                     if ([4,5,6,7,8,9,10].includes(column)) {
-                                        formatedData = data.replace('.','').replace(',','.');
+                                        formatedData = data.replaceAll('.','').replaceAll(',','.');
                                     }
                                     return formatedData;
                                     }

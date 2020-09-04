@@ -657,7 +657,7 @@ $(function() {
                             body: function(data, row, column, node) {
                                 let formatedData = data;
                                 if ([4, 5, 6, 7].includes(column)) {
-                                    formatedData = data.replace('.', '').replace(',', '.');
+                                    formatedData = data.replaceAll('.', '').replaceAll(',', '.');
                                 }
                                 return formatedData;
                             }
