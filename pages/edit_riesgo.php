@@ -630,7 +630,7 @@ desired effect
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label class="label-custom label-custom-info">Proceso</label>
+                                        <label class="label-custom label-custom-info">Proceso afectado</label>
                                         <select name="proceso" class="form-control">
                                             <?php
                                             $proceso = mysqli_query($con, "SELECT * FROM procesos where borrado = 0;");

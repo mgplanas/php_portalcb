@@ -1,5 +1,14 @@
 # CHANGES
 
+## FEAT-RGO-PROC
+Se cambia el label y se verifica la existencia de riesgos asociados antes de borrar un proceso
+*Fecha* 2020-09-14
+*Cambios*
+- edit_riesgos.php
+- riesgos.php
+- procesos.php
+
+
 ## FIX-COSTOS
 Se corrije la exportación a Excel los formatos de números ya que solicitron la visualización de formatos custom en las grillas.
 *Fecha* 2020-09-04

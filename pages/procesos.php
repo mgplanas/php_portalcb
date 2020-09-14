@@ -128,12 +128,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <thead>
                 <tr>
 				  <th>Nombre</th>
+				  <th>Riesgos</th>
                   <th width="110px">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT * FROM procesos where borrado = 0;";
+					$query = "SELECT p.*,
+                        (SELECT COUNT(*) as cuenta FROM riesgo as R where R.proceso = p.id and R.borrado = 0) as qriesgos
+                        FROM procesos as p where p.borrado = 0;";
 					$sql = mysqli_query($con, $query);
 
 					if(mysqli_num_rows($sql) == 0){
@@ -144,13 +147,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							
 							echo '<tr>';
 							echo '<td>'. $row['nombre'].'</td>';
+							echo '<td>'. $row['qriesgos'].'</td>';
                             echo '<td align="center">';
                             if ($rq_sec['admin']=='1' OR $rq_sec['edicion']=='1'){
                                 echo '<a 
                                     data-id="' . $row['id'] . '" 
                                     data-nombre="' . $row['nombre'] . '" 
                                     title="Editar Proceso" class="modal-abm-proceso-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
-                                echo '<a href="procesos.php?aksi=delete&nik='.$row['id'].'" title="Borrar Proceso" onclick="return confirm(\'Esta seguro de borrar el proceso '. $row['nombre'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                                if ($row['qriesgos'] == 0) {
+
+                                    echo '<a href="procesos.php?aksi=delete&nik='.$row['id'].'" title="Borrar Proceso" onclick="return confirm(\'Esta seguro de borrar el proceso '. $row['nombre'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                                }
                             }
                             echo '</td></tr>';
 						}

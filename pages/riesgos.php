@@ -796,7 +796,7 @@ desired effect
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
-                                                                                <label>Proceso</label>
+                                                                                <label>Proceso afectado</label>
                                                                                 <select name="proceso" class="form-control" id="ddlproceso">
                                                                                     <?php
                                                                                         $proceso = mysqli_query($con, "SELECT * FROM procesos WHERE borrado=0;");
