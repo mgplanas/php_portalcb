@@ -168,7 +168,7 @@ desired effect
                         <th rowspan="2">Cliente</th>
                         <th rowspan="2" style="text-align: center;">Fecha</th>
                         <th rowspan="2" style="text-align: center;">Meses</th>
-                        <th rowspan="2" style="text-align: center;">Duración</th>
+                        <th rowspan="2" style="text-align: center;">Plazo oferta</th>
                         <th colspan="2" style="text-align: center;">Costos (USD)</th>
                         <th colspan="3" style="text-align: center;">Costos (ARS)</th>
                         <th colspan="2" style="text-align: center;">Parametro (%)</th>
