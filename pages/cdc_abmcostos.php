@@ -302,7 +302,7 @@ desired effect
                                 </div>                   
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="dc">Duracion</label>
+                                        <label for="dc">Plazo Oferta</label>
                                         <input type="number" min="0" class="form-control" name="dc"  id='modal-abm-costos-dc' value="<?= ($id_planilla ? $planilla_costeo['duracion'] : "") ?>">
                                     </div>                                 
                                 </div>         
