@@ -29,7 +29,11 @@ $(function() {
             if ($(this).data('convenio') == '1') {
                 $('#modal-abm-cliente-convenio').prop("checked", true);
             }
+            if ($(this).data('correo') == '1') {
+                $('#modal-abm-cliente-correo').prop("checked", true);
+            }
             $("#modal-abm-cliente-organismo").val($(this).data('organismo')).change();
+            $("#modal-abm-cliente-ejecutivo").val($(this).data('ejecutivo')).change();
 
 
             $('#modal-abm-cliente-submit').attr('name', 'M');
@@ -56,6 +60,11 @@ $(function() {
         if ($("#modal-abm-cliente-convenio").is(':checked')) {
             convenio = 1;
         }
+        let ejecutivo_cuenta = $('#modal-abm-cliente-ejecutivo').val();
+        let servicio_correo = 0;
+        if ($("#modal-abm-cliente-correo").is(':checked')) {
+            servicio_correo = 1;
+        }
         // Ejecuto
         $.ajax({
             type: 'POST',
@@ -68,7 +77,9 @@ $(function() {
                 nombre_corto: nombre_corto,
                 cuit: cuit,
                 sector: sector,
-                convenio: convenio
+                convenio: convenio,
+                servicio_correo: servicio_correo,
+                ejecutivo_cuenta: ejecutivo_cuenta
             },
             dataType: 'json',
             success: function(json) {
@@ -92,6 +103,8 @@ $(function() {
         $('#opt-sector-publico').prop("checked", true);
         $('#modal-abm-cliente-convenio').prop("checked", false);
         $("#modal-abm-cliente-organismo").val('first').change();
+        $('#modal-abm-cliente-correo').prop("checked", false);
+        $("#modal-abm-cliente-ejecutivo").val('first').change();
     }
     // ********************************************************************************************
 

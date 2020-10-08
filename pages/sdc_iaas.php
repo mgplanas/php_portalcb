@@ -67,6 +67,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
    <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
@@ -138,12 +139,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <th>Uso RAM [GB]</th>
                   <th>Uso Storage [GB]</th>
                   <th>Observaciones</th>
+                  <th><i class="fa fa-server" title="VMs" style="font-size: 20px;"></i></th>
                   <th width="100">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT H.id, H.id_cliente, H.plataforma, H.reserva, H.ram_capacidad, H.ram_uso, H.storage_capacidad, H.storage_uso, H.observaciones, C.razon_social as cliente, O.razon_social as organismo
+					$query = "SELECT H.id, H.id_cliente, H.plataforma, H.reserva, H.ram_capacidad, H.ram_uso, H.storage_capacidad, H.storage_uso, H.observaciones, C.razon_social as cliente, O.razon_social as organismo, C.cuit, C.sector, 
+                                (SELECT COUNT(1) FROM vw_sdc_iaas as IA where IA.id_cliente = H.id_cliente) as vms
                                 FROM sdc_iaas as H
                                 INNER JOIN cdc_cliente as C ON H.id_cliente = C.id
                                 LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
@@ -165,6 +168,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td align="center">'. number_format($row['ram_uso'],0,",",".").'</td>';
 							echo '<td align="center">'. number_format($row['storage_uso'],0,",",".").'</td>';
                             echo '<td>'. $row['observaciones'].'</td>';
+                            echo '<td align="center">';
+                            if ($row['vms'] > 0) {
+                                echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['cliente'].'" data-id="'.$row['id_cliente'].'" title="ver VMs de la reserva" class="modal-abm-vms-view btn">' . $row['vms'] . '</a>';
+                            }
+                            echo '</td>';
+                            
 
                             echo '<td align="center">';
                             if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ 
@@ -198,6 +207,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- /.col -->
         <?php
             include_once('./modals/sdc_abmiaas.php');
+            include_once('./modals/sdc_iaas_vms_view.php');
         ?>        
       </div>
       <!-- /.row -->
@@ -232,6 +242,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
 <script src="./modals/sdc_abmiaas.js"></script>
+<script src="./modals/sdc_iaas_vms_view.js"></script>
       
 <script>
 

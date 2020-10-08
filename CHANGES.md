@@ -1,5 +1,93 @@
 # CHANGES
 
+## FEAT-CDC
+Requerimientos de cambios y desarrollos por esteban tissera
+*Fecha* 2020-09-28
+*Requerimiento*
+OK-	Módulo Hosting: 
+    -   Filtrar las VMs de los siguientes clusters ya que pertenecen a los servicios de IAAS:
+        -   VMW_VRA_CLIENTES_SALA_1
+        -   VMW_HPC
+    -   Filtrar las VMs de los siguientes clusters ya que pertenecen a los servicios de correo:
+        -   XXX_DNITO_XX
+    -   Quitar Campo “DataCenter” de la visualización de la grilla de VMs.
+    -   Agregar sigla “GB” a los campos “RAM” y “Storage”
+    -   Renombrar campo “Hipervisor” por “Plataforma”
+-OK   Módulo IAAS: Agregar visualización de VMs que han sido creadas para dichas reservas
+-OK   Nuevo módulo de Servicios de Correo correspondiente a los clusters DNITO. La información se obtiene de las vms de Hosting correspondientes a los clusters DNITO
+-OK   Módulo Clientes DC: 
+    - Filtrar cantidades servicios de Hosting teniendo en cuenta filtros del punto 1
+    - Filtrar Vms enn visualización específica (modal)
+    - Visualizar los registros dados de Baja (sólo visualización)  sólo para los que posean un permiso específico para tal fin.
+    - Agregar posibilidad de asociar un ejecutivo de cuenta a un cliente
+    - Agregar marca de tenencia de Servicio de correo
+    -   Visualizar VMs de Servicio de correo al hacer click en la marca
+
+*Cambios*
+[DB] se crea vw_sdc_hosting
+CREATE VIEW vw_sdc_hosting AS
+  SELECT H.id, H.id_cliente, H.tipo, H.nombre, H.displayName, H.proyecto, H.datacenter, DATE_FORMAT(H.fecha, "%Y-%m-%d") as fecha, H.hipervisor, H.hostname, H.pool, H.uuid, H.VCPU, H.RAM, H.storage, H.SO , C.razon_social as cliente, O.razon_social as organismo, C.sector 
+    FROM sdc_hosting as H 
+    INNER JOIN cdc_cliente as C ON H.id_cliente = C.id 
+    LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id 
+    WHERE H.borrado = 0 
+    AND H.pool NOT IN ("VMW_VRA_CLIENTES_SALA_1","VMW_HPC") 
+    AND H.pool NOT LIKE ("%_DNITO_%");
+
+[DB] se crea vw_sdc_correo
+CREATE VIEW vw_sdc_correo AS
+  SELECT H.id, H.id_cliente, H.tipo, H.nombre, H.displayName, H.proyecto, H.datacenter, DATE_FORMAT(H.fecha, "%Y-%m-%d") as fecha, H.hipervisor, H.hostname, H.pool, H.uuid, H.VCPU, H.RAM, H.storage, H.SO , C.razon_social as cliente, O.razon_social as organismo, C.sector 
+    FROM sdc_hosting as H 
+    INNER JOIN cdc_cliente as C ON H.id_cliente = C.id 
+    LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id 
+    WHERE H.borrado = 0 
+    AND H.pool LIKE ("%_DNITO_%");
+
+[DB] Se crea vw_sdc_iaas
+CREATE VIEW vw_sdc_iaas AS
+  SELECT H.id, H.id_cliente, H.tipo, H.nombre, H.displayName, H.proyecto, H.datacenter, DATE_FORMAT(H.fecha, "%Y-%m-%d") as fecha, H.hipervisor, H.hostname, H.pool, H.uuid, H.VCPU, H.RAM, H.storage, H.SO , C.razon_social as cliente, O.razon_social as organismo, C.sector 
+    FROM sdc_hosting as H 
+    INNER JOIN cdc_cliente as C ON H.id_cliente = C.id 
+    LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id 
+    WHERE H.borrado = 0 
+    AND H.pool IN ("VMW_VRA_CLIENTES_SALA_1","VMW_HPC");
+
+[DB] se agregan campos en cdc_cliente
+ALTER TABLE controls.cdc_cliente
+ ADD con_servicio_correo INT NOT NULL DEFAULT '0' AFTER con_convenio,
+ ADD ejecutivo_cuenta INT;
+
+- pages/scd_hosting.php
+    -   Filtrar las VMs de los siguientes clusters ya que pertenecen a los servicios de IAAS:
+        -   VMW_VRA_CLIENTES_SALA_1
+        -   VMW_HPC
+    -   Filtrar las VMs de los siguientes clusters ya que pertenecen a los servicios de correo:
+        -   XXX_DNITO_XX
+    -   Quitar Campo “DataCenter” de la visualización de la grilla de VMs.
+    -   Agregar sigla “GB” a los campos “RAM” y “Storage”
+    -   Renombrar campo “Hipervisor” por “Plataforma”
+- pages/cdc_cliente.php
+    - Filtrar cantidades servicios de Hosting teniendo en cuenta filtros del punto 1
+    - Visualizar los registros dados de Baja (sólo visualización)  sólo para los que posean un permiso
+        - Se agrega boton para ver bajas   
+    - Visualizar marca de servicio de correo
+    - Visualizar ejecutivos de cuenta 
+- pages/modals/cdc_abmcliente.js/php    
+- pages/helpers/cdc_abmclientedb.php    
+    - Update Marca de Servicio de Correo
+    - Ejecutivo de cuenta
+- pages/modals/sdc_hosting_view.js    
+    - Filtrar Vms enn visualización específica (modal)
+- [NUEVO] pages/modals/cdc_clientes_baja_view.php / js
+    -   Visualizar los registros dados de Baja (sólo visualización)  sólo para los que posean un permiso
+- [NUEVO] pages/modals/sdc_correo_view.js/php
+    - Visualizar VM de correo
+- [NUEVO] pages/sdc_correo.php
+- pages/site_sidemenu.php
+- site.php
+- pages/sdc_iass.php se agrega columna de cuenta de VM 
+- [NUEVO] pages/modals/sdc_iaas_vms_view.js/php
+    - Visualizar VM de reserva de iaas
 ## FEAT-RGO-PROC
 Se cambia el label y se verifica la existencia de riesgos asociados antes de borrar un proceso
 *Fecha* 2020-09-14

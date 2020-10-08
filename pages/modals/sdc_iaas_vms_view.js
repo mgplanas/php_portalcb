@@ -1,29 +1,29 @@
 $(function() {
 
 
-    let tbHosting = $('#hosting');
+    let tbvms = $('#vms');
 
     // ==============================================================
     // EVENTOS
     // ==============================================================
-    $('.modal-abm-hosting-view').click(function() {
+    $('.modal-abm-vms-view').click(function() {
         //Extraigo el id de la data del botón
         let idcliente = $(this).data('id');
-        modalAbmHostingLimpiarCampos();
+        modalAbmvmsLimpiarCampos();
         let texto = $(this).data('cliente') + ' <small>[ ' + $(this).data('organismo') + ' ]</small> ';
         let sector = ($(this).data('sector') == 'Publico' ? ' <span class="label label-success">Sector Público</span> ' : ' <span class="label label-danger">Sector Privado</span> ');
         let tipo = ($(this).data('tipo') == 'I' ? ' <span class="label label-success">Uso Interno</span> ' : ' <span class="label label-danger">Cliente</span> ');
-        $('#modal-abm-hosting-title').html(texto + tipo + sector);
-        $('#modal-abm-hosting-submit').hide();
+        $('#modal-abm-vms-title').html(texto + tipo + sector);
+        $('#modal-abm-vms-submit').hide();
 
         // REcreo la tabla
-        tbHosting.DataTable({
+        tbvms.DataTable({
             "ajax": {
                 type: 'POST',
                 url: './helpers/getAsyncDataFromDB.php',
-                data: { query: 'SELECT * FROM vw_sdc_hosting WHERE id_cliente = ' + idcliente },
-                // data: { query: 'SELECT id, nombre, displayName, proyecto, datacenter, DATE_FORMAT(fecha, "%Y-%m-%d") as fecha, hipervisor, hostname, pool, uuid, VCPU, RAM, ROUND(storage,3) as storage, SO FROM sdc_hosting WHERE id_cliente = ' + idcliente },
-                // data: { query: 'SELECT 1 as id, "Mariano" as name, "papa" as position FROM sdc_hosting WHERE id_cliente = ' + 21 },
+                data: { query: 'SELECT * FROM vw_sdc_iaas WHERE id_cliente = ' + idcliente },
+                // data: { query: 'SELECT id, nombre, displayName, proyecto, datacenter, DATE_FORMAT(fecha, "%Y-%m-%d") as fecha, hipervisor, hostname, pool, uuid, VCPU, RAM, ROUND(storage,3) as storage, SO FROM sdc_vms WHERE id_cliente = ' + idcliente },
+                // data: { query: 'SELECT 1 as id, "Mariano" as name, "papa" as position FROM sdc_vms WHERE id_cliente = ' + 21 },
 
             },
             "dataSrc": function(json) {
@@ -45,17 +45,17 @@ $(function() {
             ]
         });
 
-        $("#modal-abm-hosting").modal("show");
+        $("#modal-abm-vms").modal("show");
         // $.ajax({
         //     type: 'POST',
         //     url: './helpers/getAsyncDataFromDB.php',
-        //     data: { query: 'SELECT id, nombre, displayName, proyecto, datacenter, DATE_FORMAT(fecha, "%Y-%m-%d") as fecha, hipervisor, hostname, pool, uuid, VCPU, RAM, ROUND(storage,3) as storage, SO FROM sdc_hosting WHERE id_cliente = ' + idcliente },
+        //     data: { query: 'SELECT id, nombre, displayName, proyecto, datacenter, DATE_FORMAT(fecha, "%Y-%m-%d") as fecha, hipervisor, hostname, pool, uuid, VCPU, RAM, ROUND(storage,3) as storage, SO FROM sdc_vms WHERE id_cliente = ' + idcliente },
         //     dataType: 'json',
         //     success: function(json) {
         //         myJsonData = json;
-        //         populateDataTable(myJsonData, tbHosting);
-        //         $("#modal-abm-hosting").modal("show");
-        //         tbHostingDT.columns.adjust().draw();
+        //         populateDataTable(myJsonData, tbvms);
+        //         $("#modal-abm-vms").modal("show");
+        //         tbvmsDT.columns.adjust().draw();
         //     },
         //     error: function(xhr, status, error) {
         //         alert(xhr.responseText, error);
@@ -65,14 +65,13 @@ $(function() {
         $.ajax({
             type: 'POST',
             url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT CONVERT(SUM(storage),UNSIGNED) as qstorage, SUM(vcpu) as qvcpu, CONVERT(SUM(ram),UNSIGNED) as qram, count(*) as qservices FROM vw_sdc_hosting where id_cliente = ' + idcliente },
+            data: { query: 'SELECT CONVERT(SUM(storage),UNSIGNED) as qstorage, SUM(vcpu) as qvcpu, CONVERT(SUM(ram),UNSIGNED) as qram, count(*) as qservices FROM vw_sdc_iaas where id_cliente = ' + idcliente },
             dataType: 'json',
             success: function(json) {
                 let item = json.data[0];
-                $('#modal-abm-hosting-qstorage').html(item.qstorage);
-                $('#modal-abm-hosting-qram').html(item.qram);
-                $('#modal-abm-hosting-qservices').html(item.qservices);
-                $('#modal-abm-hosting-qvcpu').html(item.qvcpu);
+                $('#modal-abm-vms-qstorage').html(item.qstorage);
+                $('#modal-abm-vms-qram').html(item.qram);
+                $('#modal-abm-vms-qvcpu').html(item.qvcpu);
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);
@@ -87,16 +86,15 @@ $(function() {
         return +(Math.round(num + "e+" + places) + "e-" + places);
     }
 
-    function modalAbmHostingLimpiarCampos() {
-        tbHosting.DataTable().clear().destroy();
-        $('#modal-abm-hosting-id').val(0);
-        $('#modal-abm-hosting-id-cliente').val(0);
-        $('#modal-abm-hosting-qram').val(0);
-        $('#modal-abm-hosting-qvcpu').val(0);
-        $('#modal-abm-hosting-qservices').val(0);
-        $('#modal-abm-hosting-qstorage').val(0);
-        $('#modal-abm-hosting-cliente').val('');
-        $('#modal-abm-hosting-organismo').val('');
+    function modalAbmvmsLimpiarCampos() {
+        tbvms.DataTable().clear().destroy();
+        $('#modal-abm-vms-id').val(0);
+        $('#modal-abm-vms-id-cliente').val(0);
+        $('#modal-abm-vms-qram').val(0);
+        $('#modal-abm-vms-qvcpu').val(0);
+        $('#modal-abm-vms-qstorage').val(0);
+        $('#modal-abm-vms-cliente').val('');
+        $('#modal-abm-vms-organismo').val('');
     }
 
 

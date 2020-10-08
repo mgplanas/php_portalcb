@@ -37,7 +37,19 @@
                     <div class="form-group">
                         <label for="cuit">CUIT</label>
                         <input type="text" class="form-control" name="cuit" placeholder="CUIT" id='modal-abm-cliente-cuit'>
-                    </div>                    
+                    </div>   
+                    <div class="form-group">
+                        <label>Ejecutivo de Cuenta</label>
+                        <select name="ejecutivo" class="form-control" id='modal-abm-cliente-ejecutivo'>
+                            <?php
+                            $ejecutivos = mysqli_query($con, "SELECT * FROM persona WHERE borrado = 0 ORDER BY apellido, nombre;");
+                            echo "<option value=0>Ninguno</option>";
+                            while($rowper = mysqli_fetch_assoc($ejecutivos)){
+                                echo "<option value=". $rowper['id_persona'] . ">" . $rowper['apellido'] . ', ' . $rowper['nombre'] ."</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>                                      
                     <div class="form-group">
                         <div class="col-md-6">
                             <div class="radio">
@@ -51,6 +63,11 @@
                             <div class="checkbox">
                             <label>
                                 <input type="checkbox" id='modal-abm-cliente-convenio'> Con convenio
+                            </label>
+                            </div>
+                            <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id='modal-abm-cliente-correo'> Con Servicio de Correo
                             </label>
                             </div>
                         </div>

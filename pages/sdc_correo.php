@@ -7,7 +7,7 @@ session_start();
 if (!isset($_SESSION['usuario'])){
 	header('Location: ../index.html');
 }
-$page_title="Hosting";
+$page_title="Servicios correo";
 $user=$_SESSION['usuario'];
 
 //Get user query
@@ -85,7 +85,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 	<section class="content-header">
-      <h1>Servicios de Hosting</h1>
+      <h1>Servicios de Correo</h1>
     </section>
     <!-- Main content -->
     <section class="content container-fluid">
@@ -100,17 +100,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <div class="col-sm-6" style="text-align:left">
                 <h2 class="box-title">Listado de Servicios</h2>
               </div>
-              <div class="col-sm-6" style="text-align:right;">
-              <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
-                <button type="button" id="modal-import-hosting-btn-import" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-upload"></i> Importar Servicios</button>
-              <?php } ?>
-              </div>
             </div>
 
             <!-- /.box-header -->
 	
 			<div class="box-body">
-              <table id="hosting" class="table table-striped" width="100%">
+              <table id="correo" class="table table-striped" width="100%">
                 <thead>
                 <tr>
                     <th>Cliente</th>
@@ -141,9 +136,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- /.box -->
         </div>
         <!-- /.col -->
-        <?php
-            include_once('./modals/sdc_importhosting.php');
-        ?>        
       </div>
       <!-- /.row -->
     </section>
@@ -176,16 +168,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/buttons.print.min.js"></script>
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
-<script src="./modals/sdc_importhosting.js"></script>
       
 <script>
   $(function () {
 
-    let strquery = 'SELECT H.* FROM vw_sdc_hosting as H';
+    let strquery = 'SELECT H.* FROM vw_sdc_correo as H';
 
 
     // REcreo la tabla
-    $('#hosting').DataTable({
+    $('#correo').DataTable({
         "scrollY": 400,
         "scrollX": true,
         "paging": true,
@@ -229,7 +220,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     });
 
-  //   $('#hosting').DataTable({
+  //   $('#correo').DataTable({
   //       'paging'      : true,
   //       'deferRender' : true,
   //       'pageLength'  : 20,

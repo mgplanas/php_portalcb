@@ -124,6 +124,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				</div>
          <div class="col-sm-6" style="text-align:right;">
           <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
+            <button type="button" id="modal-abm-clientes-baja-view-btn" class="btn-sm btn-danger" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-trash"></i> Mostrar Bajas</button>
             <button type="button" id="modal-abm-cliente-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-user"></i> Nuevo Cliente</button>
           <?php } ?>
 				</div>
@@ -140,21 +141,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <th>Alias/Sigla</th>
                     <th>CUIT</th>
                     <th>Sector</th>
+                    <th><i class="fa fa-user" title="Ejecutivo de cuenta" style="font-size: 20px;"></i></th>
                     <th><i class="fa fa-briefcase" title="Convenio" style="font-size: 20px;"></i></th>
                     <th><i class="fa fa-home" title="Housing" style="font-size: 20px;"></i></th>
                     <th><i class="fa fa-server" title="Hosting" style="font-size: 20px;"></i></th>
                     <th><i class="fa fa-cloud" title="IAAS" style="font-size: 20px;"></i></th>
+                    <th><i class="fa fa-envelope" title="Servicio de Correo" style="font-size: 20px;"></i></th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
 					<?php
-					$query = "SELECT C.id_organismo, C.id, C.razon_social, O.razon_social as organismo, C.cuit, C.nombre_corto, C.sector, C.con_convenio,
-                    (SELECT COUNT(1) FROM sdc_hosting as HO where HO.id_cliente = C.id AND HO.borrado=0) as hosting,
+					$query = "SELECT C.id_organismo, C.id, C.razon_social, O.razon_social as organismo, C.cuit, C.nombre_corto, C.sector, C.con_convenio, C.con_servicio_correo, C.ejecutivo_cuenta, CONCAT(P.apellido, ', ', P.nombre) as ejecutivo, 
+                    (SELECT COUNT(1) FROM vw_sdc_hosting as HO where HO.id_cliente = C.id) as hosting,
                     (SELECT COUNT(1) FROM sdc_housing as HU where HU.id_cliente = C.id AND HU.borrado=0) as housing,
-                    (SELECT COUNT(1) FROM sdc_iaas as IA where IA.id_cliente = C.id AND IA.borrado=0) as iaas
+                    (SELECT COUNT(1) FROM sdc_iaas as IA where IA.id_cliente = C.id AND IA.borrado=0) as iaas,
+                    (SELECT COUNT(1) FROM vw_sdc_hosting as ML where ML.id_cliente = C.id ) as correo
                   FROM cdc_cliente as C 
                   LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
+                  LEFT JOIN persona as P ON C.ejecutivo_cuenta = P.id_persona
                   WHERE C.borrado = 0";
 					
 					$sql = mysqli_query($con, $query);
@@ -171,6 +176,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td align="center">'. $row['nombre_corto'].'</td>';
 							echo '<td align="center">'. $row['cuit'].'</td>';
                             echo '<td align="center">'. $row['sector'].'</td>';
+                            if ($row['ejecutivo_cuenta']) {
+                                echo '<td align="center">'. $row['ejecutivo'] .'</td>';
+                            } else {
+                                echo '<td></td>';
+                            }
                             echo '<td align="center">'. ($row['con_convenio'] ? '<i class="fa fa-check"></i>' : '') .'</td>';
                             echo '<td align="center">';
                             if ($row['housing'] > 0) {
@@ -186,6 +196,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicios de IAAS" class="modal-abm-iaas-view btn">' . $row['iaas'] . '</a>';
                             }
                             echo '</td>';
+                            echo '<td align="center">';
+                            if ($row['con_servicio_correo'] > 0) {
+                                if ($row['correo'] > 0) {
+                                    echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['razon_social'].'" data-id="'.$row['id'].'" title="ver servicios de correo" class="modal-abm-correo-view btn"><i class="fa fa-check"></i></a>';
+                                } else {
+                                    echo '<i class="fa fa-check-circle text-danger" title="No se encontraron VMs"></i>';
+                                }
+                            }
+                            echo '</td>';
 							echo '<td align="center">';
                             if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){
                                 echo '<a 
@@ -196,6 +215,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 data-organismo="' . $row['id_organismo'] . '" 
                                 data-sector="' . $row['sector'] . '" 
                                 data-convenio="' . $row['con_convenio'] . '" 
+                                data-correo="' . $row['con_servicio_correo'] . '" 
+                                data-ejecutivo="' . $row['ejecutivo_cuenta'] . '" 
                                 title="Editar Cliente" class="modal-abm-cliente-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
                                 if ($row['housing'] == 0 AND $row['hosting'] == 0 AND $row['iaas'] == 0) {
                                     echo '<a href="cdc_cliente.php?aksi=delete&nik='.$row['id'].'" title="Borrar Cliente" onclick="return confirm(\'Esta seguro de borrar el cliente '. $row['razon_social'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
@@ -221,6 +242,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             include_once('./modals/sdc_housing_view.php');
             include_once('./modals/sdc_hosting_view.php');
             include_once('./modals/sdc_iaas_view.php');
+            include_once('./modals/sdc_correo_view.php');
+            include_once('./modals/cdc_clientes_baja_view.php');
             include_once('./modals/cdc_abmcliente.php');
         ?>
         <!-- FIN Housing -->        
@@ -259,6 +282,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="./modals/sdc_housing_view.js"></script>      
 <script src="./modals/sdc_hosting_view.js"></script>      
 <script src="./modals/sdc_iaas_view.js"></script>      
+<script src="./modals/sdc_correo_view.js"></script>      
+<script src="./modals/cdc_clientes_baja_view.js"></script>      
 <script src="./modals/cdc_abmcliente.js"></script>      
 <script>
   $(function () {
