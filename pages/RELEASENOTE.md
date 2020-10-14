@@ -4,40 +4,62 @@
 
 ### Features
 
-- FEAT-DC-CONTRATOS
+- FEAT-CDC
 ### Pasos
 
 - Entorno
 - BackUp DB
 - Backup /pages
 - Cambios en DB
+[DB] se crea vw_sdc_hosting
+CREATE VIEW vw_sdc_hosting AS
+  SELECT H.id, H.id_cliente, H.tipo, H.nombre, H.displayName, H.proyecto, H.datacenter, DATE_FORMAT(H.fecha, "%Y-%m-%d") as fecha, H.hipervisor, H.hostname, H.pool, H.uuid, H.VCPU, H.RAM, H.storage, H.SO , C.razon_social as cliente, O.razon_social as organismo, C.sector 
+    FROM sdc_hosting as H 
+    INNER JOIN cdc_cliente as C ON H.id_cliente = C.id 
+    LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id 
+    WHERE H.borrado = 0 
+    AND H.pool NOT IN ("VMW_VRA_CLIENTES_SALA_1","VMW_HPC") 
+    AND H.pool NOT LIKE ("%_DNITO_%");
 
-    CREATE TABLE `adm_contratos_vto` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `id_subgerencia` int(11) NOT NULL,
-    `id_proveedor` int(11) DEFAULT NULL,
-    `tipo_mantenimiento` varchar(255) DEFAULT NULL,
-    `vencimiento` datetime NOT NULL,
-    `oc` varchar(20) DEFAULT NULL,
-    `borrado` int(11) NOT NULL DEFAULT '0',
-    PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+[DB] se crea vw_sdc_correo
+CREATE VIEW vw_sdc_correo AS
+  SELECT H.id, H.id_cliente, H.tipo, H.nombre, H.displayName, H.proyecto, H.datacenter, DATE_FORMAT(H.fecha, "%Y-%m-%d") as fecha, H.hipervisor, H.hostname, H.pool, H.uuid, H.VCPU, H.RAM, H.storage, H.SO , C.razon_social as cliente, O.razon_social as organismo, C.sector 
+    FROM sdc_hosting as H 
+    INNER JOIN cdc_cliente as C ON H.id_cliente = C.id 
+    LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id 
+    WHERE H.borrado = 0 
+    AND H.pool LIKE ("%_DNITO_%");
 
-    ALTER TABLE controls.permisos
-    ADD admin_contratos INT AFTER admin_riesgos;
+[DB] Se crea vw_sdc_iaas
+CREATE VIEW vw_sdc_iaas AS
+  SELECT H.id, H.id_cliente, H.tipo, H.nombre, H.displayName, H.proyecto, H.datacenter, DATE_FORMAT(H.fecha, "%Y-%m-%d") as fecha, H.hipervisor, H.hostname, H.pool, H.uuid, H.VCPU, H.RAM, H.storage, H.SO , C.razon_social as cliente, O.razon_social as organismo, C.sector 
+    FROM sdc_hosting as H 
+    INNER JOIN cdc_cliente as C ON H.id_cliente = C.id 
+    LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id 
+    WHERE H.borrado = 0 
+    AND H.pool IN ("VMW_VRA_CLIENTES_SALA_1","VMW_HPC");
 
-    ALTER TABLE controls.permisos
-    ADD contratos INT AFTER admin_contratos;
+[DB] se agregan campos en cdc_cliente
+ALTER TABLE controls.cdc_cliente
+ ADD con_servicio_correo INT NOT NULL DEFAULT '0' AFTER con_convenio,
+ ADD ejecutivo_cuenta INT;
 
 - Cambios en src
 
-    CHANGES.md                        |  28 +++++++++++
-    pages/RELEASENOTE.md              |  42 +++++++++-------
-        pages/admin.php                   |  21 ++++++--
-    pages/helpers/adm_contratosdb.php |  48 +++++++++++++++++++
-    pages/modals/abmcompra.js         |   2 +-
-    pages/modals/adm_contratos.php    |  84 ++++++++++++++++++++++++++++++++
-    pages/modals/adm_contratos_oc.php |  71 +++++++++++++++++++++++++++
-        pages/setPermiso.php              |  11 +++++
-    pages/site_sidebar.php            |   1 +
-    - Incluir mejoras.php
+- CHANGES.md                              |  88 +++++++++++
+- pages/cdc_cliente.php                   |  31 +++-
+- pages/helpers/cdc_abmclientedb.php      |   8 +-
+- pages/modals/cdc_abmcliente.js          |  15 +-
+- pages/modals/cdc_abmcliente.php         |  19 ++-
+- pages/modals/cdc_clientes_baja_view.js  |  39 +++++
+- pages/modals/cdc_clientes_baja_view.php |  46 ++++++
+- pages/modals/sdc_correo_view.js         | 129 ++++++++++++++++
+- pages/modals/sdc_correo_view.php        | 103 +++++++++++++
+- pages/modals/sdc_hosting_view.js        |   5 +-
+- pages/modals/sdc_iaas_vms_view.js       | 127 +++++++++++++++
+- pages/modals/sdc_iaas_vms_view.php      |  93 +++++++++++
+- pages/sdc_correo.php                    | 265 ++++++++++++++++++++++++++++++++
+- pages/sdc_hosting.php                   |   7 +-
+- pages/sdc_iaas.php                      |  13 +-
+- pages/site_sidebar.php                  |   1 +
+- site.php                                |   1 +
