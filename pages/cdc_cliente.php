@@ -156,7 +156,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     (SELECT COUNT(1) FROM vw_sdc_hosting as HO where HO.id_cliente = C.id) as hosting,
                     (SELECT COUNT(1) FROM sdc_housing as HU where HU.id_cliente = C.id AND HU.borrado=0) as housing,
                     (SELECT COUNT(1) FROM sdc_iaas as IA where IA.id_cliente = C.id AND IA.borrado=0) as iaas,
-                    (SELECT COUNT(1) FROM vw_sdc_hosting as ML where ML.id_cliente = C.id ) as correo
+                    (SELECT COUNT(1) FROM vw_sdc_correo as ML where ML.id_cliente = C.id ) as correo
                   FROM cdc_cliente as C 
                   LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
                   LEFT JOIN persona as P ON C.ejecutivo_cuenta = P.id_persona
