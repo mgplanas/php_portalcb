@@ -1,5 +1,20 @@
 # CHANGES
 
+## FEAT-DOCS
+Volvar la planilla de Biblioteca de documentos del DC en el portal
+*Fecha* 2020-10-20
+*Requerimiento*
+Poder seguir los documentos del DC en el portal
+Poder actualizar como revisión y aprovación.
+Cáculo de fechas de vto y avisos
+[DB]
+- Se crean las tablas:
+    - doc_documentos
+    - doc_tipos
+    - doc_formas_com
+    - doc_areas
+    - doc_periodicidad
+
 ## FEAT-CDC
 Requerimientos de cambios y desarrollos por esteban tissera
 *Fecha* 2020-09-28
