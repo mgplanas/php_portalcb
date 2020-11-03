@@ -15,6 +15,13 @@ Cáculo de fechas de vto y avisos
     - doc_areas
     - doc_periodicidad
 
+[cod]
+- [new] pages/doc_documentos.php
+- [new] modals/abmdoc.php
+- [new] modals/abmdoc.js
+- [new] modals/abmdoc_aprobar.php
+- [new] helpers/abmdocdb.php
+
 ## FEAT-CDC
 Requerimientos de cambios y desarrollos por esteban tissera
 *Fecha* 2020-09-28

@@ -57,6 +57,17 @@ $personas = mysqli_query($con, "SELECT * FROM persona");
 $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'");
 $rq_sec = mysqli_fetch_assoc($q_sec);				
 
+function formatDate($value) {
+    
+    $fecha ='';
+    if ($value) {
+        $fecha_dt = new DateTime($value);
+        $fecha = $fecha_dt->format('d/m/Y');
+    }
+
+    return $fecha;
+}
+
 ?>
 <style>
 .dataTables_filter {
@@ -161,18 +172,18 @@ desired effect
       <!-- INDICADORES -->
       <div class="row">
         <!-- /.box-header -->
-          <div class="col-xs-12 col-md-5"><h1>Gestión de documentos DC &nbsp;&nbsp;<small>Total:&nbsp;<?=$rq_indicadores['total'] ?></small></h1></div>
-          <div class="col-xs-6 col-md-1 text-center">
-            <input id="knob_pet" type="text" class="knob" value="<?= (int)($rq_indicadores['vigentes']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_vigentes_color ?>">
+          <div class="col-xs-12 col-md-9"><h1>Gestión de documentos DC &nbsp;&nbsp;<small>Total:&nbsp;<?=$rq_indicadores['total'] ?></small></h1></div>
+          <div class="col-xs-3 col-md-1 text-center">
+            <input id="knob_vigentes" type="text" class="knob" value="<?= (int)($rq_indicadores['vigentes']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_vigentes_color ?>">
             <div class="knob-label direct-search">Vigentes</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
-            <input id="knob_proximos|" type="text" class="knob" value="<?= (int)($rq_indicadores['proximos|']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_proximos_color ?>">
-            <div class="knob-label direct-search">Próximos</div>
+            <input id="knob_proximos" type="text" class="knob" value="<?= (int)($rq_indicadores['proximos']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_proximos_color ?>">
+            <div class="knob-label direct-search">Próximos a vencer</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_vencidos" type="text" class="knob" value="<?= (int)($rq_indicadores['vencidos']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_vencidos_color ?>">
-            <div class="knob-label direct-search">vencidos</div>
+            <div class="knob-label direct-search">Vencidos</div>
           </div>
         <!-- /.box-body -->
       </div>             
@@ -202,12 +213,12 @@ desired effect
                                 <th>Vigencia</th>
                                 <th>Próxima</th>
                                 <th>Frecuencia</th>
-                                <th>Revisión</th>
+                                <!-- <th>Revisión</th> -->
                                 <th>Aprobación</th>
                                 <th><i title="Periodicidad de la comunicación" class="fa fa-clock-o"></i></th>
                                 <th>Forma</i></th>
                                 <th>Fecha Com</i></th>
-                                <th width="30px" style="text-align: right;"><i class="fa fa-bolt"></i> </th>
+                                <th width="70px" style="text-align: right;"><i class="fa fa-bolt"></i> </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -239,24 +250,27 @@ desired effect
                                         echo '<td>'. $row['nombre'] .'</td>';
                                         echo '<td>'. $row['area'] .'</td>';
                                         echo '<td>'. $row['owner'] .'</td>';
-                                        echo '<td>'. $row['vigencia'] .'</td>';
-                                        echo '<td>'. $row['proxima_actualizacion'] .'</td>';
+                                        echo '<td>'. formatDate($row['vigencia']) .'</td>';
+                                        echo '<td>'. formatDate($row['proxima_actualizacion']) .'</td>';
                                         echo '<td>'. $row['frecuencia_revision'] .'</td>';
-                                        echo '<td>'. $row['revisado'] .'</td>';
-                                        echo '<td>'. $row['aprobado'] .'</td>';
+                                        // echo '<td>'. formatDate($row['revisado']) .'</td>';
+                                        echo '<td>'. formatDate($row['aprobado']) .'</td>';
                                         echo '<td>'. $row['periodicidad_com'] .'</td>';
                                         echo '<td>'. $row['forma_com'] .'</td>';
-                                        echo '<td>'. $row['comunicado'] .'</td>';
+                                        echo '<td>'. formatDate($row['comunicado']) .'</td>';
                                         echo '<td align="right">';
-                                        // echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="modal-abm-compra-btn-view btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
-                                        echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-compra-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
-                                        if ($rq_sec['admin_compras'] == '1') {echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-compra-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash"></i></a>';}
+                                        // echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="modal-abm-docs-btn-view btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
+                                        echo '<a data-frecuencia="'.$row['frecuencia_revision'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" title="revisar" class="modal-abm-docs-btn-review btn" style="padding: 2px;"><i class="fa fa-eye"></i></a>';
+                                        echo '<a data-version="'.$row['version'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" title="aprobar" class="modal-abm-docs-btn-aprobar btn" style="padding: 2px;"><i class="fa fa-thumbs-o-up"></i></a>';
+                                        echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-docs-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
+                                        if ($rq_sec['admin_docs'] == '1') {echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-docs-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash"></i></a>';}
                                         echo '</td></tr>';
                                     }
                                 ?>
                             </tbody>
                         </table>                                            
                     </div>
+                    <?php include_once('./modals/abmdoc_aprobar.php'); ?>
                     <!-- /.box-body -->
                 </div>
             </div>    
@@ -305,7 +319,7 @@ desired effect
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
 <script src="../bower_components/datatables.net/js/buttons.colVis.min.js"></script>
 <!-- MODALES -->
-<script src="./modals/abmcompra.js"></script>
+<script src="./modals/abmdoc.js"></script>
 
 <script>
   $(function () {
@@ -399,27 +413,20 @@ desired effect
     });
 
     // SET TEXT
-    $('#knob_standby').val(<?=$rq_indicadores['standby'] ?>);
-    $("#knob_standby").attr('disabled','disabled');
-    $('#knob_pet').val(<?=$rq_indicadores['PET'] ?>);
-    $("#knob_pet").attr('disabled','disabled');
+    $('#knob_vigentes').val(<?=$rq_indicadores['PET'] ?>);
+    $("#knob_vigentes").attr('disabled','disabled');
     $('#knob_vencidos').val(<?=$rq_indicadores['vencidos'] ?>);
     $("#knob_vencidos").attr('disabled','disabled');
-    $('#knob_proximos|').val(<?=$rq_indicadores['proximos|'] ?>);
-    $("#knob_proximos|").attr('disabled','disabled');
-    $('#knob_dictamen').val(<?=$rq_indicadores['Dictamen'] ?>);
-    $("#knob_dictamen").attr('disabled','disabled');
-    $('#knob_adjudicacion').val(<?=$rq_indicadores['adjudicacion'] ?>);
-    $("#knob_adjudicacion").attr('disabled','disabled');
-    $('#knob_cancelado').val(<?=$rq_indicadores['cancelado'] ?>);
-    $("#knob_cancelado").attr('disabled','disabled');
+    $('#knob_proximos').val(<?=$rq_indicadores['proximos|'] ?>);
+    $("#knob_proximos").attr('disabled','disabled');
 
     $('#btn-showhide-comments').prop('disabled', 'true');
 
     $('.direct-search').on( 'click', function () {
       $('#tbDocumentos').dataTable().fnFilter( $(this)[0].innerText );
     });
-    // toggleComments();
+
+
 });
 </script>
 </body>
