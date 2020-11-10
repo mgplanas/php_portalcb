@@ -12,7 +12,7 @@ Cáculo de fechas de vto y avisos
     - doc_documentos
     - doc_tipos
     - doc_formas_com
-    - doc_areas
+    - doc_areas 
     - doc_periodicidad
 
 [cod]

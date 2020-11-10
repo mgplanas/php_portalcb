@@ -47,17 +47,17 @@ ALTER TABLE controls.cdc_cliente
 - Cambios en src
 
 - CHANGES.md                              |  88 +++++++++++
+    - pages/helpers/cdc_abmclientedb.php      |   8 +-
+    - pages/modals/cdc_abmcliente.js          |  15 +-
+    - pages/modals/cdc_abmcliente.php         |  19 ++-
+    - pages/modals/cdc_clientes_baja_view.js  |  39 +++++
+    - pages/modals/cdc_clientes_baja_view.php |  46 ++++++
+    - pages/modals/sdc_correo_view.js         | 129 ++++++++++++++++
+    - pages/modals/sdc_correo_view.php        | 103 +++++++++++++
+    - pages/modals/sdc_hosting_view.js        |   5 +-
+    - pages/modals/sdc_iaas_vms_view.js       | 127 +++++++++++++++
+    - pages/modals/sdc_iaas_vms_view.php      |  93 +++++++++++
 - pages/cdc_cliente.php                   |  31 +++-
-- pages/helpers/cdc_abmclientedb.php      |   8 +-
-- pages/modals/cdc_abmcliente.js          |  15 +-
-- pages/modals/cdc_abmcliente.php         |  19 ++-
-- pages/modals/cdc_clientes_baja_view.js  |  39 +++++
-- pages/modals/cdc_clientes_baja_view.php |  46 ++++++
-- pages/modals/sdc_correo_view.js         | 129 ++++++++++++++++
-- pages/modals/sdc_correo_view.php        | 103 +++++++++++++
-- pages/modals/sdc_hosting_view.js        |   5 +-
-- pages/modals/sdc_iaas_vms_view.js       | 127 +++++++++++++++
-- pages/modals/sdc_iaas_vms_view.php      |  93 +++++++++++
 - pages/sdc_correo.php                    | 265 ++++++++++++++++++++++++++++++++
 - pages/sdc_hosting.php                   |   7 +-
 - pages/sdc_iaas.php                      |  13 +-

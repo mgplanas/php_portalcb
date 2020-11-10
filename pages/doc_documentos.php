@@ -21,9 +21,9 @@ $_SESSION['id_usuario'] = $id_rowp;
 
 // INDICADORES
 $sqlindicadores = "SELECT 
-  COUNT(IF (DATEDIFF(doc.proxima_actualizacion, doc.vigencia) > 30  ,1,null) ) as vigentes
-, COUNT(IF (DATEDIFF(doc.proxima_actualizacion, doc.vigencia) <= 30 AND DATEDIFF(doc.proxima_actualizacion, doc.vigencia) >= 0, 1, null) ) as proximos
-, COUNT(IF (DATEDIFF(doc.proxima_actualizacion, doc.vigencia) < 0  ,1,null) ) as vencidos
+  COUNT(IF (DATEDIFF(doc.proxima_actualizacion, NOW()) > 30  ,1,null) ) as vigentes
+  , COUNT(IF (DATEDIFF(doc.proxima_actualizacion, NOW()) <= 30 AND DATEDIFF(doc.proxima_actualizacion, NOW()) >= 0, 1, null) ) as proximos
+, COUNT(IF (DATEDIFF(doc.proxima_actualizacion, NOW()) < 0  ,1,null) ) as vencidos
 ,COUNT(1) as total 
 FROM doc_documentos as doc  
 WHERE doc.borrado='0';";
@@ -60,7 +60,7 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
 function formatDate($value) {
     
     $fecha ='';
-    if ($value) {
+    if ($value && $value != '0000-00-00 00:00:00') {
         $fecha_dt = new DateTime($value);
         $fecha = $fecha_dt->format('d/m/Y');
     }
@@ -179,7 +179,7 @@ desired effect
           </div>
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_proximos" type="text" class="knob" value="<?= (int)($rq_indicadores['proximos']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_proximos_color ?>">
-            <div class="knob-label direct-search">Próximos a vencer</div>
+            <div class="knob-label direct-search">Próximos</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_vencidos" type="text" class="knob" value="<?= (int)($rq_indicadores['vencidos']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_vencidos_color ?>">
@@ -201,6 +201,11 @@ desired effect
             <div class="row">         
                 <div class="col-12">
                 <div class="box">
+                    <div class="box-header">
+                        <div class="col-sm-12" style="text-align:right;">
+                            <button type="button" id="modal-abm-doc-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-file"></i> Nueva Documentación</button>
+                        </div>
+                    </div>                    
                     <div class="box-body">
                         <table id="tbDocumentos" class="display w-auto" witdh="100%">
                             <thead>
@@ -232,6 +237,7 @@ desired effect
                                     , per.descripcion as periodicidad_desc
                                     , tipo.tipo as tipo_doc
                                     , tipo.descripcion as tipo_desc
+                                    , (DATEDIFF(doc.proxima_actualizacion, NOW())) as dias
                                     FROM doc_documentos as doc
                                     INNER JOIN persona as owner ON doc.id_owner = owner.id_persona
                                     LEFT JOIN doc_areas as area ON doc.id_area = area.id
@@ -247,14 +253,32 @@ desired effect
                                         echo '<tr>';
                                         echo '<td>'. $row['tipo_doc'] .'</td>';
                                         echo '<td>'. $row['version'] .'</td>';
-                                        echo '<td>'. $row['nombre'] .'</td>';
+                                        if ($row['link'] != '') {
+                                            echo '<td><a href="' . $row['link'] . '" target="_blank">'. $row['nombre'] .'</a></td>';
+                                        } else {
+                                            echo '<td>'. $row['nombre'] .'</td>';
+                                        }
+                                        
                                         echo '<td>'. $row['area'] .'</td>';
                                         echo '<td>'. $row['owner'] .'</td>';
                                         echo '<td>'. formatDate($row['vigencia']) .'</td>';
-                                        echo '<td>'. formatDate($row['proxima_actualizacion']) .'</td>';
+                                        echo '<td><span class="badge bg-'; 
+                                        if ($row['dias'] > 30) {
+                                            echo 'green';
+                                        } else if ($row['dias'] < 0) {
+                                            echo 'red';
+                                        } else {
+                                            echo 'yellow';
+                                        }
+                                        echo '">' . formatDate($row['proxima_actualizacion']) . '</span>';
+                                        echo '</td>';
                                         echo '<td>'. $row['frecuencia_revision'] .'</td>';
                                         // echo '<td>'. formatDate($row['revisado']) .'</td>';
-                                        echo '<td>'. formatDate($row['aprobado']) .'</td>';
+                                        if ($row['aprobado_minuta'] != '') {
+                                            echo '<td><a href="' . $row['aprobado_minuta'] . '" target="_blank">'. formatDate($row['aprobado']) .'</a></td>';
+                                        } else {
+                                            echo '<td>'. formatDate($row['aprobado']) .'</td>';
+                                        }                                        
                                         echo '<td>'. $row['periodicidad_com'] .'</td>';
                                         echo '<td>'. $row['forma_com'] .'</td>';
                                         echo '<td>'. formatDate($row['comunicado']) .'</td>';
@@ -262,7 +286,7 @@ desired effect
                                         // echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="modal-abm-docs-btn-view btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
                                         echo '<a data-frecuencia="'.$row['frecuencia_revision'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" title="revisar" class="modal-abm-docs-btn-review btn" style="padding: 2px;"><i class="fa fa-eye"></i></a>';
                                         echo '<a data-version="'.$row['version'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" title="aprobar" class="modal-abm-docs-btn-aprobar btn" style="padding: 2px;"><i class="fa fa-thumbs-o-up"></i></a>';
-                                        echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-docs-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
+                                        echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-doc-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
                                         if ($rq_sec['admin_docs'] == '1') {echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-docs-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash"></i></a>';}
                                         echo '</td></tr>';
                                     }
@@ -270,6 +294,7 @@ desired effect
                             </tbody>
                         </table>                                            
                     </div>
+                    <?php include_once('./modals/abmdoc.php'); ?>
                     <?php include_once('./modals/abmdoc_aprobar.php'); ?>
                     <!-- /.box-body -->
                 </div>
@@ -413,18 +438,18 @@ desired effect
     });
 
     // SET TEXT
-    $('#knob_vigentes').val(<?=$rq_indicadores['PET'] ?>);
+    $('#knob_vigentes').val(<?=$rq_indicadores['vigentes'] ?>);
     $("#knob_vigentes").attr('disabled','disabled');
     $('#knob_vencidos').val(<?=$rq_indicadores['vencidos'] ?>);
     $("#knob_vencidos").attr('disabled','disabled');
-    $('#knob_proximos').val(<?=$rq_indicadores['proximos|'] ?>);
+    $('#knob_proximos').val(<?=$rq_indicadores['proximos'] ?>);
     $("#knob_proximos").attr('disabled','disabled');
 
     $('#btn-showhide-comments').prop('disabled', 'true');
 
-    $('.direct-search').on( 'click', function () {
-      $('#tbDocumentos').dataTable().fnFilter( $(this)[0].innerText );
-    });
+    // $('.direct-search').on( 'click', function () {
+    //   $('#tbDocumentos').dataTable().fnFilter( $(this)[0].innerText );
+    // });
 
 
 });
