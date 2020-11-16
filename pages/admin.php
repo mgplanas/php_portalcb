@@ -228,9 +228,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">Admin Compras</th>
                                                 <th width="1">Admin Riesgo</th>
                                                 <th width="1">Cto</th>
+                                                <th width="1">Admin Cto</th>
                                                 <th width="1">Admin Doc</th>
                                                 <th width="1">Doc</th>
-                                                <th width="1">Admin Cto</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>
