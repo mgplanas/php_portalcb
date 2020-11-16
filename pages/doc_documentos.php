@@ -61,8 +61,8 @@ function formatDate($value) {
     
     $fecha ='';
     if ($value && $value != '0000-00-00 00:00:00') {
-        $fecha = 'Hola';
-    //     $fecha_dt = new DateTime($value);
+         $fecha_dt = new DateTime($value);
+         $fecha = $fecha_dt;
     //     $fecha = $fecha_dt->format('d/m/Y');
     }
 
