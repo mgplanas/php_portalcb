@@ -58,12 +58,12 @@ $q_sec = mysqli_query($con,"SELECT * FROM permisos WHERE id_persona='$id_rowp'")
 $rq_sec = mysqli_fetch_assoc($q_sec);				
 
 function formatDate($value) {
-    
+    $gmtTimezone = new DateTimeZone('GMT');
+    date_default_timezone_set('America/Argentina/Buenos_Aires');
     $fecha ='';
     if ($value && $value != '0000-00-00 00:00:00') {
          $fecha_dt = new DateTime($value);
-         $fecha = $fecha_dt;
-    //     $fecha = $fecha_dt->format('d/m/Y');
+         $fecha = $fecha_dt->format('d/m/Y');
     }
 
     return $fecha;
