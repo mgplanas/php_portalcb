@@ -59,14 +59,14 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
 
 function formatDate($value) {
     
-    // $fecha ='';
-    // if ($value && $value != '0000-00-00 00:00:00') {
+    $fecha ='';
+    if ($value && $value != '0000-00-00 00:00:00') {
+        $fecha = 'Hola';
     //     $fecha_dt = new DateTime($value);
     //     $fecha = $fecha_dt->format('d/m/Y');
-    // }
+    }
 
-    // return $fecha;
-    return $value;
+    return $fecha;
 }
 
 ?>
