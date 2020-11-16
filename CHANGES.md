@@ -27,6 +27,9 @@ Cáculo de fechas de vto y avisos
  pages/modals/abmdoc.js          | 249 ++++++++++++++++++++++
  pages/modals/abmdoc.php         | 142 +++++++++++++
  pages/modals/abmdoc_aprobar.php |  49 +++++
+ pages/setPermiso.php     |  8 ++++++++
+ pages/site_sidebar.php   |  3 +++
+ site.php                 |  3 +++
 
 ## FEAT-CDC
 Requerimientos de cambios y desarrollos por esteban tissera
