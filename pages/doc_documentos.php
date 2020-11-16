@@ -66,7 +66,7 @@ function formatDate($value) {
     // }
 
     // return $fecha;
-    return 'Hola';
+    return $value;
 }
 
 ?>
