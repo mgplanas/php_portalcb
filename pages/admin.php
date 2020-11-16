@@ -228,6 +228,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">Admin Compras</th>
                                                 <th width="1">Admin Riesgo</th>
                                                 <th width="1">Cto</th>
+                                                <th width="1">Admin Doc</th>
+                                                <th width="1">Doc</th>
                                                 <th width="1">Admin Cto</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
@@ -310,9 +312,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             <label><input name="admin_contratos" type="checkbox" onclick="updatePerm(13, '.$row['id_permiso'].');" value="1"'; if($row['admin_contratos'] == '1'){ echo 'checked'; } echo'></label>
                                                                 </div></td>'; 
                                                   echo '<td>
+                                                            <div class="checkbox">
+                                                                <label><input name="admin_doc" type="checkbox" onclick="updatePerm(15, '.$row['id_permiso'].');" value="1"'; if($row['admin_doc'] == '1'){ echo 'checked'; } echo'></label>
+                                                            </div></td>'; 
+                                                  echo '<td>
+                                                            <div class="checkbox">
+                                                                <label><input name="doc" type="checkbox" onclick="updatePerm(16, '.$row['id_permiso'].');" value="1"'; if($row['doc'] == '1'){ echo 'checked'; } echo'></label>
+                                                            </div></td>'; 
+                                                  echo '<td>
                                                           <div class="checkbox">
                                                             <label><input name="edicion" type="checkbox" onclick="updatePerm(4, '.$row['id_permiso'].');" value="1"'; if($row['edicion'] == '1'){ echo 'checked'; } echo'></label>
                                                           </div></td>'; 
+
                                                   echo '<td align="center">
                                                           <a href="admin.php?aksi=delete&nik='.$row['id_permiso'].'" title="Deshabilitar usuario" onclick="return confirm(\'Esta seguro de borrar los permisos de '.$row['email'].'?\')" class="btn btn-danger btn-sm ';
                                                                 if ($rq_sec['edicion']=='0'){
@@ -325,28 +336,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                               }
                                               ?>
                                         </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th width="1">Nro</th>
-                                                <th width="1">Legajo</th>
-                                                <th width="100">Usuario</th>
-                                                <th width="100">Correo</th>
-                                                <th width="1">Admin</th>
-                                                <th width="1">A. Per</th>
-                                                <th width="1">Proyectos</th>
-                                                <th width="1">A. Proy</th>
-                                                <th width="1">SOC</th>
-                                                <th width="1">Compliance</th>
-                                                <th width="1">Cli. DC</th>
-                                                <th width="1">A. CDC</th>
-                                                <th width="1">Compras</th>
-                                                <th width="1">A. Compras</th>                                                
-                                                <th width="1">A. Riesgos</th>                                                
-                                                <th width="1">A. Ctos</th>                                                
-                                                <th width="1">Edición</th>
-                                                <th width="1">Acciones</th>
-                                            </tr>
-                                        </tfoot>
                                     </table>
                                 </div>
                                 <div class="modal fade" id="modal-acceso">
@@ -372,8 +361,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     $admin_riesgo = mysqli_real_escape_string($con,(strip_tags($_POST["admin_riesgos"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $contratos = mysqli_real_escape_string($con,(strip_tags($_POST["contratos"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $admin_contratos = mysqli_real_escape_string($con,(strip_tags($_POST["admin_contratos"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $admin_doc = mysqli_real_escape_string($con,(strip_tags($_POST["admin_doc"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $doc = mysqli_real_escape_string($con,(strip_tags($_POST["doc"],ENT_QUOTES)));//Escanpando caracteres 
                                                     //Inserto Control
-                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy, cli_dc,compras, admin_compras, admin_riesgos, contratos, admin_contratos) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy', '$clidc', '$compras', '$admin_compras', '$admin_riesgo', '$contratos', '$admin_contratos')") or die(mysqli_error());	
+                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy, cli_dc,compras, admin_compras, admin_riesgos, contratos, admin_contratos,admin_doc, doc) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy', '$clidc', '$compras', '$admin_compras', '$admin_riesgo', '$contratos', '$admin_contratos', '$admin_doc', '$doc')") or die(mysqli_error());	
                                                     $lastInsert = mysqli_insert_id($con);
                                                     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                                   VALUES ('1', '16', '$lastInsert', now(), '$user')") or die(mysqli_error());
@@ -468,6 +459,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <div class="checkbox">
                                                             <label>
                                                                 <input name="admin_contratos" type="checkbox" value="1"> Admin. Contratos
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="admin_doc" type="checkbox" value="1"> Admin. Doc
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="doc" type="checkbox" value="1"> Doc.
                                                             </label>
                                                         </div>
 

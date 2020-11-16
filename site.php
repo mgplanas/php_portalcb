@@ -394,6 +394,9 @@ desired effect
           <li><a href="./pages/iso9k.php"><i class="fa fa-crosshairs"></i> <span>ISO 9001</span></a></li>        
           <li><a href="./pages/bcra.php"><i class="fa fa-crosshairs"></i> <span>BCRA</span></a></li>        
           <li><a href="./pages/mejoras.php"><i class="fa fa-refresh"></i> <span>Mejora Continua</span></a></li>
+          <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_doc']=='1' OR $rq_sec['doc']=='1'){ ?>
+            <li><a href="./pages/doc_documentos.php"><i class="fa fa-file"></i> <span>Documentación</span></a></li>
+          <?php } ?>          
           <li class="treeview">
             <a href="#">
                 <i class="fa fa-eye"></i> <span>Auditorías</span>

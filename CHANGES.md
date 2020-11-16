@@ -22,6 +22,12 @@ Cáculo de fechas de vto y avisos
 - [new] modals/abmdoc_aprobar.php
 - [new] helpers/abmdocdb.php
 
+ pages/doc_documentos.php        | 458 ++++++++++++++++++++++++++++++++++++++++
+ pages/helpers/abmdocdb.php      |  86 ++++++++
+ pages/modals/abmdoc.js          | 249 ++++++++++++++++++++++
+ pages/modals/abmdoc.php         | 142 +++++++++++++
+ pages/modals/abmdoc_aprobar.php |  49 +++++
+
 ## FEAT-CDC
 Requerimientos de cambios y desarrollos por esteban tissera
 *Fecha* 2020-09-28

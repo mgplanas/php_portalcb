@@ -169,5 +169,13 @@
             $sel1=mysqli_query($con, $sel);
         }
     }    
+    else if ($f=='15'){
+        $sel="update permisos set admin_doc=NOT(admin_doc)  where id_permiso='$s'";
+        $sel1=mysqli_query($con, $sel);
+    }    
+    else if ($f=='16'){
+        $sel="update permisos set doc=not(doc) where id_permiso='$s'";
+        $sel1=mysqli_query($con, $sel);
+    }    
     
 ?>
