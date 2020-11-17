@@ -63,6 +63,19 @@
                                 </div>                        
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Criticidad</label>
+                                <select name="criticidad" class="form-control" id='modal-abm-contrato-criticidad'>
+                                    <?php
+                                    $critididades = mysqli_query($con, "SELECT * FROM adm_criticidad WHERE borrado = 0 ORDER BY id");
+                                    while($rowper = mysqli_fetch_assoc($critididades)){
+                                        echo "<option value=". $rowper['id'] . ">" . $rowper['criticidad'] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div> 
+                        </div>
                     </div>              
 
                     <div class="form-group">

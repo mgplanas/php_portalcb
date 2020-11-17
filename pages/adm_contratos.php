@@ -212,6 +212,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 echo 'data-vencimiento="' . $row["vencimiento"] . '" ';
                                 echo 'data-oc="' . $row["oc"] . '" ';
                                 echo 'data-tipo="' . $row["tipo_mantenimiento"] . '" ';
+                                echo 'data-criticidad="' . $row["criticidad"] . '" ';
                                 echo 'title="editar" class="modal-abm-contrato-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
                                 echo '<a data-id="' . $row["id"] . '" title="eliminar" class="modal-abm-contrato-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
                             }
