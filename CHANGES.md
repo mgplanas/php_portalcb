@@ -1,5 +1,20 @@
 # CHANGES
 
+## FEAT-CON-CRITICIDAD
+Agregar campo de criticidad en el seguimiento de contratos
+*Fecha* 2020-11-17
+*Requerimiento*
+Agregar campo de criticidad en el seguimiento de contratos
+
+[DB]
+- Se crea la tabla:
+    - adm_criticidad
+        - Baja|Media|Alta
+- Se agrega el campo criticidad a la tabla de contratos
+    - ALTER TABLE controls.adm_contratos_vto ADD criticidad INT NOT NULL DEFAULT '1' AFTER oc;
+
+[cod]
+- [Mod] pages/adm_contratos.php: Se agrega a la lista la criticidad
 ## FEAT-DOCS
 Volvar la planilla de Biblioteca de documentos del DC en el portal
 *Fecha* 2020-10-20

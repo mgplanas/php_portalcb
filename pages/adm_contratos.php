@@ -130,6 +130,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <table id="vtos" class="table table-hover" width="100%">
                 <thead>
                 <tr>
+				  <th></th>
 				  <th>SubGerencia</th>
                   <th>Proveedor</th>
                   <th>Mantenimiento/Soporte</th>
@@ -142,12 +143,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </thead>
                 <tbody>
                 <?php
-                    $query = "SELECT c.id, c.id_proveedor, c.id_subgerencia, c.oc, c.tipo_mantenimiento, c.vencimiento,
+                    $query = "SELECT c.id, c.id_proveedor, c.id_subgerencia, c.oc, c.tipo_mantenimiento, c.vencimiento, c.criticidad,
                                     s.nombre as subgerencia, 
                                     p.razon_social as proveedor, 
-                                    datediff(c.vencimiento, now()) as dias 
+                                    datediff(c.vencimiento, now()) as dias,
+                                    cr.criticidad as criticidad_desc
                                 FROM adm_contratos_vto as c 
                                 INNER JOIN subgerencia as s ON c.id_subgerencia = s.id_subgerencia 
+                                INNER JOIN adm_criticidad as cr ON c.criticidad = cr.id
                                 LEFT JOIN adm_com_proveedores as p ON c.id_proveedor = p.id 
                                 WHERE c.borrado = 0;";
 					
@@ -160,7 +163,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						while($row = mysqli_fetch_assoc($sql)){
 							
 							echo '<tr>';
-							echo '<td>'. $row['subgerencia'].'</td>';
+                            if ($row['criticidad'] == '3') {
+                                echo '<td><span class="badge bg-red">'.$row['criticidad_desc'].'</span></td>';
+                            } elseif ($row['criticidad'] == '2') {
+                                echo '<td><span class="badge bg-yellow">'.$row['criticidad_desc'].'</span></td>';
+                            } else {
+                                echo '<td><span class="badge bg-green">'.$row['criticidad_desc'].'</span></td>';
+                            }
+                            echo '<td>'. $row['subgerencia'].'</td>';
 							echo '<td>'. $row['proveedor'].'</td>';
 							echo '<td>'. $row['tipo_mantenimiento'].'</td>';
                             if ($row['oc']) {
