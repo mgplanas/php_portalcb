@@ -6,7 +6,7 @@ $(function() {
     // ==============================================================
     // EVENTOS
     // ==============================================================
-    $('.modal-abm-vms-view').click(function() {
+    $('.modal-abm-vms-view').on('click', function() {
         //Extraigo el id de la data del botón
         let idcliente = $(this).data('id');
         modalAbmvmsLimpiarCampos();
@@ -79,12 +79,6 @@ $(function() {
         });
     });
 
-    // ==============================================================
-    // AUXILIARES
-    // ==============================================================
-    function round(num, places) {
-        return +(Math.round(num + "e+" + places) + "e-" + places);
-    }
 
     function modalAbmvmsLimpiarCampos() {
         tbvms.DataTable().clear().destroy();
@@ -97,31 +91,5 @@ $(function() {
         $('#modal-abm-vms-organismo').val('');
     }
 
-
-    // populate the data table with JSON data
-    function populateDataTable(response, table) {
-        var length = Object.keys(response.data).length;
-        console.log(response);
-        for (var i = 0; i < length; i++) {
-            let item = response.data[i];
-            // You could also use an ajax property on the data table initialization
-            table.dataTable().fnAddData([
-                //item.tipo,
-                item.nombre,
-                item.displayName,
-                item.proyecto,
-                item.fecha,
-                item.hipervisor,
-                item.hostname,
-                item.pool,
-                item.uuid,
-                item.VCPU,
-                item.RAM,
-                item.storage,
-                item.SO
-                //item.datacenter
-            ]);
-        }
-    }
     // ********************************************************************************************
 });

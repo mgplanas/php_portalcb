@@ -242,7 +242,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
 <script src="./modals/sdc_abmiaas.js"></script>
-<script src="./modals/sdc_iaas_vms_view.js"></script>
+<!-- <script src="./modals/sdc_iaas_vms_view.js"></script> -->
       
 <script>
 
