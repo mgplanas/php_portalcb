@@ -14,7 +14,12 @@ Agregar campo de criticidad en el seguimiento de contratos
     - ALTER TABLE controls.adm_contratos_vto ADD criticidad INT NOT NULL DEFAULT '1' AFTER oc;
 
 [cod]
-- [Mod] pages/adm_contratos.php: Se agrega a la lista la criticidad
+- Se agrega a la lista la criticidad
+    - [Mod] pages/adm_contratos.php
+- Se agrega campo en el ABM
+    - [Mod] pages/modals/adm_contratos.php
+    - [Mod] pages/modals/adm_contratos.js
+    - [Mod] pages/helpers/adm_contratosdb.php
 ## FEAT-DOCS
 Volvar la planilla de Biblioteca de documentos del DC en el portal
 *Fecha* 2020-10-20
