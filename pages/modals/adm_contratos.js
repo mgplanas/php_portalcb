@@ -134,6 +134,7 @@ $(function() {
     // ==============================================================
     // ejecución de guardado async
     $('#modal-abm-contrato-submit').click(function() {
+
         // Recupero datos del formulario
         let op = $(this).attr('name');
         let id = $('#modal-abm-contrato-id').val();
@@ -143,6 +144,15 @@ $(function() {
         let tipo_mantenimiento = $('#modal-abm-contrato-tipo').val();
         let vencimiento = $('#modal-abm-contrato-vencimiento').val();
         let criticidad = $('#modal-abm-contrato-criticidad').val();
+
+        if (!id_subgerencia) {
+            alert('Se debe ingresar la subgerencia.');
+            return;
+        }
+
+        if (criticidad == 0) {
+            criticidad = 1;
+        }
         // Ejecuto
         $.ajax({
             type: 'POST',
@@ -159,8 +169,13 @@ $(function() {
             },
             dataType: 'json',
             success: function(json) {
-                $("#modal-abm-contrato").modal("hide");
-                location.reload();
+                if (!json.ok) {
+                    alert(json.err);
+                } else {
+                    // alert(json.sql);
+                    $("#modal-abm-contrato").modal("hide");
+                    location.reload();
+                }
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);
