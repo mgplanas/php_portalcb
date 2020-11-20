@@ -283,7 +283,7 @@ desired effect
                                         echo '<td align="right">';
                                         // echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="modal-abm-docs-btn-view btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
                                         echo '<a data-frecuencia="'.$row['frecuencia_revision'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" title="revisar" class="modal-abm-docs-btn-review btn" style="padding: 2px;"><i class="fa fa-eye"></i></a>';
-                                        echo '<a data-version="'.$row['version'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" title="aprobar" class="modal-abm-docs-btn-aprobar btn" style="padding: 2px;"><i class="fa fa-thumbs-o-up"></i></a>';
+                                        echo '<a data-version="'.$row['version'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" data-minuta="'.$row['aprobado_minuta'].'" title="aprobar" class="modal-abm-docs-btn-aprobar btn" style="padding: 2px;"><i class="fa fa-thumbs-o-up"></i></a>';
                                         if ($rq_sec['admin_doc'] == '1') {
                                             echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-doc-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
                                             echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-docs-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash"></i></a>';
