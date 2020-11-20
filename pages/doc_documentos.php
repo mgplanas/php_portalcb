@@ -255,13 +255,13 @@ desired effect
                                     while($row = mysqli_fetch_assoc($sql)){
 
                                         echo '<tr>';
-                                        echo '<td>'. $row['tipo_doc'] .'</td>';
-                                        echo '<td>'. $row['version'] .'</td>';
+                                        echo '<td style="text-align: center;">'. $row['tipo_doc'] .'</td>';
+                                        echo '<td style="text-align: center;">'. $row['version'] .'</td>';
                                         echo '<td>'. $row['nombre'] .'</td>';
                                         echo '<td>'. $row['area'] .'</td>';
                                         echo '<td>'. $row['owner'] .'</td>';
-                                        echo '<td>'. formatDate($row['vigencia']) .'</td>';
-                                        echo '<td><span class="badge bg-'; 
+                                        echo '<td style="text-align: center;">'. formatDate($row['vigencia']) .'</td>';
+                                        echo '<td style="text-align: center;"><span class="badge bg-'; 
                                             if ($row['dias'] > 30) {
                                                 echo 'green';
                                             } else if ($row['dias'] < 0) {
@@ -272,14 +272,14 @@ desired effect
                                             echo '">' . formatDate($row['proxima_actualizacion']) . '</span>';
                                         echo '</td>';
                                         echo '<td>' . $row['path'] . '</td>';
-                                        echo '<td>'. $row['frecuencia_revision'] .'</td>';
-                                        echo '<td>'. formatDate($row['aprobado']) .'</td>';
-                                        echo '<td>'. $row['aprobado_version'] .'</td>';
+                                        echo '<td style="text-align: center;">'. $row['frecuencia_revision'] .'</td>';
+                                        echo '<td style="text-align: center;">'. formatDate($row['aprobado']) .'</td>';
+                                        echo '<td style="text-align: center;">'. $row['aprobado_version'] .'</td>';
                                         echo '<td>'. $row['aprobado_minuta'] .'</td>';
                                         echo '<td>'. $row['aprobado_path'] .'</td>';
                                         echo '<td>'. $row['periodicidad_com'] .'</td>';
-                                        echo '<td>'. $row['forma_com'] .'</td>';
-                                        echo '<td>'. formatDate($row['comunicado']) .'</td>';
+                                        echo '<td style="text-align: center;">'. $row['forma_com'] .'</td>';
+                                        echo '<td style="text-align: center;">'. formatDate($row['comunicado']) .'</td>';
                                         echo '<td align="right">';
                                         // echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="modal-abm-docs-btn-view btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
                                         echo '<a data-frecuencia="'.$row['frecuencia_revision'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" title="revisar" class="modal-abm-docs-btn-review btn" style="padding: 2px;"><i class="fa fa-eye"></i></a>';
