@@ -65,7 +65,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Criticidad</label>
+                                <label>Crítico</label>
                                 <select name="criticidad" class="form-control" id='modal-abm-contrato-criticidad'>
                                     <?php
                                     $critididades = mysqli_query($con, "SELECT * FROM adm_criticidad WHERE borrado = 0 ORDER BY id");

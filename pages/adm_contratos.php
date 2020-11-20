@@ -130,7 +130,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <table id="vtos" class="table table-hover" width="100%">
                 <thead>
                 <tr>
-				  <th></th>
+				  <th>Crítico</th>
 				  <th>SubGerencia</th>
                   <th>Proveedor</th>
                   <th>Mantenimiento/Soporte</th>
@@ -163,12 +163,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						while($row = mysqli_fetch_assoc($sql)){
 							
 							echo '<tr>';
-                            if ($row['criticidad'] == '3') {
-                                echo '<td><span class="badge bg-red">'.$row['criticidad_desc'].'</span></td>';
-                            } elseif ($row['criticidad'] == '2') {
-                                echo '<td><span class="badge bg-yellow">'.$row['criticidad_desc'].'</span></td>';
+                            if ($row['criticidad'] == '2') {
+                                echo '<td style="text-align: center;"><span class="badge bg-red">'.$row['criticidad_desc'].'</span></td>';
                             } else {
-                                echo '<td><span class="badge bg-green">'.$row['criticidad_desc'].'</span></td>';
+                                echo '<td style="text-align: center;"><span class="badge bg-green">'.$row['criticidad_desc'].'</span></td>';
                             }
                             echo '<td>'. $row['subgerencia'].'</td>';
 							echo '<td>'. $row['proveedor'].'</td>';
