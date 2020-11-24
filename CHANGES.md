@@ -1,5 +1,15 @@
 # CHANGES
 
+## FEAT-RIESGOS
+Cambios solicitados por R.Lopez
+*Fecha* 2020-11-24
+*Requerimiento*
+- Visualizar la genrencia en vez de la subgerencia en la edición / alta de riesgos
+- Metricas riesgos abiertos y cerrados por proceso
+
+[cod]
+- edit_riesgo.php
+
 ## FEAT-CON-CRITICIDAD
 Agregar campo de criticidad en el seguimiento de contratos
 *Fecha* 2020-11-17

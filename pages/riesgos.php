@@ -440,7 +440,7 @@ desired effect
                                                                                                                LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia 
                                                                                                              WHERE p.borrado=0 ORDER BY p.apellido, p.nombre");
                                                                             while($rowps = mysqli_fetch_array($personasn)){
-                                                                              echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+                                                                              echo "<option gerencia='" . $rowps['gerencia'] . "' subgerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
                                                                               }
                                                                         ?>
                                                                     </select>
@@ -463,7 +463,7 @@ desired effect
                                                                             LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia
                                                                             WHERE p.borrado=0 ORDER BY p.apellido, p.nombre");
                                                                             while($rowps = mysqli_fetch_array($personasn)){
-                                                                              echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+                                                                              echo "<option gerencia='" . $rowps['gerencia'] . "' subgerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
                                                                               }
                                                                         ?>
                                                                     </select>
@@ -486,7 +486,7 @@ desired effect
                                                                             LEFT JOIN subgerencia as s on p.subgerencia = s.id_subgerencia
                                                                             WHERE p.borrado=0 ORDER BY p.apellido, p.nombre");
                                                                             while($rowps = mysqli_fetch_array($personasn)){
-                                                                              echo "<option gerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
+                                                                              echo "<option gerencia='" . $rowps['gerencia'] . "' subgerencia='" . $rowps['subgerencia'] . "' value='". $rowps['id_persona'] . "'>" .$rowps['apellido'] . ", " . $rowps['nombre']. " - " .$rowps['cargo'] ."</option>";										
                                                                               }
                                                                         ?>
                                                                     </select>
@@ -1908,17 +1908,23 @@ desired effect
         </script>
 <script>
 $(function(){
-    $('#txtgerenciaresponsable').val($('#ddlresponsable option:selected', this).attr('gerencia'));    
-    $('#txtgerenciaidentificado').val($('#ddlidentificado option:selected', this).attr('gerencia'));    
-    $('#txtgerenciareferente').val($('#ddlreferente option:selected', this).attr('gerencia'));    
+    let gersubResponsable = ($('#ddlresponsable option:selected').attr('subgerencia') ? $('#ddlresponsable option:selected').attr('subgerencia') : $('#ddlresponsable option:selected').attr('gerencia'))
+    let gersubIdentificado = ($('#ddlidentificado option:selected').attr('subgerencia') ? $('#ddlidentificado option:selected').attr('subgerencia') : $('#ddlidentificado option:selected').attr('gerencia'))
+    let gersubReferente = ($('#ddlreferente option:selected').attr('subgerencia') ? $('#ddlreferente option:selected').attr('subgerencia') : $('#ddlreferente option:selected').attr('gerencia'))
+    $('#txtgerenciaresponsable').val(gersubResponsable);    
+    $('#txtgerenciaidentificado').val(gersubIdentificado);    
+    $('#txtgerenciareferente').val(gersubReferente);    
     $('#ddlresponsable').on('change', function() {
-        $('#txtgerenciaresponsable').val($('option:selected', this).attr('gerencia'));    
+        let gersubResponsable = ($('#ddlresponsable option:selected').attr('subgerencia') ? $('#ddlresponsable option:selected').attr('subgerencia') : $('#ddlresponsable option:selected').attr('gerencia'))
+        $('#txtgerenciaresponsable').val(gersubResponsable);    
     });    
     $('#ddlidentificado').on('change', function() {
-        $('#txtgerenciaidentificado').val($('option:selected', this).attr('gerencia'));    
+        let gersubIdentificado = ($('#ddlidentificado option:selected').attr('subgerencia') ? $('#ddlidentificado option:selected').attr('subgerencia') : $('#ddlidentificado option:selected').attr('gerencia'))
+        $('#txtgerenciaidentificado').val(gersubIdentificado);    
     });
     $('#ddlreferente').on('change', function() {
-        $('#txtgerenciareferente').val($('option:selected', this).attr('gerencia'));    
+        let gersubReferente = ($('#ddlreferente option:selected').attr('subgerencia') ? $('#ddlreferente option:selected').attr('subgerencia') : $('#ddlreferente option:selected').attr('gerencia'))
+        $('#txtgerenciareferente').val(gersubReferente);    
     });
 });
 </script>
