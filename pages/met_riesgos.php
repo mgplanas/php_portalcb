@@ -50,6 +50,27 @@ CASE WHEN r.n_resid :comparacion_bajo THEN 0
   ELSE 1 
 END";
 
+// RIESGOS POR PROCESO
+$sqlTmpRiesgosPorProceso = "SELECT x.nombre,
+CASE WHEN r.n_resid :comparacion_bajo THEN 0 
+  WHEN r.n_resid :comparacion_alto THEN 2
+  ELSE 1 
+END AS nivel,
+COUNT(1) as cuenta
+FROM riesgo as r
+INNER JOIN persona as p ON r.responsable = p.id_persona
+LEFT JOIN gerencia as g ON p.gerencia= g.id_gerencia
+LEFT JOIN procesos as x ON r.proceso= x.id
+WHERE r.borrado=0 AND r.estado=':estado'
+AND ( 1 = :per_id_gerencia OR  p.gerencia = :per_id_gerencia )
+GROUP BY x.nombre, 
+CASE WHEN r.n_resid :comparacion_bajo THEN 0 
+  WHEN r.n_resid :comparacion_alto THEN 2
+  ELSE 1 
+END";
+
+
+
 // RIESGOS POR GERENCIA (VIGENTES)
 $sqlTmpRiesgosPorGenrenciaVigente = "SELECT g.nombre,
 CASE WHEN r.n_resid :comparacion_bajo THEN 0 
@@ -232,7 +253,136 @@ desired effect
                         <canvas id="pieChartRR" style="height:250px"></canvas>
                         </div>
                         <!-- /.box-body -->
-                    </div>                    
+                    </div> 
+                    <!-- RIESGO POR PROCESO ABIERTOS -->
+                    <div class="box box-warning">
+                        <div class="box-header">
+                            <h3 class="box-title">Riesgos Abiertos por Proceso</h3>
+                        </div>
+                        <div class="box-body no-padding">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Proceso</th>
+                                <th>Bajo</th>
+                                <th>Medio</th>
+                                <th>Alto</th>
+                            </tr>
+                            <?php
+                                $resRA = mysqli_query($con, strtr($sqlTmpRiesgosPorProceso, array(':estado' => '0', ':comparacion_bajo' => '<= 3', ':comparacion_alto' => '> 10', ':per_id_gerencia' => $per_id_gerencia)));
+                                $allRows = mysqli_num_rows($resRA);
+                                if ($allRows == 0) {
+                                    echo '<tr><td colspan="4">No hay datos.</td></tr>';
+                                }else {
+                                    $nRow = 1;
+                                    $proceso_actual = '';
+                                    $row = mysqli_fetch_assoc($resRA);
+                                    while($nRow <= $allRows) {   
+                                        $proceso_actual = $row['nombre'];
+                                        echo '<tr>';
+                                        echo '<td>' . $row['nombre'] . '</td>';
+                                        $nivelControl = 0;
+                                        while ($nRow <= $allRows && $row['nombre'] == $proceso_actual) {
+                                        
+                                            // Creo las celdas vacias hasat el nivel
+                                            // de 0-2
+                                            for ($i = $nivelControl; $i < $row['nivel']; $i++) {
+                                                echo '<td></td>';
+                                            }
+                                            
+                                            $nivelControl = $row['nivel'];
+                                            // Hay nivel
+                                            switch ($row['nivel']) {
+                                                case 0:
+                                                    echo '<td class="text-center"><span class="badge bg-green">' . $row['cuenta'] . '</span></td>';
+                                                    break;
+                                                case 1:
+                                                    echo '<td class="text-center"><span class="badge bg-yellow">' . $row['cuenta'] . '</span></td>';
+                                                    break;
+                                                case 2:
+                                                    echo '<td class="text-center"><span class="badge bg-red">' . $row['cuenta'] . '</span></td>';
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            $nivelControl++;
+                                            $row = mysqli_fetch_assoc($resRA);
+                                            $nRow++;
+                                        }
+                                        // Creo las celdas vacias faltantes
+                                        // de 0-2
+                                        for ($i = $nivelControl; $i <= 2; $i++) {
+                                            echo '<td></td>';
+                                        }                                        
+                                        echo '</tr>';
+                                    }
+                                }
+                            ?>                                
+                        </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>     
+                    <!-- RIESGO POR PROCESO CERRADOS -->
+                    <div class="box box-success">
+                        <div class="box-header">
+                            <h3 class="box-title">Riesgos Cerrados por Proceso</h3>
+                        </div>
+                        <div class="box-body no-padding">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Proceso</th>
+                                <th>Bajo</th>
+                                <th>Medio</th>
+                                <th>Alto</th>
+                            </tr>
+                            <?php
+                                $resRA = mysqli_query($con, strtr($sqlTmpRiesgosPorProceso, array(':estado' => '1', ':comparacion_bajo' => '<= 3', ':comparacion_alto' => '> 10', ':per_id_gerencia' => $per_id_gerencia)));
+                                $allRows = mysqli_num_rows($resRA);
+                                if ($allRows == 0) {
+                                    echo '<tr><td colspan="4">No hay datos.</td></tr>';
+                                }else {
+                                    $nRow = 1;
+                                    $proceso_actual = '';
+                                    $row = mysqli_fetch_assoc($resRA);
+                                    while($nRow <= $allRows) {   
+                                        $proceso_actual = $row['nombre'];
+                                        echo '<tr>';
+                                        echo '<td>' . $row['nombre'] . '</td>';
+                                        $nivelControl = 0;
+                                        while ($nRow <= $allRows && $row['nombre'] == $proceso_actual) {
+                                        
+                                            // Creo las celdas vacias hasat el nivel
+                                            // de 0-2
+                                            for ($i = $nivelControl; $i < $row['nivel']; $i++) {
+                                                echo '<td></td>';
+                                            }
+                                            
+                                            $nivelControl = $row['nivel'];
+                                            // Hay nivel
+                                            switch ($row['nivel']) {
+                                                case 0:
+                                                    echo '<td class="text-center"><span class="badge bg-green">' . $row['cuenta'] . '</span></td>';
+                                                    break;
+                                                case 1:
+                                                    echo '<td class="text-center"><span class="badge bg-yellow">' . $row['cuenta'] . '</span></td>';
+                                                    break;
+                                                case 2:
+                                                    echo '<td class="text-center"><span class="badge bg-red">' . $row['cuenta'] . '</span></td>';
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            $nivelControl++;
+                                            $row = mysqli_fetch_assoc($resRA);
+                                            $nRow++;
+                                        }
+                                        echo '</tr>';
+                                    }
+                                }
+                            ?>                                
+                        </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>                                         
                 </div>
                 <div class="col-lg-3 col-xs-6">
                     <!-- RIESGO POR GERENCIA ABIERTOS -->

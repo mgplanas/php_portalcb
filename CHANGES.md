@@ -8,7 +8,9 @@ Cambios solicitados por R.Lopez
 - Metricas riesgos abiertos y cerrados por proceso
 
 [cod]
-- edit_riesgo.php
+- pages/edit_riesgo.php
+- pages/riesgos.php
+- pages/met_riesgos.php
 
 ## FEAT-CON-CRITICIDAD
 Agregar campo de criticidad en el seguimiento de contratos
