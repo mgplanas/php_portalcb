@@ -74,6 +74,18 @@ $(function() {
                     { "data": "RAM" },
                     { "data": "storage" },
                     { "data": "SO" }
+                ],
+                'dom': 'Bfrtip',
+                'buttons': [{
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+
+                    },
+                    {
+                        extend: 'excel',
+                        text: 'Excel',
+                    }
                 ]
             });
 

@@ -1,4 +1,11 @@
 # CHANGES
+## FEAT-IAAS-BTN
+Cambios solicitados por Fedirco Mirko
+*Fecha* 2020-11-30
+*Requerimiento*
+- Visualizar btones de exportar a pdf/excel en la lista de vms iaas
+[cod]
+- pages/modals/sdc_abmiaas.js: Se agrega la funcionalidad a la grilla de la lista de vms
 
 ## FEAT-RIESGOS
 Cambios solicitados por R.Lopez
