@@ -11,6 +11,12 @@ Cambios solicitados por R.Lopez
 - pages/edit_riesgo.php
 - pages/riesgos.php
 - pages/met_riesgos.php
+## FEAT-ANA-BIBLIO
+Arruinar la visualización de la biblioteca de documentos
+*Fecha* 2020-11-20
+*Requerimiento*
+- Incuir todas las columnas del excel en la grilla de biblioteca
+- Quitar la funcionalidad de link directo a los documentos. Se sigue manejando como 10 años atrás. DataCenter Tier III.
 
 ## FEAT-CON-CRITICIDAD
 Agregar campo de criticidad en el seguimiento de contratos

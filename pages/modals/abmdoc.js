@@ -61,7 +61,7 @@ $(function() {
                     $('#modal-abm-doc-tipodoc').val(doc.id_tipo).change();
                     $('#modal-abm-doc-version').val(doc.version);
                     $('#modal-abm-doc-nombre').val(doc.nombre);
-                    $('#modal-abm-doc-doclink').val(doc.link);
+                    $('#modal-abm-doc-doclink').val(doc.path);
                     $('#modal-abm-doc-owner').val(doc.id_owner).change();
                     $('#modal-abm-doc-area').val(doc.id_area).change();
                     doc.vigencia = doc.vigencia.split(' ')[0].split('-').reverse().join('/');
@@ -180,7 +180,8 @@ $(function() {
         let op = $(this).attr('name');
         let id = $('#modal-abm-doc-aprobar-id').val();
         let version = $('#modal-abm-doc-aprobar-version').val();
-        let aprobado_minuta = $('#modal-abm-doc-aprobar-minuta').val();
+        let aprobado_path = $('#modal-abm-doc-aprobar-minuta').val();
+        let aprobado_minuta = $('#modal-abm-doc-aprobar-nombre').val();
         // Ejecuto
         $.ajax({
             type: 'POST',
@@ -189,7 +190,8 @@ $(function() {
                 operacion: op,
                 id: id,
                 version: version,
-                aprobado_minuta: aprobado_minuta
+                aprobado_path: aprobado_path,
+                aprobado_minuta: aprobado_minuta,
             },
             dataType: 'json',
             success: function(json) {
@@ -225,6 +227,7 @@ $(function() {
         $('#modal-abm-doc-aprobar-id').val(0);
         $('#modal-abm-doc-aprobar-version').val(0);
         $('#modal-abm-doc-aprobar-minuta').val('');
+        $('#modal-abm-doc-aprobar-nombre').val('');
     }
     // ********************************************************************************************
 

@@ -24,7 +24,12 @@
                                 <label for="version">Versión aprobada</label>
                                 <input type="number" class="form-control" name="version" placeholder="version" id='modal-abm-doc-aprobar-version'>
                         </div>
+
                     </div>
+                    <div class="form-group">
+                                <label for="nombre">Nombre de la minuta</label>
+                                <input type="text" class="form-control" name="nombre" placeholder="Nombre" id='modal-abm-doc-aprobar-nombre'>
+                    </div>                    
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-link"></i> </span>
                         <input type="text" class="form-control" name="minuta" placeholder="URL a la minuta de aprobación" id='modal-abm-doc-aprobar-minuta'>

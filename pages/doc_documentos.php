@@ -36,16 +36,16 @@ $__HIGH = 5;
 $__DIFF_DAYS = 2;
 
 if ($rq_indicadores['vigentes'] <= $__LOW) {$i_vigentes_color = '#00a65a';}
-else if ($rq_indicadores['vigentes'] >= $__HIGH) {$i_vigentes_color = '#f56954';}
-else {$i_vigentes_color = '#f39c12';}
+else if ($rq_indicadores['vigentes'] >= $__HIGH) {$i_vigentes_color = '#00a65a';}
+else {$i_vigentes_color = '#00a65a';}
 
-if ($rq_indicadores['proximos|'] <= $__LOW) {$i_proximos_color = '#00a65a';}
-else if ($rq_indicadores['proximos|'] >= $__HIGH) {$i_proximos_color = '#f56954';}
+if ($rq_indicadores['proximos|'] <= $__LOW) {$i_proximos_color = '#f39c12';}
+else if ($rq_indicadores['proximos|'] >= $__HIGH) {$i_proximos_color = '#f39c12';}
 else {$i_proximos_color = '#f39c12';}
 
-if ($rq_indicadores['vencidos'] <= $__LOW) {$i_vencidos_color = '#00a65a';}
+if ($rq_indicadores['vencidos'] <= $__LOW) {$i_vencidos_color = '#f56954';}
 else if ($rq_indicadores['vencidos'] >= $__HIGH_2) {$i_vencidos_color = '#f56954';}
-else {$i_vencidos_color = '#f39c12';}
+else {$i_vencidos_color = '#f56954';}
 
 // $sql = "SELECT id_paso, COUNT(1) as cuenta, FLOOR(AVG(DATEDIFF(now(), fecha))) as promedio
 // FROM adm_compras_pasos_hist 
@@ -208,22 +208,25 @@ desired effect
                         </div>
                     </div>                    
                     <div class="box-body">
-                        <table id="tbDocumentos" class="display w-auto" witdh="100%">
+                        <table id="tbDocumentos" class="display" width="100%">
                             <thead>
                             <tr>
                                 <th>Tipo</th>
-                                <th>#</th>
+                                <th>Versión</th>
                                 <th>Nombre</th>
                                 <th>Área</th>
                                 <th>Dueño</th>
-                                <th>Vigencia</th>
-                                <th>Próxima</th>
-                                <th>Frecuencia</th>
-                                <!-- <th>Revisión</th> -->
-                                <th>Aprobación</th>
-                                <th><i title="Periodicidad de la comunicación" class="fa fa-clock-o"></i></th>
-                                <th>Forma</i></th>
-                                <th>Fecha Com</i></th>
+                                <th>Fecha Vigencia</th>
+                                <th>Fecha de Próxima Actualización</th>
+                                <th>Path</th>
+                                <th>Frecuencia de revisión en días</th>
+                                <th>Fecha Aprobación</th>
+                                <th>Versión Aprobación</th>
+                                <th>Nombre minuta</th>
+                                <th>Path del documento de aprobación</th>
+                                <th>Periodicidad de la comunicación</th>
+                                <th>Forma de comunicación</th>
+                                <th>Fecha Comumicación</i></th>
                                 <th width="70px" style="text-align: right;"><i class="fa fa-bolt"></i> </th>
                             </tr>
                             </thead>
@@ -252,41 +255,35 @@ desired effect
                                     while($row = mysqli_fetch_assoc($sql)){
 
                                         echo '<tr>';
-                                        echo '<td>'. $row['tipo_doc'] .'</td>';
-                                        echo '<td>'. $row['version'] .'</td>';
-                                        if ($row['link'] != '') {
-                                            echo '<td><a href="' . $row['link'] . '" target="_blank">'. $row['nombre'] .'</a></td>';
-                                        } else {
-                                            echo '<td>'. $row['nombre'] .'</td>';
-                                        }
-                                        
+                                        echo '<td style="text-align: center;">'. $row['tipo_doc'] .'</td>';
+                                        echo '<td style="text-align: center;">'. $row['version'] .'</td>';
+                                        echo '<td>'. $row['nombre'] .'</td>';
                                         echo '<td>'. $row['area'] .'</td>';
                                         echo '<td>'. $row['owner'] .'</td>';
-                                        echo '<td>'. formatDate($row['vigencia']) .'</td>';
-                                        echo '<td><span class="badge bg-'; 
-                                        if ($row['dias'] > 30) {
-                                            echo 'green';
-                                        } else if ($row['dias'] < 0) {
-                                            echo 'red';
-                                        } else {
-                                            echo 'yellow';
-                                        }
-                                        echo '">' . formatDate($row['proxima_actualizacion']) . '</span>';
+                                        echo '<td style="text-align: center;">'. formatDate($row['vigencia']) .'</td>';
+                                        echo '<td style="text-align: center;"><span class="badge bg-'; 
+                                            if ($row['dias'] > 30) {
+                                                echo 'green';
+                                            } else if ($row['dias'] < 0) {
+                                                echo 'red';
+                                            } else {
+                                                echo 'yellow';
+                                            }
+                                            echo '">' . formatDate($row['proxima_actualizacion']) . '</span>';
                                         echo '</td>';
-                                        echo '<td>'. $row['frecuencia_revision'] .'</td>';
-                                        // echo '<td>'. formatDate($row['revisado']) .'</td>';
-                                        if ($row['aprobado_minuta'] != '') {
-                                            echo '<td><a href="' . $row['aprobado_minuta'] . '" target="_blank">'. formatDate($row['aprobado']) .'</a></td>';
-                                        } else {
-                                            echo '<td>'. formatDate($row['aprobado']) .'</td>';
-                                        }                                        
+                                        echo '<td>' . $row['path'] . '</td>';
+                                        echo '<td style="text-align: center;">'. $row['frecuencia_revision'] .'</td>';
+                                        echo '<td style="text-align: center;">'. formatDate($row['aprobado']) .'</td>';
+                                        echo '<td style="text-align: center;">'. $row['aprobado_version'] .'</td>';
+                                        echo '<td>'. $row['aprobado_minuta'] .'</td>';
+                                        echo '<td>'. $row['aprobado_path'] .'</td>';
                                         echo '<td>'. $row['periodicidad_com'] .'</td>';
-                                        echo '<td>'. $row['forma_com'] .'</td>';
-                                        echo '<td>'. formatDate($row['comunicado']) .'</td>';
+                                        echo '<td style="text-align: center;">'. $row['forma_com'] .'</td>';
+                                        echo '<td style="text-align: center;">'. formatDate($row['comunicado']) .'</td>';
                                         echo '<td align="right">';
                                         // echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="modal-abm-docs-btn-view btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
                                         echo '<a data-frecuencia="'.$row['frecuencia_revision'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" title="revisar" class="modal-abm-docs-btn-review btn" style="padding: 2px;"><i class="fa fa-eye"></i></a>';
-                                        echo '<a data-version="'.$row['version'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" title="aprobar" class="modal-abm-docs-btn-aprobar btn" style="padding: 2px;"><i class="fa fa-thumbs-o-up"></i></a>';
+                                        echo '<a data-version="'.$row['version'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" data-minuta="'.$row['aprobado_minuta'].'" title="aprobar" class="modal-abm-docs-btn-aprobar btn" style="padding: 2px;"><i class="fa fa-thumbs-o-up"></i></a>';
                                         if ($rq_sec['admin_doc'] == '1') {
                                             echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-doc-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
                                             echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-docs-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash"></i></a>';
@@ -363,14 +360,16 @@ desired effect
 
     $('#tbDocumentos').DataTable({
       'language': { 'emptyTable': 'No hay documentos' },
+      "scrollX": true,
       'paging'      : true,
-      'pageLength': 50,
-      'lengthChange': false,
+    //   'pageLength': 50,
+      'lengthChange': true,
+      'lengthMenu': [[5,10, 25, 50, -1], [5,10, 25, 50, "Todos"]],
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : false,
-      'dom'         : 'frtpB',
+      'autoWidth'   : true,
+      'dom'         : 'lfrtpB',
       'buttons'     : [{
                         extend: 'pdfHtml5',
                         orientation: 'landscape',

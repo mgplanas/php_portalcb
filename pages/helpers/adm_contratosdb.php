@@ -17,10 +17,12 @@
 
     $result = new stdClass();
     $result->ok = false;
-
+    $result->sql = "";
     switch ($op) {
         case 'A':
             // INSERT
+            $result->sql = "INSERT INTO adm_contratos_vto (id_proveedor, id_subgerencia, oc, tipo_mantenimiento, vencimiento, criticidad)
+            VALUES ('$id_proveedor', '$id_subgerencia', '$oc', '$tipo_mantenimiento', '$vencimiento', '$criticidad')";
             $insert_contrato = mysqli_query($con, 
                 "INSERT INTO adm_contratos_vto (id_proveedor, id_subgerencia, oc, tipo_mantenimiento, vencimiento, criticidad)
                  VALUES ('$id_proveedor', '$id_subgerencia', '$oc', '$tipo_mantenimiento', '$vencimiento', '$criticidad')") or die(mysqli_error());	
@@ -30,6 +32,8 @@
         
         case 'M':
             //UPDATE
+            $result->sql ="UPDATE adm_contratos_vto SET id_proveedor='$id_proveedor', id_subgerencia='$id_subgerencia', oc='$oc', tipo_mantenimiento='$tipo_mantenimiento', vencimiento='$vencimiento' , criticidad='$criticidad'
+            WHERE id='$id'";
             $update_contrato = mysqli_query($con, "UPDATE adm_contratos_vto SET id_proveedor='$id_proveedor', id_subgerencia='$id_subgerencia', oc='$oc', tipo_mantenimiento='$tipo_mantenimiento', vencimiento='$vencimiento' , criticidad='$criticidad'
                                                     WHERE id='$id'") or die(mysqli_error());	
             break;
