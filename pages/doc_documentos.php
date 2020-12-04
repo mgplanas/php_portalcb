@@ -214,19 +214,19 @@ desired effect
                                 <th>Tipo</th>
                                 <th>Versión</th>
                                 <th>Nombre</th>
-                                <th>Área</th>
+                                <!-- <th>Área</th> -->
                                 <th>Dueño</th>
                                 <th>Fecha Vigencia</th>
                                 <th>Fecha de Próxima Actualización</th>
-                                <th>Path</th>
-                                <th>Frecuencia de revisión en días</th>
-                                <th>Fecha Aprobación</th>
-                                <th>Versión Aprobación</th>
-                                <th>Nombre minuta</th>
-                                <th>Path del documento de aprobación</th>
-                                <th>Periodicidad de la comunicación</th>
-                                <th>Forma de comunicación</th>
-                                <th>Fecha Comumicación</i></th>
+                                <!-- <th>Path</th> -->
+                                <!-- <th>Frecuencia de revisión en días</th> -->
+                                <th>Aprobado</th>
+                                <!-- <th>Versión Aprobación</th> -->
+                                <!-- <th>Nombre minuta</th> -->
+                                <!-- <th>Path del documento de aprobación</th> -->
+                                <!-- <th>Periodicidad de la comunicación</th> -->
+                                <!-- <th>Forma de comunicación</th> -->
+                                <!-- <th>Fecha Comumicación</i></th> -->
                                 <th width="70px" style="text-align: right;"><i class="fa fa-bolt"></i> </th>
                             </tr>
                             </thead>
@@ -258,7 +258,7 @@ desired effect
                                         echo '<td style="text-align: center;">'. $row['tipo_doc'] .'</td>';
                                         echo '<td style="text-align: center;">'. $row['version'] .'</td>';
                                         echo '<td>'. $row['nombre'] .'</td>';
-                                        echo '<td>'. $row['area'] .'</td>';
+                                        // echo '<td>'. $row['area'] .'</td>';
                                         echo '<td>'. $row['owner'] .'</td>';
                                         echo '<td style="text-align: center;">'. formatDate($row['vigencia']) .'</td>';
                                         echo '<td style="text-align: center;"><span class="badge bg-'; 
@@ -271,15 +271,15 @@ desired effect
                                             }
                                             echo '">' . formatDate($row['proxima_actualizacion']) . '</span>';
                                         echo '</td>';
-                                        echo '<td>' . $row['path'] . '</td>';
-                                        echo '<td style="text-align: center;">'. $row['frecuencia_revision'] .'</td>';
+                                        // echo '<td>' . $row['path'] . '</td>';
+                                        // echo '<td style="text-align: center;">'. $row['frecuencia_revision'] .'</td>';
                                         echo '<td style="text-align: center;">'. formatDate($row['aprobado']) .'</td>';
-                                        echo '<td style="text-align: center;">'. $row['aprobado_version'] .'</td>';
-                                        echo '<td>'. $row['aprobado_minuta'] .'</td>';
-                                        echo '<td>'. $row['aprobado_path'] .'</td>';
-                                        echo '<td>'. $row['periodicidad_com'] .'</td>';
-                                        echo '<td style="text-align: center;">'. $row['forma_com'] .'</td>';
-                                        echo '<td style="text-align: center;">'. formatDate($row['comunicado']) .'</td>';
+                                        // echo '<td style="text-align: center;">'. $row['aprobado_version'] .'</td>';
+                                        // echo '<td>'. $row['aprobado_minuta'] .'</td>';
+                                        // echo '<td>'. $row['aprobado_path'] .'</td>';
+                                        // echo '<td>'. $row['periodicidad_com'] .'</td>';
+                                        // echo '<td style="text-align: center;">'. $row['forma_com'] .'</td>';
+                                        // echo '<td style="text-align: center;">'. formatDate($row['comunicado']) .'</td>';
                                         echo '<td align="right">';
                                         // echo '<a data-id="'.$row['id'].'" title="Ver detalles" class="modal-abm-docs-btn-view btn"style="padding: 2px;"><i class="fa fa-eye"></i></a>';
                                         echo '<a data-frecuencia="'.$row['frecuencia_revision'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" title="revisar" class="modal-abm-docs-btn-review btn" style="padding: 2px;"><i class="fa fa-eye"></i></a>';
@@ -362,14 +362,14 @@ desired effect
       'language': { 'emptyTable': 'No hay documentos' },
       "scrollX": true,
       'paging'      : true,
-    //   'pageLength': 50,
-      'lengthChange': true,
-      'lengthMenu': [[5,10, 25, 50, -1], [5,10, 25, 50, "Todos"]],
+      'pageLength': 50,
+    //   'lengthChange': true,
+    //   'lengthMenu': [[5,10, 25, 50, -1], [5,10, 25, 50, "Todos"]],
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : true,
-      'dom'         : 'lfrtpB',
+      'dom'         : 'Bfrtp',
       'buttons'     : [{
                         extend: 'pdfHtml5',
                         orientation: 'landscape',

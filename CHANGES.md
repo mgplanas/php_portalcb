@@ -1,4 +1,12 @@
 # CHANGES
+
+## FEAT-ANA-BIBLIO (Parte 2)
+Volver a lo que una vez fue. No todo.
+*Fecha* 2020-11-20
+*Requerimiento*
+- Sólo dejar las columnas Tipo, Verision, Nombre, dueño, fv next y tilde de aprobado
+
+
 ## FEAT-IAAS-BTN
 Cambios solicitados por Fedirco Mirko
 *Fecha* 2020-11-30
