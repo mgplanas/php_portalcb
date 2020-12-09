@@ -1,4 +1,13 @@
 # CHANGES
+
+## FEAT-COSTOS
+Cambios solicitados por Gerardo para finalizar el tema
+*Fecha* 2020-12-04
+*Requerimiento*
+- Cotización USD Futuro
+[cod]
+- pages/cdc_abmcostos.php : Se agrega cotizacion USD futuro.
+
 ## FEAT-IAAS-BTN
 Cambios solicitados por Fedirco Mirko
 *Fecha* 2020-11-30
