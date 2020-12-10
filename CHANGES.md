@@ -6,6 +6,13 @@ Volver a lo que una vez fue. No todo.
 *Requerimiento*
 - Sólo dejar las columnas Tipo, Verision, Nombre, dueño, fv next y tilde de aprobado
 
+## FEAT-COSTOS
+Cambios solicitados por Gerardo para finalizar el tema
+*Fecha* 2020-12-04
+*Requerimiento*
+- Cotización USD Futuro
+[cod]
+- pages/cdc_abmcostos.php : Se agrega cotizacion USD futuro.
 
 ## FEAT-IAAS-BTN
 Cambios solicitados por Fedirco Mirko
