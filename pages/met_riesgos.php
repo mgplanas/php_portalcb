@@ -279,7 +279,7 @@ desired effect
                                     while($nRow <= $allRows) {   
                                         $proceso_actual = $row['nombre'];
                                         echo '<tr>';
-                                        echo '<td>' . $row['nombre'] . '</td>';
+                                        echo '<td>' . ($row['nombre'] ? $row['nombre'] : 'Sin asignar') . '</td>';
                                         $nivelControl = 0;
                                         while ($nRow <= $allRows && $row['nombre'] == $proceso_actual) {
                                         
@@ -346,7 +346,7 @@ desired effect
                                     while($nRow <= $allRows) {   
                                         $proceso_actual = $row['nombre'];
                                         echo '<tr>';
-                                        echo '<td>' . $row['nombre'] . '</td>';
+                                        echo '<td>' . ($row['nombre'] ? $row['nombre'] : 'Sin asignar') . '</td>';
                                         $nivelControl = 0;
                                         while ($nRow <= $allRows && $row['nombre'] == $proceso_actual) {
                                         

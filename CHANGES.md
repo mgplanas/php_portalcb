@@ -1,4 +1,6 @@
 # CHANGES
+## FIX FEAT-RIESGOS
+Pongo leyenda "Sin proceso asignado" en metricas.
 
 ## FEAT-ANA-BIBLIO (Parte 2)
 Volver a lo que una vez fue. No todo.
