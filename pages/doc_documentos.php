@@ -347,6 +347,70 @@ desired effect
 <script src="./modals/abmdoc.js"></script>
 
 <script>
+    $(function() {
+        $('#tbDocumentos').DataTable({
+            'language': { 'emptyTable': 'No hay documentos' },
+            'ordering': true,
+            'paging': true,
+            'pageLength': 20,
+            'lengthChange': false,
+            'searching': true,
+            
+            'info': true,
+            'autoWidth': false,
+            'dom': 'Bfrtp',
+            'buttons': [{
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel',
+                }
+            ]
+        });
+        var table = $('#tbDocumentos').DataTable();
+        $('#tbDocumentos thead tr').clone(true).appendTo( '#tbDocumentos thead' );
+        $('#tbDocumentos thead tr:eq(1) th').each( function (colIdx) {
+            $(this).removeClass('sorting sorting_asc sorting_desc');
+            var table = $('#tbDocumentos').DataTable();
+
+            // Si son las columnas de filtro creo el ddl
+            if (colIdx == 0 || colIdx == 3 ) {
+                var select = $('<select style="width: 100%;"><option value=""></option></select>')
+                .on( 'change', function () {
+                    table
+                        .column( colIdx )
+                        .search( $(this).val() )
+                        .draw();
+                } )
+                .on( 'click' , function(){return false;} )
+                // .wrap( "<div></div>" );             // VER
+                // Get the search data for the first column and add to the select list
+                table
+                    .column( colIdx )
+                    .cache( 'search' )
+                    .sort()
+                    .unique()
+                    .each( function ( d ) {
+                        select.append( $('<option value="'+d+'">'+d+'</option>') );
+                    });
+                
+                var filterhtml = select.parent().prop('outerHTML');
+                $(this).html(select);
+                // $(this).html(filterhtml);
+
+            }
+            else {
+                $(this).html("");
+            }
+
+        } );            
+    })
+</script>
+<script>
   $(function () {
 
     $('#popover-comment').on('keypress', function(event){
@@ -357,31 +421,6 @@ desired effect
         $('#popover-comment').focus();
       }
     });
-
-    $('#tbDocumentos').DataTable({
-      'language': { 'emptyTable': 'No hay documentos' },
-      "scrollX": true,
-      'paging'      : true,
-      'pageLength': 50,
-    //   'lengthChange': true,
-    //   'lengthMenu': [[5,10, 25, 50, -1], [5,10, 25, 50, "Todos"]],
-      'searching'   : true,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : true,
-      'dom'         : 'Bfrtp',
-      'buttons'     : [{
-                        extend: 'pdfHtml5',
-                        orientation: 'landscape',
-                        pageSize: 'A4'
-                     },
-                      {
-                        extend: 'excel',
-                        text: 'Excel',
-                      }],       
-      keys: true
-    });
-
 
     /* jQueryKnob */
     $(".knob").knob({       
