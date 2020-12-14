@@ -2,6 +2,15 @@
 ## FIX FEAT-RIESGOS
 Pongo leyenda "Sin proceso asignado" en metricas.
 
+## FEAT-BCRA
+Permitir no seleccionar responsbales en items excluidos.
+*Fecha* 2020-12-09
+*Requerimiento*
+- Permitir no seleccionar responsbales en items excluidos.
+
+[cod]
+- pages/modals/abmbcra.php/js : Se agrega item Ninguno como primer elemento de la lista de responsables y se valida que si la madurez no es "Excluido" (2) no se pueda guardar si no se selecciono uno.
+
 ## FEAT-ANA-BIBLIO (Parte 2)
 Volver a lo que una vez fue. No todo.
 *Fecha* 2020-11-20

@@ -99,6 +99,12 @@ $(function() {
         let escenarios = $('#modal-abm-bcra-escenarios').val();
         let documentacion = $('#modal-abm-bcra-documentacion').val();
 
+        // valido si no es excluido que hayan puesto un responsable
+        if (responsable == 0 && madurez != 2) {
+            alert('Se debe ingresar un responsable');
+            return;
+        }
+
         // Ejecuto
         $.ajax({
             type: 'POST',
@@ -157,7 +163,7 @@ $(function() {
         $('#modal-abm-bcra-id').val(0);
         $('#modal-abm-bcra-version-id').val($('#versionselector :selected').val());
         $('#modal-abm-bcra-grupo').val('first').change();
-        $('#modal-abm-bcra-responsable').val('first').change();
+        $('#modal-abm-bcra-responsable').val('0').change();
         $('#modal-abm-bcra-referentes').val([]);
         $('#modal-abm-bcra-madurez').val('first').change();
         $('#modal-abm-bcra-version').val($('#versionselector :selected').text());
