@@ -66,7 +66,6 @@ $(function() {
                     $('#modal-abm-doc-area').val(doc.id_area).change();
                     doc.vigencia = doc.vigencia.split(' ')[0].split('-').reverse().join('/');
                     doc.proxima_actualizacion = doc.proxima_actualizacion.split(' ')[0].split('-').reverse().join('/');
-                    doc.comunicado = doc.comunicado.split(' ')[0].split('-').reverse().join('/');
                     if (doc.vigencia && doc.vigencia !== '00/00/0000') {
                         $('#modal-abm-doc-vigencia').val(doc.vigencia);
                     }
@@ -77,6 +76,7 @@ $(function() {
                     $('#modal-abm-doc-periodicidad').val(doc.id_periodicidad_com).change();
                     $('#modal-abm-doc-forma').val(doc.id_forma_com).change();
                     if (doc.comunicado && doc.comunicado !== '00/00/0000') {
+                        doc.comunicado = doc.comunicado.split(' ')[0].split('-').reverse().join('/');
                         $('#modal-abm-doc-comunicado').val(doc.comunicado);
                     }
                 }
