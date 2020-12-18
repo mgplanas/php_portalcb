@@ -455,7 +455,17 @@ desired effect
                     </span>
                   </a>
                   <ul class="treeview-menu">
-                    <li><a href="./pages/sdc_housing.php"><i class="fa fa-home"></i> Housing</a></li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-home"></i> Housing
+                            <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="./pages/sdc_housing.php"><i class="fa fa-home"></i> Todos</a></li>
+                            <li><a href="./pages/sdc_housing_telco.php"><i class="fa fa-phone"></i> TELCO</a></li>
+                        </ul>
+                    </li>                         
                     <li><a href="./pages/sdc_hosting.php"><i class="fa fa-server"></i> Hosting</a></li>
                     <li><a href="./pages/sdc_iaas.php"><i class="fa fa-cloud"></i> IAAS</a></li>
                     <li><a href="./pages/sdc_correo.php"><i class="fa fa-envelope"></i> Correo</a></li>

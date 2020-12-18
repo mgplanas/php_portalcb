@@ -6,16 +6,24 @@ $(function() {
     function setAMBHousingTriggers() {
         // ALTA
         // seteo boton trigger para el alta de gerencia
-        $('#modal-abm-housing-btn-alta').click(function() {
+        $('#modal-abm-housing-btn-alta, #modal-abm-housing-telco-btn-alta').click(function() {
             $('#modal-abm-housing-title').html('Nuevo Servicio de Housing');
             modalAbmHousingLimpiarCampos();
+
+            // Si es telco marco el campo telco y lo deshabilitación
+            if ($(this).data('telco') == '1') {
+                $('#modal-abm-housing-telco').prop("checked", true);
+                $('#modal-abm-housing-telco').prop("disabled", true);
+                $('#modal-abm-housing-title').html('Nuevo Servicio de Housing [TELCO]');
+            }
+
             $('#modal-abm-housing-submit').attr('name', 'A');
             $("#modal-abm-housing").modal("show");
         });
 
         // EDIT
         // seteo boton trigger para el edit de gerencia
-        $('.modal-abm-housing-btn-edit').click(function() {
+        $('.modal-abm-housing-btn-edit, .modal-abm-housing-telco-btn-edit').click(function() {
             $('#modal-abm-housing-title').html('Editar Servicio de Housing');
             modalAbmHousingLimpiarCampos();
 

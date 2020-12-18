@@ -4,14 +4,26 @@ Identificar con una marca los servicios housing de telco y listar en otra pantal
 
 [db]
 - Agrgo marca telco
-ALTER TABLE controls.sdc_housing
- ADD telco INT NOT NULL DEFAULT '0' AFTER modalidad;
+    ALTER TABLE controls.sdc_housing
+    ADD telco INT NOT NULL DEFAULT '0' AFTER modalidad;
+- Se crean la vista vw_sdc_housing_telco
+    CREATE VIEW vw_sdc_housing_telco as
+    SELECT H.id, H.id_cliente, H.m2, H.sala, H.fila, H.rack, H.observaciones, H.energia, H.fecha_alta, H.evidencia, H.modalidad, H.telco, M.descripcion as modalidad_desc, C.razon_social as cliente, O.razon_social as organismo
+    FROM sdc_housing as H
+    INNER JOIN cdc_cliente as C ON H.id_cliente = C.id
+    LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
+    LEFT JOIN sdc_housing_modalidad as M ON H.modalidad = M.id
+    WHERE H.borrado = 0 and telco = 1;
+
 
 [cod]
-- pages/sdc_housing.php : Se agrega marca en tabla
+- pages/sdc_housing.php : Se agrega marca en tabla y se seleccionan los datos de la vista housing
 - pages/helpers/sdc_abmhousingdb.php : Se agrega campo telco en I y U
 - pages/modals/sdc_abmhousing.php/js : Agrego campo telco
 
+- pages/sdc_housing_telco.php [NEW] : Se crea pagina propia de Telcos 
+- pages/site_sidebar.php : Cambio estructura de housing
+- site.php : Cambio estructura de housing
 ## FIX FEAT-RIESGOS
 Pongo leyenda "Sin proceso asignado" en metricas.
 
