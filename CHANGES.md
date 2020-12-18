@@ -1,4 +1,17 @@
 # CHANGES
+## FEAT-TELCO
+Identificar con una marca los servicios housing de telco y listar en otra pantalla dichos servicios.
+
+[db]
+- Agrgo marca telco
+ALTER TABLE controls.sdc_housing
+ ADD telco INT NOT NULL DEFAULT '0' AFTER modalidad;
+
+[cod]
+- pages/sdc_housing.php : Se agrega marca en tabla
+- pages/helpers/sdc_abmhousingdb.php : Se agrega campo telco en I y U
+- pages/modals/sdc_abmhousing.php/js : Agrego campo telco
+
 ## FIX FEAT-RIESGOS
 Pongo leyenda "Sin proceso asignado" en metricas.
 

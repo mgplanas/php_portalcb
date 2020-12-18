@@ -30,6 +30,9 @@ $(function() {
             $('#modal-abm-housing-observaciones').val($(this).data('observaciones'));
             $("#modal-abm-housing-cliente").val($(this).data('cliente')).change();
             $("#modal-abm-housing-modalidad").val($(this).data('modalidad')).change();
+            if ($(this).data('telco') == '1') {
+                $('#modal-abm-housing-telco').prop("checked", true);
+            }
 
 
             $('#modal-abm-housing-submit').attr('name', 'M');
@@ -57,6 +60,10 @@ $(function() {
         let evidencia = $('#modal-abm-housing-evidencia').val();
         let alta = $('#modal-abm-housing-alta').val();
         let observaciones = $('#modal-abm-housing-observaciones').val();
+        let telco = 0;
+        if ($("#modal-abm-housing-telco").is(':checked')) {
+            telco = 1;
+        }
         // Ejecuto
         $.ajax({
             type: 'POST',
@@ -73,7 +80,8 @@ $(function() {
                 evidencia: evidencia,
                 alta: alta,
                 observaciones: observaciones,
-                modalidad: modalidad
+                modalidad: modalidad,
+                telco: telco
             },
             dataType: 'json',
             success: function(json) {
@@ -101,6 +109,7 @@ $(function() {
         $('#modal-abm-housing-observaciones').val('');
         $("#modal-abm-housing-cliente").prop("selectedIndex", 0);
         $("#modal-abm-housing-modalidad").prop("selectedIndex", 0);
+        $('#modal-abm-housing-telco').prop("checked", false);
         // $("#modal-abm-housing-cliente").val(0).change();
     }
     // ********************************************************************************************

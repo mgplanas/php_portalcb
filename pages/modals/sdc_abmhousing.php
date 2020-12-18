@@ -24,7 +24,8 @@
                             }
                             ?>
                         </select>
-                    </div>                    
+                    </div>      
+
                     <div class="form-group">
                         <div class="col-md-4">
                             <label for="energia">Energia (KVA)</label>
@@ -73,7 +74,16 @@
                     <div class="form-group">
                         <label for="evidencia">Evidencia</label>
                         <input type="text" class="form-control" name="evidencia" placeholder="Evidencia (SS)" id='modal-abm-housing-evidencia'>
-                    </div>                    
+                    </div>               
+                    <div class="row">
+                        <div class="form-group col-md-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id='modal-abm-housing-telco'> TELCO
+                                </label>
+                            </div>
+                        </div>     
+                    </div>
                     <div class="form-group">
                         <label for="observaciones">Observaciones</label>
                         <input type="text" class="form-control" name="observaciones" placeholder="observaciones" id='modal-abm-housing-observaciones'>
