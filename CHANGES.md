@@ -24,6 +24,14 @@ Identificar con una marca los servicios housing de telco y listar en otra pantal
 - pages/sdc_housing_telco.php [NEW] : Se crea pagina propia de Telcos 
 - pages/site_sidebar.php : Cambio estructura de housing
 - site.php : Cambio estructura de housing
+## FEAT-BIBLIO
+Agrego campo fecha en la accion de aprobación con el fin de que se pueda ingresar de forma manual.
+
+[cod]
+- pages/modals/abmdoc_aprobar.php : Se agrega campo fecha
+- pages/modals/abmdoc.js : Se setea la fecha de aprobacion como default a hoy y se le pasa para grabar
+- pages/helpers/abmdocdb.php: Se incluye la fecha de aprobación
+
 ## FIX FEAT-RIESGOS
 Pongo leyenda "Sin proceso asignado" en metricas.
 

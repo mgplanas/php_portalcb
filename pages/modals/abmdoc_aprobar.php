@@ -24,6 +24,15 @@
                                 <label for="version">Versión aprobada</label>
                                 <input type="number" class="form-control" name="version" placeholder="version" id='modal-abm-doc-aprobar-version'>
                         </div>
+                        <div class="form-group col-md-4">
+                            <label for="fecha">Fecha Aprobación</label>
+                            <div class="input-group date" data-provide="modal-abm-doc-aprobar-fecha">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" required="required" name="FechaAprobacion" id="modal-abm-doc-aprobar-fecha">
+                            </div>                        
+                        </div>                        
 
                     </div>
                     <div class="form-group">

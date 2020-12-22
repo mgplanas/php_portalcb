@@ -19,6 +19,7 @@
     $proxima_actualizacion = mysqli_real_escape_string($con,(strip_tags($_POST['proxima_actualizacion'],ENT_QUOTES)));
     $aprobado_path = mysqli_real_escape_string($con,(strip_tags($_POST['aprobado_path'],ENT_QUOTES)));
     $aprobado_minuta = mysqli_real_escape_string($con,(strip_tags($_POST['aprobado_minuta'],ENT_QUOTES)));
+    $aprobado_fecha = mysqli_real_escape_string($con,(strip_tags($_POST['aprobado_fecha'],ENT_QUOTES)));
 
     $result = new stdClass();
     $result->ok = false;
@@ -65,7 +66,7 @@
             //Aprobar
             $sql ="UPDATE doc_documentos 
             SET version = '$version'
-                ,aprobado = NOW()
+                ,aprobado = '$aprobado_fecha'
                 ,aprobado_por = '$user'
                 ,aprobado_minuta = '$aprobado_minuta'
                 ,aprobado_path = '$aprobado_path'

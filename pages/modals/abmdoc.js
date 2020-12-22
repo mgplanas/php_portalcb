@@ -182,6 +182,13 @@ $(function() {
         let version = $('#modal-abm-doc-aprobar-version').val();
         let aprobado_path = $('#modal-abm-doc-aprobar-minuta').val();
         let aprobado_minuta = $('#modal-abm-doc-aprobar-nombre').val();
+        let aprobado_fecha = $('#modal-abm-doc-aprobar-fecha').val();
+
+        if (aprobado_fecha) {
+            aprobado_fecha = aprobado_fecha.split("/").reverse().join("-");
+        } else {
+            aprobado_fecha = (new Date()).toISOString().substr(0, 10);
+        }
         // Ejecuto
         $.ajax({
             type: 'POST',
@@ -192,6 +199,7 @@ $(function() {
                 version: version,
                 aprobado_path: aprobado_path,
                 aprobado_minuta: aprobado_minuta,
+                aprobado_fecha: aprobado_fecha
             },
             dataType: 'json',
             success: function(json) {
@@ -248,5 +256,11 @@ $(function() {
         todayHighlight: true,
         daysOfWeekDisabled: [0, 6]
     });
+    $('#modal-abm-doc-aprobar-fecha').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        todayHighlight: true,
+        daysOfWeekDisabled: [0, 6]
+    }).datepicker("setDate", new Date());
 
 });
