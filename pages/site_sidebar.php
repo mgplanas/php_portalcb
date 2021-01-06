@@ -42,6 +42,9 @@
       </li>
     <?php } ?>
 
+    <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_doc']=='1' OR $rq_sec['doc']=='1'){ ?>
+        <li><a href="doc_documentos.php"><i class="fa fa-file"></i> <span>Documentación</span></a></li>
+    <?php } ?>
     <?php if ($rq_sec['admin']=='1' OR $rq_sec['compliance']=='1'){ ?>
         <li><a href="procesos.php"><i class="fa fa-gear"></i> <span>Procesos</span></a></li>
         <li><a href="activos.php"><i class="fa fa-archive"></i> <span>Activos</span></a></li>
@@ -50,9 +53,6 @@
         <li><a href="iso9k.php"><i class="fa fa-crosshairs"></i> <span>ISO 9001</span></a></li>
         <li><a href="bcra.php"><i class="fa fa-crosshairs"></i> <span>BCRA</span></a></li>
         <li><a href="mejoras.php"><i class="fa fa-refresh"></i> <span>Mejora Continua</span></a></li>
-        <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_doc']=='1' OR $rq_sec['doc']=='1'){ ?>
-            <li><a href="doc_documentos.php"><i class="fa fa-file"></i> <span>Documentación</span></a></li>
-        <?php } ?>
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-eye"></i> <span>Auditorías</span>
@@ -103,10 +103,10 @@
         <li><a href="cdc_cliente.php"><i class="fa fa-user"></i> Clientes</a></li>
         <li><a href="cdc_servidores.php"><i class="fa fa-server"></i> Servidores</a></li>
         <li><a href="cdc_solicitudes.php"><i class="fa fa-edit"></i> Solicitudes Infra</a></li>
-        <li><a href="cdc_costos.php"><i class="fa fa-calculator"></i> Costeo</a></li>
+        <!-- <li><a href="cdc_costos.php"><i class="fa fa-calculator"></i> Costeo</a></li>
         <?php if ($rq_sec['admin_cli_dc']=='1'){ ?>
             <li><a href="cdc_costos_adm_items.php"><i class="fa fa-bars"></i>Productos</a></li>
-        <?php } ?>        
+        <?php } ?>         -->
         <li class="treeview">
           <a href="#"><i class="fa fa-gears"></i> Servicios
             <span class="pull-right-container">
