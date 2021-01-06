@@ -1,4 +1,10 @@
 # CHANGES
+
+## FEAT-STORAGE
+Desarrollo gestión de storage.
+*Fecha* 2020-12-28
+*Requerimiento*
+- Desarrollo ABM Equipos de storage y registro de valores.
 ## FEAT-TELCO
 Identificar con una marca los servicios housing de telco y listar en otra pantalla dichos servicios.
 
