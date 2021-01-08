@@ -2,6 +2,30 @@
 <?php
 include("../conexion.php");
 
+$_TIPO_RANGOS_ASIGNADOS = 0;
+$_TIPO_RANGOS_OCUPADOS = 1;
+
+function setSemaphoreBadge($value, $type, $formated) {
+
+    global $_TIPO_RANGOS_ASIGNADOS, $_TIPO_RANGOS_OCUPADOS;
+
+    $fmt_value = ($formated ? number_format($value,2,",",".") : $value);
+    $res = "";
+    if ($type == $_TIPO_RANGOS_OCUPADOS) {
+        if ($value <= 60) {$res = '<span class="badge bg-green">'.$fmt_value.'</span>';}
+        elseif ($value <= 70) {$res = '<span class="badge bg-yellow">'.$fmt_value.'</span>';}
+        elseif ($value <= 80) {$res = '<span class="badge bg-orange">'.$fmt_value.'</span>';}
+        else {$res = '<span class="badge bg-red">'.$fmt_value.'</span>';}
+    } elseif ($type == $_TIPO_RANGOS_ASIGNADOS) {
+        if ($value <= 80) {$res = '<span class="badge bg-green">'.$fmt_value.'</span>';}
+        elseif ($value <= 100) {$res = '<span class="badge bg-yellow">'.$fmt_value.'</span>';}
+        elseif ($value <= 120) {$res = '<span class="badge bg-orange">'.$fmt_value.'</span>';}
+        else {$res = '<span class="badge bg-red">'.$fmt_value.'</span>';}
+    }
+
+    return $res;
+}
+
 session_start();
 
 if (!isset($_SESSION['usuario'])){
@@ -135,7 +159,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <table id="iaas" class="table table-hover">
                 <thead>
                 <tr>
-                  <th>Storage</th>
+                  <th width="10%">Storage</th>
+                  <th width="10%" align="center">Categoría</th>
                   <th class="noventa">[TB] Capacidad Física</th>
                   <th class="noventa">[%] Asig. Recomendada</th>
                   <th class="noventa">[TB] Capacidad Asignable</th>
@@ -147,8 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <th class="noventa">[%] Estimado Asig. Máxima</th>
                   <th class="noventa">Capacidad Asig. Máxima</th>
                   <th class="noventa">Asig. Disponible Estimada</th>
-                  <th>Categoría</th>
-                  <th width="1"><i class="fa fa-flash"></i></th>
+                  <th class="text-center" width="1"><i class="fa fa-flash"></i></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -172,18 +196,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             $asignacion_disponible_est = $capacidad_asig_max - $row['asignado_tb'];
 							echo '<tr>';
 							echo '<td>'. $row['nombre'].'</td>';
+							echo '<td align="center">'. $row['cat_nombre'].'</td>';
 							echo '<td class="text-right">'. number_format($row['capacidad_fisica_tb'],2,",",".").'</td>';
 							echo '<td class="text-right">'. number_format($row['per_asignacion_recomendado'],2,",",".").'</td>';
 							echo '<td class="text-right">'. number_format($cap_asignable_tb,2,",",".") .'</td>';
 							echo '<td class="text-right">'. number_format($row['asignado_tb'],2,",",".").'</td>';
-							echo '<td class="text-right">'. number_format($per_asignado_actual,2,",",".") .'</td>';
+							echo '<td class="text-right">'. setSemaphoreBadge($per_asignado_actual, $_TIPO_RANGOS_ASIGNADOS, true) .'</td>';
 							echo '<td class="text-right">'. number_format($asignacion_disponible,2,",",".") .'</td>';
-							echo '<td class="text-right">'. number_format($row['per_fisico_ocupado'],2,",",".") .'</td>';
+                            echo '<td class="text-right">'. setSemaphoreBadge($row['per_fisico_ocupado'], $_TIPO_RANGOS_OCUPADOS, true). '</td>';
 							echo '<td class="text-right">'. number_format($fisico_utilizado_tb,2,",",".") .'</td>';
-							echo '<td class="text-right">'. $row['per_estimado_asignacion_max'].'</td>';
+							echo '<td class="text-right">'. setSemaphoreBadge($row['per_estimado_asignacion_max'], $_TIPO_RANGOS_ASIGNADOS, true).'</td>';
 							echo '<td class="text-right">'. number_format($capacidad_asig_max,2,",",".") .'</td>';
 							echo '<td class="text-right">'. number_format($asignacion_disponible_est,2,",",".") .'</td>';
-							echo '<td>'. $row['cat_nombre'].'</td>';
 
                             echo '<td align="center">';
                             if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ 
