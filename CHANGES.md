@@ -5,6 +5,19 @@ Desarrollo gestión de storage.
 *Fecha* 2020-12-28
 *Requerimiento*
 - Desarrollo ABM Equipos de storage y registro de valores.
+
+[db]
+- Se crean las tablas:
+    - sdc_storage
+    - sto_categorias (migrar)
+    - sto_estados (migrar)
+
+[cod]
+- pages/sdc_storage.php : Se agrega página principal de storage
+- pages/modals/sdc_abmstorage.php/js
+- pages/helpers/sdc_abmstoragedb.php
+- pages/site_sidemenu.php: Se agrega item del menu
+- site.php: Se agrega item del menu
 ## FEAT-TELCO
 Identificar con una marca los servicios housing de telco y listar en otra pantalla dichos servicios.
 
