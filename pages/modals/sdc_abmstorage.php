@@ -63,6 +63,22 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
+                    <!-- ASIGNADO -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="asignado_tb">Asignado [TB] </label>
+                                <input type="number" min="0" class="form-control" name="asignado_tb"  id='modal-abm-storage-asignado' required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="per_fisico_ocupado">Físico Ocupado [%] </label>
+                                <input type="number" min="0" class="form-control" name="per_fisico_ocupado"  id='modal-abm-storage-fisico-ocupado' required>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <div class="col-sm-8"></div>

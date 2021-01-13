@@ -36,12 +36,26 @@ $user=$_SESSION['usuario'];
 
 
 /// BORRADO DE SERVICIO DE IAAS
-if(isset($_GET['aksi']) == 'delete'){
+if(isset($_GET['aksi'])  && $_GET['aksi'] == 'delete'){
 	// escaping, additionally removing everything that could be (html/javascript-) code
 	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
   //Elimino Control
   
-  $delete_control = mysqli_query($con, "UPDATE sdc_iaas SET borrado='1' WHERE id='$nik'");
+  $delete_control = mysqli_query($con, "UPDATE sdc_storage SET borrado='1' WHERE id='$nik'");
+  
+  //$delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
+  //                  VALUES ('3', '5', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
+  if(!$delete_control){
+    $_SESSION['formSubmitted'] = 9;
+  }
+}
+/// SOLICITAR BAJA DE STORAGE
+if(isset($_GET['aksi']) && $_GET['aksi'] == 'solbaja'){
+	// escaping, additionally removing everything that could be (html/javascript-) code
+	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+  //Elimino Control
+  
+  $delete_control = mysqli_query($con, "UPDATE sdc_storage SET estado='2' WHERE id='$nik'");
   
   //$delete_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario, i_titulo) 
   //                  VALUES ('3', '5', '$nik', now(), '$user', '$titulo')") or die(mysqli_error());
@@ -112,6 +126,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     table thead th.noventa{
         transform: rotate(-90deg);
         transform-origin: center !important;
+        font-size: 12px !important;
+        vertical-align: bottom;
+    }
+    table {
+        border-collapse: collapse !important;
+    }
+    table td { font-size: 11px; }
+    .bajasolicitada {
+        background-color: rgba(221,75,57,0.4) !important;
     }
   </style>
 </head>
@@ -156,9 +179,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.box-header -->
 	
 			<div class="box-body">
-              <table id="iaas" class="table table-hover">
+              <table id="tbstorage" class="display" width="100%">
                 <thead>
                 <tr>
+                  <th>estado</th>
                   <th width="10%">Storage</th>
                   <th width="10%" align="center">Categoría</th>
                   <th class="noventa">[TB] Capacidad Física</th>
@@ -195,6 +219,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             $capacidad_asig_max = ($row['asignado_tb'] > ($row['capacidad_fisica_tb']*$row['per_estimado_asignacion_max']/100) ? $row['asignado_tb'] : ($row['capacidad_fisica_tb']*$row['per_estimado_asignacion_max']/100));
                             $asignacion_disponible_est = $capacidad_asig_max - $row['asignado_tb'];
 							echo '<tr>';
+							echo '<td>'. $row['estado'].'</td>';
 							echo '<td>'. $row['nombre'].'</td>';
 							echo '<td align="center">'. $row['cat_nombre'].'</td>';
 							echo '<td class="text-right">'. number_format($row['capacidad_fisica_tb'],2,",",".").'</td>';
@@ -213,8 +238,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ 
                                 echo '<a 
                                 data-id="' . $row['id'] . '" 
-                                title="Editar Reserva" class="modal-abm-storage-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-                                <a href="sdc_iaas.php?aksi=delete&nik='.$row['id'].'" title="Borrar Reserva" onclick="return confirm(\'Esta seguro de borrar la reserva de VRA?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                                title="Editar Equipo de Storage" class="modal-abm-storage-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                                <a href="sdc_storage.php?aksi=delete&nik='.$row['id'].'" title="Borrar Equipo" onclick="return confirm(\'Esta seguro de borrar el equipo de storage?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                            }
+                            // OPERADORES
+                            if ($row['estado'] == 1 AND ( $rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1')){ 
+                                echo '<a 
+                                data-id="' . $row['id'] . '" 
+                                title="Editar Asignación" class="modal-abm-storage-btn-edit-asignacion btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                                <a href="sdc_storage.php?aksi=solbaja&nik='.$row['id'].'" title="Dar de baja Equipo" onclick="return confirm(\'Esta seguro de dar de baja el equipo de storage?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
                             }
                             echo '</td>
                             </tr>';
@@ -267,7 +299,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../bower_components/datatables.net/js/pdfmake.min.js"></script>
 <script src="../bower_components/datatables.net/js/vfs_fonts.js"></script>
 <script src="./modals/sdc_abmstorage.js"></script>
-<!-- <script src="./modals/sdc_iaas_vms_view.js"></script> -->
+<!-- <script src="./modals/sdc_storage_vms_view.js"></script> -->
       
 <script>
 
@@ -291,6 +323,44 @@ scratch. This page gets rid of all links and provides the needed markup only.
       $('ul.treeview-menu a').filter(function() {
         return this.href == url;
       }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');    
+  });
+</script>
+<script>
+  $(function () {
+    $('#tbstorage').DataTable({
+        'paging'      : false,
+        'scrollX'     : true,
+        'searching'   : true,
+        'ordering'    : true,
+        'info'        : false,
+        'autoWidth'   : true,
+        'dom'         : 'frtipB',
+        'buttons'     : [{
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                            
+                        },
+                        {
+            extend: 'excel',
+            text: 'Excel',
+            }],
+        'createdRow': function( row, data, dataIndex){
+            // Si el esado es baja (solicitada por los operadores) => la pinto
+            if( data[0] ==  2){
+                $(row).addClass('bajasolicitada');
+            }
+        },
+        'columnDefs': [{
+                'targets': [ 0 ],
+                'visible': false
+            },
+            {
+                'targets': [ 3,4,5,6,7,8,9,10,11,12,13,14 ],
+                'orderable': false
+            }
+        ]     
+    });
   });
 </script>
 </body>

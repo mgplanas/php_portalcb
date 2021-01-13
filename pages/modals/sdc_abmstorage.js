@@ -15,7 +15,7 @@ $(function() {
     function setAMBTriggers() {
         // ALTA
         // seteo boton trigger para el alta de gerencia
-        $('#modal-abm-storage-btn-alta').click(function() {
+        $('#modal-abm-storage-btn-alta').on('click', function() {
             $('#modal-abm-storage-title').html('Nuevo Equipo de Storage');
             modalAbmLimpiarCampos();
             $('#modal-abm-storage-submit').attr('name', 'A');
@@ -24,7 +24,7 @@ $(function() {
 
         // EDIT
         // seteo boton trigger para el edit de gerencia
-        $('.modal-abm-storage-btn-edit').click(function() {
+        $('.modal-abm-storage-btn-edit').on('click', function() {
             $('#modal-abm-storage-title').html('Editar Equipo');
             modalAbmLimpiarCampos();
 
@@ -34,7 +34,8 @@ $(function() {
             $('#modal-abm-storage-capacidad-fisica').val($(this).data('capacidad-fisica'));
             $('#modal-abm-storage-asignacion-recomendada').val($(this).data('asignacion-recomendada'));
             $('#modal-abm-storage-asignacion-max').val($(this).data('asignacion-max'));
-
+            $('#modal-abm-storage-fisico-ocupado').val($(this).data('fisico-ocupado'));
+            $('#modal-abm-storage-asignado').val($(this).data('asignado'));
 
             $('#modal-abm-storage-submit').attr('name', 'M');
 
@@ -52,7 +53,7 @@ $(function() {
     // GUARDAR CLIENTE
     // ==============================================================
     // ejecución de guardado async
-    $('#modal-abm-storage-submit').click(function() {
+    $('#modal-abm-storage-submit').on('click', function() {
         // Recupero datos del formulario
         let op = $(this).attr('name');
         let id = $('#modal-abm-storage-id').val();
@@ -91,13 +92,12 @@ $(function() {
     function modalAbmLimpiarCampos() {
         $('#modal-abm-storage-id').val(0);
         $('#modal-abm-storage-nombre').val('');
-        $('#modal-abm-storage-sigla').val('');
-        $('#modal-abm-storage-cuit').val('');
-        $('#opt-sector-publico').prop("checked", true);
-        $('#modal-abm-storage-convenio').prop("checked", false);
-        $("#modal-abm-storage-organismo").val('first').change();
-        $('#modal-abm-storage-correo').prop("checked", false);
-        $("#modal-abm-storage-ejecutivo").val('first').change();
+        $('#modal-abm-storage-categoria').first();
+        $('#modal-abm-storage-capacidad-fisica').val(0);
+        $('#modal-abm-storage-asignacion-recomendada').val(0);
+        $('#modal-abm-storage-asignacion-max').val(0);
+        $('#modal-abm-storage-fisico-ocupado').val(0);
+        $('#modal-abm-storage-asignado').val(0);
     }
     // ********************************************************************************************
 
