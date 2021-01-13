@@ -235,14 +235,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td class="text-right">'. number_format($asignacion_disponible_est,2,",",".") .'</td>';
 
                             echo '<td align="center">';
-                            if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ 
+                            if ($rq_sec['storage_admin']=='1'){ 
                                 echo '<a 
                                 data-id="' . $row['id'] . '" 
                                 title="Editar Equipo de Storage" class="modal-abm-storage-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
                                 <a href="sdc_storage.php?aksi=delete&nik='.$row['id'].'" title="Borrar Equipo" onclick="return confirm(\'Esta seguro de borrar el equipo de storage?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
                             }
                             // OPERADORES
-                            if ($row['estado'] == 1 AND ( $rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1')){ 
+                            if ($row['estado'] == 1 AND (  $rq_sec['storage_op']=='1')){ 
                                 echo '<a 
                                 data-id="' . $row['id'] . '" 
                                 title="Editar Asignación" class="modal-abm-storage-btn-edit-asignacion btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
