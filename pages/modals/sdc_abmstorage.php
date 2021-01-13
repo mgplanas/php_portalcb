@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="costo">Nombre Equipo </label>
+                                <label for="nombre">Nombre Equipo </label>
                                 <input type="text" class="form-control" name="nombre"  id='modal-abm-storage-nombre' required>
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="capacidad_fisica">Capacidad Física [TB] </label>
-                                <input type="number" min="0" class="form-control" name="capacidad_fisica"  id='modal-abm-storage-costo-capacidad-fisica' required>
+                                <input type="number" min="0" class="form-control" name="capacidad_fisica"  id='modal-abm-storage-capacidad-fisica' required>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -53,7 +53,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="capacidad_asignable">Capacidad Asignable [TB] </label>
-                                <input type="number" min="0" class="form-control" name="capacidad_asignable"  id='modal-abm-storage-costo-capacidad-asignable' required disabled>
+                                <input type="number" min="0" class="form-control" name="capacidad_asignable"  id='modal-abm-storage-capacidad-asignable' required disabled>
                             </div>
                         </div>
                         <div class="col-md-6">

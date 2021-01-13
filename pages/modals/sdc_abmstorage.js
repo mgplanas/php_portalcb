@@ -1,6 +1,15 @@
 $(function() {
 
     // ********************************************************************************************
+    // AUXILIARES
+    // ********************************************************************************************
+    function calcCapacidadAsignable() {
+        const capacidad_fisica = $('#modal-abm-storage-capacidad-fisica').val();
+        const per_capacidad_recomenda = $('#modal-abm-storage-asignacion-recomendada').val();
+        return capacidad_fisica * per_capacidad_recomenda / 100;
+    }
+
+    // ********************************************************************************************
     // TRIGGERS DOM
     // ********************************************************************************************
     function setAMBTriggers() {
@@ -31,6 +40,11 @@ $(function() {
 
             $("#modal-abm-storage").modal("show");
         });
+
+        // ON CHANGE
+        $('#modal-abm-storage-capacidad-fisica, #modal-abm-storage-asignacion-recomendada').on('keyup', function() {
+            $('#modal-abm-storage-capacidad-asignable').val(calcCapacidadAsignable());
+        });
     }
 
 
@@ -50,18 +64,15 @@ $(function() {
         // Ejecuto
         $.ajax({
             type: 'POST',
-            url: './helpers/cdc_abmclientedb.php',
+            url: './helpers/sdc_abmstoragedb.php',
             data: {
                 operacion: op,
                 id: id,
-                id_organismo: id_organismo,
-                razon_social: razon_social,
-                nombre_corto: nombre_corto,
-                cuit: cuit,
-                sector: sector,
-                convenio: convenio,
-                servicio_correo: servicio_correo,
-                ejecutivo_cuenta: ejecutivo_cuenta
+                nombre: nombre,
+                categoria: categoria,
+                capacidad_fisica: capacidad_fisica,
+                asignacion_recomendada: asignacion_recomendada,
+                asignacion_max: asignacion_max
             },
             dataType: 'json',
             success: function(json) {
