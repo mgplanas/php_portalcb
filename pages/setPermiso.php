@@ -177,5 +177,17 @@
         $sel="update permisos set doc=not(doc) where id_permiso='$s'";
         $sel1=mysqli_query($con, $sel);
     }    
+    else if ($f=='17'){
+        $sel="update permisos set storage=not(storage) where id_permiso='$s'";
+        $sel1=mysqli_query($con, $sel);
+    }    
+    else if ($f=='18'){
+        $sel="update permisos set storage_admin=not(storage_admin) where id_permiso='$s'";
+        $sel1=mysqli_query($con, $sel);
+    }    
+    else if ($f=='19'){
+        $sel="update permisos set storage_op=not(storage_op) where id_permiso='$s'";
+        $sel1=mysqli_query($con, $sel);
+    }    
     
 ?>

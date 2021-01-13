@@ -12,12 +12,20 @@ Desarrollo gestión de storage.
     - sto_categorias (migrar)
     - sto_estados (migrar)
 
+- Permisos    
+    ALTER TABLE controls.permisos
+    ADD storage INT NOT NULL DEFAULT '0' AFTER doc,
+    ADD storage_admin INT NOT NULL DEFAULT '0',
+    ADD storage_op INT NOT NULL DEFAULT '0';
+
 [cod]
 - pages/sdc_storage.php : Se agrega página principal de storage
 - pages/modals/sdc_abmstorage.php/js
 - pages/helpers/sdc_abmstoragedb.php
 - pages/site_sidemenu.php: Se agrega item del menu
 - site.php: Se agrega item del menu
+- pages/setPermiso.php
+- pages/admin.php
 ## FEAT-TELCO
 Identificar con una marca los servicios housing de telco y listar en otra pantalla dichos servicios.
 

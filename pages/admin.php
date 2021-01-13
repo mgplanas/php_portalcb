@@ -231,6 +231,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">Admin Cto</th>
                                                 <th width="1">Admin Doc</th>
                                                 <th width="1">Doc</th>
+                                                <th width="1">Storage</th>
+                                                <th width="1">Storage Admin</th>
+                                                <th width="1">Storage OP</th>
                                                 <th width="1">Edición</th>
                                                 <th width="1">Acciones</th>
                                             </tr>
@@ -320,6 +323,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 <label><input name="doc" type="checkbox" onclick="updatePerm(16, '.$row['id_permiso'].');" value="1"'; if($row['doc'] == '1'){ echo 'checked'; } echo'></label>
                                                             </div></td>'; 
                                                   echo '<td>
+                                                            <div class="checkbox">
+                                                                <label><input name="storage" type="checkbox" onclick="updatePerm(17, '.$row['id_permiso'].');" value="1"'; if($row['storage'] == '1'){ echo 'checked'; } echo'></label>
+                                                            </div></td>'; 
+                                                  echo '<td>
+                                                            <div class="checkbox">
+                                                                <label><input name="storage_admin" type="checkbox" onclick="updatePerm(18, '.$row['id_permiso'].');" value="1"'; if($row['storage_admin'] == '1'){ echo 'checked'; } echo'></label>
+                                                            </div></td>'; 
+                                                  echo '<td>
+                                                            <div class="checkbox">
+                                                                <label><input name="storage_admin" type="checkbox" onclick="updatePerm(19, '.$row['id_permiso'].');" value="1"'; if($row['storage_op'] == '1'){ echo 'checked'; } echo'></label>
+                                                            </div></td>'; 
+                                                  echo '<td>
                                                           <div class="checkbox">
                                                             <label><input name="edicion" type="checkbox" onclick="updatePerm(4, '.$row['id_permiso'].');" value="1"'; if($row['edicion'] == '1'){ echo 'checked'; } echo'></label>
                                                           </div></td>'; 
@@ -363,8 +378,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     $admin_contratos = mysqli_real_escape_string($con,(strip_tags($_POST["admin_contratos"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $admin_doc = mysqli_real_escape_string($con,(strip_tags($_POST["admin_doc"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $doc = mysqli_real_escape_string($con,(strip_tags($_POST["doc"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $storage = mysqli_real_escape_string($con,(strip_tags($_POST["storage"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $storage_admin = mysqli_real_escape_string($con,(strip_tags($_POST["storage_admin"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $storage_op = mysqli_real_escape_string($con,(strip_tags($_POST["storage_op"],ENT_QUOTES)));//Escanpando caracteres 
                                                     //Inserto Control
-                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy, cli_dc,compras, admin_compras, admin_riesgos, contratos, admin_contratos,admin_doc, doc) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy', '$clidc', '$compras', '$admin_compras', '$admin_riesgo', '$contratos', '$admin_contratos', '$admin_doc', '$doc')") or die(mysqli_error());	
+                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy, cli_dc,compras, admin_compras, admin_riesgos, contratos, admin_contratos,admin_doc, doc, storage, storage_admin, storage_op) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy', '$clidc', '$compras', '$admin_compras', '$admin_riesgo', '$contratos', '$admin_contratos', '$admin_doc', '$doc', '$storage', '$storage_admin', '$storage_op')") or die(mysqli_error());	
                                                     $lastInsert = mysqli_insert_id($con);
                                                     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                                   VALUES ('1', '16', '$lastInsert', now(), '$user')") or die(mysqli_error());
@@ -469,6 +487,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <div class="checkbox">
                                                             <label>
                                                                 <input name="doc" type="checkbox" value="1"> Doc.
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="storage" type="checkbox" value="1"> Storage.
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="storage_admin" type="checkbox" value="1"> Storage Admin.
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="storage_op" type="checkbox" value="1"> Storage Operator.
                                                             </label>
                                                         </div>
 
@@ -831,6 +864,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             'info': true,
             'autoWidth': false,
             'dom'         : 'frtip',
+            'scrollX'     :true
 
         })
     })
