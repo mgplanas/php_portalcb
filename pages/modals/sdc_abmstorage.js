@@ -18,6 +18,7 @@ $(function() {
         $('#modal-abm-storage-btn-alta').on('click', function() {
             $('#modal-abm-storage-title').html('Nuevo Equipo de Storage');
             modalAbmLimpiarCampos();
+            modalAbmHabilitarCampos($(this).data('role'));
             $('#modal-abm-storage-submit').attr('name', 'A');
             $("#modal-abm-storage").modal("show");
         });
@@ -27,6 +28,7 @@ $(function() {
         $('.modal-abm-storage-btn-edit').on('click', function() {
             $('#modal-abm-storage-title').html('Editar Equipo');
             modalAbmLimpiarCampos();
+            modalAbmHabilitarCampos($(this).data('role'));
 
             $('#modal-abm-storage-id').val($(this).data('id'));
             $('#modal-abm-storage-nombre').val($(this).data('nombre'));
@@ -36,6 +38,7 @@ $(function() {
             $('#modal-abm-storage-asignacion-max').val($(this).data('asignacion-max'));
             $('#modal-abm-storage-fisico-ocupado').val($(this).data('fisico-ocupado'));
             $('#modal-abm-storage-asignado').val($(this).data('asignado'));
+            $('#modal-abm-storage-capacidad-asignable').val(calcCapacidadAsignable());
 
             $('#modal-abm-storage-submit').attr('name', 'M');
 
@@ -62,6 +65,19 @@ $(function() {
         let capacidad_fisica = $('#modal-abm-storage-capacidad-fisica').val();
         let asignacion_recomendada = $('#modal-abm-storage-asignacion-recomendada').val();
         let asignacion_max = $('#modal-abm-storage-asignacion-max').val();
+        let fisico_ocupado = $('#modal-abm-storage-fisico-ocupado').val();
+        let asignado = $('#modal-abm-storage-asignado').val();
+
+        // valido
+        if (!nombre) {
+            alert('El nombre del equipo no puede estar vacío.');
+            return;
+        }
+        if (!capacidad_fisica || capacidad_fisica <= 0) {
+            alert('Debe ingresar la capacidad física del equipo.');
+            return;
+        }
+
         // Ejecuto
         $.ajax({
             type: 'POST',
@@ -73,7 +89,9 @@ $(function() {
                 categoria: categoria,
                 capacidad_fisica: capacidad_fisica,
                 asignacion_recomendada: asignacion_recomendada,
-                asignacion_max: asignacion_max
+                asignacion_max: asignacion_max,
+                asignado: asignado,
+                fisico_ocupado: fisico_ocupado
             },
             dataType: 'json',
             success: function(json) {
@@ -98,6 +116,17 @@ $(function() {
         $('#modal-abm-storage-asignacion-max').val(0);
         $('#modal-abm-storage-fisico-ocupado').val(0);
         $('#modal-abm-storage-asignado').val(0);
+    }
+
+    function modalAbmHabilitarCampos(role) {
+        $('#modal-abm-storage-id').val(0);
+        $('#modal-abm-storage-nombre').prop("disabled", role === 'OP');
+        $('#modal-abm-storage-categoria').prop("disabled", role === 'OP');
+        $('#modal-abm-storage-capacidad-fisica').prop("disabled", role === 'OP');
+        $('#modal-abm-storage-asignacion-recomendada').prop("disabled", role === 'OP');
+        $('#modal-abm-storage-asignacion-max').prop("disabled", role === 'OP');
+        $('#modal-abm-storage-fisico-ocupado').prop("disabled", role === 'ADMIN');
+        $('#modal-abm-storage-asignado').prop("disabled", role === 'ADMIN');
     }
     // ********************************************************************************************
 

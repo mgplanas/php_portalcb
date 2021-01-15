@@ -136,6 +136,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     .bajasolicitada {
         background-color: rgba(221,75,57,0.4) !important;
     }
+    .solicitud_pendiente {
+        font-size: 16px !important;
+    }
   </style>
 </head>
 
@@ -170,8 +173,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					<h2 class="box-title">Listado de Equipos de Storage</h2>
 				</div>
          <div class="col-sm-6" style="text-align:right;">
-          <?php if ($rq_sec['admin']=='1' OR $rq_sec['admin_cli_dc']=='1'){ ?>
-          <button type="button" id="modal-abm-storage-btn-alta" class="btn-sm btn-primary" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-database"></i> Nuevo Equipo de Storage</button>
+          <?php if ($rq_sec['admin']=='1' OR $rq_sec['storage_admin']=='1')
+          { 
+            //Solicitudes de Baja pendientes
+            $solicitudes = mysqli_query($con, "SELECT COUNT(*) as cuenta FROM sdc_storage WHERE estado = 2  AND borrado = 0;");
+            $row_sol = mysqli_fetch_assoc($solicitudes);
+            $cuenta = $row_sol['cuenta'];
+            if ($cuenta > 0) {
+                echo '<span class="badge bg-red solicitud_pendiente"> Solicitudes de baja pendientes: '.$cuenta.'</span>';
+            }
+              ?>
+          <button type="button" id="modal-abm-storage-btn-alta" class="btn-sm btn-primary" data-role="ADMIN" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-database"></i> Nuevo Equipo de Storage</button>
           <?php } ?>
 				</div>
             </div>
@@ -238,15 +250,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             if ($rq_sec['storage_admin']=='1'){ 
                                 echo '<a 
                                 data-id="' . $row['id'] . '" 
-                                title="Editar Equipo de Storage" class="modal-abm-storage-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                                data-nombre="' . $row['nombre'] . '" 
+                                data-categoria="' . $row['categoria'] . '" 
+                                data-capacidad-fisica="' . $row['capacidad_fisica_tb'] . '" 
+                                data-asignacion-recomendada="' . $row['per_asignacion_recomendado'] . '" 
+                                data-asignacion-max="' . $row['per_estimado_asignacion_max'] . '" 
+                                data-fisico-ocupado="' . $row['per_fisico_ocupado'] . '" 
+                                data-asignado="' . $row['asignado_tb'] . '" 
+                                data-role="ADMIN" 
+                                title="Editar Equipo de Storage" class="modal-abm-storage-btn-edit btn btn-sm"><i class="fa fa-sliders"></i></a>
                                 <a href="sdc_storage.php?aksi=delete&nik='.$row['id'].'" title="Borrar Equipo" onclick="return confirm(\'Esta seguro de borrar el equipo de storage?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
                             }
                             // OPERADORES
                             if ($row['estado'] == 1 AND (  $rq_sec['storage_op']=='1')){ 
                                 echo '<a 
                                 data-id="' . $row['id'] . '" 
-                                title="Editar Asignación" class="modal-abm-storage-btn-edit-asignacion btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
-                                <a href="sdc_storage.php?aksi=solbaja&nik='.$row['id'].'" title="Dar de baja Equipo" onclick="return confirm(\'Esta seguro de dar de baja el equipo de storage?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                                data-nombre="' . $row['nombre'] . '" 
+                                data-categoria="' . $row['categoria'] . '" 
+                                data-capacidad-fisica="' . $row['capacidad_fisica_tb'] . '" 
+                                data-asignacion-recomendada="' . $row['per_asignacion_recomendado'] . '" 
+                                data-asignacion-max="' . $row['per_estimado_asignacion_max'] . '" 
+                                data-fisico-ocupado="' . $row['per_fisico_ocupado'] . '" 
+                                data-asignado="' . $row['asignado_tb'] . '" 
+                                data-role="OP" 
+
+                                title="Editar Asignación" class="modal-abm-storage-btn-edit btn btn-sm"><i class="glyphicon glyphicon-edit"></i></a>
+                                <a href="sdc_storage.php?aksi=solbaja&nik='.$row['id'].'" title="Dar de baja Equipo" onclick="return confirm(\'Esta seguro de dar de baja el equipo de storage?\')" class="btn btn-sm"><i class="fa fa-arrow-circle-down"></i></a>';
                             }
                             echo '</td>
                             </tr>';
