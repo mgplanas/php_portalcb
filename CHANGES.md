@@ -26,6 +26,7 @@ Desarrollo gestión de storage.
 - site.php: Se agrega item del menu
 - pages/setPermiso.php
 - pages/admin.php
+- pages/modals/sdc_storage_stat.php
 ## FEAT-TELCO
 Identificar con una marca los servicios housing de telco y listar en otra pantalla dichos servicios.
 

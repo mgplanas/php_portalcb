@@ -183,6 +183,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 echo '<span class="badge bg-red solicitud_pendiente"> Solicitudes de baja pendientes: '.$cuenta.'</span>';
             }
               ?>
+          <button title="Métricas" type="button" id="modal-abm-storage-btn-stat" class="btn-sm btn-primary" data-role="ADMIN" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-pie-chart"></i></button>
           <button type="button" id="modal-abm-storage-btn-alta" class="btn-sm btn-primary" data-role="ADMIN" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-database"></i> Nuevo Equipo de Storage</button>
           <?php } ?>
 				</div>
@@ -294,6 +295,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- /.col -->
         <?php
             include_once('./modals/sdc_abmstorage.php');
+            include_once('./modals/sdc_storage_stat.php');
         ?>        
       </div>
       <!-- /.row -->
@@ -389,6 +391,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 'orderable': false
             }
         ]     
+    });  
+    $('#tbstat').DataTable({
+        'paging'      : false,
+        'searching'   : false,
+        'ordering'    : false,
+        'info'        : false,
+        'autoWidth'   : true,
+        'dom'         : 'B',
+        'buttons'     : [{
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                            
+                        },
+                        {
+            extend: 'excel',
+            text: 'Excel',
+            }]
     });
   });
 </script>

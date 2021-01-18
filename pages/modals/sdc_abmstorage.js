@@ -13,6 +13,12 @@ $(function() {
     // TRIGGERS DOM
     // ********************************************************************************************
     function setAMBTriggers() {
+        // STATS
+        // seteo boton trigger para el alta de gerencia
+        $('#modal-abm-storage-btn-stat').on('click', function() {
+            $('#modal-abm-storage-stat-title').html('Resúmen');
+            $("#modal-abm-storage-stat").modal("show");
+        });
         // ALTA
         // seteo boton trigger para el alta de gerencia
         $('#modal-abm-storage-btn-alta').on('click', function() {
