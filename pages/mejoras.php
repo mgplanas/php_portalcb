@@ -255,7 +255,7 @@ desired effect
                                     <label for="origen">Origen</label>
                                     <select name="origen" class="form-control">
                                     <?php
-                                            $origenes = mysqli_query($con, "SELECT * FROM origen WHERE id_origen in (1,2,4)");
+                                            $origenes = mysqli_query($con, "SELECT * FROM origen WHERE id_origen in (1,2,4,9)");
                                             while($rowpo = mysqli_fetch_array($origenes)){
                                                 if($rowpo['id_origen']==$row['origen']) {
                                                     echo "<option value='". $rowpo['id_origen'] . "' selected='selected'>" .$rowpo['descripcion'] . "</option>";
