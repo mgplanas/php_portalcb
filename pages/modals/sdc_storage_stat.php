@@ -25,26 +25,26 @@
                         <tbody>
                             <?php
                             $query = "SELECT 
-                                        cat.nombre as cat_nombre , 
-                                        SUM(capacidad_asignable) as capacidad_asignable, 
-                                        SUM(asignado_tb) as asignado_tb, 
-                                        SUM(asignado_tb*100/capacidad_asignable) as asignado_actual,
-                                        SUM(disponible_estimado) as disponible_estimado
-                                        FROM (
-                                        SELECT 
-                                            sto_raw.categoria, 
-                                            (sto_raw.capacidad_fisica_tb * sto_raw.per_asignacion_recomendado / 100) as capacidad_asignable, 
-                                            CASE WHEN (sto_raw.asignado_tb >= (sto_raw.capacidad_fisica_tb * sto_raw.per_asignacion_recomendado / 100)) THEN 0 
-                                                ELSE (sto_raw.capacidad_fisica_tb * sto_raw.per_asignacion_recomendado / 100) - sto_raw.asignado_tb END as disponible_estimado,
-                                            sto_raw.asignado_tb, 
-                                            sto_raw.capacidad_fisica_tb, 
-                                            sto_raw.per_asignacion_recomendado 
-                                        FROM sdc_storage as sto_raw
-                                            WHERE sto_raw.borrado = 0
-                                            AND sto_raw.estado = 1
-                                        ) as sto_gr
-                                        INNER JOIN sto_categorias as cat ON sto_gr.categoria = cat.id
-                                        GROUP BY cat_nombre;"; 
+                            cat.nombre as cat_nombre , 
+                            capacidad_asignable, 
+                            asignado_tb, 
+                            (asignado_tb*100/capacidad_asignable) as asignado_actual,
+                            disponible_estimado
+                            FROM (
+                            SELECT 
+                                sto_raw.categoria, 
+                                SUM((sto_raw.capacidad_fisica_tb * sto_raw.per_asignacion_recomendado / 100)) as capacidad_asignable, 
+                                SUM(CASE WHEN (sto_raw.asignado_tb >= (sto_raw.capacidad_fisica_tb * sto_raw.per_asignacion_recomendado / 100)) THEN 0 
+                                    ELSE (sto_raw.capacidad_fisica_tb * sto_raw.per_asignacion_recomendado / 100) - sto_raw.asignado_tb END) as disponible_estimado,
+                                SUM(sto_raw.asignado_tb) as asignado_tb, 
+                                SUM(sto_raw.capacidad_fisica_tb) as capacidad_fisica_tb, 
+                                SUM(sto_raw.per_asignacion_recomendado) as  per_asignacion_recomendado
+                            FROM sdc_storage as sto_raw
+                                WHERE sto_raw.borrado = 0
+                                AND sto_raw.estado = 1
+                                GROUP BY sto_raw.categoria
+                            ) as sto_gr
+                            INNER JOIN sto_categorias as cat ON sto_gr.categoria = cat.id;"; 
                             
                             $sql = mysqli_query($con, $query);
 
