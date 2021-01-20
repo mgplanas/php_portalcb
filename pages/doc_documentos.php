@@ -130,6 +130,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
     .example-modal .modal {
       background: transparent !important;
     }
+
+    .direct-vigente, .direct-vencido, .direct-proximo {
+        background: transparent !important;
+        cursor: pointer;
+    }
+    .direct-vigente.selected{
+        background-color: #00a65a !important;
+        color: white !important;
+        font-weight: bold !important;
+    }
+    .direct-vencido.selected{
+        background-color: #f56954 !important;
+        color: white !important;
+        font-weight: bold !important;
+    }
+    .direct-proximo.selected{
+        background-color: #f39c12 !important;
+        color: white !important;
+        font-weight: bold !important;
+    }
   </style>
 </head>
 <!--
@@ -176,15 +196,15 @@ desired effect
           <div class="col-xs-12 col-md-9"><h1>Gestión de documentos DC &nbsp;&nbsp;<small>Total:&nbsp;<?=$rq_indicadores['total'] ?></small></h1></div>
           <div class="col-xs-3 col-md-1 text-center">
             <input id="knob_vigentes" type="text" class="knob" value="<?= (int)($rq_indicadores['vigentes']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_vigentes_color ?>">
-            <div class="knob-label direct-search">Vigentes</div>
+            <div class="knob-label direct-vigente">Vigentes</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_proximos" type="text" class="knob" value="<?= (int)($rq_indicadores['proximos']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_proximos_color ?>">
-            <div class="knob-label direct-search">Próximos</div>
+            <div class="knob-label direct-proximo">Próximos</div>
           </div>
           <div class="col-xs-6 col-md-1 text-center">
             <input id="knob_vencidos" type="text" class="knob" value="<?= (int)($rq_indicadores['vencidos']/$rq_indicadores['total']*100) ?>" data-width="60" data-height="60" data-fgColor="<?=$i_vencidos_color ?>">
-            <div class="knob-label direct-search">Vencidos</div>
+            <div class="knob-label direct-vencido">Vencidos</div>
           </div>
         <!-- /.box-body -->
       </div>             
@@ -218,6 +238,7 @@ desired effect
                                 <th>Dueño</th>
                                 <th>Fecha Vigencia</th>
                                 <th>Fecha de Próxima Actualización</th>
+                                <th>Estado</th>
                                 <!-- <th>Path</th> -->
                                 <!-- <th>Frecuencia de revisión en días</th> -->
                                 <th>Aprobado</th>
@@ -270,6 +291,15 @@ desired effect
                                                 echo 'yellow';
                                             }
                                             echo '">' . formatDate($row['proxima_actualizacion']) . '</span>';
+                                        echo '</td>';
+                                        echo '<td>'; 
+                                            if ($row['dias'] > 30) {
+                                                echo 'vigente';
+                                            } else if ($row['dias'] < 0) {
+                                                echo 'vencido';
+                                            } else {
+                                                echo 'proximo';
+                                            }
                                         echo '</td>';
                                         // echo '<td>' . $row['path'] . '</td>';
                                         // echo '<td style="text-align: center;">'. $row['frecuencia_revision'] .'</td>';
@@ -359,6 +389,9 @@ desired effect
             'info': true,
             'autoWidth': false,
             'dom': 'Bfrtp',
+            'columnDefs'  : [
+                {'targets': [ 6 ], 'visible': false},
+            ],
             'buttons': [{
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
@@ -488,9 +521,39 @@ desired effect
 
     $('#btn-showhide-comments').prop('disabled', 'true');
 
-    // $('.direct-search').on( 'click', function () {
-    //   $('#tbDocumentos').dataTable().fnFilter( $(this)[0].innerText );
-    // });
+    function resetSearchSelection() {
+        $('.direct-vencido').removeClass('selected');
+        $('.direct-proximo').removeClass('selected');
+        $('.direct-vigente').removeClass('selected');
+    }
+
+    $('.direct-vencido').on( 'click', function () {
+        if ($(this).hasClass( "selected" )) {
+            $('#tbDocumentos').DataTable().columns( 6 ).search( '' ).draw();
+        } else {
+            resetSearchSelection();
+            $('#tbDocumentos').DataTable().columns( 6 ).search( 'vencido' ).draw();
+        }
+        $(this).toggleClass( "selected" );
+    });
+    $('.direct-proximo').on( 'click', function () {
+        if ($(this).hasClass( "selected" )) {
+            $('#tbDocumentos').DataTable().columns( 6 ).search( '' ).draw();
+        } else {
+            resetSearchSelection();
+            $('#tbDocumentos').DataTable().columns( 6 ).search( 'proximo' ).draw();
+        }
+        $(this).toggleClass( "selected" );
+    });
+    $('.direct-vigente').on( 'click', function () {
+        if ($(this).hasClass( "selected" )) {
+            $('#tbDocumentos').DataTable().columns( 6 ).search( '' ).draw();
+        } else {
+            resetSearchSelection();
+            $('#tbDocumentos').DataTable().columns( 6 ).search( 'vigente' ).draw();
+        }
+        $(this).toggleClass( "selected" );
+    });
 
 
 });

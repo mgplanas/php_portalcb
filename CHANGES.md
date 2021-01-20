@@ -1,4 +1,11 @@
 # CHANGES
+## FEAT-BIB-FILTER
+Filtrar Bibilioteca de documentos por estado.
+*Fecha* 2021-01-20
+*Requerimiento*
+- Filtrar Bibilioteca de documentos por estado al estilo compras.
+[cod]
+- pages/doc_documentos.php: Se agrega logica de filtro
 
 ## FEAT-STORAGE
 Desarrollo gestión de storage.
