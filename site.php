@@ -444,7 +444,7 @@ desired effect
                 <li><a href="./pages/cdc_cliente.php"><i class="fa fa-user"></i> Clientes</a></li>
                 <li><a href="./pages/cdc_servidores.php"><i class="fa fa-server"></i> Servidores</a></li>
                 <li><a href="./pages/cdc_solicitudes.php"><i class="fa fa-edit"></i> Solicitudes Infra</a></li>
-                <!-- <li><a href="./pages/cdc_costos.php"><i class="fa fa-calculator"></i> Costeo</a></li> 
+                <!-- <li><a href="./pages/cdc_costos.php"><i class="fa fa-calculator"></i> Costeo</a></li>
                 <?php if ($rq_sec['admin_cli_dc']=='1'){ ?>
                     <li><a href="./pages/cdc_costos_adm_items.php"><i class="fa fa-bars"></i>Productos</a></li>
                 <?php } ?> -->
@@ -469,6 +469,7 @@ desired effect
                     <li><a href="./pages/sdc_hosting.php"><i class="fa fa-server"></i> Hosting</a></li>
                     <li><a href="./pages/sdc_iaas.php"><i class="fa fa-cloud"></i> IAAS</a></li>
                     <li><a href="./pages/sdc_correo.php"><i class="fa fa-envelope"></i> Correo</a></li>
+                    <li><a href="./pages/sdc_storage.php"><i class="fa fa-database"></i> Storage</a></li>
                   </ul>
                 </li>
               </ul>
