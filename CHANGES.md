@@ -1,4 +1,11 @@
 # CHANGES
+## FEAT-GUARDIAS-GEN
+Generador automático de guardias de
+*Fecha* 2021-01-25
+*Requerimiento*
+- Automatizar proceso de generación de guardias.
+[cod]
+- pages/guardias_gen.php: Se agrega logica de filtro
 ## FEAT-BIB-FILTER
 Filtrar Bibilioteca de documentos por estado.
 *Fecha* 2021-01-20
