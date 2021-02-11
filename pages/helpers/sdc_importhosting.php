@@ -45,8 +45,8 @@
                             $storage = str_replace(',', '.', $getData[13]);
                             $fecha = DateTime::createFromFormat('d/m/Y', $getData[6])->format('Y-m-d');
 
-                            $sql = 'INSERT INTO sdc_hosting_temp (`Display Name`, Nombre, Tipo, id_cliente, Proyecto, Datacenter, Fecha, Hipervisor, Hostname, Pool, uuid, VCPU, RAM, Storage, `Sistema Operativo`) 
-                                    VALUES ("'. $getData[0] .'", "'. $getData[1] .'", "'. $getData[2] .'", "'. $getData[3] .'", "'. $getData[4] .'", "'. $getData[5] .'", "'. $fecha .'", "'. $getData[7] .'", "'. $getData[8] .'", "'. $getData[9] .'", "'. $getData[10] .'", "'. $vcpu .'", "'. $ram .'", "'. $storage .'", "'. $getData[14] .'");';
+                            $sql = 'INSERT INTO sdc_hosting_temp (`Display Name`, Nombre, Tipo, id_cliente, Proyecto, Datacenter, Fecha, Hipervisor, Hostname, Pool, reserva, uuid, VCPU, RAM, Storage, `Sistema Operativo`) 
+                                    VALUES ("'. $getData[0] .'", "'. $getData[1] .'", "'. $getData[2] .'", "'. $getData[3] .'", "'. $getData[4] .'", "'. $getData[5] .'", "'. $fecha .'", "'. $getData[7] .'", "'. $getData[8] .'", "'. $getData[9] .'", "'. $getData[10] .'", "'. $getData[11] .'", "'. $vcpu .'", "'. $ram .'", "'. $storage .'", "'. $getData[15] .'");';
     
                             $sqlRes = mysqli_query($con, $sql);
                             
@@ -172,6 +172,7 @@
                 hipervisor,
                 hostname,
                 pool,
+                reserva
                 uuid,
                 SO
                 )
@@ -188,6 +189,7 @@
                         T.Hipervisor,
                         T.Hostname,
                         T.Pool,
+                        T.reserva,
                         T.uuid,
                         T.`Sistema Operativo`
                         FROM sdc_hosting_temp AS T

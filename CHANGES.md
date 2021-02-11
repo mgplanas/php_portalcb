@@ -1,4 +1,24 @@
 # CHANGES
+## FEAT-IAAS-RESERVE
+Agregado de campo de reserva en la Importación de Vms
+*Fecha* 2021-02-11
+*Requerimiento*
+- Modiicar el proceso de importacion de vms.
+[DB]
+- Agregado de campos
+ALTER TABLE controls.sdc_hosting/_bck
+ ADD reserva VARCHAR(255) AFTER borrado;
+ALTER TABLE controls.sdc_hosting_temp
+ ADD reserva VARCHAR(255) AFTER id;
+
+- Modificacion de la vista
+ ALTER ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `controls`.`vw_sdc_iaas` AS select `h`.`id` AS `id`,`h`.`id_cliente` AS `id_cliente`,`h`.`tipo` AS `tipo`,`h`.`reserva` AS `reserva`,`h`.`nombre` AS `nombre`,`h`.`displayName` AS `displayName`,`h`.`proyecto` AS `proyecto`,`h`.`datacenter` AS `datacenter`,date_format(`h`.`fecha`,'%Y-%m-%d') AS `fecha`,`h`.`hipervisor` AS `hipervisor`,`h`.`hostname` AS `hostname`,`h`.`pool` AS `pool`,`h`.`uuid` AS `uuid`,`h`.`VCPU` AS `VCPU`,`h`.`RAM` AS `RAM`,`h`.`storage` AS `storage`,`h`.`SO` AS `SO`,`c`.`razon_social` AS `cliente`,`o`.`razon_social` AS `organismo`,`c`.`sector` AS `sector` from ((`controls`.`sdc_hosting` `h` join `controls`.`cdc_cliente` `c` on((`h`.`id_cliente` = `c`.`id`))) left join `controls`.`cdc_organismo` `o` on((`c`.`id_organismo` = `o`.`id`))) where ((`h`.`borrado` = 0) and (`h`.`pool` in ('VMW_VRA_CLIENTES_SALA_1','VMW_HPC')));
+
+[cod]
+- pages/helpers/sdc_importhosting.php
+- pages/sdc_iaas.php
+- pages/modals/sdc_iaas_view.js
+
 ## FEAT-GUARDIAS-GEN
 Generador automático de guardias de
 *Fecha* 2021-01-25

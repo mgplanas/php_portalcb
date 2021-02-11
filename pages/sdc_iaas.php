@@ -146,7 +146,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <tbody>
 					<?php
 					$query = "SELECT H.id, H.id_cliente, H.plataforma, H.reserva, H.ram_capacidad, H.ram_uso, H.storage_capacidad, H.storage_uso, H.observaciones, C.razon_social as cliente, O.razon_social as organismo, C.cuit, C.sector, 
-                                (SELECT COUNT(1) FROM vw_sdc_iaas as IA where IA.id_cliente = H.id_cliente) as vms
+                                (SELECT COUNT(1) FROM vw_sdc_iaas as IA where IA.id_cliente = H.id_cliente and IA.reserva = H.reserva) as vms
                                 FROM sdc_iaas as H
                                 INNER JOIN cdc_cliente as C ON H.id_cliente = C.id
                                 LEFT JOIN cdc_organismo as O ON C.id_organismo = O.id
@@ -170,7 +170,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             echo '<td>'. $row['observaciones'].'</td>';
                             echo '<td align="center">';
                             if ($row['vms'] > 0) {
-                                echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['cliente'].'" data-id="'.$row['id_cliente'].'" title="ver VMs de la reserva" class="modal-abm-vms-view btn">' . $row['vms'] . '</a>';
+                                echo '<a data-tipo="'. ($row['cuit']=='30709670413' ? 'I' : 'C') .'" data-sector="'. $row['sector'] .'" data-reserva="'. $row['reserva'] .'" data-organismo="'.$row['organismo'].'" data-cliente="'.$row['cliente'].'" data-id="'.$row['id_cliente'].'" title="ver VMs de la reserva" class="modal-abm-vms-view btn">' . $row['vms'] . '</a>';
                             }
                             echo '</td>';
                             
