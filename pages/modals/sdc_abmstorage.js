@@ -126,13 +126,15 @@ $(function() {
 
     function modalAbmHabilitarCampos(role) {
         $('#modal-abm-storage-id').val(0);
-        $('#modal-abm-storage-nombre').prop("disabled", role === 'OP');
-        $('#modal-abm-storage-categoria').prop("disabled", role === 'OP');
-        $('#modal-abm-storage-capacidad-fisica').prop("disabled", role === 'OP');
-        $('#modal-abm-storage-asignacion-recomendada').prop("disabled", role === 'OP');
-        $('#modal-abm-storage-asignacion-max').prop("disabled", role === 'OP');
-        $('#modal-abm-storage-fisico-ocupado').prop("disabled", role === 'ADMIN');
-        $('#modal-abm-storage-asignado').prop("disabled", role === 'ADMIN');
+        if (role != 'ALL') {
+            $('#modal-abm-storage-nombre').prop("disabled", role === 'OP');
+            $('#modal-abm-storage-categoria').prop("disabled", role === 'OP');
+            $('#modal-abm-storage-capacidad-fisica').prop("disabled", role === 'OP');
+            $('#modal-abm-storage-asignacion-recomendada').prop("disabled", role === 'OP');
+            $('#modal-abm-storage-asignacion-max').prop("disabled", role === 'OP');
+            $('#modal-abm-storage-fisico-ocupado').prop("disabled", role === 'ADMIN');
+            $('#modal-abm-storage-asignado').prop("disabled", role === 'ADMIN');
+        }
     }
     // ********************************************************************************************
 
