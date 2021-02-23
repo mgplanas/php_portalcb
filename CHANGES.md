@@ -18,6 +18,7 @@ ALTER TABLE controls.sdc_hosting_temp
 - pages/helpers/sdc_importhosting.php
 - pages/sdc_iaas.php
 - pages/modals/sdc_iaas_view.js
+- pages/modals/sdc_iaas_vms_view.js
 
 ## FEAT-GUARDIAS-GEN
 Generador automático de guardias de

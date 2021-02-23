@@ -172,7 +172,7 @@
                 hipervisor,
                 hostname,
                 pool,
-                reserva
+                reserva,
                 uuid,
                 SO
                 )

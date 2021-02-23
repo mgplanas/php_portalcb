@@ -12,7 +12,7 @@ $(function() {
 
         //Extraigo el id de la data del botón
         let idcliente = $(this).data('id');
-        let reserva = $(this).data('reserva');
+
         $('#modal-abm-iaas-title').html('Reserva de IAAS');
         modalAbmiaasLimpiarCampos();
         let texto = $(this).data('cliente') + ' <small>[ ' + $(this).data('organismo') + ' ]</small> ';
@@ -26,7 +26,7 @@ $(function() {
             "ajax": {
                 type: 'POST',
                 url: './helpers/getAsyncDataFromDB.php',
-                data: { query: 'SELECT H.id, H.id_cliente, H.plataforma, H.reserva, H.ram_capacidad, H.ram_uso, H.storage_capacidad, H.storage_uso, H.observaciones FROM sdc_iaas as H WHERE H.id_cliente = ' + idcliente + ' AND H.reserva = "' + reserva + '"' },
+                data: { query: 'SELECT H.id, H.id_cliente, H.plataforma, H.reserva, H.ram_capacidad, H.ram_uso, H.storage_capacidad, H.storage_uso, H.observaciones FROM sdc_iaas as H WHERE H.id_cliente = ' + idcliente },
 
             },
             "dataSrc": function(json) {
