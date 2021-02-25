@@ -12,6 +12,7 @@ $(function() {
 
         //Extraigo el id de la data del botón
         let idcliente = $(this).data('id');
+
         $('#modal-abm-iaas-title').html('Reserva de IAAS');
         modalAbmiaasLimpiarCampos();
         let texto = $(this).data('cliente') + ' <small>[ ' + $(this).data('organismo') + ' ]</small> ';

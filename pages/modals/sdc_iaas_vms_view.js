@@ -9,6 +9,7 @@ $(function() {
     $('.modal-abm-vms-view').on('click', function() {
         //Extraigo el id de la data del botón
         let idcliente = $(this).data('id');
+        let reserva = $(this).data('reserva');
         modalAbmvmsLimpiarCampos();
         let texto = $(this).data('cliente') + ' <small>[ ' + $(this).data('organismo') + ' ]</small> ';
         let sector = ($(this).data('sector') == 'Publico' ? ' <span class="label label-success">Sector Público</span> ' : ' <span class="label label-danger">Sector Privado</span> ');
@@ -21,7 +22,7 @@ $(function() {
             "ajax": {
                 type: 'POST',
                 url: './helpers/getAsyncDataFromDB.php',
-                data: { query: 'SELECT * FROM vw_sdc_iaas WHERE id_cliente = ' + idcliente },
+                data: { query: 'SELECT * FROM vw_sdc_iaas WHERE id_cliente = ' + idcliente + ' AND reserva = "' + reserva + '"' },
                 // data: { query: 'SELECT id, nombre, displayName, proyecto, datacenter, DATE_FORMAT(fecha, "%Y-%m-%d") as fecha, hipervisor, hostname, pool, uuid, VCPU, RAM, ROUND(storage,3) as storage, SO FROM sdc_vms WHERE id_cliente = ' + idcliente },
                 // data: { query: 'SELECT 1 as id, "Mariano" as name, "papa" as position FROM sdc_vms WHERE id_cliente = ' + 21 },
 
