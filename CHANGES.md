@@ -10,6 +10,7 @@ WAITING...
 -	Cambiar la etiqueta del campo Meses de cto. por Meses de contrato.
 DONE.
 -	Agregar en la etiqueta del campo Plazo de oferta la unidad “días”
+DONE.
 -	Al exportar incluir los totales. Esto requiere investigación ya que la funcionalidad de exportación es propia del componente de tabla. Igualmente creo que esta característica no es una traba para poder salir a producción.
 -	Productos
     -	Se enfocará el esfuerzo en poner a punto el ABM de productos para poder realizar los cambios dinámicamente.
