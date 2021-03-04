@@ -308,7 +308,7 @@ desired effect
                                 </div>          
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="meses">Meses de cto.</label>
+                                        <label for="meses">Meses de contrato</label>
                                         <input type="number" min="1" class="form-control" name="meses"  id='modal-abm-costos-meses' required value="<?= ($id_planilla ? $planilla_costeo['meses_contrato'] : "") ?>">
                                     </div>     
                                 </div>                   

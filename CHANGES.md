@@ -3,9 +3,12 @@
 Modificaciones solicitadas por comercial para darle cierre al cotizador
 *Fecha* 2021-03-04
 *Requerimiento*
--   El campo servicio (Hoy en día texto libre) modificarlo para que el usuario seleccione de una lista desplegable los servicios.   DONE.
+-   El campo servicio (Hoy en día texto libre) modificarlo para que el usuario seleccione de una lista desplegable los servicios.   
+DONE.
 -	En el caso del campo cliente se evaluó hacer lo mismo para que se desplieguen los clientes activos del portal. Esto requiere aprobación por Esteban. 
+WAITING...
 -	Cambiar la etiqueta del campo Meses de cto. por Meses de contrato.
+DONE.
 -	Agregar en la etiqueta del campo Plazo de oferta la unidad “días”
 -	Al exportar incluir los totales. Esto requiere investigación ya que la funcionalidad de exportación es propia del componente de tabla. Igualmente creo que esta característica no es una traba para poder salir a producción.
 -	Productos
