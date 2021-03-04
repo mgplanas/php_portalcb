@@ -12,6 +12,7 @@ DONE.
 -	Agregar en la etiqueta del campo Plazo de oferta la unidad “días”
 DONE.
 -	Al exportar incluir los totales. Esto requiere investigación ya que la funcionalidad de exportación es propia del componente de tabla. Igualmente creo que esta característica no es una traba para poder salir a producción.
+DONE.
 -	Productos
     -	Se enfocará el esfuerzo en poner a punto el ABM de productos para poder realizar los cambios dinámicamente.
     -	Se incluirá la funcionalidad en el ABM de productos de ocultar/habilitar un producto/categoría/subcategoría.

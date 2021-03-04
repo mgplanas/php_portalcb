@@ -641,7 +641,7 @@ $(function() {
                     }
                 }
             ],
-            'dom': 'rtipB',
+            'dom': 'rtpB',
             'buttons': [{
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
@@ -650,6 +650,7 @@ $(function() {
                 },
                 {
                     extend: 'excel',
+                    footer: true,
                     text: 'Excel',
                     exportOptions: {
                         columns: [0, 1, 2, 3, 4, 5, 6, 7],
@@ -664,7 +665,42 @@ $(function() {
                         }
                     }
                 }
-            ]
+            ],
+            'footerCallback': function(row, data, start, end, display) {
+                var api = this.api();
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                // Total over all pages
+                totalUV = api
+                    .column(6)
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+                // Total over all pages
+                totalRecurrente = api
+                    .column(7)
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+                var totalUV_f = $.fn.dataTable.render.number('\,', '.', 2).display(totalUV.toString());
+                var totalRecurrente_f = $.fn.dataTable.render.number('\,', '.', 2).display(totalRecurrente.toString());
+
+                console.log(totalUV.toString(), '-', totalUV_f, ' ', totalRecurrente.toString(), '-', totalRecurrente_f);
+                // Update footer
+                $(api.column(6).footer()).html(totalUV_f);
+                $(api.column(7).footer()).html(totalRecurrente_f);
+                // $(api.column(6).footer()).html(totalUV.replaceAll('.', '').replaceAll(',', '.'));
+                // $(api.column(7).footer()).html(totalRecurrente.replaceAll('.', '').replaceAll(',', '.'));
+            }
 
         });
 

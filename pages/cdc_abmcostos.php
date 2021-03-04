@@ -433,6 +433,19 @@ desired effect
                                             <th width="30px"></th>
                                         </tr>
                                         </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th style="text-align:right; padding: 8px 10px;"></th>
+                                                <th style="text-align:right; padding: 8px 10px;"></th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                                 <!-- FIN COSTEO -->
