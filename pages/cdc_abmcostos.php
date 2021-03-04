@@ -30,7 +30,7 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
 
 
 // GET PLANILLA
-$planilla_query = mysqli_query($con, "SELECT * FROM cdc_costos WHERE id = '$id_planilla';");
+$planilla_query = mysqli_query($con, "SELECT c.*, s.nombre as nombreservicio FROM cdc_costos as c INNER JOIN sdc_servicios as s ON c.servicio = s.id WHERE c.id = '$id_planilla';");
 $planilla_costeo = mysqli_fetch_assoc($planilla_query);
 
 ?>
@@ -265,7 +265,18 @@ desired effect
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="servicio">Servicio</label>
-                                        <input type="text" class="form-control" name="servicio" placeholder="Hosting / Housing.." id='modal-abm-costos-servicio' value="<?= ($id_planilla ? $planilla_costeo['servicio'] : "") ?>">
+                                        <select name="servicio" class="form-control" id="modal-abm-costos-servicio">
+                                        <?php
+                                            $serviciossql = mysqli_query($con, "SELECT * FROM sdc_servicios WHERE borrado = 0;");
+                                            while($rowps = mysqli_fetch_array($serviciossql)){
+                                                if($rowps['id']==$planilla_costeo['servicio']) {
+                                                    echo "<option value='". $rowps['id'] . "' selected='selected'>" .$rowps['nombre'] . "</option>";
+                                                } else {
+                                                    echo "<option value='". $rowps['id'] . "'>" .$rowps['nombre'] . "</option>";
+                                                }
+                                            }
+                                        ?>
+                                        </select>                                        
                                     </div>                                
                                 </div>
                                 <div class="col-md-3">

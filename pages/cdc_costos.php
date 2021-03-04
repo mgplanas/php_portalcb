@@ -187,20 +187,21 @@ desired effect
                         <tbody>
                         <?php
                         $query = "SELECT 
-                            id, 
-                            id_cliente, 
-                            cliente, 
-                            fecha, 
-                            servicio, 
-                            meses_contrato, 
-                            duracion, 
-                            costo_unica_vez, 
-                            costo_recurrente, 
-                            cotizacion_usd, 
-                            inflacion, 
-                            cm 
-                            FROM cdc_costos 
-                            WHERE borrado = 0 ORDER BY fecha desc;";
+                            c.id, 
+                            c.id_cliente, 
+                            c.cliente, 
+                            c.fecha, 
+                            s.nombre as servicio, 
+                            c.meses_contrato, 
+                            c.duracion, 
+                            c.costo_unica_vez, 
+                            c.costo_recurrente, 
+                            c.cotizacion_usd, 
+                            c.inflacion, 
+                            c.cm 
+                            FROM cdc_costos as c
+                            INNER JOIN sdc_servicios as s ON c.servicio = s.id
+                            WHERE c.borrado = 0 ORDER BY c.fecha desc;";
                         
                         $sql = mysqli_query($con, $query);
 
