@@ -44,6 +44,12 @@ $(function() {
         "columnDefs": [{
             "targets": [0, 1],
             "visible": false
+        }, {
+            'targets': [3],
+            'className': 'dt-body-center'
+        }, {
+            'targets': [4],
+            'className': 'dt-body-right'
         }]
     });
 

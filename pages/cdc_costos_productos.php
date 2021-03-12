@@ -298,8 +298,8 @@ desired effect
                                             <th>ID</th>
                                             <th>Nivel</th>
                                             <th>Nombre</th>
-                                            <th>Unidad</th>
-                                            <th>Costo unidad</th>
+                                            <th class="text-center">Unidad</th>
+                                            <th class="text-right">Costo unidad</th>
                                             <th style="width: 40px; text-align: center"><i class="glyphicon glyphicon-flash"></i></th>
                                             </tr>
                                         </thead>
