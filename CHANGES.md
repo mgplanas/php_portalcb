@@ -39,6 +39,12 @@ ALTER TABLE controls.cdc_costos
 - pages/modals/cdc_abmcostositem_producto.php
 - pages/modals/cdc_abmcostositem_categorias.js
 
+[DB]
+- Se agrega la columna de oculto
+ALTER TABLE controls.cdc_costos_items
+ ADD oculto INT NOT NULL DEFAULT '0' AFTER observaciones;
+
+
 ## FEAT-IAAS-RESERVE
 Agregado de campo de reserva en la Importación de Vms
 *Fecha* 2021-02-11

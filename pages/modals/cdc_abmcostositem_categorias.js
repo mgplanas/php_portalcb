@@ -12,9 +12,16 @@ $(function() {
         'info': false,
         'autoWidth': false,
         "columnDefs": [{
-            "targets": [0, 1],
+            "targets": [0, 1, 2],
             "visible": false
-        }]
+        }],
+        'rowCallback': function(row, data, index) {
+            if (data[2] == '1') {
+                $(row).css('background-color', 'lightgray');
+            } else {
+                $(row).css('background-color', 'white');
+            }
+        }
     });
 
     // SUBcategoriaS
@@ -27,9 +34,16 @@ $(function() {
         'info': false,
         'autoWidth': false,
         "columnDefs": [{
-            "targets": [0, 1],
+            "targets": [0, 1, 2],
             "visible": false
-        }]
+        }],
+        'rowCallback': function(row, data, index) {
+            if (data[2] == '1') {
+                $(row).css('background-color', 'lightgray');
+            } else {
+                $(row).css('background-color', 'white');
+            }
+        }
     });
 
     //AREAS
@@ -42,15 +56,22 @@ $(function() {
         'info': false,
         'autoWidth': false,
         "columnDefs": [{
-            "targets": [0, 1],
+            "targets": [0, 1, 2],
             "visible": false
         }, {
-            'targets': [3],
+            'targets': [4],
             'className': 'dt-body-center'
         }, {
-            'targets': [4],
+            'targets': [5],
             'className': 'dt-body-right'
-        }]
+        }],
+        'rowCallback': function(row, data, index) {
+            if (data[2] == '1') {
+                $(row).css('background-color', 'lightgray');
+            } else {
+                $(row).css('background-color', 'white');
+            }
+        }
     });
 
     // ==============================================================
@@ -98,15 +119,22 @@ $(function() {
     refreshcategorias();
 
     // populate the data table with JSON data
-    function populateDataTable(response, table, buttoneditclass) {
+    function populateDataTable(response, table, buttonclass) {
         var length = Object.keys(response.data).length;
         for (var i = 0; i < length; i++) {
             let item = response.data[i];
             // You could also use an ajax property on the data table initialization
-            let button = '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="editar" class="' + buttoneditclass + ' btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+            let button = '<div style="display: inline-flex;"><a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="editar" class="' + buttonclass + '-edit btn"><i class="glyphicon glyphicon-edit"></i></a>';
+            if (item.oculto == "1") {
+                button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="visualizar" class="' + buttonclass + '-display btn" style="padding: 5px !important;"><i class="fa fa-eye-slash"></i></a>';
+            } else {
+                button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="ocultar" class="' + buttonclass + '-hide btn" style="padding: 5px !important;"><i class="fa fa-eye"></i></a>';
+            }
+            button += '</div>';
             table.dataTable().fnAddData([
                 item.id,
                 item.nivel,
+                item.oculto,
                 item.descripcion,
                 button
             ]);
@@ -118,10 +146,17 @@ $(function() {
         for (var i = 0; i < length; i++) {
             let item = response.data[i];
             // You could also use an ajax property on the data table initialization
-            let button = '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="editar" class="' + buttoneditclass + ' btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+            let button = '<div style="display: inline-flex;"><a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="editar" class="' + buttoneditclass + '-edit btn"><i class="glyphicon glyphicon-edit"></i></a>';
+            if (item.oculto == "1") {
+                button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="visualizar" class="' + buttoneditclass + '-display btn"><i class="fa fa-eye-slash"></i></a>';
+            } else {
+                button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="ocultar" class="' + buttoneditclass + '-display btn"><i class="fa fa-eye"></i></a>';
+            }
+            button += '</div>';
             table.dataTable().fnAddData([
                 item.id,
                 item.nivel,
+                item.oculto,
                 item.descripcion,
                 item.unidad,
                 item.costo_unidad,
@@ -173,11 +208,11 @@ $(function() {
         $.ajax({
             type: 'POST',
             url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones FROM controls.cdc_costos_items WHERE nivel = 1 and borrado = 0;' },
+            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones, oculto FROM controls.cdc_costos_items WHERE nivel = 1 and borrado = 0;' },
             dataType: 'json',
             success: function(json) {
                 myJsonData = json;
-                populateDataTable(myJsonData, tbCategorias, 'modal-abm-categoria-btn-edit');
+                populateDataTable(myJsonData, tbCategorias, 'modal-abm-categoria-btn');
                 setcategoriaTriggers();
             },
             error: function(xhr, status, error) {
@@ -276,11 +311,11 @@ $(function() {
         $.ajax({
             type: 'POST',
             url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones FROM controls.cdc_costos_items WHERE nivel = 2 and borrado = 0 and parent =' + idcategoria },
+            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones, oculto FROM controls.cdc_costos_items WHERE nivel = 2 and borrado = 0 and parent =' + idcategoria },
             dataType: 'json',
             success: function(json) {
                 myJsonData = json;
-                populateDataTable(myJsonData, tbsubCategorias, 'modal-abm-subcategoria-btn-edit');
+                populateDataTable(myJsonData, tbsubCategorias, 'modal-abm-subcategoria-btn');
                 setSubcategoriaTriggers(idcategoria);
             },
             error: function(xhr, status, error) {
@@ -385,11 +420,11 @@ $(function() {
         $.ajax({
             type: 'POST',
             url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones FROM controls.cdc_costos_items WHERE nivel = 3 and borrado = 0 and parent =' + idsubcategoria },
+            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones, oculto FROM controls.cdc_costos_items WHERE nivel = 3 and borrado = 0 and parent =' + idsubcategoria },
             dataType: 'json',
             success: function(json) {
                 myJsonData = json;
-                populateDataTableProductos(myJsonData, tbProductos, 'modal-abm-area-btn-edit');
+                populateDataTableProductos(myJsonData, tbProductos, 'modal-abm-area-btn');
                 setAreaTriggers(idsubcategoria);
             },
             error: function(xhr, status, error) {
