@@ -265,9 +265,11 @@ desired effect
          </div>';
         }
         ?> 
-        <div class="form-group">
-                <input type="button" class="btn-block btn-primary" onclick="location.href='./calendario_guardias.php'" value="Ver activaciones de guardia" />
-         </div>
+        <?php if ($rq_sec['ver_activacion_guardias']=='1'){ ?>
+            <div class="form-group">
+                    <input type="button" class="btn-block btn-primary" onclick="location.href='./calendario_guardias.php'" value="Ver activaciones de guardia" />
+            </div>
+         <?php } ?>
             
         </div>
         <!-- /.col -->
