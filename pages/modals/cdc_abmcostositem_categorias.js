@@ -12,7 +12,7 @@ $(function() {
         'info': false,
         'autoWidth': false,
         "columnDefs": [{
-            "targets": [0],
+            "targets": [0, 1],
             "visible": false
         }]
     });
@@ -27,7 +27,7 @@ $(function() {
         'info': false,
         'autoWidth': false,
         "columnDefs": [{
-            "targets": [0],
+            "targets": [0, 1],
             "visible": false
         }]
     });
@@ -42,7 +42,7 @@ $(function() {
         'info': false,
         'autoWidth': false,
         "columnDefs": [{
-            "targets": [0],
+            "targets": [0, 1],
             "visible": false
         }]
     });
@@ -97,13 +97,28 @@ $(function() {
         for (var i = 0; i < length; i++) {
             let item = response.data[i];
             // You could also use an ajax property on the data table initialization
-            let button = '<a data-id="' + item.id + '" data-sigla="' + item.sigla + '"  data-nombre="' + item.nombre + '" data-responsable="' + item.responsable + '" title="editar" class="' + buttoneditclass + ' btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+            let button = '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="editar" class="' + buttoneditclass + ' btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
             table.dataTable().fnAddData([
                 item.id,
-                item.sigla,
-                item.responsable,
-                item.nombre,
-                item.responsableNombre,
+                item.nivel,
+                item.descripcion,
+                button
+            ]);
+        }
+    }
+    // populate the data table with JSON data
+    function populateDataTableProductos(response, table, buttoneditclass) {
+        var length = Object.keys(response.data).length;
+        for (var i = 0; i < length; i++) {
+            let item = response.data[i];
+            // You could also use an ajax property on the data table initialization
+            let button = '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="editar" class="' + buttoneditclass + ' btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i></a>';
+            table.dataTable().fnAddData([
+                item.id,
+                item.nivel,
+                item.descripcion,
+                item.unidad,
+                item.costo_unidad,
                 button
             ]);
         }
@@ -152,7 +167,7 @@ $(function() {
         $.ajax({
             type: 'POST',
             url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT g.id_categoria as id, g.sigla, g.responsable, g.nombre, CONCAT(p.apellido, " ", p.nombre) as responsableNombre FROM categoria as g LEFT JOIN persona as p ON g.responsable = p.id_persona WHERE g.borrado = 0' },
+            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones FROM controls.cdc_costos_items WHERE nivel = 1 and borrado = 0;' },
             dataType: 'json',
             success: function(json) {
                 myJsonData = json;
@@ -255,7 +270,7 @@ $(function() {
         $.ajax({
             type: 'POST',
             url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT g.id_subcategoria as id, g.sigla, g.responsable, g.nombre, CONCAT(p.apellido, " ", p.nombre) as responsableNombre FROM subcategoria as g LEFT JOIN persona as p ON g.responsable = p.id_persona WHERE id_categoria =' + idcategoria },
+            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones FROM controls.cdc_costos_items WHERE nivel = 2 and borrado = 0 and parent =' + idcategoria },
             dataType: 'json',
             success: function(json) {
                 myJsonData = json;
@@ -364,11 +379,11 @@ $(function() {
         $.ajax({
             type: 'POST',
             url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT g.id_subcategoria as id, g.sigla, g.responsable, g.nombre, CONCAT(p.apellido, " ", p.nombre) as responsableNombre FROM area as g LEFT JOIN persona as p ON g.responsable = p.id_persona WHERE id_subcategoria =' + idsubcategoria },
+            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones FROM controls.cdc_costos_items WHERE nivel = 3 and borrado = 0 and parent =' + idsubcategoria },
             dataType: 'json',
             success: function(json) {
                 myJsonData = json;
-                populateDataTable(myJsonData, tbProductos, 'modal-abm-area-btn-edit');
+                populateDataTableProductos(myJsonData, tbProductos, 'modal-abm-area-btn-edit');
                 setAreaTriggers(idsubcategoria);
             },
             error: function(xhr, status, error) {

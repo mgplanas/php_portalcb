@@ -35,7 +35,29 @@ $personas = mysqli_query($con, "SELECT * FROM persona");
    float: right;
    text-align: right;
 }
+    /* Seleccion de row en datatable */
+    .rowselected {
+        background-color: #acbad4;
+    }
 
+    table#tbCategorias.dataTable tbody tr:hover {
+        background-color: #acbad4;
+        cursor: pointer;
+    }
+
+    table#tbCategorias.dataTable tbody tr:hover > .sorting_1 {
+        background-color: #acbad4;
+        cursor: pointer;
+    }    
+    table#tbsubCategorias.dataTable tbody tr:hover {
+        background-color: #acbad4;
+        cursor: pointer;
+    }
+
+    table#tbsubCategorias.dataTable tbody tr:hover > .sorting_1 {
+        background-color: #acbad4;
+        cursor: pointer;
+    }  
 </style>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -221,7 +243,7 @@ desired effect
                 <div class="box-body">
                     <div class="row">
                         <!-- CATEGORIAS -->
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="box">
                                 <div class="box-header">
                                     <h3 class="box-title">Categorias</h3>
@@ -232,6 +254,7 @@ desired effect
                                         <thead>
                                             <tr>
                                             <th>ID</th>
+                                            <th>Nivel</th>
                                             <th>Nombre</th>
                                             <th style="width: 40px; text-align: center"><i class="glyphicon glyphicon-flash"></i></th>
                                             </tr>
@@ -241,7 +264,7 @@ desired effect
                                 <!-- /.box-body -->
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="box">
                                 <div class="box-header">
                                     <h3 class="box-title">Sub Categorias</h3>
@@ -252,6 +275,7 @@ desired effect
                                         <thead>
                                             <tr>
                                             <th>ID</th>
+                                            <th>Nivel</th>
                                             <th>Nombre</th>
                                             <th style="width: 40px; text-align: center"><i class="glyphicon glyphicon-flash"></i></th>
                                             </tr>
@@ -261,7 +285,7 @@ desired effect
                                 <!-- /.box-body -->
                             </div>                                            
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="box">
                                 <div class="box-header">
                                     <h3 class="box-title">Productos/Servicios</h3>
@@ -272,6 +296,7 @@ desired effect
                                         <thead>
                                             <tr>
                                             <th>ID</th>
+                                            <th>Nivel</th>
                                             <th>Nombre</th>
                                             <th>Unidad</th>
                                             <th>Costo unidad</th>
