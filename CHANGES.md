@@ -16,6 +16,7 @@ ALTER TABLE controls.permisos
     - Pongo los títulos en vertical
     - Agrego campo ver activaciones despues de compliance
 - pages/setPermiso.php
+- pages/calendario.php
 
 ## FEAT-IAAS-RESERVE
 Agregado de campo de reserva en la Importación de Vms
