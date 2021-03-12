@@ -33,6 +33,11 @@ ALTER TABLE controls.cdc_costos
 [cod]
 - pages/cdc_costos.php
 - pages/helpers/cdc_abmcostos.js
+- pages/cdc_costos_productos.php
+- pages/modals/cdc_abmcostositem_cat.php
+- pages/modals/cdc_abmcostositem_subcat.php
+- pages/modals/cdc_abmcostositem_producto.php
+- pages/modals/cdc_abmcostositem_categorias.js
 
 ## FEAT-IAAS-RESERVE
 Agregado de campo de reserva en la Importación de Vms
