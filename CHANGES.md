@@ -1,4 +1,22 @@
 # CHANGES
+
+## FEAT-PERM-GUARDIA
+Se debe generar un nuevo rol/permiso para visualizar el botón "ver activaciones de guardias" en el calendario
+*Fecha* 2021-03-12
+*Requerimiento*
+- Modificar el calendario de guardias e inhabilitar la visualización del botón "ver activaciones de guardias" según un nuevo rol/permiso.
+[DB]
+- Se agrega nuevo permiso "ver_activacion_guardias"
+ALTER TABLE controls.permisos
+ ADD ver_activacion_guardias INT NOT NULL DEFAULT '0' AFTER storage_op;
+
+[cod]
+- pages/admin.php
+    - Dejo solo el campo nombre para búsqueda
+    - Pongo los títulos en vertical
+    - Agrego campo ver activaciones despues de compliance
+- pages/setPermiso.php
+
 ## FEAT-IAAS-RESERVE
 Agregado de campo de reserva en la Importación de Vms
 *Fecha* 2021-02-11

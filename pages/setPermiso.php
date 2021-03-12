@@ -189,5 +189,9 @@
         $sel="update permisos set storage_op=not(storage_op) where id_permiso='$s'";
         $sel1=mysqli_query($con, $sel);
     }    
+    else if ($f=='20'){
+        $sel="update permisos set ver_activacion_guardias=not(ver_activacion_guardias) where id_permiso='$s'";
+        $sel1=mysqli_query($con, $sel);
+    }    
     
 ?>

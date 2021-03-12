@@ -123,6 +123,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
         background-color: #acbad4;
     }
 
+    table thead th.noventa{
+        transform: rotate(-90deg);
+        transform-origin: center !important;
+        font-size: 12px !important;
+        vertical-align: bottom;
+    }
+
     table#tbgerencias.dataTable tbody tr:hover {
         background-color: #acbad4;
         cursor: pointer;
@@ -222,6 +229,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th width="1">Admin Proy</th>
                                                 <th width="1">SOC</th>
                                                 <th width="1">Compliance</th>
+                                                <th width="1">Ver Activación</th>
                                                 <th width="1">Cli. DC</th>
                                                 <th width="1">Admin CDC</th>
                                                 <th width="1">Compras</th>
@@ -285,6 +293,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                   echo '<td>
                                                           <div class="checkbox">
                                                             <label><input name="compliance" type="checkbox" onclick="updatePerm(3, '.$row['id_permiso'].');" value="1"'; if($row['compliance'] == '1'){ echo 'checked'; } echo'></label>
+                                                                </div></td>'; 
+                                                  echo '<td>
+                                                          <div class="checkbox">
+                                                            <label><input name="veractivacion" type="checkbox" onclick="updatePerm(20, '.$row['id_permiso'].');" value="1"'; if($row['ver_activacion_guardias'] == '1'){ echo 'checked'; } echo'></label>
                                                                 </div></td>'; 
                                                   echo '<td>
                                                           <div class="checkbox">
@@ -381,8 +393,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     $storage = mysqli_real_escape_string($con,(strip_tags($_POST["storage"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $storage_admin = mysqli_real_escape_string($con,(strip_tags($_POST["storage_admin"],ENT_QUOTES)));//Escanpando caracteres 
                                                     $storage_op = mysqli_real_escape_string($con,(strip_tags($_POST["storage_op"],ENT_QUOTES)));//Escanpando caracteres 
+                                                    $ver_activacion_guardias = mysqli_real_escape_string($con,(strip_tags($_POST["veractivacion"],ENT_QUOTES)));//Escanpando caracteres 
                                                     //Inserto Control
-                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy, cli_dc,compras, admin_compras, admin_riesgos, contratos, admin_contratos,admin_doc, doc, storage, storage_admin, storage_op) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy', '$clidc', '$compras', '$admin_compras', '$admin_riesgo', '$contratos', '$admin_contratos', '$admin_doc', '$doc', '$storage', '$storage_admin', '$storage_op')") or die(mysqli_error());	
+                                                    $insert_acceso = mysqli_query($con, "INSERT INTO permisos (id_persona, lectura, edicion, compliance, soc, proy, admin_proy, cli_dc,compras, admin_compras, admin_riesgos, contratos, admin_contratos,admin_doc, doc, storage, storage_admin, storage_op, ver_activacion_guardias) VALUES ('$persona','$lectura','$edicion', '$compliance', '$soc', '$proy', '$admin_proy', '$clidc', '$compras', '$admin_compras', '$admin_riesgo', '$contratos', '$admin_contratos', '$admin_doc', '$doc', '$storage', '$storage_admin', '$storage_op', '$ver_activacion_guardias')") or die(mysqli_error());	
                                                     $lastInsert = mysqli_insert_id($con);
                                                     $insert_audit = mysqli_query($con, "INSERT INTO auditoria (evento, item, id_item, fecha, usuario) 
                                                                   VALUES ('1', '16', '$lastInsert', now(), '$user')") or die(mysqli_error());
@@ -429,6 +442,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                             <label>
                                                                 <input name="compliance" type="checkbox" value="1">
                                                                 Compliance (Riesgos, Activos, ISO 27001, Controles)
+                                                            </label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input name="veractivacion" type="checkbox" value="1">
+                                                                Ver Activacion de Guardias
                                                             </label>
                                                         </div>
                                                         <div class="checkbox">
@@ -864,7 +883,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
             'info': true,
             'autoWidth': false,
             'dom'         : 'frtip',
-            'scrollX'     :true
+            'scrollX'     :true,
+            'columnDefs': [
+                { 'searchable': false, 'targets': [0,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24] }
+            ]
 
         })
     })
