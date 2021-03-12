@@ -2,7 +2,7 @@ $(function() {
     // ==============================================================
     // Configuracion de las tablas
     // ==============================================================
-    // GERENCIAS
+    // categoriaS
     let tbCategorias = $('#tbCategorias');
     let tbCategoriasDT = tbCategorias.DataTable({
         'paging': false,
@@ -17,7 +17,7 @@ $(function() {
         }]
     });
 
-    // SUBGERENCIAS
+    // SUBcategoriaS
     let tbsubCategorias = $('#tbsubCategorias');
     let tbsubCategoriasDT = tbsubCategorias.DataTable({
         'paging': false,
@@ -50,11 +50,11 @@ $(function() {
     // ==============================================================
     // EVENTOS
     // ==============================================================
-    // SELECCION GERENCIA
+    // SELECCION categoria
     $('#tbCategorias tbody').on('click', 'tr', function() {
 
         //Extraigo el id de la data de la row
-        let idgerencia = tbCategoriasDT.row(this).data()[0];
+        let idcategoria = tbCategoriasDT.row(this).data()[0];
         // Pinto o despinto la row
         if ($(this).hasClass('rowselected')) {
             $(this).removeClass('rowselected');
@@ -67,15 +67,15 @@ $(function() {
         tbsubCategorias.DataTable().clear().draw();
         tbProductos.DataTable().clear().draw();
 
-        //Populo las subgerencias
-        refreshSubGerencias(idgerencia);
+        //Populo las subcategorias
+        refreshSubcategorias(idcategoria);
     });
 
-    // SELECCION EN SUBGERENCIA
+    // SELECCION EN SUBcategoria
     $('#tbsubCategorias tbody').on('click', 'tr', function() {
 
-        let idsubgerencia = tbsubCategoriasDT.row(this).data()[0];
-        // let idsubgerencia = $(this).data('id');
+        let idsubcategoria = tbsubCategoriasDT.row(this).data()[0];
+        // let idsubcategoria = $(this).data('id');
         // Pinto o despinto la row
         if ($(this).hasClass('rowselected')) {
             $(this).removeClass('rowselected');
@@ -86,10 +86,10 @@ $(function() {
         // Limpio las demas tablas
         tbProductos.DataTable().clear().draw();
         //Populo las areas
-        refreshAreas(idsubgerencia);
+        refreshAreas(idsubcategoria);
     });
 
-    refreshGerencias();
+    refreshcategorias();
 
     // populate the data table with JSON data
     function populateDataTable(response, table, buttoneditclass) {
@@ -110,39 +110,39 @@ $(function() {
     }
 
     // ********************************************************************************************
-    // GERENCIAS
+    // categoriaS
     // ********************************************************************************************
-    function setGerenciaTriggers() {
+    function setcategoriaTriggers() {
         // ALTA
-        // seteo boton trigger para el alta de gerencia
-        $('#modal-abm-gerencia-btn-alta').click(function() {
-            $('#modal-abm-gerencia-title').html('Nueva Gerencia');
-            modalAbmGerenciaLimpiarCampos();
-            $('#modal-abm-gerencia-submit').attr('name', 'A');
+        // seteo boton trigger para el alta de categoria
+        $('#modal-abm-categoria-btn-alta').click(function() {
+            $('#modal-abm-categoria-title').html('Nueva categoria');
+            modalAbmcategoriaLimpiarCampos();
+            $('#modal-abm-categoria-submit').attr('name', 'A');
 
-            $("#modal-abm-gerencia").modal("show");
+            $("#modal-abm-categoria").modal("show");
         });
 
         // EDIT
-        // seteo boton trigger para el edit de gerencia
-        $('.modal-abm-gerencia-btn-edit').click(function() {
-            $('#modal-abm-gerencia-title').html('Editar Gerencia');
-            modalAbmGerenciaLimpiarCampos();
+        // seteo boton trigger para el edit de categoria
+        $('.modal-abm-categoria-btn-edit').click(function() {
+            $('#modal-abm-categoria-title').html('Editar categoria');
+            modalAbmcategoriaLimpiarCampos();
 
-            $('#modal-abm-gerencia-id').val($(this).data('id'));
-            $('#modal-abm-gerencia-nombre').val($(this).data('nombre'));
-            $('#modal-abm-gerencia-sigla').val($(this).data('sigla'));
-            $("#modal-abm-gerencia-responsable").val($(this).data('responsable')).change();
+            $('#modal-abm-categoria-id').val($(this).data('id'));
+            $('#modal-abm-categoria-nombre').val($(this).data('nombre'));
+            $('#modal-abm-categoria-sigla').val($(this).data('sigla'));
+            $("#modal-abm-categoria-responsable").val($(this).data('responsable')).change();
 
 
-            $('#modal-abm-gerencia-submit').attr('name', 'M');
+            $('#modal-abm-categoria-submit').attr('name', 'M');
 
-            $("#modal-abm-gerencia").modal("show");
+            $("#modal-abm-categoria").modal("show");
         });
     }
 
     // refresh tables
-    function refreshGerencias() {
+    function refreshcategorias() {
         // Limpio tablas
         tbCategorias.DataTable().clear().draw();
         tbsubCategorias.DataTable().clear().draw();
@@ -152,12 +152,12 @@ $(function() {
         $.ajax({
             type: 'POST',
             url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT g.id_gerencia as id, g.sigla, g.responsable, g.nombre, CONCAT(p.apellido, " ", p.nombre) as responsableNombre FROM gerencia as g LEFT JOIN persona as p ON g.responsable = p.id_persona WHERE g.borrado = 0' },
+            data: { query: 'SELECT g.id_categoria as id, g.sigla, g.responsable, g.nombre, CONCAT(p.apellido, " ", p.nombre) as responsableNombre FROM categoria as g LEFT JOIN persona as p ON g.responsable = p.id_persona WHERE g.borrado = 0' },
             dataType: 'json',
             success: function(json) {
                 myJsonData = json;
-                populateDataTable(myJsonData, tbCategorias, 'modal-abm-gerencia-btn-edit');
-                setGerenciaTriggers();
+                populateDataTable(myJsonData, tbCategorias, 'modal-abm-categoria-btn-edit');
+                setcategoriaTriggers();
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);
@@ -166,31 +166,31 @@ $(function() {
     }
 
     // ==============================================================
-    // GUARDAR GERENCIAS
+    // GUARDAR categoriaS
     // ==============================================================
     // ejecución de guardado async
-    $('#modal-abm-gerencia-submit').click(function() {
+    $('#modal-abm-categoria-submit').click(function() {
         // Recupero datos del formulario
         let op = $(this).attr('name');
-        let id_gerencia = $('#modal-abm-gerencia-id').val();
-        let nombre = $('#modal-abm-gerencia-nombre').val();
-        let sigla = $('#modal-abm-gerencia-sigla').val();
-        let responsable = $("#modal-abm-gerencia-responsable").val();
+        let id_categoria = $('#modal-abm-categoria-id').val();
+        let nombre = $('#modal-abm-categoria-nombre').val();
+        let sigla = $('#modal-abm-categoria-sigla').val();
+        let responsable = $("#modal-abm-categoria-responsable").val();
         // Ejecuto
         $.ajax({
             type: 'POST',
-            url: './helpers/abmgerenciadb.php',
+            url: './helpers/abmcategoriadb.php',
             data: {
                 operacion: op,
-                id: id_gerencia,
+                id: id_categoria,
                 nombre: nombre,
                 sigla: sigla,
                 responsable: responsable
             },
             dataType: 'json',
             success: function(json) {
-                $("#modal-abm-gerencia").modal("hide");
-                refreshGerencias();
+                $("#modal-abm-categoria").modal("hide");
+                refreshcategorias();
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);
@@ -201,66 +201,66 @@ $(function() {
     // ==============================================================
     // AUXILIARES
     // ==============================================================
-    function modalAbmGerenciaLimpiarCampos() {
-        $('#modal-abm-gerencia-id').val(0);
-        $('#modal-abm-gerencia-nombre').val('');
-        $('#modal-abm-gerencia-sigla').val('');
-        $("#modal-abm-gerencia-responsable").val('first').change();
+    function modalAbmcategoriaLimpiarCampos() {
+        $('#modal-abm-categoria-id').val(0);
+        $('#modal-abm-categoria-nombre').val('');
+        $('#modal-abm-categoria-sigla').val('');
+        $("#modal-abm-categoria-responsable").val('first').change();
     }
     // ********************************************************************************************
 
 
     // ********************************************************************************************
-    // SUB GERENCIAS
+    // SUB categoriaS
     // ********************************************************************************************
-    function setSubGerenciaTriggers(idgerencia) {
+    function setSubcategoriaTriggers(idcategoria) {
         // ALTA
-        // seteo boton trigger para el alta de gerencia
-        $('#modal-abm-subgerencia-btn-alta').click(function() {
-            $('#modal-abm-subgerencia-title').html('Nueva SubGerencia');
-            modalAbmSubGerenciaLimpiarCampos(idgerencia);
-            $('#modal-abm-subgerencia-submit').attr('name', 'A');
+        // seteo boton trigger para el alta de categoria
+        $('#modal-abm-subcategoria-btn-alta').click(function() {
+            $('#modal-abm-subcategoria-title').html('Nueva Subcategoria');
+            modalAbmSubcategoriaLimpiarCampos(idcategoria);
+            $('#modal-abm-subcategoria-submit').attr('name', 'A');
 
-            $("#modal-abm-subgerencia").modal("show");
+            $("#modal-abm-subcategoria").modal("show");
         });
 
         // EDIT
-        // seteo boton trigger para el edit de gerencia
-        $('.modal-abm-subgerencia-btn-edit').click(function() {
-            $('#modal-abm-subgerencia-title').html('Editar SubGerencia');
-            modalAbmSubGerenciaLimpiarCampos(idgerencia);
+        // seteo boton trigger para el edit de categoria
+        $('.modal-abm-subcategoria-btn-edit').click(function() {
+            $('#modal-abm-subcategoria-title').html('Editar Subcategoria');
+            modalAbmSubcategoriaLimpiarCampos(idcategoria);
 
-            $('#modal-abm-subgerencia-id').val($(this).data('id'));
-            $('#modal-abm-subgerencia-nombre').val($(this).data('nombre'));
-            $('#modal-abm-subgerencia-sigla').val($(this).data('sigla'));
-            $("#modal-abm-subgerencia-responsable").val($(this).data('responsable')).change();
+            $('#modal-abm-subcategoria-id').val($(this).data('id'));
+            $('#modal-abm-subcategoria-nombre').val($(this).data('nombre'));
+            $('#modal-abm-subcategoria-sigla').val($(this).data('sigla'));
+            $("#modal-abm-subcategoria-responsable").val($(this).data('responsable')).change();
 
 
-            $('#modal-abm-subgerencia-submit').attr('name', 'M');
+            $('#modal-abm-subcategoria-submit').attr('name', 'M');
 
-            $("#modal-abm-subgerencia").modal("show");
+            $("#modal-abm-subcategoria").modal("show");
         });
     }
 
     // refresh tables
-    function refreshSubGerencias(idgerencia) {
+    function refreshSubcategorias(idcategoria) {
         // Limpio tablas
         tbsubCategorias.DataTable().clear().draw();
         tbProductos.DataTable().clear().draw();
 
-        // Seteo el id de gerencia seleccionado
-        $('#modal-abm-subgerencia-btn-alta').attr('id_gerencia', idgerencia);
+        // Seteo el id de categoria seleccionado
+        $('#modal-abm-subcategoria-btn-alta').attr('id_categoria', idcategoria);
 
         //Populo las areas
         $.ajax({
             type: 'POST',
             url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT g.id_subgerencia as id, g.sigla, g.responsable, g.nombre, CONCAT(p.apellido, " ", p.nombre) as responsableNombre FROM subgerencia as g LEFT JOIN persona as p ON g.responsable = p.id_persona WHERE id_gerencia =' + idgerencia },
+            data: { query: 'SELECT g.id_subcategoria as id, g.sigla, g.responsable, g.nombre, CONCAT(p.apellido, " ", p.nombre) as responsableNombre FROM subcategoria as g LEFT JOIN persona as p ON g.responsable = p.id_persona WHERE id_categoria =' + idcategoria },
             dataType: 'json',
             success: function(json) {
                 myJsonData = json;
-                populateDataTable(myJsonData, tbsubCategorias, 'modal-abm-subgerencia-btn-edit');
-                setSubGerenciaTriggers(idgerencia);
+                populateDataTable(myJsonData, tbsubCategorias, 'modal-abm-subcategoria-btn-edit');
+                setSubcategoriaTriggers(idcategoria);
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);
@@ -269,33 +269,33 @@ $(function() {
     }
 
     // ==============================================================
-    // GUARDAR SUBGERENCIAS
+    // GUARDAR SUBcategoriaS
     // ==============================================================
     // ejecución de guardado async
-    $('#modal-abm-subgerencia-submit').click(function() {
+    $('#modal-abm-subcategoria-submit').click(function() {
         // Recupero datos del formulario
         let op = $(this).attr('name');
-        let id_gerencia = $('#modal-abm-subgerencia-id-gerencia').val();
-        let id_subgerencia = $('#modal-abm-subgerencia-id').val();
-        let nombre = $('#modal-abm-subgerencia-nombre').val();
-        let sigla = $('#modal-abm-subgerencia-sigla').val();
-        let responsable = $("#modal-abm-subgerencia-responsable").val();
+        let id_categoria = $('#modal-abm-subcategoria-id-categoria').val();
+        let id_subcategoria = $('#modal-abm-subcategoria-id').val();
+        let nombre = $('#modal-abm-subcategoria-nombre').val();
+        let sigla = $('#modal-abm-subcategoria-sigla').val();
+        let responsable = $("#modal-abm-subcategoria-responsable").val();
         // Ejecuto
         $.ajax({
             type: 'POST',
-            url: './helpers/abmsubgerenciadb.php',
+            url: './helpers/abmsubcategoriadb.php',
             data: {
                 operacion: op,
-                id_gerencia: id_gerencia,
-                id: id_subgerencia,
+                id_categoria: id_categoria,
+                id: id_subcategoria,
                 nombre: nombre,
                 sigla: sigla,
                 responsable: responsable
             },
             dataType: 'json',
             success: function(json) {
-                $("#modal-abm-subgerencia").modal("hide");
-                refreshSubGerencias(id_gerencia);
+                $("#modal-abm-subcategoria").modal("hide");
+                refreshSubcategorias(id_categoria);
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);
@@ -306,13 +306,13 @@ $(function() {
     // ==============================================================
     // AUXILIARES
     // ==============================================================
-    function modalAbmSubGerenciaLimpiarCampos(idgerencia) {
-        $("#modal-abm-subgerencia-id-gerencia").val(idgerencia).change();
-        $("#modal-abm-subgerencia-id-gerencia").attr('disabled', 'disabled')
-        $('#modal-abm-subgerencia-id').val(0);
-        $('#modal-abm-subgerencia-nombre').val('');
-        $('#modal-abm-subgerencia-sigla').val('');
-        $("#modal-abm-subgerencia-responsable").val('first').change();
+    function modalAbmSubcategoriaLimpiarCampos(idcategoria) {
+        $("#modal-abm-subcategoria-id-categoria").val(idcategoria).change();
+        $("#modal-abm-subcategoria-id-categoria").attr('disabled', 'disabled')
+        $('#modal-abm-subcategoria-id').val(0);
+        $('#modal-abm-subcategoria-nombre').val('');
+        $('#modal-abm-subcategoria-sigla').val('');
+        $("#modal-abm-subcategoria-responsable").val('first').change();
     }
     // ********************************************************************************************
 
@@ -320,23 +320,23 @@ $(function() {
     // ********************************************************************************************
     // AREAS
     // ********************************************************************************************
-    function setAreaTriggers(idsubgerencia) {
+    function setAreaTriggers(idsubcategoria) {
         // ALTA
-        console.log('SETTRR', idsubgerencia);
-        // seteo boton trigger para el alta de gerencia
+        console.log('SETTRR', idsubcategoria);
+        // seteo boton trigger para el alta de categoria
         $('#modal-abm-area-btn-alta').click(function() {
             $('#modal-abm-area-title').html('Nueva Área');
-            modalAbmAreaLimpiarCampos(idsubgerencia);
+            modalAbmAreaLimpiarCampos(idsubcategoria);
             $('#modal-abm-area-submit').attr('name', 'A');
 
             $("#modal-abm-area").modal("show");
         });
 
         // EDIT
-        // seteo boton trigger para el edit de gerencia
+        // seteo boton trigger para el edit de categoria
         $('.modal-abm-area-btn-edit').click(function() {
             $('#modal-abm-area-title').html('Editar Área');
-            modalAbmAreaLimpiarCampos(idsubgerencia);
+            modalAbmAreaLimpiarCampos(idsubcategoria);
 
             $('#modal-abm-area-id').val($(this).data('id'));
             $('#modal-abm-area-nombre').val($(this).data('nombre'));
@@ -351,25 +351,25 @@ $(function() {
     }
 
     // refresh tables
-    function refreshAreas(idsubgerencia) {
+    function refreshAreas(idsubcategoria) {
 
-        console.log('refresh', idsubgerencia);
+        console.log('refresh', idsubcategoria);
         // Limpio tablas
         tbProductos.DataTable().clear().draw();
 
-        // Seteo el id de gerencia seleccionado
-        $('#modal-abm-area-btn-alta').attr('id_subgerencia', idsubgerencia);
+        // Seteo el id de categoria seleccionado
+        $('#modal-abm-area-btn-alta').attr('id_subcategoria', idsubcategoria);
 
         //Populo las areas
         $.ajax({
             type: 'POST',
             url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT g.id_subgerencia as id, g.sigla, g.responsable, g.nombre, CONCAT(p.apellido, " ", p.nombre) as responsableNombre FROM area as g LEFT JOIN persona as p ON g.responsable = p.id_persona WHERE id_subgerencia =' + idsubgerencia },
+            data: { query: 'SELECT g.id_subcategoria as id, g.sigla, g.responsable, g.nombre, CONCAT(p.apellido, " ", p.nombre) as responsableNombre FROM area as g LEFT JOIN persona as p ON g.responsable = p.id_persona WHERE id_subcategoria =' + idsubcategoria },
             dataType: 'json',
             success: function(json) {
                 myJsonData = json;
                 populateDataTable(myJsonData, tbProductos, 'modal-abm-area-btn-edit');
-                setAreaTriggers(idsubgerencia);
+                setAreaTriggers(idsubcategoria);
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);
@@ -384,7 +384,7 @@ $(function() {
     $('#modal-abm-area-submit').click(function() {
         // Recupero datos del formulario
         let op = $(this).attr('name');
-        let id_subgerencia = $('#modal-abm-area-id-subgerencia').val();
+        let id_subcategoria = $('#modal-abm-area-id-subcategoria').val();
         let id_area = $('#modal-abm-area-id').val();
         let nombre = $('#modal-abm-area-nombre').val();
         let sigla = $('#modal-abm-area-sigla').val();
@@ -395,7 +395,7 @@ $(function() {
             url: './helpers/abmareadb.php',
             data: {
                 operacion: op,
-                id_subgerencia: id_subgerencia,
+                id_subcategoria: id_subcategoria,
                 id: id_area,
                 nombre: nombre,
                 sigla: sigla,
@@ -404,7 +404,7 @@ $(function() {
             dataType: 'json',
             success: function(json) {
                 $("#modal-abm-area").modal("hide");
-                refreshAreas(id_subgerencia);
+                refreshAreas(id_subcategoria);
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);
@@ -415,9 +415,9 @@ $(function() {
     // ==============================================================
     // AUXILIARES
     // ==============================================================
-    function modalAbmAreaLimpiarCampos(idsubgerencia) {
-        $("#modal-abm-area-id-subgerencia").val(idsubgerencia).change();
-        $("#modal-abm-area-id-subgerencia").attr('disabled', 'disabled')
+    function modalAbmAreaLimpiarCampos(idsubcategoria) {
+        $("#modal-abm-area-id-subcategoria").val(idsubcategoria).change();
+        $("#modal-abm-area-id-subcategoria").attr('disabled', 'disabled')
         $('#modal-abm-area-id').val(0);
         $('#modal-abm-area-nombre').val('');
         $('#modal-abm-area-sigla').val('');
