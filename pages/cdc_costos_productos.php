@@ -37,7 +37,7 @@ $personas = mysqli_query($con, "SELECT * FROM persona");
 }
     /* Seleccion de row en datatable */
     .rowselected {
-        background-color: #acbad4;
+        background-color: #acbad4 !important;
     }
 
     table#tbCategorias.dataTable tbody tr:hover {
