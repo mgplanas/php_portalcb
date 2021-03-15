@@ -171,7 +171,7 @@ $(function() {
     function setcategoriaTriggers() {
         // ALTA
         // seteo boton trigger para el alta de categoria
-        $('#modal-abm-categoria-btn-alta').click(function() {
+        $('#modal-abm-categoria-btn-alta').on('click', function() {
             $('#modal-abm-categoria-title').html('Nueva categoria');
             modalAbmcategoriaLimpiarCampos();
             $('#modal-abm-categoria-submit').attr('name', 'A');
@@ -181,7 +181,7 @@ $(function() {
 
         // EDIT
         // seteo boton trigger para el edit de categoria
-        $('.modal-abm-categoria-btn-edit').click(function() {
+        $('.modal-abm-categoria-btn-edit').on('click', function() {
             $('#modal-abm-categoria-title').html('Editar categoria');
             modalAbmcategoriaLimpiarCampos();
 
@@ -225,23 +225,27 @@ $(function() {
     // GUARDAR categoriaS
     // ==============================================================
     // ejecución de guardado async
-    $('#modal-abm-categoria-submit').click(function() {
+    $('#modal-abm-categoria-submit').on('click', function() {
         // Recupero datos del formulario
         let op = $(this).attr('name');
-        let id_categoria = $('#modal-abm-categoria-id').val();
-        let nombre = $('#modal-abm-categoria-nombre').val();
-        let sigla = $('#modal-abm-categoria-sigla').val();
-        let responsable = $("#modal-abm-categoria-responsable").val();
+        let id = $('#modal-abm-categoria-id').val();
+        let parent = null;
+        let nivel = 1;
+        let descripcion = $('#modal-abm-categoria-descripcion').val();
+        let unidad = '';
+        let costo_usd = 0;
         // Ejecuto
         $.ajax({
             type: 'POST',
-            url: './helpers/abmcategoriadb.php',
+            url: './helpers/cdc_abmcostositemdb.php',
             data: {
                 operacion: op,
-                id: id_categoria,
-                nombre: nombre,
-                sigla: sigla,
-                responsable: responsable
+                id: id,
+                parent: parent,
+                nivel: nivel,
+                descripcion: descripcion,
+                unidad: unidad,
+                costo_usd: costo_usd
             },
             dataType: 'json',
             success: function(json) {
