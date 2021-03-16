@@ -124,12 +124,13 @@ $(function() {
         for (var i = 0; i < length; i++) {
             let item = response.data[i];
             // You could also use an ajax property on the data table initialization
-            let button = '<div style="display: inline-flex;"><a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="editar" class="' + buttonclass + '-edit btn"><i class="glyphicon glyphicon-edit"></i></a>';
+            let button = '<div style="display: inline-flex;"><a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="editar" class="' + buttonclass + '-edit btn" style="padding: 5px !important;"><i class="glyphicon glyphicon-edit"></i></a>';
             if (item.oculto == "1") {
                 button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="visualizar" class="' + buttonclass + '-display btn" style="padding: 5px !important;"><i class="fa fa-eye-slash"></i></a>';
             } else {
                 button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="ocultar" class="' + buttonclass + '-hide btn" style="padding: 5px !important;"><i class="fa fa-eye"></i></a>';
             }
+            button += '<a data-id="' + item.id + '" data-descripcion="' + item.descripcion + '" title="eliminar" class="' + buttonclass + '-delete btn" style="padding: 5px !important;color: red;"><i class="fa fa-trash"></i></a>';
             button += '</div>';
             table.dataTable().fnAddData([
                 item.id,
@@ -141,17 +142,18 @@ $(function() {
         }
     }
     // populate the data table with JSON data
-    function populateDataTableProductos(response, table, buttoneditclass) {
+    function populateDataTableProductos(response, table, buttonclass) {
         var length = Object.keys(response.data).length;
         for (var i = 0; i < length; i++) {
             let item = response.data[i];
             // You could also use an ajax property on the data table initialization
-            let button = '<div style="display: inline-flex;"><a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="editar" class="' + buttoneditclass + '-edit btn"><i class="glyphicon glyphicon-edit"></i></a>';
+            let button = '<div style="display: inline-flex;"><a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="editar" class="' + buttonclass + '-edit btn" style="padding: 5px !important;"><i class="glyphicon glyphicon-edit"></i></a>';
             if (item.oculto == "1") {
-                button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="visualizar" class="' + buttoneditclass + '-display btn"><i class="fa fa-eye-slash"></i></a>';
+                button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="visualizar" class="' + buttonclass + '-display btn"><i class="fa fa-eye-slash"></i></a>';
             } else {
-                button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="ocultar" class="' + buttoneditclass + '-display btn"><i class="fa fa-eye"></i></a>';
+                button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="ocultar" class="' + buttonclass + '-display btn"><i class="fa fa-eye"></i></a>';
             }
+            button += '<a data-id="' + item.id + '" data-descripcion="' + item.descripcion + '" title="eliminar" class="' + buttonclass + '-delete btn" style="padding: 5px !important;color: red;"><i class="fa fa-trash"></i></a>';
             button += '</div>';
             table.dataTable().fnAddData([
                 item.id,
@@ -181,19 +183,42 @@ $(function() {
 
         // EDIT
         // seteo boton trigger para el edit de categoria
-        $('.modal-abm-categoria-btn-edit').on('click', function() {
+        $('.modal-abm-categoria-btn-edit').on('click', function(e) {
+            e.stopPropagation();
             $('#modal-abm-categoria-title').html('Editar categoria');
             modalAbmcategoriaLimpiarCampos();
 
             $('#modal-abm-categoria-id').val($(this).data('id'));
-            $('#modal-abm-categoria-nombre').val($(this).data('nombre'));
-            $('#modal-abm-categoria-sigla').val($(this).data('sigla'));
-            $("#modal-abm-categoria-responsable").val($(this).data('responsable')).change();
-
+            $('#modal-abm-categoria-descripcion').val($(this).data('descripcion'));
 
             $('#modal-abm-categoria-submit').attr('name', 'M');
 
             $("#modal-abm-categoria").modal("show");
+        });
+
+        // BORRAR
+        // seteo boton trigger para el edit de categoria
+        $('.modal-abm-categoria-btn-delete').on('click', function(e) {
+            e.stopPropagation();
+            let id = $(this).data('id');
+            if (confirm('¿Está seguro de eliminar el item: ' + $(this).data('descripcion'))) {
+                $.ajax({
+                    type: 'POST',
+                    url: './helpers/cdc_abmcostositemdb.php',
+                    data: {
+                        operacion: 'B',
+                        id: id,
+                    },
+                    dataType: 'json',
+                    success: function(json) {
+                        $("#modal-abm-categoria").modal("hide");
+                        refreshcategorias();
+                    },
+                    error: function(xhr, status, error) {
+                        alert(xhr.responseText, error);
+                    }
+                });
+            }
         });
     }
 
@@ -263,9 +288,7 @@ $(function() {
     // ==============================================================
     function modalAbmcategoriaLimpiarCampos() {
         $('#modal-abm-categoria-id').val(0);
-        $('#modal-abm-categoria-nombre').val('');
-        $('#modal-abm-categoria-sigla').val('');
-        $("#modal-abm-categoria-responsable").val('first').change();
+        $('#modal-abm-categoria-descripcion').val('');
     }
     // ********************************************************************************************
 
