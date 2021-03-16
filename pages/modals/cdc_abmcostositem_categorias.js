@@ -306,11 +306,11 @@ $(function() {
     // ********************************************************************************************
     // SUB categoriaS
     // ********************************************************************************************
-    function setSubcategoriaTriggers(idcategoria, description) {
+    function setSubcategoriaTriggers(idcategoria, catDescription) {
         // ALTA
         // seteo boton trigger para el alta de categoria
         $('#modal-abm-subcategoria-btn-alta').on('click', function() {
-            $('#modal-abm-subcategoria-title').html('Nueva Subcategoria de ' + description);
+            $('#modal-abm-subcategoria-title').html('Nueva Subcategoria de ' + catDescription);
             modalAbmSubcategoriaLimpiarCampos(idcategoria);
             $('#modal-abm-subcategoria-submit').attr('name', 'A');
 
@@ -333,6 +333,30 @@ $(function() {
             $('#modal-abm-subcategoria-submit').attr('name', 'M');
 
             $("#modal-abm-subcategoria").modal("show");
+        });
+
+        // BORRAR
+        // seteo boton trigger para el edit de subcategoria
+        $('.modal-abm-subcategoria-btn-delete').on('click', function(e) {
+            e.stopPropagation();
+            let id = $(this).data('id');
+            if (confirm('¿Está seguro de eliminar el item: ' + $(this).data('descripcion'))) {
+                $.ajax({
+                    type: 'POST',
+                    url: './helpers/cdc_abmcostositemdb.php',
+                    data: {
+                        operacion: 'B',
+                        id: id,
+                    },
+                    dataType: 'json',
+                    success: function(json) {
+                        refreshSubcategorias(idcategoria, catDescription);
+                    },
+                    error: function(xhr, status, error) {
+                        alert(xhr.responseText, error);
+                    }
+                });
+            }
         });
     }
 
