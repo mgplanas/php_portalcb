@@ -82,6 +82,7 @@ $(function() {
 
         //Extraigo el id de la data de la row
         let idcategoria = tbCategoriasDT.row(this).data()[0];
+        let description = tbCategoriasDT.row(this).data()[3];
         // Pinto o despinto la row
         if ($(this).hasClass('rowselected')) {
             $(this).removeClass('rowselected');
@@ -95,7 +96,7 @@ $(function() {
         tbProductos.DataTable().clear().draw();
 
         //Populo las subcategorias
-        refreshSubcategorias(idcategoria);
+        refreshSubcategorias(idcategoria, description);
     });
 
     // SELECCION EN SUBcategoria
@@ -305,11 +306,11 @@ $(function() {
     // ********************************************************************************************
     // SUB categoriaS
     // ********************************************************************************************
-    function setSubcategoriaTriggers(idcategoria) {
+    function setSubcategoriaTriggers(idcategoria, description) {
         // ALTA
         // seteo boton trigger para el alta de categoria
-        $('#modal-abm-subcategoria-btn-alta').click(function() {
-            $('#modal-abm-subcategoria-title').html('Nueva Subcategoria');
+        $('#modal-abm-subcategoria-btn-alta').on('click', function() {
+            $('#modal-abm-subcategoria-title').html('Nueva Subcategoria de ' + description);
             modalAbmSubcategoriaLimpiarCampos(idcategoria);
             $('#modal-abm-subcategoria-submit').attr('name', 'A');
 
@@ -318,14 +319,15 @@ $(function() {
 
         // EDIT
         // seteo boton trigger para el edit de categoria
-        $('.modal-abm-subcategoria-btn-edit').click(function() {
+        $('.modal-abm-subcategoria-btn-edit').on('click', function() {
             $('#modal-abm-subcategoria-title').html('Editar Subcategoria');
             modalAbmSubcategoriaLimpiarCampos(idcategoria);
 
             $('#modal-abm-subcategoria-id').val($(this).data('id'));
-            $('#modal-abm-subcategoria-nombre').val($(this).data('nombre'));
-            $('#modal-abm-subcategoria-sigla').val($(this).data('sigla'));
-            $("#modal-abm-subcategoria-responsable").val($(this).data('responsable')).change();
+            $('#modal-abm-subcategoria-descripcion').val($(this).data('descripcion'));
+            if ($(this).data('oculto') == '1') {
+                $('#modal-abm-subcategoria-oculto').prop("checked", true);
+            }
 
 
             $('#modal-abm-subcategoria-submit').attr('name', 'M');
@@ -335,13 +337,14 @@ $(function() {
     }
 
     // refresh tables
-    function refreshSubcategorias(idcategoria) {
+    function refreshSubcategorias(idcategoria, description) {
         // Limpio tablas
         tbsubCategorias.DataTable().clear().draw();
         tbProductos.DataTable().clear().draw();
 
         // Seteo el id de categoria seleccionado
         $('#modal-abm-subcategoria-btn-alta').attr('id_categoria', idcategoria);
+        $('#modal-abm-subcategoria-btn-alta').attr('description', description);
 
         //Populo las areas
         $.ajax({
@@ -352,7 +355,7 @@ $(function() {
             success: function(json) {
                 myJsonData = json;
                 populateDataTable(myJsonData, tbsubCategorias, 'modal-abm-subcategoria-btn');
-                setSubcategoriaTriggers(idcategoria);
+                setSubcategoriaTriggers(idcategoria, description);
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);
@@ -364,30 +367,37 @@ $(function() {
     // GUARDAR SUBcategoriaS
     // ==============================================================
     // ejecución de guardado async
-    $('#modal-abm-subcategoria-submit').click(function() {
+    $('#modal-abm-subcategoria-submit').on('click', function() {
         // Recupero datos del formulario
         let op = $(this).attr('name');
-        let id_categoria = $('#modal-abm-subcategoria-id-categoria').val();
-        let id_subcategoria = $('#modal-abm-subcategoria-id').val();
-        let nombre = $('#modal-abm-subcategoria-nombre').val();
-        let sigla = $('#modal-abm-subcategoria-sigla').val();
-        let responsable = $("#modal-abm-subcategoria-responsable").val();
+        let id = $('#modal-abm-subcategoria-id').val();
+        let parent = $('#modal-abm-subcategoria-id-categoria').val();
+        let nivel = 2;
+        let descripcion = $('#modal-abm-subcategoria-descripcion').val();
+        let unidad = '';
+        let costo_usd = 0;
+        let oculto = 0;
+        if ($("#modal-abm-subcategoria-oculto").is(':checked')) {
+            oculto = 1;
+        }
         // Ejecuto
         $.ajax({
             type: 'POST',
-            url: './helpers/abmsubcategoriadb.php',
+            url: './helpers/cdc_abmcostositemdb.php',
             data: {
                 operacion: op,
-                id_categoria: id_categoria,
-                id: id_subcategoria,
-                nombre: nombre,
-                sigla: sigla,
-                responsable: responsable
+                id: id,
+                parent: parent,
+                nivel: nivel,
+                descripcion: descripcion,
+                unidad: unidad,
+                costo_usd: costo_usd,
+                oculto: oculto
             },
             dataType: 'json',
             success: function(json) {
                 $("#modal-abm-subcategoria").modal("hide");
-                refreshSubcategorias(id_categoria);
+                refreshSubcategorias(parent, $('#modal-abm-subcategoria-btn-alta').attr('description'));
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);
@@ -399,12 +409,10 @@ $(function() {
     // AUXILIARES
     // ==============================================================
     function modalAbmSubcategoriaLimpiarCampos(idcategoria) {
-        $("#modal-abm-subcategoria-id-categoria").val(idcategoria).change();
-        $("#modal-abm-subcategoria-id-categoria").attr('disabled', 'disabled')
+        $("#modal-abm-subcategoria-id-categoria").val(idcategoria);
         $('#modal-abm-subcategoria-id').val(0);
-        $('#modal-abm-subcategoria-nombre').val('');
-        $('#modal-abm-subcategoria-sigla').val('');
-        $("#modal-abm-subcategoria-responsable").val('first').change();
+        $('#modal-abm-subcategoria-descripcion').val('');
+        $('#modal-abm-subcategoria-oculto').prop("checked", false);
     }
     // ********************************************************************************************
 
