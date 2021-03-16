@@ -125,11 +125,11 @@ $(function() {
             let item = response.data[i];
             // You could also use an ajax property on the data table initialization
             let button = '<div style="display: inline-flex;"><a data-id="' + item.id + '" data-nivel="' + item.nivel + '" data-oculto="' + item.oculto + '"  data-descripcion="' + item.descripcion + '" title="editar" class="' + buttonclass + '-edit btn" style="padding: 5px !important;"><i class="glyphicon glyphicon-edit"></i></a>';
-            if (item.oculto == "1") {
-                button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="visualizar" class="' + buttonclass + '-display btn" style="padding: 5px !important;"><i class="fa fa-eye-slash"></i></a>';
-            } else {
-                button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="ocultar" class="' + buttonclass + '-hide btn" style="padding: 5px !important;"><i class="fa fa-eye"></i></a>';
-            }
+            // if (item.oculto == "1") {
+            //     button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="visualizar" class="' + buttonclass + '-display btn" style="padding: 5px !important;"><i class="fa fa-eye-slash"></i></a>';
+            // } else {
+            //     button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="ocultar" class="' + buttonclass + '-hide btn" style="padding: 5px !important;"><i class="fa fa-eye"></i></a>';
+            // }
             button += '<a data-id="' + item.id + '" data-descripcion="' + item.descripcion + '" title="eliminar" class="' + buttonclass + '-delete btn" style="padding: 5px !important;color: red;"><i class="fa fa-trash"></i></a>';
             button += '</div>';
             table.dataTable().fnAddData([
@@ -148,11 +148,11 @@ $(function() {
             let item = response.data[i];
             // You could also use an ajax property on the data table initialization
             let button = '<div style="display: inline-flex;"><a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="editar" class="' + buttonclass + '-edit btn" style="padding: 5px !important;"><i class="glyphicon glyphicon-edit"></i></a>';
-            if (item.oculto == "1") {
-                button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="visualizar" class="' + buttonclass + '-display btn"><i class="fa fa-eye-slash"></i></a>';
-            } else {
-                button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="ocultar" class="' + buttonclass + '-display btn"><i class="fa fa-eye"></i></a>';
-            }
+            // if (item.oculto == "1") {
+            //     button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="visualizar" class="' + buttonclass + '-display btn"><i class="fa fa-eye-slash"></i></a>';
+            // } else {
+            //     button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="ocultar" class="' + buttonclass + '-display btn"><i class="fa fa-eye"></i></a>';
+            // }
             button += '<a data-id="' + item.id + '" data-descripcion="' + item.descripcion + '" title="eliminar" class="' + buttonclass + '-delete btn" style="padding: 5px !important;color: red;"><i class="fa fa-trash"></i></a>';
             button += '</div>';
             table.dataTable().fnAddData([
