@@ -124,7 +124,7 @@ $(function() {
         for (var i = 0; i < length; i++) {
             let item = response.data[i];
             // You could also use an ajax property on the data table initialization
-            let button = '<div style="display: inline-flex;"><a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="editar" class="' + buttonclass + '-edit btn" style="padding: 5px !important;"><i class="glyphicon glyphicon-edit"></i></a>';
+            let button = '<div style="display: inline-flex;"><a data-id="' + item.id + '" data-nivel="' + item.nivel + '" data-oculto="' + item.oculto + '"  data-descripcion="' + item.descripcion + '" title="editar" class="' + buttonclass + '-edit btn" style="padding: 5px !important;"><i class="glyphicon glyphicon-edit"></i></a>';
             if (item.oculto == "1") {
                 button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '" title="visualizar" class="' + buttonclass + '-display btn" style="padding: 5px !important;"><i class="fa fa-eye-slash"></i></a>';
             } else {
@@ -190,6 +190,9 @@ $(function() {
 
             $('#modal-abm-categoria-id').val($(this).data('id'));
             $('#modal-abm-categoria-descripcion').val($(this).data('descripcion'));
+            if ($(this).data('oculto') == '1') {
+                $('#modal-abm-categoria-oculto').prop("checked", true);
+            }
 
             $('#modal-abm-categoria-submit').attr('name', 'M');
 
@@ -259,6 +262,10 @@ $(function() {
         let descripcion = $('#modal-abm-categoria-descripcion').val();
         let unidad = '';
         let costo_usd = 0;
+        let oculto = 0;
+        if ($("#modal-abm-categoria-oculto").is(':checked')) {
+            oculto = 1;
+        }
         // Ejecuto
         $.ajax({
             type: 'POST',
@@ -270,7 +277,8 @@ $(function() {
                 nivel: nivel,
                 descripcion: descripcion,
                 unidad: unidad,
-                costo_usd: costo_usd
+                costo_usd: costo_usd,
+                oculto: oculto
             },
             dataType: 'json',
             success: function(json) {
@@ -289,6 +297,7 @@ $(function() {
     function modalAbmcategoriaLimpiarCampos() {
         $('#modal-abm-categoria-id').val(0);
         $('#modal-abm-categoria-descripcion').val('');
+        $('#modal-abm-categoria-oculto').prop("checked", false);
     }
     // ********************************************************************************************
 

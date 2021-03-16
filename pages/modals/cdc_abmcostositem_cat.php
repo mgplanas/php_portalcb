@@ -22,6 +22,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id='modal-abm-categoria-oculto'> Oculto
+                                </label>
+                                </div>                            
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-sm-8"></div>
                         <div class="col-sm-2">
