@@ -84,19 +84,19 @@ $(function() {
         let idcategoria = tbCategoriasDT.row(this).data()[0];
         let description = tbCategoriasDT.row(this).data()[3];
         // Pinto o despinto la row
-        if ($(this).hasClass('rowselected')) {
-            $(this).removeClass('rowselected');
-        } else {
+        if (!$(this).hasClass('rowselected')) {
+            // $(this).removeClass('rowselected');
+            //} else {
             tbCategoriasDT.$('tr.rowselected').removeClass('rowselected');
             $(this).addClass('rowselected');
+            // Limpio las demas tablas
+            tbsubCategorias.DataTable().clear().draw();
+            tbProductos.DataTable().clear().draw();
+
+            //Populo las subcategorias
+            refreshSubcategorias(idcategoria, description);
         }
 
-        // Limpio las demas tablas
-        tbsubCategorias.DataTable().clear().draw();
-        tbProductos.DataTable().clear().draw();
-
-        //Populo las subcategorias
-        refreshSubcategorias(idcategoria, description);
     });
 
     // SELECCION EN SUBcategoria
@@ -106,16 +106,16 @@ $(function() {
         let description = tbsubCategoriasDT.row(this).data()[3];
         // let idsubcategoria = $(this).data('id');
         // Pinto o despinto la row
-        if ($(this).hasClass('rowselected')) {
-            $(this).removeClass('rowselected');
-        } else {
+        if (!$(this).hasClass('rowselected')) {
+            //     $(this).removeClass('rowselected');
+            // } else {
             tbsubCategoriasDT.$('tr.rowselected').removeClass('rowselected');
             $(this).addClass('rowselected');
+            // Limpio las demas tablas
+            tbProductos.DataTable().clear().draw();
+            //Populo las areas
+            refreshProductos(idsubcategoria, description);
         }
-        // Limpio las demas tablas
-        tbProductos.DataTable().clear().draw();
-        //Populo las areas
-        refreshProductos(idsubcategoria, description);
     });
 
     refreshcategorias();
