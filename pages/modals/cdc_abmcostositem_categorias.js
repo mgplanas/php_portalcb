@@ -206,6 +206,7 @@ $(function() {
         $('.modal-abm-categoria-btn-delete').on('click', function(e) {
             e.stopPropagation();
             let id = $(this).data('id');
+            let tr = $(this).closest('tr');
             if (confirm('¿Está seguro de eliminar el item: ' + $(this).data('descripcion'))) {
                 $.ajax({
                     type: 'POST',
@@ -216,8 +217,10 @@ $(function() {
                     },
                     dataType: 'json',
                     success: function(json) {
-                        $("#modal-abm-categoria").modal("hide");
-                        refreshcategorias();
+                        //refreshcategorias();
+                        tbCategorias.dataTable().fnDeleteRow(tr);
+                        tbsubCategorias.DataTable().clear().draw();
+                        tbProductos.DataTable().clear().draw();
                     },
                     error: function(xhr, status, error) {
                         alert(xhr.responseText, error);
