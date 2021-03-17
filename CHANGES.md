@@ -44,6 +44,9 @@ ALTER TABLE controls.cdc_costos
 ALTER TABLE controls.cdc_costos_items
  ADD oculto INT NOT NULL DEFAULT '0' AFTER observaciones;
 
+- Se agrega la columna de orden
+ALTER TABLE controls.cdc_costos_items
+ ADD orden INT NOT NULL DEFAULT '0' AFTER oculto;
 
 ## FEAT-IAAS-RESERVE
 Agregado de campo de reserva en la Importación de Vms
