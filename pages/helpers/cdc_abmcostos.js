@@ -80,7 +80,7 @@ $(function() {
     }
 
     //Populo los campos
-    $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM cdc_costos_items WHERE borrado = 0 and oculto = 0 ORDER BY nivel, id ' },
+    $.getJSON("./helpers/getAsyncDataFromDB.php", { query: 'SELECT * FROM cdc_costos_items WHERE borrado = 0 and oculto = 0 ORDER BY nivel, orden ' },
         function(response) {
             let container = $('#modal-abm-costos-categorias-card');
 

@@ -19,8 +19,8 @@
     switch ($op) {
         case 'A':
             // INSERT
-            $insert_item = mysqli_query($con, "INSERT INTO cdc_costos_items(parent, nivel, descripcion, unidad, costo_unidad, observaciones, oculto, descripcion_item) 
-                                                VALUES ('$parent', '$nivel', '$descripcion', '$unidad', '$costo_usd', '$observaciones','$oculto','$descripcion_item')") or die(mysqli_error());	
+            $insert_item = mysqli_query($con, "INSERT INTO cdc_costos_items(parent, nivel, descripcion, unidad, costo_unidad, observaciones, oculto, descripcion_item, orden) 
+                                                SELECT '$parent', '$nivel', '$descripcion', '$unidad', '$costo_usd', '$observaciones','$oculto','$descripcion_item', (SELECT MAX(orden)+1 FROM cdc_costos_items WHERE borrado = 0 and nivel = '$nivel')") or die(mysqli_error());	
             $lastInsert = mysqli_insert_id($con);
             $result->id = $lastInsert;
             $result->descripcion = $descripcion;
