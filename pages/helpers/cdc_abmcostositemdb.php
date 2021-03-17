@@ -29,7 +29,7 @@
         
         case 'M':
             //UPDATE
-            $update_clietne = mysqli_query($con, "UPDATE cdc_costos_items SET parent='$parent', nivel='$nivel', descripcion='$descripcion', unidad='$unidad', costo_unidad='$costo_unidad', observaciones='$observaciones', oculto='$oculto', descripcion_item='$descripcion_item' 
+            $update_clietne = mysqli_query($con, "UPDATE cdc_costos_items SET parent='$parent', nivel='$nivel', descripcion='$descripcion', unidad='$unidad', costo_unidad='$costo_usd', observaciones='$observaciones', oculto='$oculto', descripcion_item='$descripcion_item' 
                                                   WHERE id='$id'") or die(mysqli_error());	
             break;
 

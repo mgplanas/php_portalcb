@@ -291,7 +291,7 @@ desired effect
                             <div class="box">
                                 <div class="box-header">
                                     <h3 class="box-title">Productos/Servicios</h3>
-                                    <a class="btn text-right" id="modal-abm-productos-btn-alta"><i class="glyphicon glyphicon-plus-sign" title="Agregar Producto/Servicio"style="color:green; font-size: 20px;"></i></a>
+                                    <a class="btn text-right" id="modal-abm-producto-btn-alta"><i class="glyphicon glyphicon-plus-sign" title="Agregar Producto/Servicio"style="color:green; font-size: 20px;"></i></a>
                                 </div>
                                 <div class="box-body no-padding">
                                     <table class="table table-hover display" id="tbProductos">

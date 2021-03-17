@@ -103,6 +103,7 @@ $(function() {
     $('#tbsubCategorias tbody').on('click', 'tr', function() {
 
         let idsubcategoria = tbsubCategoriasDT.row(this).data()[0];
+        let description = tbsubCategoriasDT.row(this).data()[3];
         // let idsubcategoria = $(this).data('id');
         // Pinto o despinto la row
         if ($(this).hasClass('rowselected')) {
@@ -114,7 +115,7 @@ $(function() {
         // Limpio las demas tablas
         tbProductos.DataTable().clear().draw();
         //Populo las areas
-        refreshAreas(idsubcategoria);
+        refreshProductos(idsubcategoria, description);
     });
 
     refreshcategorias();
@@ -148,7 +149,7 @@ $(function() {
         for (var i = 0; i < length; i++) {
             let item = response.data[i];
             // You could also use an ajax property on the data table initialization
-            let button = '<div style="display: inline-flex;"><a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="editar" class="' + buttonclass + '-edit btn" style="padding: 5px !important;"><i class="glyphicon glyphicon-edit"></i></a>';
+            let button = '<div style="display: inline-flex;"><a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-oculto="' + item.oculto + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo="' + item.costo_unidad + '" title="editar" class="' + buttonclass + '-edit btn" style="padding: 5px !important;"><i class="glyphicon glyphicon-edit"></i></a>';
             // if (item.oculto == "1") {
             //     button += '<a data-id="' + item.id + '" data-nivel="' + item.nivel + '"  data-descripcion="' + item.descripcion + '"  data-unidad="' + item.unidad + '"  data-costo-unidad="' + item.costo_unidad + '" title="visualizar" class="' + buttonclass + '-display btn"><i class="fa fa-eye-slash"></i></a>';
             // } else {
@@ -442,47 +443,72 @@ $(function() {
 
 
     // ********************************************************************************************
-    // AREAS
+    // PRODUCTOS
     // ********************************************************************************************
-    function setAreaTriggers(idsubcategoria) {
+    function setProductosTriggers(idsubcategoria, subDescripcion) {
         // ALTA
-        console.log('SETTRR', idsubcategoria);
         // seteo boton trigger para el alta de categoria
-        $('#modal-abm-area-btn-alta').click(function() {
-            $('#modal-abm-area-title').html('Nueva Área');
-            modalAbmAreaLimpiarCampos(idsubcategoria);
-            $('#modal-abm-area-submit').attr('name', 'A');
+        $('#modal-abm-producto-btn-alta').on('click', function() {
+            $('#modal-abm-producto-title').html('Nuevo producto/servicio de ' + subDescripcion);
+            modalAbmProductosLimpiarCampos(idsubcategoria);
+            $('#modal-abm-producto-submit').attr('name', 'A');
 
-            $("#modal-abm-area").modal("show");
+            $("#modal-abm-producto").modal("show");
         });
 
         // EDIT
         // seteo boton trigger para el edit de categoria
-        $('.modal-abm-area-btn-edit').click(function() {
-            $('#modal-abm-area-title').html('Editar Área');
-            modalAbmAreaLimpiarCampos(idsubcategoria);
+        $('.modal-abm-producto-btn-edit').on('click', function() {
+            $('#modal-abm-producto-title').html('Editar Producto/Servicio');
+            modalAbmProductosLimpiarCampos(idsubcategoria);
 
-            $('#modal-abm-area-id').val($(this).data('id'));
-            $('#modal-abm-area-nombre').val($(this).data('nombre'));
-            $('#modal-abm-area-sigla').val($(this).data('sigla'));
-            $("#modal-abm-area-responsable").val($(this).data('responsable')).change();
+            $('#modal-abm-producto-id').val($(this).data('id'));
+            $('#modal-abm-producto-descripcion').val($(this).data('descripcion'));
+            $('#modal-abm-producto-unidad').val($(this).data('unidad'));
+            $('#modal-abm-producto-costo').val($(this).data('costo'));
+            if ($(this).data('oculto') == '1') {
+                $('#modal-abm-producto-oculto').prop("checked", true);
+            }
 
+            $('#modal-abm-producto-submit').attr('name', 'M');
 
-            $('#modal-abm-area-submit').attr('name', 'M');
+            $("#modal-abm-producto").modal("show");
+        });
 
-            $("#modal-abm-area").modal("show");
+        // BORRAR
+        $('.modal-abm-producto-btn-delete').on('click', function(e) {
+            e.stopPropagation();
+            let id = $(this).data('id');
+            let tr = $(this).closest('tr');
+            if (confirm('¿Está seguro de eliminar el item: ' + $(this).data('descripcion'))) {
+                $.ajax({
+                    type: 'POST',
+                    url: './helpers/cdc_abmcostositemdb.php',
+                    data: {
+                        operacion: 'B',
+                        id: id,
+                    },
+                    dataType: 'json',
+                    success: function(json) {
+                        //refreshProductos(idsubcategoria, subDescripcion);
+                        tbProductos.dataTable().fnDeleteRow(tr);
+                    },
+                    error: function(xhr, status, error) {
+                        alert(xhr.responseText, error);
+                    }
+                });
+            }
         });
     }
 
     // refresh tables
-    function refreshAreas(idsubcategoria) {
+    function refreshProductos(idsubcategoria, subDescripcion) {
 
-        console.log('refresh', idsubcategoria);
         // Limpio tablas
         tbProductos.DataTable().clear().draw();
 
         // Seteo el id de categoria seleccionado
-        $('#modal-abm-area-btn-alta').attr('id_subcategoria', idsubcategoria);
+        $('#modal-abm-producto-btn-alta').attr('id_subcategoria', idsubcategoria);
 
         //Populo las areas
         $.ajax({
@@ -492,8 +518,8 @@ $(function() {
             dataType: 'json',
             success: function(json) {
                 myJsonData = json;
-                populateDataTableProductos(myJsonData, tbProductos, 'modal-abm-area-btn');
-                setAreaTriggers(idsubcategoria);
+                populateDataTableProductos(myJsonData, tbProductos, 'modal-abm-producto-btn');
+                setProductosTriggers(idsubcategoria, subDescripcion);
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);
@@ -502,50 +528,60 @@ $(function() {
     }
 
     // ==============================================================
-    // GUARDAR AREA
+    // GUARDAR PRODUCTO
     // ==============================================================
     // ejecución de guardado async
-    $('#modal-abm-area-submit').click(function() {
+    $('#modal-abm-producto-submit').on('click', function() {
         // Recupero datos del formulario
         let op = $(this).attr('name');
-        let id_subcategoria = $('#modal-abm-area-id-subcategoria').val();
-        let id_area = $('#modal-abm-area-id').val();
-        let nombre = $('#modal-abm-area-nombre').val();
-        let sigla = $('#modal-abm-area-sigla').val();
-        let responsable = $("#modal-abm-area-responsable").val();
+        let id = $('#modal-abm-producto-id').val();
+        let parent = $('#modal-abm-producto-subcat-id').val();
+        let nivel = 3;
+        let descripcion = $('#modal-abm-producto-descripcion').val();
+        let unidad = $('#modal-abm-producto-unidad').val();
+        let costo_usd = $('#modal-abm-producto-costo').val();;
+        let oculto = 0;
+        if ($("#modal-abm-producto-oculto").is(':checked')) {
+            oculto = 1;
+        }
         // Ejecuto
         $.ajax({
             type: 'POST',
-            url: './helpers/abmareadb.php',
+            url: './helpers/cdc_abmcostositemdb.php',
             data: {
                 operacion: op,
-                id_subcategoria: id_subcategoria,
-                id: id_area,
-                nombre: nombre,
-                sigla: sigla,
-                responsable: responsable
+                id: id,
+                parent: parent,
+                nivel: nivel,
+                descripcion: descripcion,
+                unidad: unidad,
+                costo_usd: costo_usd,
+                oculto: oculto
             },
             dataType: 'json',
             success: function(json) {
-                $("#modal-abm-area").modal("hide");
-                refreshAreas(id_subcategoria);
+                $("#modal-abm-producto").modal("hide");
+                refreshProductos(parent, $('#modal-abm-producto-btn-alta').attr('description'));
             },
             error: function(xhr, status, error) {
                 alert(xhr.responseText, error);
             }
         });
+
     });
 
     // ==============================================================
     // AUXILIARES
     // ==============================================================
-    function modalAbmAreaLimpiarCampos(idsubcategoria) {
-        $("#modal-abm-area-id-subcategoria").val(idsubcategoria).change();
-        $("#modal-abm-area-id-subcategoria").attr('disabled', 'disabled')
-        $('#modal-abm-area-id').val(0);
-        $('#modal-abm-area-nombre').val('');
-        $('#modal-abm-area-sigla').val('');
-        $("#modal-abm-area-responsable").val('first').change();
+    function modalAbmProductosLimpiarCampos(idsubcategoria) {
+        $("#modal-abm-producto-title").val('');
+        $("#modal-abm-producto-subcat").val('');
+        $("#modal-abm-producto-subcat-id").val(idsubcategoria);
+        $('#modal-abm-producto-id').val(0);
+        $('#modal-abm-producto-descripcion').val('');
+        $('#modal-abm-producto-unidad').val('');
+        $('#modal-abm-producto-costo').val(0);
+        $('#modal-abm-producto-oculto').prop("checked", false);
     }
     // ********************************************************************************************
 
