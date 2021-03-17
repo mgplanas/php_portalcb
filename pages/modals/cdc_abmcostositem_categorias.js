@@ -341,6 +341,7 @@ $(function() {
         $('.modal-abm-subcategoria-btn-delete').on('click', function(e) {
             e.stopPropagation();
             let id = $(this).data('id');
+            let tr = $(this).closest('tr');
             if (confirm('¿Está seguro de eliminar el item: ' + $(this).data('descripcion'))) {
                 $.ajax({
                     type: 'POST',
@@ -351,7 +352,9 @@ $(function() {
                     },
                     dataType: 'json',
                     success: function(json) {
-                        refreshSubcategorias(idcategoria, catDescription);
+                        //refreshSubcategorias(idcategoria, catDescription);
+                        tbsubCategorias.dataTable().fnDeleteRow(tr);
+                        tbProductos.DataTable().clear().draw();
                     },
                     error: function(xhr, status, error) {
                         alert(xhr.responseText, error);
