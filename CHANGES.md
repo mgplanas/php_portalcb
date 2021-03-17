@@ -16,6 +16,7 @@ DONE.
 -	Productos
     -	Se enfocará el esfuerzo en poner a punto el ABM de productos para poder realizar los cambios dinámicamente.
     -	Se incluirá la funcionalidad en el ABM de productos de ocultar/habilitar un producto/categoría/subcategoría.
+DONE.
 
 [DB]
 - Se crea la tabal sdc_servicios como maestro de servicios
