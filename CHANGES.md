@@ -29,7 +29,7 @@ CREATE TABLE controls.sdc_servicios (
 
 - Se modifica el campo servicio de cdc_costos para que sea la referencia a sdc_servicios
 ALTER TABLE controls.cdc_costos
- CHANGE servicio servicio INT(50) NOT NULL DEFAULT '1';
+ CHANGE servicio servicio INT(11) NOT NULL DEFAULT '1';
 
 [cod]
 - pages/cdc_costos.php
