@@ -1,4 +1,53 @@
 # CHANGES
+## FEAT-COT-ONLINE
+Modificaciones solicitadas por comercial para darle cierre al cotizador
+*Fecha* 2021-03-04
+*Requerimiento*
+-   El campo servicio (Hoy en día texto libre) modificarlo para que el usuario seleccione de una lista desplegable los servicios.   
+DONE.
+-	En el caso del campo cliente se evaluó hacer lo mismo para que se desplieguen los clientes activos del portal. Esto requiere aprobación por Esteban. 
+WAITING...
+-	Cambiar la etiqueta del campo Meses de cto. por Meses de contrato.
+DONE.
+-	Agregar en la etiqueta del campo Plazo de oferta la unidad “días”
+DONE.
+-	Al exportar incluir los totales. Esto requiere investigación ya que la funcionalidad de exportación es propia del componente de tabla. Igualmente creo que esta característica no es una traba para poder salir a producción.
+DONE.
+-	Productos
+    -	Se enfocará el esfuerzo en poner a punto el ABM de productos para poder realizar los cambios dinámicamente.
+    -	Se incluirá la funcionalidad en el ABM de productos de ocultar/habilitar un producto/categoría/subcategoría.
+DONE.
+
+[DB]
+- Se crea la tabal sdc_servicios como maestro de servicios
+CREATE TABLE controls.sdc_servicios (
+    id INT AUTO_INCREMENT NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
+    borrado INT NOT NULL DEFAULT '0',
+    PRIMARY KEY (id)
+) ENGINE = InnoDB ROW_FORMAT = DEFAULT;
+
+- Se modifica el campo servicio de cdc_costos para que sea la referencia a sdc_servicios
+ALTER TABLE controls.cdc_costos
+ CHANGE servicio servicio INT(11) NOT NULL DEFAULT '1';
+
+[cod]
+- pages/cdc_costos.php
+- pages/helpers/cdc_abmcostos.js
+- pages/cdc_costos_productos.php
+- pages/modals/cdc_abmcostositem_cat.php
+- pages/modals/cdc_abmcostositem_subcat.php
+- pages/modals/cdc_abmcostositem_producto.php
+- pages/modals/cdc_abmcostositem_categorias.js
+
+[DB]
+- Se agrega la columna de oculto
+ALTER TABLE controls.cdc_costos_items
+ ADD oculto INT NOT NULL DEFAULT '0' AFTER observaciones;
+
+- Se agrega la columna de orden
+ALTER TABLE controls.cdc_costos_items
+ ADD orden INT NOT NULL DEFAULT '0' AFTER oculto;
 
 ## FEAT-PERM-GUARDIA
 Se debe generar un nuevo rol/permiso para visualizar el botón "ver activaciones de guardias" en el calendario
@@ -17,7 +66,6 @@ ALTER TABLE controls.permisos
     - Agrego campo ver activaciones despues de compliance
 - pages/setPermiso.php
 - pages/calendario.php
-
 ## FEAT-IAAS-RESERVE
 Agregado de campo de reserva en la Importación de Vms
 *Fecha* 2021-02-11
