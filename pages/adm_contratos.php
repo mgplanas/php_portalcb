@@ -138,12 +138,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <th>Estado</th>
                   <th style="text-align: center;"><i class="fa fa-clock-o" title="Días de Atrazo/Restante"></i></th>
                   <th>Vencimiento</th>
+                  <th>Observaciones</th>
                   <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
-                    $query = "SELECT c.id, c.id_proveedor, c.id_subgerencia, c.oc, c.tipo_mantenimiento, c.vencimiento, c.criticidad,
+                    $query = "SELECT c.id, c.id_proveedor, c.id_subgerencia, c.oc, c.tipo_mantenimiento, c.vencimiento, c.criticidad, c.observaciones,
                                     s.nombre as subgerencia, 
                                     p.razon_social as proveedor, 
                                     datediff(c.vencimiento, now()) as dias,
@@ -201,7 +202,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             $timestamp = strtotime(str_replace('/', '.', $row['vencimiento']));
                             $mysql_date = date('Y-m-d', $timestamp);                                                   
                             echo '<td data-sort="'. $mysql_date .'">'.date("d/m/Y", strtotime($row['vencimiento'])).'</td>'; 
-                            
+                            echo '<td>'. $row['observaciones'] .'</td>';
+
                             echo '<td>'; 
                             if ($rq_sec['admin']=='1' OR $rq_sec['admin_contratos']=='1'){
                                 echo '<a data-id="' . $row["id"] . '" ';
@@ -211,6 +213,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 echo 'data-oc="' . $row["oc"] . '" ';
                                 echo 'data-tipo="' . $row["tipo_mantenimiento"] . '" ';
                                 echo 'data-criticidad="' . $row["criticidad"] . '" ';
+                                echo 'data-observaciones="' . $row["observaciones"] . '" ';
                                 echo 'title="editar" class="modal-abm-contrato-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
                                 echo '<a data-id="' . $row["id"] . '" title="eliminar" class="modal-abm-contrato-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
                             }

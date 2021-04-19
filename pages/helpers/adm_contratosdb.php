@@ -10,6 +10,7 @@
     $tipo_mantenimiento = $_POST['tipo_mantenimiento'];
     $dtvto = $_POST['vencimiento'];
     $criticidad = $_POST['criticidad'];
+    $observaciones = $_POST['observaciones'];
 
     $gmtTimezone = new DateTimeZone('GMT');
     date_default_timezone_set('America/Argentina/Buenos_Aires');
@@ -21,20 +22,20 @@
     switch ($op) {
         case 'A':
             // INSERT
-            $result->sql = "INSERT INTO adm_contratos_vto (id_proveedor, id_subgerencia, oc, tipo_mantenimiento, vencimiento, criticidad)
-            VALUES ('$id_proveedor', '$id_subgerencia', '$oc', '$tipo_mantenimiento', '$vencimiento', '$criticidad')";
+            $result->sql = "INSERT INTO adm_contratos_vto (id_proveedor, id_subgerencia, oc, tipo_mantenimiento, vencimiento, criticidad, observaciones)
+            VALUES ('$id_proveedor', '$id_subgerencia', '$oc', '$tipo_mantenimiento', '$vencimiento', '$criticidad', '$observaciones')";
             $insert_contrato = mysqli_query($con, 
-                "INSERT INTO adm_contratos_vto (id_proveedor, id_subgerencia, oc, tipo_mantenimiento, vencimiento, criticidad)
-                 VALUES ('$id_proveedor', '$id_subgerencia', '$oc', '$tipo_mantenimiento', '$vencimiento', '$criticidad')") or die(mysqli_error());	
+                "INSERT INTO adm_contratos_vto (id_proveedor, id_subgerencia, oc, tipo_mantenimiento, vencimiento, criticidad, observaciones)
+                 VALUES ('$id_proveedor', '$id_subgerencia', '$oc', '$tipo_mantenimiento', '$vencimiento', '$criticidad', '$observaciones')") or die(mysqli_error());	
             $lastInsert = mysqli_insert_id($con);
             $result->id = $lastInsert;
             break;
         
         case 'M':
             //UPDATE
-            $result->sql ="UPDATE adm_contratos_vto SET id_proveedor='$id_proveedor', id_subgerencia='$id_subgerencia', oc='$oc', tipo_mantenimiento='$tipo_mantenimiento', vencimiento='$vencimiento' , criticidad='$criticidad'
+            $result->sql ="UPDATE adm_contratos_vto SET id_proveedor='$id_proveedor', id_subgerencia='$id_subgerencia', oc='$oc', tipo_mantenimiento='$tipo_mantenimiento', vencimiento='$vencimiento' , criticidad='$criticidad', observaciones='$observaciones'
             WHERE id='$id'";
-            $update_contrato = mysqli_query($con, "UPDATE adm_contratos_vto SET id_proveedor='$id_proveedor', id_subgerencia='$id_subgerencia', oc='$oc', tipo_mantenimiento='$tipo_mantenimiento', vencimiento='$vencimiento' , criticidad='$criticidad'
+            $update_contrato = mysqli_query($con, "UPDATE adm_contratos_vto SET id_proveedor='$id_proveedor', id_subgerencia='$id_subgerencia', oc='$oc', tipo_mantenimiento='$tipo_mantenimiento', vencimiento='$vencimiento' , criticidad='$criticidad', observaciones='$observaciones'
                                                     WHERE id='$id'") or die(mysqli_error());	
             break;
 

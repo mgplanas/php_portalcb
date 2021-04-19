@@ -1,4 +1,20 @@
 # CHANGES
+## FEAT-CTO-OBS
+Observaciones en vencimiento de contratos
+*Fecha* 2021-04-19
+*Requerimiento*
+-   Agregar campo de observaciones en módulo de vencimiento de contratos
+
+[db]
+ALTER TABLE controls.adm_contratos_vto
+ ADD observaciones VARCHAR(1000) AFTER criticidad;
+
+[cod]
+- pages/adm_contratos.php: Agrego campo en grilla
+- pages/modals/adm_contratos.php
+- pages/modals/adm_contratos.js
+- pages/helpers/adm_contratosdb.php
+
 ## FEAT-COT-ONLINE
 Modificaciones solicitadas por comercial para darle cierre al cotizador
 *Fecha* 2021-03-04

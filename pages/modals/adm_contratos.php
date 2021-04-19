@@ -76,7 +76,11 @@
                                 </select>
                             </div> 
                         </div>
-                    </div>              
+                    </div>    
+                    <div class="form-group">
+                        <label for="observaciones">Observaciones</label>
+                        <textarea class=form-control name="observaciones" id="modal-abm-contrato-observaciones"></textarea>
+                    </div>                    
 
                     <div class="form-group">
                         <div class="col-sm-8"></div>

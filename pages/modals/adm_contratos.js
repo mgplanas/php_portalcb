@@ -49,6 +49,7 @@ $(function() {
             $('#modal-abm-contrato-proveedor').val($(this).data('proveedor'));
             $('#modal-abm-contrato-subgerencia').val($(this).data('subgerencia'));
             $('#modal-abm-contrato-criticidad').val($(this).data('criticidad'));
+            $('#modal-abm-contrato-observaciones').val($(this).data('observaciones'));
             $('#modal-abm-contrato-vencimiento').val(moment($(this).data('vencimiento')).format('DD/MM/YYYY'));
             $('#modal-abm-contrato-oc').val($(this).data('oc'));
             $('#modal-abm-contrato-tipo').val($(this).data('tipo'));
@@ -144,6 +145,7 @@ $(function() {
         let tipo_mantenimiento = $('#modal-abm-contrato-tipo').val();
         let vencimiento = $('#modal-abm-contrato-vencimiento').val();
         let criticidad = $('#modal-abm-contrato-criticidad').val();
+        let observaciones = $('#modal-abm-contrato-observaciones').val();
 
         if (!id_subgerencia) {
             alert('Se debe ingresar la subgerencia.');
@@ -165,7 +167,8 @@ $(function() {
                 oc: oc,
                 tipo_mantenimiento: tipo_mantenimiento,
                 vencimiento: vencimiento,
-                criticidad: criticidad
+                criticidad: criticidad,
+                observaciones: observaciones
             },
             dataType: 'json',
             success: function(json) {
@@ -198,6 +201,7 @@ $(function() {
         $("#modal-abm-contrato-proveedor").val('first').change();
         $("#modal-abm-contrato-subgerencia").val('first').change();
         $("#modal-abm-contrato-criticidad").val(1).change();
+        $("#modal-abm-contrato-observaciones").val('');
     }
 
     // Actualiza el modal con los campos de la OC
