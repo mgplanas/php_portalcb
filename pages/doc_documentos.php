@@ -18,6 +18,17 @@ $per_id_gerencia = $rowp['gerencia'];
 $_SESSION['id_usuario'] = $id_rowp;
 // GERENCIA DE CIBER SEGURIDAD = 1 
 // PUEDE VER TODO
+/// BORRADO DE ENTES
+if(isset($_GET['aksi']) == 'delete'){
+	// escaping, additionally removing everything that could be (html/javascript-) code
+	$nik = mysqli_real_escape_string($con,(strip_tags($_GET["nik"],ENT_QUOTES)));
+    //Elimino ENTE
+    $delete_control = mysqli_query($con, "UPDATE doc_documentos SET borrado='1' WHERE id='$nik'");
+  
+    if(!$delete_control){
+        $_SESSION['formSubmitted'] = 9;
+    }
+}
 
 // INDICADORES
 $sqlindicadores = "SELECT 
@@ -316,7 +327,8 @@ desired effect
                                         echo '<a data-version="'.$row['version'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" data-minuta="'.$row['aprobado_minuta'].'" title="aprobar" class="modal-abm-docs-btn-aprobar btn" style="padding: 2px;"><i class="fa fa-thumbs-o-up"></i></a>';
                                         if ($rq_sec['admin_doc'] == '1') {
                                             echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-doc-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
-                                            echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-docs-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash"></i></a>';
+                                            echo '<a href="doc_documentos.php?aksi=delete&nik='.$row['id'].'" title="Eliminar Documento" onclick="return confirm(\'Esta seguro de borrar el documento '. $row['nombre'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                                            // echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-docs-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash"></i></a>';
                                         }
                                         echo '</td></tr>';
                                     }
