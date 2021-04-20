@@ -327,7 +327,7 @@ desired effect
                                         echo '<a data-version="'.$row['version'].'" data-nombre="'.$row['nombre'].'" data-id="'.$row['id'].'" data-minuta="'.$row['aprobado_minuta'].'" title="aprobar" class="modal-abm-docs-btn-aprobar btn" style="padding: 2px;"><i class="fa fa-thumbs-o-up"></i></a>';
                                         if ($rq_sec['admin_doc'] == '1') {
                                             echo '<a data-id="'.$row['id'].'" title="editar" class="modal-abm-doc-btn-edit btn" style="padding: 2px;"><i class="glyphicon glyphicon-edit"></i></a>';
-                                            echo '<a href="doc_documentos.php?aksi=delete&nik='.$row['id'].'" title="Eliminar Documento" onclick="return confirm(\'Esta seguro de borrar el documento '. $row['nombre'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
+                                            echo '<a href="doc_documentos.php?aksi=delete&nik='.$row['id'].'" title="Eliminar Documento" style="padding: 2px;" onclick="return confirm(\'Esta seguro de borrar el documento '. $row['nombre'] .' ?\')" class="btn btn-sm"><i class="glyphicon glyphicon-trash"></i></a>';
                                             // echo '<a data-id="'.$row['id'].'" title="eliminar" class="modal-abm-docs-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash"></i></a>';
                                         }
                                         echo '</td></tr>';
