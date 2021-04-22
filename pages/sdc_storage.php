@@ -395,6 +395,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   $(function () {
     $('#tbstorage').DataTable({
         'paging'      : false,
+        'scrollY':      '50vh',
+        'scrollCollapse': false,        
         'scrollX'     : false,
         'searching'   : true,
         'ordering'    : true,
