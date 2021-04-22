@@ -205,7 +205,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <!-- /.box-header -->
 	
-			<div class="box-body" style="overflow-x: auto">
+			<div class="box-body" style="overflow-x: auto; overflow-y: auto; max-height: 70vh;">
               <table id="tbstorage" class="display" style="width:100%;">
                 <thead>
                 <tr>
@@ -395,8 +395,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   $(function () {
     $('#tbstorage').DataTable({
         'paging'      : false,
-        'scrollY':      '50vh',
-        'scrollCollapse': false,        
         'scrollX'     : false,
         'searching'   : true,
         'ordering'    : true,
