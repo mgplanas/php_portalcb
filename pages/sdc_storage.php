@@ -249,17 +249,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td>'. $row['estado'].'</td>';
 							echo '<td>'. $row['nombre'].'</td>';
 							echo '<td align="center">'. $row['cat_nombre'].'</td>';
-							echo '<td class="text-right">'. number_format($row['capacidad_fisica_tb'],2,",",".").'</td>';
-							echo '<td class="text-right">'. number_format($row['per_asignacion_recomendado'],2,",",".").'</td>';
-							echo '<td class="text-right">'. number_format($cap_asignable_tb,2,",",".") .'</td>';
-							echo '<td class="text-right">'. number_format($row['asignado_tb'],2,",",".").'</td>';
-							echo '<td class="text-right">'. setSemaphoreBadge($per_asignado_actual, $_TIPO_RANGOS_ASIGNADOS, true) .'</td>';
-							echo '<td class="text-right">'. number_format($asignacion_disponible,2,",",".") .'</td>';
-                            echo '<td class="text-right">'. setSemaphoreBadge($row['per_fisico_ocupado'], $_TIPO_RANGOS_OCUPADOS, true). '</td>';
-							echo '<td class="text-right">'. number_format($fisico_utilizado_tb,2,",",".") .'</td>';
-							echo '<td class="text-right">'. setSemaphoreBadge($row['per_estimado_asignacion_max'], $_TIPO_RANGOS_ASIGNADOS, true).'</td>';
-							echo '<td class="text-right">'. number_format($capacidad_asig_max,2,",",".") .'</td>';
-							echo '<td class="text-right">'. number_format($asignacion_disponible_est,2,",",".") .'</td>';
+							echo '<td class="text-center">'. number_format($row['capacidad_fisica_tb'],2,",",".").'</td>';
+							echo '<td class="text-center">'. number_format($row['per_asignacion_recomendado'],2,",",".").'</td>';
+							echo '<td class="text-center">'. number_format($cap_asignable_tb,2,",",".") .'</td>';
+							echo '<td class="text-center">'. number_format($row['asignado_tb'],2,",",".").'</td>';
+							echo '<td class="text-center">'. setSemaphoreBadge($per_asignado_actual, $_TIPO_RANGOS_ASIGNADOS, true) .'</td>';
+							echo '<td class="text-center">'. number_format($asignacion_disponible,2,",",".") .'</td>';
+                            echo '<td class="text-center">'. setSemaphoreBadge($row['per_fisico_ocupado'], $_TIPO_RANGOS_OCUPADOS, true). '</td>';
+							echo '<td class="text-center">'. number_format($fisico_utilizado_tb,2,",",".") .'</td>';
+							echo '<td class="text-center">'. setSemaphoreBadge($row['per_estimado_asignacion_max'], $_TIPO_RANGOS_ASIGNADOS, true).'</td>';
+							echo '<td class="text-center">'. number_format($capacidad_asig_max,2,",",".") .'</td>';
+							echo '<td class="text-center">'. number_format($asignacion_disponible_est,2,",",".") .'</td>';
                             
                             echo '<td align="center">';
                             
