@@ -156,7 +156,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   </style>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -205,24 +205,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <!-- /.box-header -->
 	
-			<div class="box-body">
-              <table id="tbstorage" class="display" width="100%">
+			<div class="box-body" style="overflow-x: auto">
+              <table id="tbstorage" class="display" style="width:100%;">
                 <thead>
                 <tr>
                   <th>estado</th>
                   <th width="10%">Storage</th>
                   <th width="10%" align="center">Categoría</th>
-                  <th class="noventa">[TB] Capacidad Física</th>
-                  <th class="noventa">[%] Asig. Recomendada</th>
-                  <th class="noventa">[TB] Capacidad Asignable</th>
-                  <th class="noventa">[TB] Asignado</th>
-                  <th class="noventa">[%] Asignado Actual</th>
-                  <th class="noventa">[TB] Asignación disponible</th>
-                  <th class="noventa">[%] Físco ocupado</th>
-                  <th class="noventa">[TB] Físico Utilizado</th>
-                  <th class="noventa">[%] Estimado Asig. Máxima</th>
-                  <th class="noventa">Capacidad Asig. Máxima</th>
-                  <th class="noventa">Asig. Disponible Estimada</th>
+                  <th class="noventa1">[TB] Capacidad Física</th>
+                  <th class="noventa1">[%] Asig. Recomendada</th>
+                  <th class="noventa1">[TB] Capacidad Asignable</th>
+                  <th class="noventa1">[TB] Asignado</th>
+                  <th class="noventa1">[%] Asignado Actual</th>
+                  <th class="noventa1">[TB] Asignación disponible</th>
+                  <th class="noventa1">[%] Físco ocupado</th>
+                  <th class="noventa1">[TB] Físico Utilizado</th>
+                  <th class="noventa1">[%] Estimado Asig. Máxima</th>
+                  <th class="noventa1">Capacidad Asig. Máxima</th>
+                  <th class="noventa1">Asig. Disponible Estimada</th>
                   <th class="text-center" width="1"><i class="fa fa-flash"></i></th>
                 </tr>
                 </thead>
@@ -395,7 +395,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   $(function () {
     $('#tbstorage').DataTable({
         'paging'      : false,
-        'scrollX'     : true,
+        'scrollX'     : false,
         'searching'   : true,
         'ordering'    : true,
         'info'        : false,
