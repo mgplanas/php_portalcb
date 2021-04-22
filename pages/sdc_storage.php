@@ -186,21 +186,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<div class="col-sm-6" style="text-align:left">
 					<h2 class="box-title">Listado de Equipos de Storage</h2>
 				</div>
-         <div class="col-sm-6" style="text-align:right;">
-          <?php if ($rq_sec['admin']=='1' OR $rq_sec['storage_admin']=='1')
-          { 
-            //Solicitudes de Baja pendientes
-            $solicitudes = mysqli_query($con, "SELECT COUNT(*) as cuenta FROM sdc_storage WHERE estado = 2  AND borrado = 0;");
-            $row_sol = mysqli_fetch_assoc($solicitudes);
-            $cuenta = $row_sol['cuenta'];
-            if ($cuenta > 0) {
-                echo '<span class="badge bg-red solicitud_pendiente"> Solicitudes de baja pendientes: '.$cuenta.'</span>';
-            }
-              ?>
-          <button title="Métricas" type="button" id="modal-abm-storage-btn-stat" class="btn-sm btn-primary" data-role="ADMIN" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-pie-chart"></i></button>
-          <button type="button" id="modal-abm-storage-btn-alta" class="btn-sm btn-primary" data-role="ADMIN" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-database"></i> Nuevo Equipo de Storage</button>
-          <?php } ?>
-				</div>
+                <div class="col-sm-6" style="text-align:right;">
+                    <button title="Métricas" type="button" id="modal-abm-storage-btn-stat" class="btn-sm btn-primary" data-role="ADMIN" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-pie-chart"></i></button>
+                    <?php if ($rq_sec['admin']=='1' OR $rq_sec['storage_admin']=='1')
+                    { 
+                        //Solicitudes de Baja pendientes
+                        $solicitudes = mysqli_query($con, "SELECT COUNT(*) as cuenta FROM sdc_storage WHERE estado = 2  AND borrado = 0;");
+                        $row_sol = mysqli_fetch_assoc($solicitudes);
+                        $cuenta = $row_sol['cuenta'];
+                        if ($cuenta > 0) {
+                            echo '<span class="badge bg-red solicitud_pendiente"> Solicitudes de baja pendientes: '.$cuenta.'</span>';
+                        }
+                        ?>
+                    <button type="button" id="modal-abm-storage-btn-alta" class="btn-sm btn-primary" data-role="ADMIN" data-toggle="modal" data-target="#modal-activo"><i class="fa fa-database"></i> Nuevo Equipo de Storage</button>
+                    <?php } ?>
+                </div>
             </div>
 
             <!-- /.box-header -->
