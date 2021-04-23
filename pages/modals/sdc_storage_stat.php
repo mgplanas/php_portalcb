@@ -57,14 +57,18 @@
                                 while($row = mysqli_fetch_assoc($sql)){
                                     $sum_cap_asignable += $row['capacidad_asignable'];
                                     $sum_asignado += $row['asignado_tb'];
-                                    $sum_disponible += $row['disponible_estimado_2'];
+                                    $sum_disponible += ($row['disponible_estimado_2']>0 ? $row['disponible_estimado_2'] : 0);
                                     $per_disponible = (1-($row['asignado_tb']/$row['capacidad_asignable']))*100;
                                     echo '<tr>';
                                     echo '<td>'. $row['cat_nombre'].'</td>';
                                     echo '<td class="text-right">'. number_format($row['capacidad_asignable'],2,",",".").'</td>';
                                     echo '<td class="text-right">'. number_format($row['asignado_tb'],2,",",".").'</td>';
                                     echo '<td class="text-right">'. setSemaphoreBadge($row['asignado_actual'],$row['asignado_actual'], $_TIPO_RANGOS_ASIGNADOS, true).'</td>';
-                                    echo '<td class="text-right" title="' . number_format($per_disponible,2,",",".") . '%">'. setSemaphoreBadge($per_disponible,$row['disponible_estimado_2'], $_TIPO_RANGOS_CAPACIDAD, true).'</td>';
+                                    if ($row['disponible_estimado_2'] >= 0) {
+                                        echo '<td class="text-right" title="' . number_format($per_disponible,2,",",".") . '%">'. setSemaphoreBadge($per_disponible,$row['disponible_estimado_2'], $_TIPO_RANGOS_CAPACIDAD, true).'</td>';
+                                    } else {
+                                        echo '<td class="text-right" title="' . number_format($per_disponible,2,",",".") . '%">0</td>';
+                                    }
                                     echo '</tr>';
                                 }
                             }
