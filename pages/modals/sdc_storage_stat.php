@@ -67,7 +67,7 @@
                                     if ($row['disponible_estimado_2'] >= 0) {
                                         echo '<td class="text-right" title="' . number_format($per_disponible,2,",",".") . '%">'. setSemaphoreBadge($per_disponible,$row['disponible_estimado_2'], $_TIPO_RANGOS_CAPACIDAD, true).'</td>';
                                     } else {
-                                        echo '<td class="text-right" title="' . number_format($per_disponible,2,",",".") . '%">0</td>';
+                                        echo '<td class="text-right" title="' . number_format($per_disponible,2,",",".") . '%">'. setSemaphoreBadge($per_disponible,0, $_TIPO_RANGOS_CAPACIDAD, true).'</td>';
                                     }
                                     echo '</tr>';
                                 }
