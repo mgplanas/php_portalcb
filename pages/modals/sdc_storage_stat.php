@@ -30,7 +30,7 @@
                             asignado_tb, 
                             (asignado_tb*100/capacidad_asignable) as asignado_actual,
                             disponible_estimado,
-                            (asignado_tb - capacidad_asignable) as disponible_estimado_2
+                            (capacidad_asignable - asignado_tb) as disponible_estimado_2
                             FROM (
                             SELECT 
                                 sto_raw.categoria, 
