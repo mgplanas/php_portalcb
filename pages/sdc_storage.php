@@ -4,23 +4,28 @@ include("../conexion.php");
 
 $_TIPO_RANGOS_ASIGNADOS = 0;
 $_TIPO_RANGOS_OCUPADOS = 1;
+$_TIPO_RANGOS_CAPACIDAD = 2;
 
-function setSemaphoreBadge($value, $type, $formated) {
+function setSemaphoreBadge($semaphoreValue, $value, $type, $formated) {
 
-    global $_TIPO_RANGOS_ASIGNADOS, $_TIPO_RANGOS_OCUPADOS;
+    global $_TIPO_RANGOS_ASIGNADOS, $_TIPO_RANGOS_OCUPADOS, $_TIPO_RANGOS_CAPACIDAD;
 
     $fmt_value = ($formated ? number_format($value,2,",",".") : $value);
     $res = "";
     if ($type == $_TIPO_RANGOS_OCUPADOS) {
-        if ($value <= 60) {$res = '<span class="badge bg-green">'.$fmt_value.'</span>';}
-        elseif ($value <= 70) {$res = '<span class="badge bg-yellow">'.$fmt_value.'</span>';}
-        elseif ($value <= 80) {$res = '<span class="badge bg-orange">'.$fmt_value.'</span>';}
+        if ($semaphoreValue <= 60) {$res = '<span class="badge bg-green">'.$fmt_value.'</span>';}
+        elseif ($semaphoreValue <= 70) {$res = '<span class="badge bg-yellow">'.$fmt_value.'</span>';}
+        elseif ($semaphoreValue <= 80) {$res = '<span class="badge bg-orange">'.$fmt_value.'</span>';}
         else {$res = '<span class="badge bg-red">'.$fmt_value.'</span>';}
     } elseif ($type == $_TIPO_RANGOS_ASIGNADOS) {
-        if ($value <= 80) {$res = '<span class="badge bg-green">'.$fmt_value.'</span>';}
-        elseif ($value <= 100) {$res = '<span class="badge bg-yellow">'.$fmt_value.'</span>';}
-        elseif ($value <= 120) {$res = '<span class="badge bg-orange">'.$fmt_value.'</span>';}
+        if ($semaphoreValue <= 80) {$res = '<span class="badge bg-green">'.$fmt_value.'</span>';}
+        elseif ($semaphoreValue <= 100) {$res = '<span class="badge bg-yellow">'.$fmt_value.'</span>';}
+        elseif ($semaphoreValue <= 120) {$res = '<span class="badge bg-orange">'.$fmt_value.'</span>';}
         else {$res = '<span class="badge bg-red">'.$fmt_value.'</span>';}
+    } elseif ($type == $_TIPO_RANGOS_CAPACIDAD) {
+        if ($semaphoreValue <= 15) {$res = '<span class="badge bg-red">'.$fmt_value.'</span>';}
+        elseif ($semaphoreValue <= 25) {$res = '<span class="badge bg-yellow">'.$fmt_value.'</span>';}
+        else {$res = '<span class="badge bg-green">'.$fmt_value.'</span>';}
     }
 
     return $res;
@@ -245,6 +250,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             $fisico_utilizado_tb = $row['capacidad_fisica_tb'] * $row['per_fisico_ocupado'] / 100;
                             $capacidad_asig_max = ($row['asignado_tb'] > ($row['capacidad_fisica_tb']*$row['per_estimado_asignacion_max']/100) ? $row['asignado_tb'] : ($row['capacidad_fisica_tb']*$row['per_estimado_asignacion_max']/100));
                             $asignacion_disponible_est = $capacidad_asig_max - $row['asignado_tb'];
+                            $asignacion_disponible_est_formula = ( 1 - ($row['asignado_tb'] / $capacidad_asig_max)) * 100;
 							echo '<tr>';
 							echo '<td>'. $row['estado'].'</td>';
 							echo '<td>'. $row['nombre'].'</td>';
@@ -253,13 +259,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							echo '<td class="text-center">'. number_format($row['per_asignacion_recomendado'],2,",",".").'</td>';
 							echo '<td class="text-center">'. number_format($cap_asignable_tb,2,",",".") .'</td>';
 							echo '<td class="text-center">'. number_format($row['asignado_tb'],2,",",".").'</td>';
-							echo '<td class="text-center">'. setSemaphoreBadge($per_asignado_actual, $_TIPO_RANGOS_ASIGNADOS, true) .'</td>';
+							echo '<td class="text-center">'. setSemaphoreBadge($per_asignado_actual, $per_asignado_actual, $_TIPO_RANGOS_ASIGNADOS, true) .'</td>';
 							echo '<td class="text-center">'. number_format($asignacion_disponible,2,",",".") .'</td>';
-                            echo '<td class="text-center">'. setSemaphoreBadge($row['per_fisico_ocupado'], $_TIPO_RANGOS_OCUPADOS, true). '</td>';
+                            echo '<td class="text-center">'. setSemaphoreBadge($row['per_fisico_ocupado'],$row['per_fisico_ocupado'], $_TIPO_RANGOS_OCUPADOS, true). '</td>';
 							echo '<td class="text-center">'. number_format($fisico_utilizado_tb,2,",",".") .'</td>';
-							echo '<td class="text-center">'. setSemaphoreBadge($row['per_estimado_asignacion_max'], $_TIPO_RANGOS_ASIGNADOS, true).'</td>';
+							echo '<td class="text-center">'. setSemaphoreBadge($row['per_estimado_asignacion_max'],$row['per_estimado_asignacion_max'], $_TIPO_RANGOS_ASIGNADOS, true).'</td>';
 							echo '<td class="text-center">'. number_format($capacidad_asig_max,2,",",".") .'</td>';
-							echo '<td class="text-center">'. number_format($asignacion_disponible_est,2,",",".") .'</td>';
+							// echo '<td class="text-center">'. number_format($asignacion_disponible_est,2,",",".") .'</td>';
+							echo '<td class="text-center" title="' . number_format($asignacion_disponible_est_formula,2,",",".") . '%">'. setSemaphoreBadge($asignacion_disponible_est_formula, $asignacion_disponible_est, $_TIPO_RANGOS_CAPACIDAD, true) .'</td>';
                             
                             echo '<td align="center">';
                             
