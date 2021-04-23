@@ -29,7 +29,8 @@
                             capacidad_asignable, 
                             asignado_tb, 
                             (asignado_tb*100/capacidad_asignable) as asignado_actual,
-                            disponible_estimado
+                            disponible_estimado,
+                            (asignado_tb - capacidad_asignable) as disponible_estimado_2
                             FROM (
                             SELECT 
                                 sto_raw.categoria, 
@@ -56,14 +57,14 @@
                                 while($row = mysqli_fetch_assoc($sql)){
                                     $sum_cap_asignable += $row['capacidad_asignable'];
                                     $sum_asignado += $row['asignado_tb'];
-                                    $sum_disponible += $row['disponible_estimado'];
+                                    $sum_disponible += $row['disponible_estimado_2'];
                                     $per_disponible = (1-($row['asignado_tb']/$row['capacidad_asignable']))*100;
                                     echo '<tr>';
                                     echo '<td>'. $row['cat_nombre'].'</td>';
                                     echo '<td class="text-right">'. number_format($row['capacidad_asignable'],2,",",".").'</td>';
                                     echo '<td class="text-right">'. number_format($row['asignado_tb'],2,",",".").'</td>';
                                     echo '<td class="text-right">'. setSemaphoreBadge($row['asignado_actual'],$row['asignado_actual'], $_TIPO_RANGOS_ASIGNADOS, true).'</td>';
-                                    echo '<td class="text-right" title="' . number_format($per_disponible,2,",",".") . '%">'. setSemaphoreBadge($per_disponible,$row['disponible_estimado'], $_TIPO_RANGOS_CAPACIDAD, true).'</td>';
+                                    echo '<td class="text-right" title="' . number_format($per_disponible,2,",",".") . '%">'. setSemaphoreBadge($per_disponible,$row['disponible_estimado_2'], $_TIPO_RANGOS_CAPACIDAD, true).'</td>';
                                     echo '</tr>';
                                 }
                             }
