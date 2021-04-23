@@ -61,8 +61,8 @@
                                     echo '<td>'. $row['cat_nombre'].'</td>';
                                     echo '<td class="text-right">'. number_format($row['capacidad_asignable'],2,",",".").'</td>';
                                     echo '<td class="text-right">'. number_format($row['asignado_tb'],2,",",".").'</td>';
-                                    echo '<td class="text-right">'. setSemaphoreBadge($row['asignado_actual'], $_TIPO_RANGOS_ASIGNADOS, true).'</td>';
-                                    echo '<td class="text-right">'. setSemaphoreBadge($row['disponible_estimado'], $_TIPO_RANGOS_OCUPADOS, true).'</td>';
+                                    echo '<td class="text-right">'. setSemaphoreBadge($row['asignado_actual'],$row['asignado_actual'], $_TIPO_RANGOS_ASIGNADOS, true).'</td>';
+                                    echo '<td class="text-right">'. setSemaphoreBadge($row['disponible_estimado'],$row['disponible_estimado'], $_TIPO_RANGOS_OCUPADOS, true).'</td>';
                                     echo '</tr>';
                                 }
                             }
