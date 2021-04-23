@@ -23,7 +23,8 @@ function setSemaphoreBadge($semaphoreValue, $value, $type, $formated) {
         elseif ($semaphoreValue <= 120) {$res = '<span class="badge bg-orange">'.$fmt_value.'</span>';}
         else {$res = '<span class="badge bg-red">'.$fmt_value.'</span>';}
     } elseif ($type == $_TIPO_RANGOS_CAPACIDAD) {
-        if ($semaphoreValue <= 15) {$res = '<span class="badge bg-red">'.$fmt_value.'</span>';}
+        if ($semaphoreValue < 0) {$res = '<span class="badge bg-critical">'.$fmt_value.'</span>';}
+        elseif ($semaphoreValue <= 15) {$res = '<span class="badge bg-red">'.$fmt_value.'</span>';}
         elseif ($semaphoreValue <= 25) {$res = '<span class="badge bg-yellow">'.$fmt_value.'</span>';}
         else {$res = '<span class="badge bg-green">'.$fmt_value.'</span>';}
     }
@@ -100,6 +101,10 @@ $rq_sec = mysqli_fetch_assoc($q_sec);
    width: 50%;
    float: right;
    text-align: right;
+}
+
+.bg-critical {
+    background-color: #bb2017 !important;
 }
 </style>
 <!--
