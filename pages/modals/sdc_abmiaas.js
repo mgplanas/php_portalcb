@@ -9,7 +9,7 @@ $(function() {
         // ALTA
         // seteo boton trigger para el alta de gerencia
         $('#modal-abm-iaas-btn-alta').click(function() {
-            $('#modal-abm-iaas-title').html('Nueva Reserva de VRA');
+            $('#modal-abm-iaas-title').html('Nueva Reserva de IAAS');
             modalAbmLimpiarCampos();
             $('#modal-abm-iaas-submit').attr('name', 'A');
             $("#modal-abm-iaas").modal("show");
@@ -18,7 +18,7 @@ $(function() {
         // EDIT
         // seteo boton trigger para el edit de gerencia
         $('.modal-abm-iaas-btn-edit').click(function() {
-            $('#modal-abm-iaas-title').html('Editar Reserva de VRA');
+            $('#modal-abm-iaas-title').html('Editar Reserva de IAAS');
             modalAbmLimpiarCampos();
 
             $('#modal-abm-iaas-id').val($(this).data('id'));
