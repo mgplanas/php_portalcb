@@ -11,8 +11,13 @@ Módulode calendario de trabajo de la GTI
         -   Activacion de guardias
         -   Horas extra
         -   Tareas Programadas
+-   Extras:
+    -   Barra de disponibilidad
 
-
+[db]
+[code]
+- pages/adm_calendar.php
+- pages/helpers/adm_calendar.js
 
 ## FEAT-CTO-OBS
 Observaciones en vencimiento de contratos
