@@ -1,4 +1,19 @@
 # CHANGES
+## FEAT-GTI-CAL
+Módulode calendario de trabajo de la GTI
+*Fecha* 2021-04-28
+*Requerimiento*
+-   Crear un calendario donde figuren:
+    -   Esquema de Guardias
+    -   Vacaciones / Licencias
+    -   Feriados / DNL
+    -   Registro de horas
+        -   Activacion de guardias
+        -   Horas extra
+        -   Tareas Programadas
+
+
+
 ## FEAT-CTO-OBS
 Observaciones en vencimiento de contratos
 *Fecha* 2021-04-19
