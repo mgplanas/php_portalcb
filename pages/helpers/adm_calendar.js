@@ -232,7 +232,15 @@ const initializeCalendar = async(inicio, fin) => {
         dateClick: function(e) {
             console.log(e);
             alert(e);
-        }
+        },
+        selectable: true,
+        selectHelper: true,
+        selectAllow: selectInfo => selectInfo.resource.id.includes('_1'),
+        select: selectInfo => {
+            const id_person = selectInfo.resource._resource.parentId;
+            const resource = calendar.getTopLevelResources().find(resource => resource.id == id_person);
+            alert(`¿Está seguro de querer agregar una guardia a ${resource.title} desde ${selectInfo.startStr} hasta el ${selectInfo.endStr}?`);
+        },
     });
 
     calendar.render();
