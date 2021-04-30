@@ -38,6 +38,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <title>GITyS-ARSAT[<?=$page_title?>]</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
@@ -81,12 +82,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <link rel="stylesheet" href="../bower_components/fullcalendar/dist/packages/core/main.css">
 <link rel="stylesheet" href="../bower_components/fullcalendar/dist/packages-premium/timeline/main.css">
 <link rel="stylesheet" href="../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.css">
-
 <link href='../bower_components/fullcalendar/dist/packages/core/main.css' rel='stylesheet' />
 <link href='../bower_components/fullcalendar/dist/packages/daygrid/main.css' rel='stylesheet' />
 <link href='../bower_components/fullcalendar/dist/packages/timegrid/main.css' rel='stylesheet' />
 <link href='../bower_components/fullcalendar/dist/packages-premium/timeline/main.css' rel='stylesheet' />
 <link href='../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.css' rel='stylesheet' />
+
 <script src='../bower_components/fullcalendar/dist/packages/core/main.js'></script>
 <script src='../bower_components/fullcalendar/dist/packages/interaction/main.js'></script>
 <script src='../bower_components/fullcalendar/dist/packages/daygrid/main.js'></script>

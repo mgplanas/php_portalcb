@@ -16,8 +16,13 @@ Módulode calendario de trabajo de la GTI
 
 [db]
 [code]
-- pages/adm_calendar.php
-- pages/helpers/adm_calendar.js
+- pages/adm_calendar.php                    (full calendar)
+- pages/helpers/adm_calendar.js             (full calendar)
+- pages/adm_dnl.php                         (Gestion Días no laborables)
+- pages/modals/adm_dnl.php                  (Gestion Días no laborables)
+- pages/modals/adm_dnl.js                   (Gestion Días no laborables)
+- pages/helpers/adm_calendar_eventsdb.php   (ABM Eventos)
+- 
 
 ## FEAT-CTO-OBS
 Observaciones en vencimiento de contratos
