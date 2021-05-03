@@ -381,7 +381,7 @@ $(function() {
         $.ajax({
             type: 'POST',
             url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones, oculto FROM controls.cdc_costos_items WHERE nivel = 2 and borrado = 0 and parent =' + idcategoria },
+            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones, oculto FROM controls.cdc_costos_items WHERE nivel = 2 and borrado = 0 and parent =' + idcategoria + ' order by orden;' },
             dataType: 'json',
             success: function(json) {
                 myJsonData = json;
@@ -520,7 +520,7 @@ $(function() {
         $.ajax({
             type: 'POST',
             url: './helpers/getAsyncDataFromDB.php',
-            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones, oculto FROM controls.cdc_costos_items WHERE nivel = 3 and borrado = 0 and parent =' + idsubcategoria },
+            data: { query: 'SELECT id, parent, nivel, descripcion, unidad, costo_unidad, borrado, descripcion_item, observaciones, oculto FROM controls.cdc_costos_items WHERE nivel = 3 and borrado = 0 and parent =' + idsubcategoria + ' order by orden;' },
             dataType: 'json',
             success: function(json) {
                 myJsonData = json;
