@@ -78,6 +78,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
     }
 
   </style>
+  <style>
+    /* Guardias - DC */
+    .ar-tipo-2-subtipo-1 {
+        background-color: rgba(0, 255, 0, 0.5) !important;
+        border-color: green !important;
+        color: green !important;
+    }
+    /* Licencias - Vacaciones */
+    .ar-tipo-4-subtipo-1 {
+        background-color: rgba(255, 0,0, 0.5) !important;
+        border-color: red !important;
+        color: white !important;
+    }
+    .ar-tipo-4-subtipo-2 {
+        background-color: rgba(255, 0,0, 0.8) !important;
+        border-color: red !important;
+        color: white !important;
+    }
+
+  </style>
 <!-- fullCalendar -->
 <link rel="stylesheet" href="../bower_components/fullcalendar/dist/packages/core/main.css">
 <link rel="stylesheet" href="../bower_components/fullcalendar/dist/packages-premium/timeline/main.css">
@@ -95,6 +115,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src='../bower_components/fullcalendar/dist/packages-premium/timeline/main.js'></script>
 <script src='../bower_components/fullcalendar/dist/packages-premium/resource-common/main.js'></script>
 <script src='../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.js'></script>
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../bower_components/popper/popper.min.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 </head>
 <!--
@@ -166,6 +189,7 @@ desired effect
       </div>
       <!-- /.row -->
     </section>  
+    <?php include_once('./modals/adm_calendar_abmguardias.php'); ?>
     <!-- /.End content -->
   </div>
   <!-- Main Footer -->

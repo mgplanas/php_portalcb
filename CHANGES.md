@@ -1,4 +1,25 @@
 # CHANGES
+
+## FEAT-GTI-CAL-GUARDIAS
+ABM de guardias
+*Fecha* 2021-04-30
+*Requerimiento*
+-   ABM de guardias básico
+[db]
+- Creacion de tipos de guardias
+  CREATE TABLE controls.adm_guadias_tipos (
+   id INT AUTO_INCREMENT NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
+   horario_inicio TIME NOT NULL DEFAULT '17:30:00',
+   horario_fin TIME NOT NULL DEFAULT '09:00:00',
+   mismo_dia TINYINT NOT NULL DEFAULT '0',
+   color VARCHAR(20) NOT NULL DEFAULT 'black',
+   borrado INT NOT NULL DEFAULT '0',
+  PRIMARY KEY (id)
+) ENGINE = InnoDB ROW_FORMAT = DEFAULT;
+
+[code]
+- pages/modals/adm_calendar_abm_guardias.php
 ## FEAT-GTI-CAL
 Módulode calendario de trabajo de la GTI
 *Fecha* 2021-04-28
@@ -22,7 +43,6 @@ Módulode calendario de trabajo de la GTI
 - pages/modals/adm_dnl.php                  (Gestion Días no laborables)
 - pages/modals/adm_dnl.js                   (Gestion Días no laborables)
 - pages/helpers/adm_calendar_eventsdb.php   (ABM Eventos)
-- 
 
 ## FEAT-CTO-OBS
 Observaciones en vencimiento de contratos

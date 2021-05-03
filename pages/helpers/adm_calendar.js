@@ -10,6 +10,106 @@ var fin = new Date();
 
 
 
+
+/***************************************************************************************
+ * Renderizacion Evento Guardia
+ * @author MVGP
+ ****************************************************************************************/
+const renderEvents = eventInfo => {
+    // TODO hacer un switch por tipo de evento (evento.extendedProps.tipo/subtipo)
+    //eventInfo.el.innerHTML = '<div class="ar-guardia">' + eventInfo.event.title + '<br><small>pepepeep</small></div>';
+    // console.log($(eventInfo.el));
+    // console.log($(eventInfo.el).parent());
+    // console.log($(eventInfo.el).parent().parent());
+    //$(eventInfo.el).closest('div')
+    $(eventInfo.el).tooltip({ title: eventInfo.event.title });
+    return;
+}
+
+
+/***************************************************************************************
+ * Guardar guardia
+ * @author MVGP
+ ****************************************************************************************/
+const submitGuardia = () => {
+    let operacion = $('#modal-abm-cal-guardias-submit').attr('name');
+    let id = $('#modal-abm-cal-guardias-id').val();
+    let id_persona = $('#modal-abm-cal-guardias-id-persona').val();
+    let subtipo = $('#modal-abm-cal-guardias-tipo').val();
+    let color = $('#modal-abm-cal-guardias-tipo option:selected').data('color');
+    let fecha_inicio = $('#modal-abm-cal-guardias-inicio').val().split('/').reverse().join("-");
+    let fecha_fin = $('#modal-abm-cal-guardias-fin').val().split('/').reverse().join("-");
+    let descripcion = $('#modal-abm-cal-guardias-tipo option:selected').text();
+    let observaciones = $('#modal-abm-cal-guardias-observaciones').val();
+    // Ejecuto
+    $.ajax({
+        type: 'POST',
+        url: './helpers/adm_calendar_eventsdb.php',
+        dataType: 'json',
+        data: {
+            operacion,
+            id,
+            subtipo,
+            id_persona,
+            color,
+            fecha_inicio,
+            fecha_fin,
+            descripcion,
+            observaciones,
+            tipo: 2,
+            estado: 1,
+            is_all_day: 1,
+            is_background: 0,
+            is_programmed: 0,
+        },
+        success: json => {
+            $("#modal-abm-cal-guardias").modal("hide");
+            if (!json.ok) {
+                alert(json.err);
+            }
+            calendar.refetchEvents();
+        },
+        error: (xhr, status, error) => {
+            alert(xhr.responseText, error);
+            calendar.refetchEvents();
+        }
+    });
+
+}
+
+/***************************************************************************************
+ * limpiar los campos del modal
+ * @author MVGP
+ ****************************************************************************************/
+const modalABMGuardiasLimpiarCampos = () => {
+    $('#modal-abm-cal-guardias-id').val(0);
+    $('#modal-abm-cal-guardias-id-persona').val('');
+    $('#modal-abm-cal-guardias-tipo').val(1).change();
+    $('#modal-abm-cal-guardias-inicio').val('');
+    $('#modal-abm-cal-guardias-fin').val('');
+    $('#modal-abm-cal-guardias-observaciones').val('');
+}
+
+/***************************************************************************************
+ * agregar Guardia para un recurso
+ * @param Resource resource - Recurso del calendario que representa a la persona
+ * @param Date inicio - inicio del rango de búsqueda
+ * @param Date fin - fin del rango de búsqueda
+ * @author MVGP
+ ****************************************************************************************/
+const agregarGuardiaRecurso = (resource, inicio, fin) => {
+    $('#modal-abm-cal-guardias-title').html(`${resource.title} <small>agregar período de guardia</small>`);
+    modalABMGuardiasLimpiarCampos();
+    $('#modal-abm-cal-guardias-id-persona').val(resource.id);
+    $('#modal-abm-cal-guardias-inicio').val(inicio.toISOString().slice(0, 10).split('-').reverse().join('/'));
+    $('#modal-abm-cal-guardias-fin').val(fin.toISOString().slice(0, 10).split('-').reverse().join('/'));
+    $('#modal-abm-cal-guardias-submit').attr('name', 'A');
+
+    $("#modal-abm-cal-guardias").modal("show");
+}
+
+
+
 /***************************************************************************************
  * Obtener los eventos del rango seleccionado
  * @param callback handleData - Callback del calendario
@@ -35,23 +135,25 @@ const getEvents = (handleData, inicio, fin, area) => {
         function(response) {
             let events = [];
             $.each(response.data, (idx, ev) => {
+                const specificClassName = `ar-tipo-${ev.tipo}-subtipo-${ev.subtipo}`;
                 const Evento = {
                     id: ev.id,
-                    backgroundColor: ev.color,
-                    color: ev.color,
                     start: ev.fecha_inicio,
                     end: ev.fecha_fin,
                     allDay: ev.is_all_day == 1,
                     title: ev.descripcion,
                     textEscape: false,
-                    classNames: ['modal-abm-licencia-btn-edit'],
+                    classNames: ['modal-abm-licencia-btn-edit', specificClassName],
                     display: (ev.is_background == 1 ? 'background' : 'auto'),
                     extendedProps: {
-                        obs: ev.observaciones
+                        obs: ev.observaciones,
+                        tipo: ev.tipo,
+                        subtipo: ev.subtipo,
                     },
                 };
                 if (ev.id_persona) {
-                    Evento.resourceId = ev.id_persona;
+                    // Evento.resourceId = ev.id_persona;
+                    Evento.resourceId = ev.id_persona + '_' + ev.tipo;
                 }
                 events.push(Evento);
             });
@@ -88,10 +190,13 @@ const getResources = (handleData, area) => {
                 res.push({
                     id: resource.id_persona,
                     title: resource.apellido + ', ' + resource.nombre,
+                    eventBackgroundColor: 'green',
+                    eventBorderColor: 'black',
+                    eventTextColor: 'white',
                     children: [
-                        { id: resource.id_persona + '_1', title: 'Guardias' },
-                        { id: resource.id_persona + '_2', title: 'Activaciones' },
-                        { id: resource.id_persona + '_3', title: 'Vacaciones' },
+                        { id: resource.id_persona + '_2', title: 'Guardias' },
+                        { id: resource.id_persona + '_3', title: 'Activaciones' },
+                        { id: resource.id_persona + '_4', title: 'Licencias' },
                     ],
                     area: (resource.subgerencia ? resource.subgerencia : 'Sin asignar') + (resource.area ? ' - ' + resource.area : '')
                 });
@@ -152,6 +257,7 @@ const initializeCalendar = async(inicio, fin) => {
         buttonText: { // traducción de texto
             'today': 'Mes actual'
         },
+        eventOverlap: true,
         editable: false, // No permito drag
         aspectRatio: 1, // aspecto
         scrollTime: '00:00',
@@ -160,7 +266,7 @@ const initializeCalendar = async(inicio, fin) => {
         defaultView: 'monthview',
         displayEventTime: false, // sólo días sin hora
         header: { // Configuro los botones del header
-            right: 'today prev,next',
+            right: 'today prev,next'
         },
         duration: { months: 1 }, // configuro el tamaño de los pasos prev y next
         dayRender: dateInfo => { // renderizo los días según si es feriado o no
@@ -229,17 +335,19 @@ const initializeCalendar = async(inicio, fin) => {
             let end = fetchInfo.end || fin;
             getEvents(events => successCallback(events), start, end, 7);
         },
+        eventRender: (eventInfo) => renderEvents(eventInfo),
         dateClick: function(e) {
             console.log(e);
             alert(e);
         },
         selectable: true,
         selectHelper: true,
-        selectAllow: selectInfo => selectInfo.resource.id.includes('_1'),
+        selectAllow: selectInfo => selectInfo.resource.id.includes('_2'),
         select: selectInfo => {
             const id_person = selectInfo.resource._resource.parentId;
             const resource = calendar.getTopLevelResources().find(resource => resource.id == id_person);
-            alert(`¿Está seguro de querer agregar una guardia a ${resource.title} desde ${selectInfo.startStr} hasta el ${selectInfo.endStr}?`);
+            agregarGuardiaRecurso(resource, selectInfo.start, selectInfo.end);
+            //alert(`¿Está seguro de querer agregar una guardia a ${resource.title} desde ${selectInfo.startStr} hasta el ${selectInfo.endStr}?`);
         },
     });
 
@@ -248,28 +356,13 @@ const initializeCalendar = async(inicio, fin) => {
 }
 
 // getDNLs((dnls) => calendar = initializeCalendar(dnls));
-initializeCalendar(inicio, fin);
+initializeCalendar(inicio, fin)
+    .then(cal => calendar = cal);
 
 
 $(function() {
 
-    // function editarLicencia(lic) {
-    //     $('#modal-abm-licencia-title').html('Editar Registro');
-    //     // $('#modal-abm-licencia-rowindex').val($(this).parents('tr').index());
-    //     modalAbmlicenciaLimpiarCampos();
-    //     $('#modal-abm-licencia-id').val(lic.id);
-    //     $('#modal-abm-licencia-id-persona').val(lic.idPersona).change();
-    //     $('#modal-abm-licencia-inicio').val(lic.inicio);
-    //     $('#modal-abm-licencia-fin').val(lic.fin);
-    //     $('#modal-abm-licencia-color').val(lic.color);
-    //     $('#modal-abm-licencia-obs').val(lic.obs);
-    //     $('#modal-abm-licencia-estado').val(lic.status).change();
-    //     $('#modal-abm-licencia-delete').show();
-    //     $('#modal-abm-licencia-submit').attr('name', 'M');
-
-    //     $("#modal-abm-licencia").modal("show");
-    // }
-
+    $('#modal-abm-cal-guardias-submit').on('click', submitGuardia);
     $('#modal-abm-licencia-btn-alta').on('click', () => {
         calendar.refetchEvents();
     });
