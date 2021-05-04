@@ -10,21 +10,21 @@ if (!isset($_SESSION['usuario'])){
 $page_title="Calendario";
 $user=$_SESSION['usuario'];
 
-$
-
 //Get user query
-$persona = mysqli_query($con, "SELECT per.id_persona,per.apellido, per.gerencia, per.subgerencia, per.area, 
-    CASE WHEN per.id_persona = g.responsable THEN 1 ELSE 0 END as es_gerente,
-    CASE WHEN per.id_persona = s.responsable THEN 1 ELSE 0 END as es_subgerente,
-    CASE WHEN per.id_persona = a.responsable THEN 1 ELSE 0 END as es_jefe,
-    g.responsable as gerente, 
-    s.responsable as subgerente, 
-    a.responsable as jefe
-    FROM persona as per 
-    LEFT JOIN area as a on per.area = a.id_area
-    LEFT JOIN subgerencia as s on per.subgerencia = s.id_subgerencia
-    LEFT JOIN gerencia as g on per.gerencia = g.id_gerencia
-    WHERE per.email='$user' AND per.borrado=0;");
+$per_query = "SELECT per.id_persona,per.apellido, per.gerencia, per.subgerencia, per.area, 
+CASE WHEN per.id_persona = g.responsable THEN 1 ELSE 0 END as es_gerente,
+CASE WHEN per.id_persona = s.responsable THEN 1 ELSE 0 END as es_subgerente,
+CASE WHEN per.id_persona = a.responsable THEN 1 ELSE 0 END as es_jefe,
+g.responsable as gerente, 
+s.responsable as subgerente, 
+a.responsable as jefe
+FROM persona as per 
+LEFT JOIN area as a on per.area = a.id_area
+LEFT JOIN subgerencia as s on per.subgerencia = s.id_subgerencia
+LEFT JOIN gerencia as g on per.gerencia = g.id_gerencia
+WHERE per.email='$user' AND per.borrado=0;";
+
+$persona = mysqli_query($con, $per_query);
 $rowp = mysqli_fetch_assoc($persona);
 $id_rowp = $rowp['id_persona'];
 

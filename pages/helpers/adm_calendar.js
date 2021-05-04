@@ -123,39 +123,61 @@ const getEvents = (handleData, inicio, fin, area) => {
     let start = inicio.toISOString().slice(0, 10);
     let end = fin.toISOString().slice(0, 10);
     let sql = `
-    SELECT ev.*, per.*
+    SELECT ev.*, per.nombre, per.apellido, per.cargo
     FROM adm_eventos_cal as ev
-    LEFT JOIN persona as per ON ev.id_persona = per.id_persona
+    LEFT JOIN persona as per ON ev.id_persona = per.id_persona AND per.area = ${area}
     LEFT JOIN subgerencia as sub ON per.subgerencia = sub.id_subgerencia
     LEFT JOIN area as ar ON per.area = ar.id_area
     WHERE NOT (ev.fecha_inicio > '${end}' OR ev.fecha_fin < '${start}')
-    AND per.area = ${area}
     AND ev.borrado = 0;`;
     $.getJSON("./helpers/getAsyncDataFromDB.php", { query: sql },
         function(response) {
             let events = [];
             $.each(response.data, (idx, ev) => {
-                const specificClassName = `ar-tipo-${ev.tipo}-subtipo-${ev.subtipo}`;
-                const Evento = {
-                    id: ev.id,
-                    start: ev.fecha_inicio,
-                    end: ev.fecha_fin,
-                    allDay: ev.is_all_day == 1,
-                    title: ev.descripcion,
-                    textEscape: false,
-                    classNames: ['modal-abm-licencia-btn-edit', specificClassName],
-                    display: (ev.is_background == 1 ? 'background' : 'auto'),
-                    extendedProps: {
-                        obs: ev.observaciones,
-                        tipo: ev.tipo,
-                        subtipo: ev.subtipo,
-                    },
-                };
-                if (ev.id_persona) {
-                    // Evento.resourceId = ev.id_persona;
-                    Evento.resourceId = ev.id_persona + '_' + ev.tipo;
+
+                // SI es un evento de feriado
+                // TODO: Hacer con eventSources (https://stackoverflow.com/questions/7778318/multiple-eventsources-with-jquery-fullcalendar)
+                if (ev.tipo == 1) {
+                    const specificClassName = `ar-tipo-${ev.tipo}-subtipo-${ev.subtipo}`;
+                    const Evento = {
+                        id: ev.id,
+                        start: ev.fecha_inicio,
+                        end: ev.fecha_inicio,
+                        allDay: true,
+                        title: ev.descripcion,
+                        textEscape: false,
+                        classNames: 'fc-nonbusiness',
+                        rendering: 'background',
+                        extendedProps: {
+                            obs: ev.observaciones,
+                            tipo: ev.tipo,
+                            subtipo: ev.subtipo,
+                        },
+                    };
+                    events.push(Evento);
+                } else {
+                    const specificClassName = `ar-tipo-${ev.tipo}-subtipo-${ev.subtipo}`;
+                    const Evento = {
+                        id: ev.id,
+                        start: ev.fecha_inicio,
+                        end: ev.fecha_fin,
+                        allDay: ev.is_all_day == 1,
+                        title: ev.descripcion,
+                        textEscape: false,
+                        classNames: ['modal-abm-licencia-btn-edit', specificClassName],
+                        rendering: (ev.is_background == 1 ? 'background' : 'auto'),
+                        extendedProps: {
+                            obs: ev.observaciones,
+                            tipo: ev.tipo,
+                            subtipo: ev.subtipo,
+                        },
+                    };
+                    if (ev.id_persona && ev.id_persona > 0) {
+                        // Evento.resourceId = ev.id_persona;
+                        Evento.resourceId = ev.id_persona + '_' + ev.tipo;
+                    }
+                    events.push(Evento);
                 }
-                events.push(Evento);
             });
             handleData(events);
         }
@@ -213,29 +235,29 @@ const getResources = (handleData, area) => {
  * @author MVGP
  * @returns Date[] - número de días no laborables
  ****************************************************************************************/
-const getDNLs = async() => {
+// const getDNLs = async() => {
 
-    let dnls = [];
-    let start = new Date((new Date().getFullYear()) - 1, 0, 1).toISOString().slice(0, 10);
-    console.log(start);
-    let sql = `
-        SELECT fecha_inicio, descripcion
-        FROM adm_eventos_cal 
-        WHERE fecha_inicio >= '${start}' 
-        AND tipo = 1
-        AND borrado = 0;`;
+//     let dnls = [];
+//     let start = new Date((new Date().getFullYear()) - 1, 0, 1).toISOString().slice(0, 10);
+//     console.log(start);
+//     let sql = `
+//         SELECT fecha_inicio, descripcion
+//         FROM adm_eventos_cal 
+//         WHERE fecha_inicio >= '${start}' 
+//         AND tipo = 1
+//         AND borrado = 0;`;
 
-    try {
-        const { data } = await $.getJSON("./helpers/getAsyncDataFromDB.php", { query: sql });
-        data.map(dia => dnls.push(dia));;
-        return dnls;
+//     try {
+//         const { data } = await $.getJSON("./helpers/getAsyncDataFromDB.php", { query: sql });
+//         data.map(dia => dnls.push(dia));;
+//         return dnls;
 
-    } catch (error) {
-        return dnls;
-    }
+//     } catch (error) {
+//         return dnls;
+//     }
 
 
-}
+// }
 
 /***************************************************************************************
  * Inicialización de calendario
@@ -243,10 +265,10 @@ const getDNLs = async() => {
  * @param Date fin - fin del rango 
  * @author MVGP
  ****************************************************************************************/
-const initializeCalendar = async(inicio, fin) => {
+const initializeCalendar = (inicio, fin) => {
 
     // Busco los feriado
-    const dnls = await getDNLs();
+    // const dnls = await getDNLs();
 
     inicio.setDate(today.getDate() - 15);
     fin.setDate(today.getDate() + 15);
@@ -269,9 +291,9 @@ const initializeCalendar = async(inicio, fin) => {
             right: 'today prev,next'
         },
         duration: { months: 1 }, // configuro el tamaño de los pasos prev y next
-        dayRender: dateInfo => { // renderizo los días según si es feriado o no
-            if (dnls.find(dnl => dnl.fecha_inicio.slice(0, 10) === dateInfo.date.toISOString().slice(0, 10))) dateInfo.el.bgColor = '#cccccc';
-        },
+        // dayRender: dateInfo => { // renderizo los días según si es feriado o no
+        //     if (dnls.find(dnl => dnl.fecha_inicio.slice(0, 10) === dateInfo.date.toISOString().slice(0, 10))) dateInfo.el.bgColor = '#cccccc';
+        // },
         views: {
             monthview: {
                 type: 'resourceTimeline',
@@ -356,8 +378,8 @@ const initializeCalendar = async(inicio, fin) => {
 }
 
 // getDNLs((dnls) => calendar = initializeCalendar(dnls));
-initializeCalendar(inicio, fin)
-    .then(cal => calendar = cal);
+calendar = initializeCalendar(inicio, fin)
+    // .then(cal => calendar = cal);
 
 
 $(function() {
