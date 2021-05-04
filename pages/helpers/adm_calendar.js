@@ -1,14 +1,11 @@
 // Calendar instantiation
 var calendarEl = document.getElementById('calendar');
 var calendar;
-var dnls = [];
 
 // Default dates range
 var today = new Date();
 var inicio = new Date();
 var fin = new Date();
-
-
 
 
 /***************************************************************************************
@@ -231,35 +228,6 @@ const getResources = (handleData, area) => {
 }
 
 /***************************************************************************************
- * Obtener los días no laborables desde el año pasado para no tener que ir pidiendo contantemente
- * @author MVGP
- * @returns Date[] - número de días no laborables
- ****************************************************************************************/
-// const getDNLs = async() => {
-
-//     let dnls = [];
-//     let start = new Date((new Date().getFullYear()) - 1, 0, 1).toISOString().slice(0, 10);
-//     console.log(start);
-//     let sql = `
-//         SELECT fecha_inicio, descripcion
-//         FROM adm_eventos_cal 
-//         WHERE fecha_inicio >= '${start}' 
-//         AND tipo = 1
-//         AND borrado = 0;`;
-
-//     try {
-//         const { data } = await $.getJSON("./helpers/getAsyncDataFromDB.php", { query: sql });
-//         data.map(dia => dnls.push(dia));;
-//         return dnls;
-
-//     } catch (error) {
-//         return dnls;
-//     }
-
-
-// }
-
-/***************************************************************************************
  * Inicialización de calendario
  * @param Date inicio - inicio del rango 
  * @param Date fin - fin del rango 
@@ -377,9 +345,7 @@ const initializeCalendar = (inicio, fin) => {
     return calendar;
 }
 
-// getDNLs((dnls) => calendar = initializeCalendar(dnls));
-calendar = initializeCalendar(inicio, fin)
-    // .then(cal => calendar = cal);
+calendar = initializeCalendar(inicio, fin);
 
 
 $(function() {
