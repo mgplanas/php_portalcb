@@ -111,6 +111,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
         color: green !important;
         /* opacity: 0.5; */
     }
+    /* Guardias - DC */
+    .ar-tipo-3-subtipo-1 {
+        background-color: rgba(0, 0, 255, 0.7) !important;
+        border-color: blue !important;
+        color: white !important;
+        border-radius: 6px !important;
+        /* opacity: 0.5; */
+    }
     /* Licencias - Vacaciones */
     .ar-tipo-4-subtipo-1 {
         background-color: rgba(255, 0,0, 0.8) !important;

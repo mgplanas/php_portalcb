@@ -12,7 +12,7 @@ var fin = new Date();
  * Renderizacion Evento Guardia
  * @author MVGP
  ****************************************************************************************/
-const renderEvents = info => {
+const eventRender = info => {
     // TODO hacer un switch por tipo de evento (evento.extendedProps.tipo/subtipo)
     //eventInfo.el.innerHTML = '<div class="ar-guardia">' + eventInfo.event.title + '<br><small>pepepeep</small></div>';
     // console.log($(eventInfo.el));
@@ -29,6 +29,24 @@ const renderEvents = info => {
         content: info.event.title + ":" + info.event.start + " to " + info.event.end,
         container: 'body'
     }).popover('show');
+
+    $(info.el).css('cursor', 'pointer');
+    return;
+}
+
+/***************************************************************************************
+ * Renderizacion de los recursos
+ * @author MVGP
+ ****************************************************************************************/
+const resourceRender = info => {
+    const { resource, el } = info;
+
+    el.addEventListener('click', () => {
+        console.log(resource);
+        if (confirm('Are you sure you want to delete ' + resource.title + '?')) {
+            resource.remove();
+        }
+    });
     return;
 }
 
@@ -135,7 +153,8 @@ const getEvents = (handleData, inicio, fin, area) => {
     LEFT JOIN subgerencia as sub ON per.subgerencia = sub.id_subgerencia
     LEFT JOIN area as ar ON per.area = ar.id_area
     WHERE NOT (ev.fecha_inicio > '${end}' OR ev.fecha_fin < '${start}')
-    AND ev.borrado = 0;`;
+    AND ev.borrado = 0
+    ORDER BY ev.tipo, ev.subtipo;`;
     $.getJSON("./helpers/getAsyncDataFromDB.php", { query: sql },
         function(response) {
             let events = [];
@@ -179,8 +198,8 @@ const getEvents = (handleData, inicio, fin, area) => {
                         },
                     };
                     if (ev.id_persona && ev.id_persona > 0) {
-                        // Evento.resourceId = ev.id_persona;
-                        Evento.resourceId = ev.id_persona + '_' + ev.tipo;
+                        Evento.resourceId = ev.id_persona;
+                        // Evento.resourceId = ev.id_persona + '_' + ev.tipo;
                     }
                     events.push(Evento);
                 }
@@ -221,11 +240,11 @@ const getResources = (handleData, area) => {
                     eventBackgroundColor: 'green',
                     eventBorderColor: 'black',
                     eventTextColor: 'white',
-                    children: [
-                        { id: resource.id_persona + '_2', title: 'Guardias' },
-                        { id: resource.id_persona + '_3', title: 'Activaciones' },
-                        { id: resource.id_persona + '_4', title: 'Licencias' },
-                    ],
+                    // children: [
+                    //     { id: resource.id_persona + '_2', title: 'Guardias' },
+                    //     { id: resource.id_persona + '_3', title: 'Activaciones' },
+                    //     { id: resource.id_persona + '_4', title: 'Licencias' },
+                    // ],
                     area: (resource.subgerencia ? resource.subgerencia : 'Sin asignar') + (resource.area ? ' - ' + resource.area : '')
                 });
             });
@@ -242,7 +261,7 @@ const getResources = (handleData, area) => {
  * @param Date fin - fin del rango 
  * @author MVGP
  ****************************************************************************************/
-const initializeCalendar = (inicio, fin) => {
+const initializeCalendar = async(inicio, fin) => {
 
     // Busco los feriado
     // const dnls = await getDNLs();
@@ -268,9 +287,6 @@ const initializeCalendar = (inicio, fin) => {
             right: 'today prev,next'
         },
         duration: { months: 1 }, // configuro el tamaño de los pasos prev y next
-        // dayRender: dateInfo => { // renderizo los días según si es feriado o no
-        //     if (dnls.find(dnl => dnl.fecha_inicio.slice(0, 10) === dateInfo.date.toISOString().slice(0, 10))) dateInfo.el.bgColor = '#cccccc';
-        // },
         views: {
             monthview: {
                 type: 'resourceTimeline',
@@ -314,15 +330,7 @@ const initializeCalendar = (inicio, fin) => {
         refetchResourcesOnNavigate: false,
         resourceLabelText: 'Personas',
         resourceAreaWidth: '25%',
-        resourceRender: function(arg) {
-            var resource = arg.resource;
-
-            arg.el.addEventListener('click', function() {
-                if (confirm('Are you sure you want to delete ' + resource.title + '?')) {
-                    resource.remove();
-                }
-            });
-        },
+        resourceRender: (eventInfo) => resourceRender(eventInfo),
         resourceGroupField: 'area',
         resourceOrder: 'area,id,title',
         resources: (fetchInfo, successCallback, failureCallback) =>
@@ -334,7 +342,7 @@ const initializeCalendar = (inicio, fin) => {
             let end = fetchInfo.end || fin;
             getEvents(events => successCallback(events), start, end, 7);
         },
-        eventRender: (eventInfo) => renderEvents(eventInfo),
+        eventRender: (eventInfo) => eventRender(eventInfo),
         dateClick: function(e) {
             console.log(e);
             alert(e);
@@ -354,7 +362,8 @@ const initializeCalendar = (inicio, fin) => {
     return calendar;
 }
 
-calendar = initializeCalendar(inicio, fin);
+initializeCalendar(inicio, fin)
+    .then((cal) => calendar = cal);
 
 
 $(function() {
