@@ -129,7 +129,7 @@
             <li><a href="sdc_hosting.php"><i class="fa fa-server"></i> Hosting</a></li>
             <li><a href="sdc_iaas.php"><i class="fa fa-cloud"></i> IAAS</a></li>
             <li><a href="sdc_correo.php"><i class="fa fa-envelope"></i> Correo</a></li>
-            <li><a href="sdc_storage.php"><i class="fa fa-database"></i> Storage</a></li>
+            <!-- <li><a href="sdc_storage.php"><i class="fa fa-database"></i> Storage</a></li> -->
           </ul>
         </li>
       </ul>
