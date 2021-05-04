@@ -12,14 +12,23 @@ var fin = new Date();
  * Renderizacion Evento Guardia
  * @author MVGP
  ****************************************************************************************/
-const renderEvents = eventInfo => {
+const renderEvents = info => {
     // TODO hacer un switch por tipo de evento (evento.extendedProps.tipo/subtipo)
     //eventInfo.el.innerHTML = '<div class="ar-guardia">' + eventInfo.event.title + '<br><small>pepepeep</small></div>';
     // console.log($(eventInfo.el));
     // console.log($(eventInfo.el).parent());
     // console.log($(eventInfo.el).parent().parent());
     //$(eventInfo.el).closest('div')
-    $(eventInfo.el).tooltip({ title: eventInfo.event.title });
+    if (info.event.rendering === 'background') {
+        info.el.innerHTML = '<div style="padding: 3px;">' + info.event.title; + '</div>'
+    }
+    $(info.el).popover({
+        title: info.event.title,
+        placement: 'top',
+        trigger: 'hover',
+        content: info.event.title + ":" + info.event.start + " to " + info.event.end,
+        container: 'body'
+    }).popover('show');
     return;
 }
 

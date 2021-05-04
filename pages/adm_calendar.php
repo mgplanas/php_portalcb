@@ -70,6 +70,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
   
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+  <!-- FullCalendar -->
+  <link rel="stylesheet" href="../bower_components/fullcalendar/dist/packages/core/main.css">
+  <link rel="stylesheet" href="../bower_components/fullcalendar/dist/packages-premium/timeline/main.css">
+  <link rel="stylesheet" href="../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.css">
+  <link href='../bower_components/fullcalendar/dist/packages/core/main.css' rel='stylesheet' />
+  <link href='../bower_components/fullcalendar/dist/packages/daygrid/main.css' rel='stylesheet' />
+  <link href='../bower_components/fullcalendar/dist/packages/timegrid/main.css' rel='stylesheet' />
+  <link href='../bower_components/fullcalendar/dist/packages-premium/timeline/main.css' rel='stylesheet' />
+  <link href='../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.css' rel='stylesheet' />
+
   <style>
     .example-modal .modal {
       position: relative;
@@ -95,32 +106,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <style>
     /* Guardias - DC */
     .ar-tipo-2-subtipo-1 {
-        background-color: rgba(0, 255, 0, 0.5) !important;
+        background-color: rgba(0, 255, 0,0.7) !important;
         border-color: green !important;
         color: green !important;
+        /* opacity: 0.5; */
     }
     /* Licencias - Vacaciones */
     .ar-tipo-4-subtipo-1 {
-        background-color: rgba(255, 0,0, 0.5) !important;
+        background-color: rgba(255, 0,0, 0.8) !important;
         border-color: red !important;
         color: white !important;
     }
     .ar-tipo-4-subtipo-2 {
-        background-color: rgba(255, 0,0, 0.8) !important;
+        background-color: rgba(255, 0,0, 0.7) !important;
         border-color: red !important;
         color: white !important;
     }
 
   </style>
 <!-- fullCalendar -->
-<link rel="stylesheet" href="../bower_components/fullcalendar/dist/packages/core/main.css">
-<link rel="stylesheet" href="../bower_components/fullcalendar/dist/packages-premium/timeline/main.css">
-<link rel="stylesheet" href="../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.css">
-<link href='../bower_components/fullcalendar/dist/packages/core/main.css' rel='stylesheet' />
-<link href='../bower_components/fullcalendar/dist/packages/daygrid/main.css' rel='stylesheet' />
-<link href='../bower_components/fullcalendar/dist/packages/timegrid/main.css' rel='stylesheet' />
-<link href='../bower_components/fullcalendar/dist/packages-premium/timeline/main.css' rel='stylesheet' />
-<link href='../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.css' rel='stylesheet' />
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 
 <script src='../bower_components/fullcalendar/dist/packages/core/main.js'></script>
 <script src='../bower_components/fullcalendar/dist/packages/interaction/main.js'></script>
@@ -129,9 +134,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src='../bower_components/fullcalendar/dist/packages-premium/timeline/main.js'></script>
 <script src='../bower_components/fullcalendar/dist/packages-premium/resource-common/main.js'></script>
 <script src='../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.js'></script>
-<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-<script src="../bower_components/popper/popper.min.js"></script>
-<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.bundle.min"></script>
 
 </head>
 <!--
