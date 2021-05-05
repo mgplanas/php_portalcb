@@ -80,6 +80,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link href='../bower_components/fullcalendar/dist/packages/timegrid/main.css' rel='stylesheet' />
   <link href='../bower_components/fullcalendar/dist/packages-premium/timeline/main.css' rel='stylesheet' />
   <link href='../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.css' rel='stylesheet' />
+  <!-- <link rel="stylesheet" href="../css/bootstrap-select.min.css"> -->
 
   <style>
     .example-modal .modal {
@@ -131,6 +132,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
         color: white !important;
     }
 
+    /* FIX FontAwesome */
+    .fc-icon-fa {
+        font-family: FontAwesome !important;
+    }
+
   </style>
 <!-- fullCalendar -->
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
@@ -142,7 +148,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src='../bower_components/fullcalendar/dist/packages-premium/timeline/main.js'></script>
 <script src='../bower_components/fullcalendar/dist/packages-premium/resource-common/main.js'></script>
 <script src='../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.js'></script>
-<script src="../bower_components/bootstrap/dist/js/bootstrap.bundle.min"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
 <!--
@@ -180,14 +186,19 @@ desired effect
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <div class="col-md-4 ">
-            <h2>Calendario Vacaciones</h2>
-        </div>
-        <div class="col-md-8 text-right align-center">
-            <button type="button" 
-                id="modal-abm-licencia-btn-alta" 
-                class="btn-sm btn-primary" 
-                data-target="#modal-abm-licencia"><i class="fa fa-plane"></i> Nuevo registro de vacaciones</button>
+        <div class="row">
+
+            <div class="col-md-4 ">
+                <h2>Calendario Vacaciones</h2>
+            </div>
+            <div class="col-md-8 text-right " style="margin-top: 20px;" >
+                <div class="btn-group">
+                    <button type="button" 
+                            id="modal-abm-guardias-btn-def" 
+                            class="btn btn-default"
+                            data-target="#modal-abm-licencia"><i class="fa fa-user"></i> Definir guardias</button>
+                </div>
+            </div>
         </div>
     </section>
     <!-- Main content -->
@@ -214,7 +225,8 @@ desired effect
       </div>
       <!-- /.row -->
     </section>  
-    <?php include_once('./modals/adm_calendar_abmguardias.php'); ?>
+    <?php include_once('./calendar/guardias/guardia_simple.modal.php'); ?>
+    <?php include_once('./calendar/guardias/guardia_multiple.modal.php'); ?>
     <!-- /.End content -->
   </div>
   <!-- Main Footer -->
@@ -252,8 +264,9 @@ desired effect
 <script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
 <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- <script src="../js/bootstrap-select.min.js"></script> -->
 <!-- custom scripts --> 
 <!-- <script type="text/javascript" src="../js/script.js"></script>  -->
-<script src="./helpers/adm_calendar.js"></script>
+<script type="module" src="./helpers/adm_calendar.js"></script>
 </body>
 </html>

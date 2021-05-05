@@ -22,7 +22,7 @@
                                 <?php
                                     $tipo = mysqli_query($con, "SELECT * FROM adm_guardias_tipos WHERE borrado = 0;"); 
                                     while($row = mysqli_fetch_assoc($tipo)){
-                                        echo "<option data-color=". $row['color']." value=". $row['id'] . ">" . $row['nombre'] . ' - [' . substr($row['horario_inicio'],0,5) . '-' . substr($row['horario_fin'],0,5) . "]</option>";
+                                        echo "<option data-inicio=".$row['horario_inicio']." data-fin=".$row['horario_fin']." data-color=". $row['color']." value=". $row['id'] . ">" . $row['nombre'] . ' - [' . substr($row['horario_inicio'],0,5) . '-' . substr($row['horario_fin'],0,5) . "]</option>";
                                     }
                                 ?>
                             </select>
@@ -60,8 +60,11 @@
                             </div>                           
                         </div>
                     </div>              
-                    <div class="form-group">
-                        <div class="col-sm-8"></div>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <input type="button" name="eliminar" class="btn  btn-raised btn-danger" value="Eliminar" id='modal-abm-cal-guardias-remove'>
+                        </div>
+                        <div class="col-sm-6"></div>
                         <div class="col-sm-2">
                             <input type="button" name="AddCliente" class="btn  btn-raised btn-success" value="Guardar" id='modal-abm-cal-guardias-submit'>
                         </div>
