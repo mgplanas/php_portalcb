@@ -138,6 +138,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         font-family: FontAwesome !important;
     }
 
+    .fc-nonbusiness {
+        background: #000000;
+    }
+
   </style>
 <!-- fullCalendar -->
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>

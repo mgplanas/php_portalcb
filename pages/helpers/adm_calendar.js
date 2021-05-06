@@ -24,16 +24,7 @@ var fin = new Date();
  * Renderizacion Evento Guardia
  * @author MVGP
  ****************************************************************************************/
-const eventRender = info => {
-    // TODO hacer un switch por tipo de evento (evento.extendedProps.tipo/subtipo)
-    //eventInfo.el.innerHTML = '<div class="ar-guardia">' + eventInfo.event.title + '<br><small>pepepeep</small></div>';
-    // console.log($(eventInfo.el));
-    // console.log($(eventInfo.el).parent());
-    // console.log($(eventInfo.el).parent().parent());
-    //$(eventInfo.el).closest('div')
-    // if (info.event.rendering === 'background') {
-    //     info.el.innerHTML = '<div style="padding: 3px;">' + info.event.title; + '</div>'
-    // }
+const eventGuardiasRender = info => {
     const mInicio = moment(info.event.extendedProps.real_start);
     const mFin = moment(info.event.extendedProps.real_end);
     const resource = info.event.getResources()[0];
@@ -55,6 +46,31 @@ const eventRender = info => {
     })
 
     $(info.el).css('cursor', 'pointer');
+};
+
+/***************************************************************************************
+ * Renderizacion Evento DNL
+ * @author MVGP
+ ****************************************************************************************/
+const eventDNLRender = info => {
+    info.el.innerHTML = '<div style="padding: 3px;">' + info.event.title; + '</div>';
+};
+
+/***************************************************************************************
+ * Renderizacion Eventos
+ * @author MVGP
+ ****************************************************************************************/
+const eventRender = info => {
+    switch (info.event.extendedProps.tipo) {
+        case "1": // DNL
+            return eventDNLRender(info);
+            break;
+        case "2": // GUARDIAS
+            return eventGuardiasRender(info);
+            break;
+        default:
+            break;
+    }
     return;
 }
 
