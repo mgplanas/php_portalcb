@@ -16,7 +16,7 @@
                 
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label>Tipo de Guardia</label>
@@ -31,9 +31,9 @@
                                 </div> 
                             </div>
                             <div class="row">
-                                <div class="col-md-10">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="fechainicio">Fecha Desde</label>
+                                        <label for="fechainicio">Comienzo</label>
                                         <div class="input-group date" data-provide="modal-abm-cal-guardias-mul-inicio">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
@@ -42,30 +42,51 @@
                                         </div>                        
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="dias">Días</label>
+                                        <select id="modal-abm-cal-guardias-mul-dias" class="form-control" name="dias" >
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7" selected>7</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group" style="margin-left: -10px;">
+                                        <label style="color: transparent">Agregar</label>
+                                        <button type="button" class="btn btn-primary" id="modal-abm-cal-guardias-mul-add" title="Agregar período"><i class="fa fa-plus"></i></button>  
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <label for="fechafin">Fecha Hasta</label>
-                                        <div class="input-group date" data-provide="modal-abm-cal-guardias-mul-fin">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control pull-right" required="required" name="fechafin" id="modal-abm-cal-guardias-mul-fin">
-                                        </div>                        
-                                    </div>
+                                <div class="col-md-12">
+                                    <table id="modal-abm-cal-guardias-mul-tabla" class="display" width="100%">
+                                        <thead>
+                                            <th>ComienzoISO</th>
+                                            <th>FinISO</th>
+                                            <th width="40%">Comienzo</th>
+                                            <th width="40%">Fin</th>
+                                            <th width="10px">Días</th>
+                                            <th width="10px" style="text-align: right;"><i class="fa fa-bolt" /></th>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <label>Aplicar esquema de guardia a:</label> 
                                 <select style="height:250px"  name="personas[]" class="form-control custom-select selectpicker show-tick" multiple id="modal-abm-cal-guardias-mul-personas">
                                     <?php
                                         $empleados = mysqli_query($con, "SELECT * FROM persona WHERE area = 7 and borrado = 0 ORDER BY apellido,nombre DESC;"); 
                                         while($row = mysqli_fetch_assoc($empleados)){
-                                            echo "<option value=". $row['id_persona'] . ">" . $row['apellido'] . ', '. $row['nombre']  . ' - ' . $row['cargo'] . "</option>";
+                                            echo "<option value=". $row['id_persona'] . ">" . $row['apellido'] . ', '. $row['nombre']  . "</option>";
                                         }
                                     ?>
                                 </select>

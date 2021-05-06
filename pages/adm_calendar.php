@@ -80,6 +80,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link href='../bower_components/fullcalendar/dist/packages/timegrid/main.css' rel='stylesheet' />
   <link href='../bower_components/fullcalendar/dist/packages-premium/timeline/main.css' rel='stylesheet' />
   <link href='../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.css' rel='stylesheet' />
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
   <!-- <link rel="stylesheet" href="../css/bootstrap-select.min.css"> -->
 
   <style>
@@ -241,6 +242,9 @@ desired effect
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+<!-- DataTables -->
+<script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->

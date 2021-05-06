@@ -31,14 +31,21 @@ const eventRender = info => {
     // console.log($(eventInfo.el).parent());
     // console.log($(eventInfo.el).parent().parent());
     //$(eventInfo.el).closest('div')
-    if (info.event.rendering === 'background') {
-        info.el.innerHTML = '<div style="padding: 3px;">' + info.event.title; + '</div>'
-    }
+    // if (info.event.rendering === 'background') {
+    //     info.el.innerHTML = '<div style="padding: 3px;">' + info.event.title; + '</div>'
+    // }
+    const mInicio = moment(info.event.extendedProps.real_start);
+    const mFin = moment(info.event.extendedProps.real_end);
+    const resource = info.event.getResources()[0];
     $(info.el).popover({
         title: info.event.title,
         placement: 'top',
+        html: true,
         trigger: 'hover',
-        content: info.event.title + ":" + info.event.start + " to " + info.event.end,
+        content: `<strong>${resource.title}:</strong><br>
+        <strong>Comienzo:</strong>${mInicio.format('DD/MM/YYYY HH:mm')}<br>
+        <strong>Fin:</strong>${mFin.format('DD/MM/YYYY HH:mm')}<br>
+        Cantidad de días: ${mFin.diff(mInicio, 'days')+1}`,
         container: 'body'
     }).popover('show');
 
@@ -128,6 +135,8 @@ const getEvents = (handleData, inicio, fin, area) => {
                             obs: ev.observaciones,
                             tipo: ev.tipo,
                             subtipo: ev.subtipo,
+                            real_start: ev.fecha_inicio,
+                            real_end: ev.fecha_fin,
                         },
                     };
                     if (ev.id_persona && ev.id_persona > 0) {
@@ -212,11 +221,11 @@ const initializeCalendar = async(inicio, fin) => {
         eventOverlap: true,
         editable: false, // No permito drag
         aspectRatio: 1, // aspecto
-        scrollTime: '00:00',
         height: 'auto',
         locale: 'es', // mes en español
         defaultView: 'monthview',
         displayEventTime: false, // sólo días sin hora
+        displayEventEnd: false, // sólo días sin hora
         header: { // Configuro los botones del header
             right: 'today prev next'
         },
@@ -266,6 +275,7 @@ const initializeCalendar = async(inicio, fin) => {
             getEvents(events => successCallback(events), start, end, 7);
         },
         eventRender: (eventInfo) => eventRender(eventInfo),
+
         dateClick: function(e) {
             console.log(e);
             alert(e);

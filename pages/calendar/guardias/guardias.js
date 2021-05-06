@@ -80,12 +80,9 @@ const submitGuardia = (operacion, callback) => {
 const submitGuardiaMultiple = (callback) => {
     let operacion = 'ADD_GUARDIAS_MULTIPLES';
     let id_personas = $('#modal-abm-cal-guardias-mul-personas').val();
+    let periodos = $('#modal-abm-cal-guardias-mul-tabla').DataTable().rows().data().toArray();
     let subtipo = $('#modal-abm-cal-guardias-mul-tipo').val();
     let color = $('#modal-abm-cal-guardias-mul-tipo option:selected').data('color');
-    let hora_inicio = $('#modal-abm-cal-guardias-mul-tipo option:selected').data('inicio');
-    let hora_fin = $('#modal-abm-cal-guardias-mul-tipo option:selected').data('fin');
-    let fecha_inicio = $('#modal-abm-cal-guardias-mul-inicio').val().split('/').reverse().join("-") + ' ' + hora_inicio;
-    let fecha_fin = $('#modal-abm-cal-guardias-mul-fin').val().split('/').reverse().join("-") + ' ' + hora_fin;
     let descripcion = $('#modal-abm-cal-guardias-mul-tipo option:selected').text();
     let observaciones = $('#modal-abm-cal-guardias-mul-observaciones').val();
     // Ejecuto
@@ -98,8 +95,7 @@ const submitGuardiaMultiple = (callback) => {
             subtipo,
             id_personas,
             color,
-            fecha_inicio,
-            fecha_fin,
+            periodos,
             descripcion,
             observaciones,
             tipo: 2,
@@ -136,16 +132,60 @@ const modalGuardiaSimpleLimpiarCampos = () => {
 }
 
 /***************************************************************************************
+ * Agregar periodo a la tabla
+ * @author MVGP
+ ****************************************************************************************/
+const agrearPeriodoATabla = (table) => {
+
+    const hora_inicio = $('#modal-abm-cal-guardias-mul-tipo option:selected').data('inicio');
+    const hora_fin = $('#modal-abm-cal-guardias-mul-tipo option:selected').data('fin');
+    const fecha_inicio = $('#modal-abm-cal-guardias-mul-inicio').val().split('/').reverse().join("-") + ' ' + hora_inicio;
+    let m_inicio = moment(fecha_inicio);
+    let m_fin = moment(fecha_inicio);
+    let dias = $('#modal-abm-cal-guardias-mul-dias').val();
+    m_fin.add(dias, 'days');
+    let time = moment(hora_fin, 'HH:mm');
+    m_fin.set({
+        hour: time.get('hour'),
+        minute: time.get('minute'),
+    });
+
+    let fecha_fin = m_fin.format('DD/MM/YYYY HH:mm:ss');
+
+    let row = table.row.add([m_inicio.format('YYYY-MM-DD HH:mm:ss'), m_fin.format('YYYY-MM-DD HH:mm:ss'), m_inicio.format('DD/MM/YYYY HH:mm:ss'), m_fin.format('DD/MM/YYYY HH:mm:ss'), dias, "<button type='button' class='btn modal-abm-cal-guardias-mul-btn-del-periodo'><i class='fa fa-trash text-danger'></i></button>"]).node();
+    table.draw();
+
+    // borro fila
+    $(row).on('click', 'button.modal-abm-cal-guardias-mul-btn-del-periodo', () => table.row($(row)).remove().draw());
+}
+
+/***************************************************************************************
  * limpiar los campos del modal
  * @author MVGP
  ****************************************************************************************/
 const modalGuardiaMultipleLimpiarCampos = () => {
+
+    $('#modal-abm-cal-guardias-mul-tabla').DataTable().clear().destroy();
+    let tabla = $('#modal-abm-cal-guardias-mul-tabla').DataTable({
+        'language': { 'emptyTable': 'No hay Períodos de guardias' },
+        'ordering': false,
+        'paging': false,
+        'searching': false,
+        'info': false,
+        'autoWidth': false,
+        'columnDefs': [{
+            'targets': [0, 1],
+            'visible': false
+        }, ],
+    });
     $('#modal-abm-cal-guardias-mul-id').val(0);
+    $('#modal-abm-cal-guardias-mul-dias').val(7);
     $('#modal-abm-cal-guardias-mul-id-persona').val('');
     $('#modal-abm-cal-guardias-mul-tipo').val(1).change();
     $('#modal-abm-cal-guardias-mul-inicio').val('');
     $('#modal-abm-cal-guardias-mul-fin').val('');
     $('#modal-abm-cal-guardias-mul-observaciones').val('');
+    $('#modal-abm-cal-guardias-mul-add').off('click').on('click', () => agrearPeriodoATabla(tabla));
 }
 
 /***************************************************************************************
@@ -217,13 +257,8 @@ const agregarGuardiaMultiple = () => {
         format: 'dd/mm/yyyy',
         todayHighlight: true,
     }).datepicker("setDate", new Date(inicio));
-    $('#modal-abm-cal-guardias-mul-fin').datepicker({
-        autoclose: true,
-        format: 'dd/mm/yyyy',
-        todayHighlight: true,
-    }).datepicker("setDate", new Date(fin));
-    $('#modal-abm-cal-guardias-mul-submit').attr('name', 'ADD_GUARDIAS_MULTIPLES');
 
+    $('#modal-abm-cal-guardias-mul-submit').attr('name', 'ADD_GUARDIAS_MULTIPLES');
     $("#modal-abm-cal-guardias-mul").modal("show");
 }
 

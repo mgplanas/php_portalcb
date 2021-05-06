@@ -10,6 +10,7 @@
     $fecha_fin = isset($_POST['fecha_fin']) ? mysqli_real_escape_string($con, $_POST['fecha_fin']) : null;
     $id_persona = isset($_POST['id_persona']) ? mysqli_real_escape_string($con, $_POST['id_persona']) : null;
     $id_personas = $_POST['id_personas'];
+    $periodos = $_POST['periodos'];
     $is_all_day = isset($_POST['is_all_day']) ? mysqli_real_escape_string($con, $_POST['is_all_day']) : 1;
     $is_background = isset($_POST['is_background']) ? mysqli_real_escape_string($con, $_POST['is_background']) : 0;
     $is_programmed = isset($_POST['is_programmed']) ? mysqli_real_escape_string($con, $_POST['is_programmed']) : 0;
@@ -22,11 +23,17 @@
 
     switch ($op) {
         case 'ADD_GUARDIAS_MULTIPLES':
-            $sql = "INSERT INTO adm_eventos_cal (borrado,color,descripcion,estado,fecha_fin,fecha_inicio,id,id_persona,is_all_day,is_background,is_programmed,observaciones,subtipo,tipo)
+            $sql = "INSERT INTO adm_eventos_cal (borrado,color,descripcion,estado,fecha_fin,fecha_inicio,id_persona,is_all_day,is_background,is_programmed,observaciones,subtipo,tipo)
                     VALUES ";
-            foreach ($id_personas as $id_persona) {
-                $sql .= "(0,'$color','$descripcion','$estado','$fecha_fin','$fecha_inicio','$id','$id_persona','$is_all_day','$is_background','$is_programmed','$observaciones','$subtipo','$tipo'),";
+            // por cada periodo definido
+            foreach ($periodos as $periodo_def) {
+
+                // Por cada perosna asignada
+                foreach ($id_personas as $id_persona) {
+                    $sql .= "(0,'$color','$descripcion','$estado','$periodo_def[1]','$periodo_def[0]','$id_persona','$is_all_day','$is_background','$is_programmed','$observaciones','$subtipo','$tipo'),";
+                }
             }
+            
             $sql = rtrim($sql, ",");
 
             // INSERT
