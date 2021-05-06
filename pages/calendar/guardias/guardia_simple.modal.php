@@ -27,8 +27,6 @@
                                 ?>
                             </select>
                         </div> 
-                    </div>
-                    <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="fechainicio">Fecha Desde</label>
@@ -40,15 +38,18 @@
                                 </div>                        
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
-                                <label for="fechafin">Fecha Hasta</label>
-                                <div class="input-group date" data-provide="modal-abm-cal-guardias-fin">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <input type="text" class="form-control pull-right" required="required" name="fechafin" id="modal-abm-cal-guardias-fin">
-                                </div>                        
+                                <label for="dias">Días</label>
+                                <select id="modal-abm-cal-guardias-dias" class="form-control" name="dias" >
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7" selected>7</option>
+                                </select>
                             </div>
                         </div>
                     </div>
