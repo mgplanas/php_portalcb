@@ -201,7 +201,7 @@ desired effect
                     <button type="button" 
                             id="modal-abm-guardias-btn-def" 
                             class="btn btn-default"
-                            data-target="#modal-abm-licencia"><i class="fa fa-user"></i> Definir guardias</button>
+                            data-target="#modal-abm-licencia"><i class="fa fa-calendar-plus-o"></i> Agregar guardias</button>
                 </div>
             </div>
         </div>

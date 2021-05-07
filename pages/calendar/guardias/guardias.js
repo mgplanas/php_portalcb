@@ -58,7 +58,7 @@ const agregarGuardiaMultiple = () => {
     const inicio = new Date();
     const fin = new Date();
     fin.setDate(fin.getDate() + 7);
-    $('#modal-abm-cal-guardias-mul-title').html(`Definición de período de guardias`);
+    $('#modal-abm-cal-guardias-mul-title').html(`Agregar períodos de guardias`);
     modalGuardiaMultipleLimpiarCampos();
 
     $('#modal-abm-cal-guardias-mul-inicio').datepicker({
@@ -90,11 +90,16 @@ const agrearPeriodoATabla = (table) => {
         minute: time.get('minute'),
     });
 
+    // Agrego el nuevo registro a la tabla
     let row = table.row.add([m_inicio.format('YYYY-MM-DD HH:mm:ss'), m_fin.format('YYYY-MM-DD HH:mm:ss'), m_inicio.format('DD/MM/YYYY HH:mm:ss'), m_fin.format('DD/MM/YYYY HH:mm:ss'), dias, "<button type='button' class='btn modal-abm-cal-guardias-mul-btn-del-periodo'><i class='fa fa-trash text-danger'></i></button>"]).node();
     table.draw();
 
-    // borro fila
+    // borro fila event listener
     $(row).on('click', 'button.modal-abm-cal-guardias-mul-btn-del-periodo', () => table.row($(row)).remove().draw());
+
+    // Sumo 7 días a la fecha de inicio para que sea más rápida la auto creación de períodos
+    m_fin.add(7, 'days');
+    $('#modal-abm-cal-guardias-mul-inicio').val(m_fin.format('DD/MM/YYYY'))
 }
 
 /***************************************************************************************
@@ -105,7 +110,7 @@ const modalGuardiaMultipleLimpiarCampos = () => {
 
     $('#modal-abm-cal-guardias-mul-tabla').DataTable().clear().destroy();
     let tabla = $('#modal-abm-cal-guardias-mul-tabla').DataTable({
-        'language': { 'emptyTable': 'No hay Períodos de guardias' },
+        'language': { 'emptyTable': 'Sin períodos agregados' },
         'ordering': false,
         'paging': false,
         'searching': false,
