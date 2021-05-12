@@ -29,7 +29,7 @@ const eventGuardiasRender = info => {
     const mFin = moment(info.event.extendedProps.real_end);
     const resource = info.event.getResources()[0];
     $(info.el).popover({
-        title: info.event.title,
+        title: `${info.event.title} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
         placement: 'top',
         html: true,
         trigger: 'hover',
@@ -39,6 +39,9 @@ const eventGuardiasRender = info => {
         Cantidad de días: ${mFin.diff(mInicio, 'days')+1}`,
         container: 'body'
     }).popover('show');
+    $(document).on("click", ".popover .close", () => {
+        $(".popover").popover('hide');
+    });
 
     $(info.el).off('click').on('click', () => {
         $(this).popover('hide');

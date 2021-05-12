@@ -12,8 +12,14 @@ var calendar;
  * @property {string} fecha_inicio_ISO - Fecha de incio de la guardia ISO
  * @property {string} fecha_fin_ISO - Fecha de fin de la guardia ISO
  * @property {number} días - días
+ * 
+ * @typedef Resultado
+ * @property {boolean} ok: true or false
+ * @property {string[]} errores: Array con todos los errores encontrados
+ * 
  * @param {number[]} empleadosIDsAsignados: Listado de personas asignadas a los nuevos periodos
  * @param {PeriodoGuadia[][]} nuevosPeriodos: Periodos de guardias a ser agregados
+ * @returns {Resultado}: resultado
  * @author MVGP
  ****************************************************************************************/
 const validarNuevaDefinicionDeGuardias = (empleadosIDsAsignados, nuevosPeriodos) => {
