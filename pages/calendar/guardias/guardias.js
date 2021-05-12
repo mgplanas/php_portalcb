@@ -1,7 +1,82 @@
 // ========================================================================================================================================================
 // MANEJO DE GUARDIAS
 // ========================================================================================================================================================
+var calendar;
 
+/***************************************************************************************
+ * Valida nueva definicion de guardia
+ * Definición de período de Guardia
+ * @typedef PeriodoGuadia
+ * @property {string} fecha_inicio - Fecha de incio de la guardia
+ * @property {string} fecha_fin - Fecha de fin de la guardia
+ * @property {string} fecha_inicio_ISO - Fecha de incio de la guardia ISO
+ * @property {string} fecha_fin_ISO - Fecha de fin de la guardia ISO
+ * @property {number} días - días
+ * @param {number[]} empleadosIDsAsignados: Listado de personas asignadas a los nuevos periodos
+ * @param {PeriodoGuadia[][]} nuevosPeriodos: Periodos de guardias a ser agregados
+ * @author MVGP
+ ****************************************************************************************/
+const validarNuevaDefinicionDeGuardias = (empleadosIDsAsignados, nuevosPeriodos) => {
+
+    const resultado = {
+        ok: true,
+        errores: []
+    }
+
+    // me traigo los eventos de guardia en base a los empleadosAsignados
+    empleadosIDsAsignados.forEach(id => {
+
+        // Me traigo el recurso para saber el nombre
+        const { title: nombre } = calendar.getResourceById(id);
+
+        let diasDeGuardiaAcumulados = 0;
+        let flag_acum = false;
+
+        // Filtro los eventos por tipo de guardias
+        const guardias = calendar.getEvents()
+            .filter(evento => evento.extendedProps.tipo == '2' && evento.extendedProps.id_persona == id); // Tipo guardias
+
+        // Corroboro que los períodos de descanso entre los períodos ingresados vs los existentes se cumplan
+        // constato inicio del nuevo contra fin del existente y
+        // fin del nuevo contra inicio del existente
+        guardias.forEach(guardia => {
+            const m_inicio = moment(guardia.start);
+            const m_fin = moment(guardia.end);
+            diasDeGuardiaAcumulados += (m_fin.diff(m_inicio, 'days'));
+
+            nuevosPeriodos.forEach(periodo => {
+                const p_inicio = moment(periodo[0]);
+                const p_fin = moment(periodo[1]);
+
+                let periodoDescanzoInicio = (p_inicio.diff(m_fin, 'days'));
+                let periodoDescanzoFin = (p_fin.diff(m_inicio, 'days'));
+                periodoDescanzoInicio = (periodoDescanzoInicio < 0 ? periodoDescanzoInicio - 1 : periodoDescanzoInicio);
+                periodoDescanzoFin = (periodoDescanzoFin < 0 ? periodoDescanzoFin - 1 : periodoDescanzoFin);
+
+                // Contabilizo la cantidad de días sólo la primera vez
+                if (!flag_acum) diasDeGuardiaAcumulados += (p_fin.diff(p_inicio, 'days')) + 1;
+
+                if (Math.abs(periodoDescanzoInicio) < 7 || Math.abs(periodoDescanzoFin) < 7) {
+                    resultado.ok = false;
+                    resultado.errores.push(`El período del ${p_inicio.format('DD/MM/YYYY')} al ${p_fin.format('DD/MM/YYYY')} no respeta los 7 días de descanso entre guardias para ${nombre}.`);
+                    return false;
+                };
+                // console.log('inicio de p con fin del existente ', p_inicio.format('YYYY-MM-DD'), p_fin.format('YYYY-MM-DD'), m_inicio.format('YYYY-MM-DD'), m_fin.format('YYYY-MM-DD'), p_inicio.diff(m_fin, 'days'));
+                // console.log('fin de p con inicio del existente ', p_inicio.format('YYYY-MM-DD'), p_fin.format('YYYY-MM-DD'), m_inicio.format('YYYY-MM-DD'), m_fin.format('YYYY-MM-DD'), p_fin.diff(m_inicio, 'days'));
+            });
+            flag_acum = true;
+        });
+
+        if (diasDeGuardiaAcumulados > 17) {
+            resultado.ok = false;
+            resultado.errores.push(`La cantidad de días de guardia asignados a (${diasDeGuardiaAcumulados}) para ${nombre} exeden el máximo permitido (17).`);
+        }
+
+    });
+    resultado.errores = [...new Set(resultado.errores)];
+    return resultado;
+
+}
 
 /***************************************************************************************
  * Guardar guardias multiples
@@ -15,6 +90,12 @@ const submitGuardiaMultiple = (callback) => {
     let color = $('#modal-abm-cal-guardias-mul-tipo option:selected').data('color');
     let descripcion = $('#modal-abm-cal-guardias-mul-tipo option:selected').text();
     let observaciones = $('#modal-abm-cal-guardias-mul-observaciones').val();
+
+    const validez = validarNuevaDefinicionDeGuardias(id_personas, periodos)
+    if (!validez.ok) {
+        alert(validez.errores.join(',\n'));
+        return;
+    }
     // Ejecuto
     $.ajax({
         type: 'POST',
@@ -100,6 +181,7 @@ const agrearPeriodoATabla = (table) => {
     // Sumo 7 días a la fecha de inicio para que sea más rápida la auto creación de períodos
     m_fin.add(7, 'days');
     $('#modal-abm-cal-guardias-mul-inicio').val(m_fin.format('DD/MM/YYYY'))
+    $('#modal-abm-cal-guardias-mul-inicio').datepicker("setDate", m_fin.toDate());
 }
 
 /***************************************************************************************
@@ -280,7 +362,8 @@ const submitGuardia = (operacion, callback) => {
  * @param Calendar calendario - instancia del fullcalendar
  * @author MVGP
  ****************************************************************************************/
-const init = (calendar) => {
+const init = (cal) => {
+    calendar = cal;
     $('#modal-abm-cal-guardias-mul-submit').on('click', () => submitGuardiaMultiple(() => calendar.refetchEvents()));
     $('#modal-abm-cal-guardias-remove').on('click', () => removeGuardia(() => calendar.refetchEvents()));
     $('#modal-abm-cal-guardias-submit').on('click', () => actualizarGuardia(() => calendar.refetchEvents()));

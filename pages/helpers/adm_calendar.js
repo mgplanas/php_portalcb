@@ -153,6 +153,7 @@ const getEvents = (handleData, inicio, fin, area) => {
                             subtipo: ev.subtipo,
                             real_start: ev.fecha_inicio,
                             real_end: ev.fecha_fin,
+                            id_persona: ev.id_persona,
                         },
                     };
                     if (ev.id_persona && ev.id_persona > 0) {
