@@ -99,7 +99,12 @@ const submitGuardiaMultiple = (callback) => {
 
     const validez = validarNuevaDefinicionDeGuardias(id_personas, periodos)
     if (!validez.ok) {
-        alert(validez.errores.join(',\n'));
+        Swal.fire({
+            title: 'Error en la validación',
+            html: `<div style="text-align: left;"><li>${validez.errores.join('</li><li>')}</li></div>`,
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+        });
         return;
     }
     // Ejecuto

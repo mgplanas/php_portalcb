@@ -323,5 +323,4 @@ initializeCalendar(inicio, fin)
         // $('#modal-abm-cal-guardias-remove').on('click', () => guardias.removeGuardia(() => calendar.refetchEvents()));
         // $('#modal-abm-cal-guardias-submit').on('click', () => guardias.actualizarGuardia(() => calendar.refetchEvents()));
         // $('#modal-abm-guardias-btn-def').on('click', guardias.agregarGuardiaMultiple);
-
     });

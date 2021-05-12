@@ -142,6 +142,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
         background: #000000;
     }
 
+    /* FIX sweet alert font-size */
+    .swal2-popup {
+        font-size: 1.6rem !important;
+    }
+
   </style>
 <!-- fullCalendar -->
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
@@ -273,6 +278,8 @@ desired effect
 <script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
 <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- Sweet alert2 -->
+<script src="../js/sweetalert2.all.min.js"></script>
 <!-- <script src="../js/bootstrap-select.min.js"></script> -->
 <!-- custom scripts --> 
 <!-- <script type="text/javascript" src="../js/script.js"></script>  -->
