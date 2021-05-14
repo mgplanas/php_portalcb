@@ -1,4 +1,24 @@
 # CHANGES
+## FEAT-GTI-CAL-ACTIVACION
+ABM de registro de horas por parte de los empleados
+*Fecha* 2021-05-13
+*Requerimiento*
+-   Registro de horas
+    -   Activación de guardias
+    -   Horas extras
+    -   Emergencias
+    -   Tareas Programadas
+
+[db]
+CREATE TABLE `adm_eventos_tipos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(50) NOT NULL,
+  `borrado` int(11) NOT NULL DEFAULT '0',
+  `orden` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+
 
 ## FEAT-GTI-CAL-GUARDIAS
 ABM de guardias

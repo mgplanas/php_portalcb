@@ -1,5 +1,4 @@
-import * as guardias from '../calendar/guardias/guardias.js';
-
+import * as dnls from '../dnls.js';
 
 // Calendar instantiation
 var calendarEl = document.getElementById('calendar');
@@ -10,11 +9,6 @@ var calResources = [];
 var today = new Date();
 var inicio = new Date();
 var fin = new Date();
-
-
-
-
-
 
 // ========================================================================================================================================================
 // MANEJO DE EVENTOS DEL CALENDARIO
@@ -52,21 +46,13 @@ const eventGuardiasRender = info => {
 };
 
 /***************************************************************************************
- * Renderizacion Evento DNL
- * @author MVGP
- ****************************************************************************************/
-const eventDNLRender = info => {
-    info.el.innerHTML = '<div style="padding: 3px;">' + info.event.title; + '</div>';
-};
-
-/***************************************************************************************
  * Renderizacion Eventos
  * @author MVGP
  ****************************************************************************************/
 const eventRender = info => {
     switch (info.event.extendedProps.tipo) {
         case "1": // DNL
-            return eventDNLRender(info);
+            return dnls.eventRender(info);
             break;
         case "2": // GUARDIAS
             return eventGuardiasRender(info);
@@ -102,76 +88,45 @@ const resourceRender = info => {
  * @author MVGP
  * @returns {Events[]} - Eventos
  ****************************************************************************************/
-const getEvents = (handleData, inicio, fin, area) => {
-    let start = inicio.toISOString().slice(0, 10);
-    let end = fin.toISOString().slice(0, 10);
-    let sql = `
-    SELECT ev.*, per.nombre, per.apellido, per.cargo
-    FROM adm_eventos_cal as ev
-    LEFT JOIN persona as per ON ev.id_persona = per.id_persona AND per.area = ${area}
-    LEFT JOIN subgerencia as sub ON per.subgerencia = sub.id_subgerencia
-    LEFT JOIN area as ar ON per.area = ar.id_area
-    WHERE NOT (ev.fecha_inicio > '${end}' OR ev.fecha_fin < '${start}')
-    AND ev.borrado = 0
-    ORDER BY ev.tipo, ev.subtipo;`;
-    $.getJSON("./helpers/getAsyncDataFromDB.php", { query: sql },
-        function(response) {
-            let events = [];
-            $.each(response.data, (idx, ev) => {
-
-                // SI es un evento de feriado
-                // TODO: Hacer con eventSources (https://stackoverflow.com/questions/7778318/multiple-eventsources-with-jquery-fullcalendar)
-                if (ev.tipo == 1) {
-                    const specificClassName = `ar-tipo-${ev.tipo}-subtipo-${ev.subtipo}`;
-                    const Evento = {
-                        id: ev.id,
-                        start: ev.fecha_inicio,
-                        end: ev.fecha_inicio,
-                        allDay: true,
-                        title: ev.descripcion,
-                        textEscape: false,
-                        classNames: 'fc-nonbusiness',
-                        rendering: 'background',
-                        extendedProps: {
-                            obs: ev.observaciones,
-                            tipo: ev.tipo,
-                            subtipo: ev.subtipo,
-                        },
-                    };
-                    events.push(Evento);
-                } else {
-                    const specificClassName = `ar-tipo-${ev.tipo}-subtipo-${ev.subtipo}`;
-                    const Evento = {
-                        id: ev.id,
-                        start: ev.fecha_inicio,
-                        end: ev.fecha_fin,
-                        allDay: ev.is_all_day == 1,
-                        title: ev.descripcion,
-                        textEscape: false,
-                        classNames: ['modal-abm-licencia-btn-edit', specificClassName],
-                        rendering: (ev.is_background == 1 ? 'background' : 'auto'),
-                        extendedProps: {
-                            obs: ev.observaciones,
-                            tipo: ev.tipo,
-                            subtipo: ev.subtipo,
-                            real_start: ev.fecha_inicio,
-                            real_end: ev.fecha_fin,
-                            id_persona: ev.id_persona,
-                        },
-                    };
-                    if (ev.id_persona && ev.id_persona > 0) {
-                        Evento.resourceId = ev.id_persona;
-                        // Evento.resourceId = ev.id_persona + '_' + ev.tipo;
-                    }
-                    events.push(Evento);
-                }
-            });
-            handleData(events);
-        }
-    ).fail(function(jqXHR, errorText) {
-        console.log(errorText);
-    });
-}
+// TODO: pasar a eventsource
+const eventsFromPerson = {
+    url: './calendar/eventController.php',
+    method: 'POST',
+    extraParams: {
+        action: 'BY_PERSON_ID',
+        id: $('#per_id_persona').val()
+    },
+    error: () => {
+        alert('Hubo un error al obtener los eventos de la persona!');
+    },
+    success: ({ data }) => {
+        const events = [];
+        $.each(data, (idx, ev) => {
+            const specificClassName = `ar-tipo-${ev.tipo}-subtipo-${ev.subtipo}`;
+            const Evento = {
+                id: ev.id,
+                start: ev.fecha_inicio,
+                end: ev.fecha_fin,
+                allDay: ev.is_all_day == 1,
+                title: ev.descripcion,
+                textEscape: false,
+                classNames: ['modal-abm-licencia-btn-edit', specificClassName],
+                rendering: (ev.is_background == 1 ? 'background' : 'auto'),
+                resourceId: ev.tipo,
+                extendedProps: {
+                    obs: ev.observaciones,
+                    tipo: ev.tipo,
+                    subtipo: ev.subtipo,
+                    real_start: ev.fecha_inicio,
+                    real_end: ev.fecha_fin,
+                    id_persona: ev.id_persona,
+                },
+            };
+            events.push(Evento);
+        });
+        return events;
+    },
+};
 
 
 /***************************************************************************************
@@ -184,30 +139,18 @@ const getEvents = (handleData, inicio, fin, area) => {
 const getResources = (handleData, area) => {
 
     let sql = `
-    SELECT p.id_persona, p.nombre, p.apellido, p.cargo, p.legajo, p.email , sub.nombre as subgerencia, ar.nombre as area
-        FROM persona as p 
-        LEFT JOIN subgerencia as sub ON p.subgerencia = sub.id_subgerencia
-        LEFT JOIN area as ar ON p.area = ar.id_area
-    WHERE p.borrado = 0 
-    AND p.area = ${area}
-    ORDER BY p.apellido;`;
+    SELECT id, descripcion FROM adm_eventos_tipos
+    WHERE borrado = 0 
+    AND id IN (2,3,4)
+    ORDER BY orden;`;
 
     $.getJSON("./helpers/getAsyncDataFromDB.php", { query: sql },
         function(response) {
             let res = [];
             $.each(response.data, (idx, resource) => {
                 res.push({
-                    id: resource.id_persona,
-                    title: resource.apellido + ', ' + resource.nombre,
-                    eventBackgroundColor: 'green',
-                    eventBorderColor: 'black',
-                    eventTextColor: 'white',
-                    // children: [
-                    //     { id: resource.id_persona + '_2', title: 'Guardias' },
-                    //     { id: resource.id_persona + '_3', title: 'Activaciones' },
-                    //     { id: resource.id_persona + '_4', title: 'Licencias' },
-                    // ],
-                    area: (resource.subgerencia ? resource.subgerencia : 'Sin asignar') + (resource.area ? ' - ' + resource.area : '')
+                    id: resource.id,
+                    title: resource.descripcion,
                 });
             });
             handleData(res);
@@ -247,6 +190,7 @@ const initializeCalendar = async(inicio, fin) => {
         displayEventTime: false, // sólo días sin hora
         displayEventEnd: false, // sólo días sin hora
         header: { // Configuro los botones del header
+            left: 'title',
             right: 'today prev next'
         },
         duration: { months: 1 }, // configuro el tamaño de los pasos prev y next
@@ -267,48 +211,22 @@ const initializeCalendar = async(inicio, fin) => {
         // customButtons: customButtons,
         //filterResourcesWithEvents: true,
         eventClick: function(info) {
-            info.jsEvent.preventDefault(); // don't let the browser navigate
-            editarLicencia({
-                id: info.event.id,
-                idPersona: info.event.extendedProps.idPersona,
-                inicio: info.event.extendedProps.inicio.split("-").reverse().join("/"),
-                fin: info.event.extendedProps.fin.split("-").reverse().join("/"),
-                color: info.event.extendedProps.color,
-                obs: info.event.extendedProps.obs,
-                status: info.event.extendedProps.idstatus
-            });
-
+            info.jsEvent.preventDefault(); // don't let the browser navigat
         },
         refetchResourcesOnNavigate: false,
-        resourceLabelText: 'Personas',
-        resourceAreaWidth: '25%',
+        resourceLabelText: 'Eventos',
+        resourceAreaWidth: '12%',
         resourceRender: (eventInfo) => resourceRender(eventInfo),
-        resourceGroupField: 'area',
-        resourceOrder: 'area,title',
         resources: (fetchInfo, successCallback, failureCallback) =>
             getResources((resources, day) =>
-                successCallback(resources), 3), //FIXME: Poner area correspondiente
-        //events: './helpers/adm_calendardb.php?area=1',
-        events: (fetchInfo, successCallback, failureCallback) => {
-            let start = fetchInfo.start || inicio;
-            let end = fetchInfo.end || fin;
-            getEvents(events => successCallback(events), start, end, 3); //FIXME: Poner area correspondiente
-        },
+                successCallback(resources), 7), // VER
+        eventSources: [
+            dnls.eventSource,
+            eventsFromPerson
+        ],
         eventRender: (eventInfo) => eventRender(eventInfo),
 
-        dateClick: function(e) {
-            console.log(e);
-            alert(e);
-        },
-        selectable: true,
-        selectHelper: true,
-        selectAllow: selectInfo => selectInfo.resource.id.includes('_2'),
-        select: selectInfo => {
-            const id_person = selectInfo.resource._resource.parentId;
-            const resource = calendar.getTopLevelResources().find(resource => resource.id == id_person);
-            agregarGuardiaRecurso(resource, selectInfo.start, selectInfo.end);
-            //alert(`¿Está seguro de querer agregar una guardia a ${resource.title} desde ${selectInfo.startStr} hasta el ${selectInfo.endStr}?`);
-        },
+        dateClick: (e) => console.log(e),
     });
 
     calendar.render();
@@ -318,9 +236,10 @@ const initializeCalendar = async(inicio, fin) => {
 initializeCalendar(inicio, fin)
     .then((cal) => {
         calendar = cal;
-        guardias.init(calendar);
         // $('#modal-abm-cal-guardias-mul-submit').on('click', () => guardias.submitGuardiaMultiple(() => calendar.refetchEvents()));
         // $('#modal-abm-cal-guardias-remove').on('click', () => guardias.removeGuardia(() => calendar.refetchEvents()));
         // $('#modal-abm-cal-guardias-submit').on('click', () => guardias.actualizarGuardia(() => calendar.refetchEvents()));
         // $('#modal-abm-guardias-btn-def').on('click', guardias.agregarGuardiaMultiple);
+        // Cambio el titulo del calendar
+        // $('.fc-toolbar > .fc-left').html('<H2>Registro de Horas</H2>');
     });
