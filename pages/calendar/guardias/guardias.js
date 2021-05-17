@@ -31,6 +31,7 @@ const eventRender = info => {
         guardias.editarGuardia(info.event);
     })
 
+    $(info.el).addClass([`ar-tipo-${info.event.extendedProps.tipo}`, `subtipo-${info.event.extendedProps.subtipo}`].join(' '))
     $(info.el).css('cursor', 'pointer');
 };
 

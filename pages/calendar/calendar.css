@@ -8,7 +8,7 @@
 
 /* Guardias - DC */
 
-.ar-tipo-2-subtipo-1 {
+.ar-tipo-2.subtipo-1 {
     background-color: rgba(0, 255, 0, 0.7) !important;
     border-color: green !important;
     color: green !important;
@@ -16,53 +16,23 @@
 }
 
 
-/* Guardias - DC */
-
-.ar-tipo-3-subtipo-1 {
-    background-color: rgba(0, 0, 255, 0.7) !important;
-    border-color: blue !important;
-    color: white !important;
-    border-radius: 6px !important;
-    /* opacity: 0.5; */
-}
-
-
-/* Registro Horas */
+/* Licencias */
 
 
 /* Activacion */
 
-.ar-tipo-4-subtipo-1 {
-    background-color: rgba(0, 0, 255, 0.8) !important;
-    border-color: blue !important;
-    color: white !important;
-}
-
-
-/* Emergencia */
-
-.ar-tipo-4-subtipo-2 {
-    background-color: rgba(0, 0, 255, 0.7) !important;
-    border-color: blue !important;
-    color: white !important;
-}
-
-
-/* Tareas Programadas */
-
-.ar-tipo-4-subtipo-3 {
+.ar-tipo-4 {
     background-color: rgba(0, 0, 255, 0.6) !important;
     border-color: blue !important;
     color: white !important;
 }
 
 
-/* Horas Extra */
+/* Pendientes */
 
-.ar-tipo-4-subtipo-4 {
-    background-color: rgba(0, 0, 255, 0.5) !important;
-    border-color: blue !important;
-    color: white !important;
+.estado-1 {
+    border-width: 2px;
+    border-style: dashed;
 }
 
 
@@ -81,4 +51,8 @@
 
 .swal2-popup {
     font-size: 1.6rem !important;
+}
+
+.popover-body hr {
+    padding: 0 !important;
 }

@@ -30,46 +30,33 @@ const eventRender = info => {
     const dhours = parseInt(duration.asHours());
     const dmin = parseInt(duration.asMinutes()) - (dhours * 60);
 
-    const { icon, title } = (() => {
-        switch (info.event.extendedProps.subtipo) {
-            case '1':
-                return { icon: 'bolt', title: 'Activacion de guardia' };
-                break;
-            case '2':
-                return { icon: 'warning', title: 'Emergencia' };
-                break;
-            case '3':
-                return { icon: 'clock-o', title: 'Tarea Programada' };
-                break;
-            case '4':
-                return { icon: 'laptop', title: 'Horas extra' };
-                break;
-            default:
-                return { icon: 'user', title: 'N/A' }
-        }
-    })();
     $(info.el).popover({
-        title: `<i class='fa fa-${icon}'></i> ${title} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
+        title: `<i class='fa fa-${info.event.extendedProps.icon}'></i> ${info.event.extendedProps.subtipo_desc} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
         placement: 'top',
         html: true,
         trigger: 'hover',
         content: `<strong>${resource.title}:</strong><br>
         <strong>Comienzo:</strong>${mInicio.format('DD/MM/YYYY HH:mm')}<br>
         <strong>Fin:</strong>${mFin.format('DD/MM/YYYY HH:mm')}<br>
-        <i class="fa fa-clock-o"></i> Duracion: ${dhours} h ${dmin} m`,
+        <i class="fa fa-clock-o"></i> Duracion: ${dhours} h ${dmin} m
+        <hr>
+        <div class="text-right"><strong>Estado:</strong> <span class="label label-warning">pendiente aprobación</span></div>`,
         container: 'body'
     }).popover('show');
+
     $(document).on("click", ".popover .close", () => {
         $(".popover").popover('hide');
     });
-
     $(info.el).off('click').on('click', () => {
         $(this).popover('hide');
 
     })
 
+    // agrego estylo
+    $(info.el).addClass([`ar-tipo-${info.event.extendedProps.tipo}`, `subtipo-${info.event.extendedProps.subtipo}`, `estado-${info.event.extendedProps.estado}`].join(' '))
     $(info.el).css('cursor', 'pointer');
-    $(info.el, "div.fc-content").prepend(`<i class='fa fa-${icon}'></i>`);
+    // Agrego el ícono
+    $(info.el, "div.fc-content").prepend(`<i class='fa fa-${info.event.extendedProps.icon}'></i>`);
 };
 
 
@@ -315,7 +302,6 @@ const eventsFromPerson = {
     success: ({ data }) => {
         const events = [];
         $.each(data, (idx, ev) => {
-            const specificClassName = `ar-tipo-${ev.tipo}-subtipo-${ev.subtipo}`;
             const Evento = {
                 id: ev.id,
                 start: ev.fecha_inicio,
@@ -323,17 +309,21 @@ const eventsFromPerson = {
                 allDay: ev.is_all_day == 1,
                 title: ev.descripcion,
                 textEscape: false,
-                classNames: ['modal-abm-licencia-btn-edit', specificClassName],
+                //classNames: ['modal-abm-licencia-btn-edit', `ar-tipo-${ev.tipo}`, `subtipo-${ev.subtipo}`, `estado-${ev.estado}`],
                 rendering: (ev.is_background == 1 ? 'background' : 'auto'),
                 resourceId: ev.tipo,
                 extendedProps: {
                     obs: ev.observaciones,
                     tipo: ev.tipo,
+                    tipo_desc: ev.tipo_desc,
                     subtipo: ev.subtipo,
+                    subtipo_desc: ev.subtipo_desc,
+                    icon: ev.icon,
                     real_start: ev.fecha_inicio,
                     real_end: ev.fecha_fin,
                     id_persona: ev.id_persona,
-                    justificacion: ev.justificacion
+                    justificacion: ev.justificacion,
+                    estado: ev.estado
                 },
             };
             events.push(Evento);

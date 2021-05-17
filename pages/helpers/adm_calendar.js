@@ -55,85 +55,59 @@ const resourceRender = info => {
 }
 
 /***************************************************************************************
- * Obtener los eventos del rango seleccionado
- * @param callback handleData - Callback del calendario
+ * Obtener los eventos del area
  * @param Date inicio - inicio del rango de búsqueda
  * @param Date fin - fin del rango de búsqueda
- * @param number area - area de las personas
+ * @param number id_persona - area de las personas // FROM DOM
  * @author MVGP
  * @returns {Events[]} - Eventos
  ****************************************************************************************/
-const getEvents = (handleData, inicio, fin, area) => {
-    let start = inicio.toISOString().slice(0, 10);
-    let end = fin.toISOString().slice(0, 10);
-    let sql = `
-    SELECT ev.*, per.nombre, per.apellido, per.cargo
-    FROM adm_eventos_cal as ev
-    LEFT JOIN persona as per ON ev.id_persona = per.id_persona AND per.area = ${area}
-    LEFT JOIN subgerencia as sub ON per.subgerencia = sub.id_subgerencia
-    LEFT JOIN area as ar ON per.area = ar.id_area
-    WHERE NOT (ev.fecha_inicio > '${end}' OR ev.fecha_fin < '${start}')
-    AND ev.borrado = 0
-    ORDER BY ev.tipo, ev.subtipo;`;
-    $.getJSON("./helpers/getAsyncDataFromDB.php", { query: sql },
-        function(response) {
-            let events = [];
-            $.each(response.data, (idx, ev) => {
+const eventsByArea = {
+    url: './calendar/eventController.php',
+    method: 'POST',
+    extraParams: {
+        action: 'BY_AREA',
+        area: '3'
+            // area: $('#per_id_persona').val()
+    },
+    error: () => {
+        alert('Hubo un error al obtener los eventos del area!');
+    },
+    success: ({ data }) => {
+        const events = [];
+        $.each(data, (idx, ev) => {
+            const Evento = {
+                id: ev.id,
+                start: ev.fecha_inicio,
+                end: ev.fecha_fin,
+                allDay: ev.is_all_day == 1,
+                title: ev.descripcion,
+                textEscape: false,
+                rendering: (ev.is_background == 1 ? 'background' : 'auto'),
+                extendedProps: {
+                    obs: ev.observaciones,
+                    tipo: ev.tipo,
+                    tipo_desc: ev.tipo_desc,
+                    subtipo: ev.subtipo,
+                    subtipo_desc: ev.subtipo_desc,
+                    icon: ev.icon,
+                    real_start: ev.fecha_inicio,
+                    real_end: ev.fecha_fin,
+                    id_persona: ev.id_persona,
+                    justificacion: ev.justificacion,
+                    estado: ev.estado
+                },
 
-                // SI es un evento de feriado
-                // TODO: Hacer con eventSources (https://stackoverflow.com/questions/7778318/multiple-eventsources-with-jquery-fullcalendar)
-                if (ev.tipo == 1) {
-                    const specificClassName = `ar-tipo-${ev.tipo}-subtipo-${ev.subtipo}`;
-                    const Evento = {
-                        id: ev.id,
-                        start: ev.fecha_inicio,
-                        end: ev.fecha_inicio,
-                        allDay: true,
-                        title: ev.descripcion,
-                        textEscape: false,
-                        classNames: 'fc-nonbusiness',
-                        rendering: 'background',
-                        extendedProps: {
-                            obs: ev.observaciones,
-                            tipo: ev.tipo,
-                            subtipo: ev.subtipo,
-                        },
-                    };
-                    events.push(Evento);
-                } else {
-                    const specificClassName = `ar-tipo-${ev.tipo}-subtipo-${ev.subtipo}`;
-                    const Evento = {
-                        id: ev.id,
-                        start: ev.fecha_inicio,
-                        end: ev.fecha_fin,
-                        allDay: ev.is_all_day == 1,
-                        title: ev.descripcion,
-                        textEscape: false,
-                        classNames: ['modal-abm-licencia-btn-edit', specificClassName],
-                        rendering: (ev.is_background == 1 ? 'background' : 'auto'),
-                        extendedProps: {
-                            obs: ev.observaciones,
-                            tipo: ev.tipo,
-                            subtipo: ev.subtipo,
-                            real_start: ev.fecha_inicio,
-                            real_end: ev.fecha_fin,
-                            id_persona: ev.id_persona,
-                        },
-                    };
-                    if (ev.id_persona && ev.id_persona > 0) {
-                        Evento.resourceId = ev.id_persona;
-                        // Evento.resourceId = ev.id_persona + '_' + ev.tipo;
-                    }
-                    events.push(Evento);
-                }
-            });
-            handleData(events);
-        }
-    ).fail(function(jqXHR, errorText) {
-        console.log(errorText);
-    });
-}
-
+            };
+            if (ev.id_persona && ev.id_persona > 0) {
+                Evento.resourceId = ev.id_persona;
+                // Evento.resourceId = ev.id_persona + '_' + ev.tipo;
+            }
+            events.push(Evento);
+        });
+        return events;
+    },
+};
 
 /***************************************************************************************
  * Obtiene todos los recursos (personas de un area)
@@ -249,12 +223,10 @@ const initializeCalendar = async(inicio, fin) => {
         resources: (fetchInfo, successCallback, failureCallback) =>
             getResources((resources, day) =>
                 successCallback(resources), 3), //FIXME: Poner area correspondiente
-        //events: './helpers/adm_calendardb.php?area=1',
-        events: (fetchInfo, successCallback, failureCallback) => {
-            let start = fetchInfo.start || inicio;
-            let end = fetchInfo.end || fin;
-            getEvents(events => successCallback(events), start, end, 3); //FIXME: Poner area correspondiente
-        },
+        eventSources: [
+            dnls.eventSource,
+            eventsByArea
+        ],
         eventRender: (eventInfo) => eventRender(eventInfo),
 
         dateClick: function(e) {
