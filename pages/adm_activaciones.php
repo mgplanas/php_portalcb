@@ -206,7 +206,7 @@ desired effect
                     <div class="col-md-10 text-right " >
                         <div class="btn-group">
                             <button type="button" 
-                            id="modal-abm-guardias-btn-def" 
+                            id="modal-abm-registro-btn-add" 
                             class="btn btn-default"
                             data-target="#modal-abm-licencia"><i class="fa fa-calendar-plus-o"></i> Registrar horas</button>
                         </div>

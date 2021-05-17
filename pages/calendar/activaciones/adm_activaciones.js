@@ -3,7 +3,6 @@ import * as dnls from '../dnls.js';
 // Calendar instantiation
 var calendarEl = document.getElementById('calendar');
 var calendar;
-var calResources = [];
 
 // Default dates range
 var today = new Date();
@@ -11,11 +10,133 @@ var inicio = new Date();
 var fin = new Date();
 
 // ========================================================================================================================================================
+// MANEJO DE Registro de HORAS
+// ========================================================================================================================================================
+// TODO: pasar a módulo
+// TODO: hacer popup de ayuda 
+// TODO: campo de cantidad de horas auto calculadas
+/***************************************************************************************
+ * genera los eventos efectivos basados en los períodos de guardias/DNL y licencias
+ * @param Date inicio - Fecha de inicio del registro de trabajo
+ * @param Date fin - Fecha de fin del registro de trabajo
+ * @param FullCalendatEvent[] eventosActuales - Eventos de la persona en el período
+ * @author MVGP
+ ****************************************************************************************/
+const generarEventos = (fecha_inicio, fecha_fin, es_programada, eventosActuales) => {
+    const eventosEfectivos = [];
+
+    fecha_inicio = moment(fecha_inicio);
+    fecha_fin = moment(fecha_fin);
+
+    let subtipo = 1;
+    eventosEfectivos.push({
+        fecha_inicio: fecha_inicio.format('YYYY-MM-DD HH:mm:ss'),
+        fecha_fin: fecha_fin.format('YYYY-MM-DD HH:mm:ss'),
+        subtipo
+    });
+
+    return eventosEfectivos;
+}
+
+/***************************************************************************************
+ * guardar Registro en DB
+ * @param callback() callback fuanction
+ * @author MVGP
+ ****************************************************************************************/
+const submitRegistroHoras = (operacion, callback) => {
+        let id = $('#modal-abm-cal-registro-id').val();
+        let id_persona = $('#modal-abm-cal-registro-id-persona').val();
+        let justificacion = $('#modal-abm-cal-registro-justificacion').val();
+        let fecha_inicio = $('#modal-abm-cal-registro-inicio').val();
+        let fecha_fin = $('#modal-abm-cal-registro-fin').val();
+        let es_programada = 0;
+        if ($("#modal-abm-cal-registro-programada").is(':checked')) {
+            es_programada = 1;
+        }
+
+        // obtengo los eventos para analizar.
+        let eventosActuales = calendar.getEvents();
+
+        // genero los eventos efectivos a dar de alta.
+        // esto es por si el período ingresado excede un período de guardias.
+        const eventosEfectivos = generarEventos(new Date(fecha_inicio), new Date(fecha_fin), es_programada, eventosActuales);
+        // Ejecuto
+        $.ajax({
+            type: 'POST',
+            url: './calendar/activaciones/registrohoras.controller.php',
+            dataType: 'json',
+            data: {
+                operacion,
+                eventos: eventosEfectivos,
+                id_persona,
+                justificacion,
+                tipo: 4,
+                estado: 1,
+                is_all_day: 0,
+                is_background: 0,
+                is_programmed: es_programada
+            },
+            success: json => {
+                $("#modal-abm-cal-registro").modal("hide");
+                if (!json.ok) {
+                    alert(json.err);
+                }
+                callback(null);
+            },
+            error: (xhr, status, error) => {
+                alert(error);
+                callback(error);
+            }
+        });
+
+    }
+    /***************************************************************************************
+     * Eliminar Registro
+     * @param callback() callback fuanction
+     * @author MVGP
+     ****************************************************************************************/
+const removeRegistroHoras = (callback) => {
+    if (confirm('¿Está seguro que desea eliminar el registro de horas?')) {
+        return submitRegistroHoras('REMOVE_REGISTRO_HORAS', callback);
+    }
+}
+
+/***************************************************************************************
+ * limpiar los campos del modal
+ * @author MVGP
+ ****************************************************************************************/
+const modalRegistroHorasLimpiarCampos = () => {
+    // let today = new Date();
+    // today.setSeconds(0, 0);
+    let today = moment();
+    $('#modal-abm-cal-registro-id').val(0);
+    $('#modal-abm-cal-registro-inicio').val(today.toJSON().slice(0, 16));
+    $('#modal-abm-cal-registro-fin').val(today.add(1, 'hours').toJSON().slice(0, 16));
+    $('#modal-abm-cal-registro-justificacion').val('');
+}
+
+/***************************************************************************************
+ * agregar Registro de Hora 
+ * @param Date inicio - inicio del rango de búsqueda
+ * @param Date fin - fin del rango de búsqueda
+ * @author MVGP
+ ****************************************************************************************/
+const agregarRegistroHoras = () => {
+    $('#modal-abm-cal-registro-title').html(`Agregar Registro de horas trabajadas`);
+    modalRegistroHorasLimpiarCampos();
+    $('#modal-abm-cal-registro-submit').attr('name', 'ADD_REGISTRO_HORAS');
+    $("#modal-abm-cal-registro").modal("show");
+}
+
+
+
+// TODO: Factorizar
+// ========================================================================================================================================================
 // MANEJO DE EVENTOS DEL CALENDARIO
 // ========================================================================================================================================================
 
 /***************************************************************************************
- * Renderizacion Evento Guardia
+ * Renderizacion Eventos Guardias
  * @author MVGP
  ****************************************************************************************/
 const eventGuardiasRender = info => {
@@ -80,15 +201,13 @@ const resourceRender = info => {
 }
 
 /***************************************************************************************
- * Obtener los eventos del rango seleccionado
- * @param callback handleData - Callback del calendario
+ * Obtener los eventos del la persona
  * @param Date inicio - inicio del rango de búsqueda
  * @param Date fin - fin del rango de búsqueda
- * @param number area - area de las personas
+ * @param number id_persona - area de las personas // FROM DOM
  * @author MVGP
  * @returns {Events[]} - Eventos
  ****************************************************************************************/
-// TODO: pasar a eventsource
 const eventsFromPerson = {
     url: './calendar/eventController.php',
     method: 'POST',
@@ -236,10 +355,7 @@ const initializeCalendar = async(inicio, fin) => {
 initializeCalendar(inicio, fin)
     .then((cal) => {
         calendar = cal;
-        // $('#modal-abm-cal-guardias-mul-submit').on('click', () => guardias.submitGuardiaMultiple(() => calendar.refetchEvents()));
-        // $('#modal-abm-cal-guardias-remove').on('click', () => guardias.removeGuardia(() => calendar.refetchEvents()));
-        // $('#modal-abm-cal-guardias-submit').on('click', () => guardias.actualizarGuardia(() => calendar.refetchEvents()));
-        // $('#modal-abm-guardias-btn-def').on('click', guardias.agregarGuardiaMultiple);
-        // Cambio el titulo del calendar
-        // $('.fc-toolbar > .fc-left').html('<H2>Registro de Horas</H2>');
+        $('#modal-abm-cal-registro-submit').on('click', () => submitRegistroHoras('ADD_REGISTRO_HS', () => calendar.refetchEvents()));
+        $('#modal-abm-cal-registro-remove').on('click', () => removeRegistroHoras(() => calendar.refetchEvents()));
+        $('#modal-abm-registro-btn-add').on('click', agregarRegistroHoras);
     });
