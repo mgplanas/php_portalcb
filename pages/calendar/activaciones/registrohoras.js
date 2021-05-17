@@ -114,6 +114,11 @@ const validarRegistroDeHora = (fecha_inicio, fecha_fin, es_programada, justifica
     const m_fin = moment(fecha_fin);
 
     // Valido fechas 
+    if (!m_inicio.isValid() || !m_fin.isValid()) {
+        resultado.ok = false;
+        resultado.errores.push(`Las fechas ingresadas no son válidas.`);
+    }
+
     if (m_inicio.isAfter(m_fin)) {
         resultado.ok = false;
         resultado.errores.push(`la fecha de inicio no puede ser menor a la fecha fin.`);
