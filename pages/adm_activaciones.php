@@ -104,14 +104,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
         border-radius: 6px !important;
         /* opacity: 0.5; */
     }
-    /* Licencias - Vacaciones */
+    /* Registro Horas */
+    /* Activacion */
     .ar-tipo-4-subtipo-1 {
         background-color: rgba(255, 0,0, 0.8) !important;
         border-color: red !important;
         color: white !important;
     }
+    /* Emergencia */
     .ar-tipo-4-subtipo-2 {
         background-color: rgba(255, 0,0, 0.7) !important;
+        border-color: red !important;
+        color: white !important;
+    }
+    /* Tareas Programadas */
+    .ar-tipo-4-subtipo-3 {
+        background-color: rgba(255, 0,0, 0.6) !important;
+        border-color: red !important;
+        color: white !important;
+    }
+    /* Horas Extra */
+    .ar-tipo-4-subtipo-4 {
+        background-color: rgba(255, 0,0, 0.5) !important;
         border-color: red !important;
         color: white !important;
     }

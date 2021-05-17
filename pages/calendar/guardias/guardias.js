@@ -4,6 +4,37 @@
 var calendar;
 
 /***************************************************************************************
+ * Renderizacion Eventos Guardias
+ * @author MVGP
+ ****************************************************************************************/
+const eventRender = info => {
+    const mInicio = moment(info.event.extendedProps.real_start);
+    const mFin = moment(info.event.extendedProps.real_end);
+    const resource = info.event.getResources()[0];
+    $(info.el).popover({
+        title: `${info.event.title} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
+        placement: 'top',
+        html: true,
+        trigger: 'hover',
+        content: `<strong>${resource.title}:</strong><br>
+        <strong>Comienzo:</strong>${mInicio.format('DD/MM/YYYY HH:mm')}<br>
+        <strong>Fin:</strong>${mFin.format('DD/MM/YYYY HH:mm')}<br>
+        Cantidad de días: ${mFin.diff(mInicio, 'days')+1}`,
+        container: 'body'
+    }).popover('show');
+    $(document).on("click", ".popover .close", () => {
+        $(".popover").popover('hide');
+    });
+
+    $(info.el).off('click').on('click', () => {
+        $(this).popover('hide');
+        guardias.editarGuardia(info.event);
+    })
+
+    $(info.el).css('cursor', 'pointer');
+};
+
+/***************************************************************************************
  * Valida nueva definicion de guardia
  * Definición de período de Guardia
  * @typedef PeriodoGuadia
@@ -381,4 +412,4 @@ const init = (cal) => {
     $('#modal-abm-guardias-btn-def').on('click', agregarGuardiaMultiple);
 }
 
-export { editarGuardia, init };
+export { editarGuardia, init, eventRender };
