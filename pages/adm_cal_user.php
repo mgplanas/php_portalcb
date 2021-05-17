@@ -64,6 +64,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link href='../bower_components/fullcalendar/dist/packages-premium/timeline/main.css' rel='stylesheet' />
   <link href='../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.css' rel='stylesheet' />
   <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="./calendar/calendar.css">
   <!-- <link rel="stylesheet" href="../css/bootstrap-select.min.css"> -->
 
   <style>
@@ -80,71 +81,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     .example-modal .modal {
       background: transparent !important;
     }
-
-    .fc-sun,.fc-sat{
-        color:#337ab7;  
-        border-color: black;  
-        background-color: rgb(143,223,143,0.3);
-    }
-
-  </style>
-  <style>
-    /* Guardias - DC */
-    .ar-tipo-2-subtipo-1 {
-        background-color: rgba(0, 255, 0,0.7) !important;
-        border-color: green !important;
-        color: green !important;
-        /* opacity: 0.5; */
-    }
-    /* Guardias - DC */
-    .ar-tipo-3-subtipo-1 {
-        background-color: rgba(0, 0, 255, 0.7) !important;
-        border-color: blue !important;
-        color: white !important;
-        border-radius: 6px !important;
-        /* opacity: 0.5; */
-    }
-    /* Registro Horas */
-    /* Activacion */
-    .ar-tipo-4-subtipo-1 {
-        background-color: rgba(255, 0,0, 0.8) !important;
-        border-color: red !important;
-        color: white !important;
-    }
-    /* Emergencia */
-    .ar-tipo-4-subtipo-2 {
-        background-color: rgba(255, 0,0, 0.7) !important;
-        border-color: red !important;
-        color: white !important;
-    }
-    /* Tareas Programadas */
-    .ar-tipo-4-subtipo-3 {
-        background-color: rgba(255, 0,0, 0.6) !important;
-        border-color: red !important;
-        color: white !important;
-    }
-    /* Horas Extra */
-    .ar-tipo-4-subtipo-4 {
-        background-color: rgba(255, 0,0, 0.5) !important;
-        border-color: red !important;
-        color: white !important;
-    }
-
-    /* FIX FontAwesome */
-    .fc-icon-fa {
-        font-family: FontAwesome !important;
-    }
-
-    .fc-nonbusiness {
-        background: #000000;
-    }
-
-    /* FIX sweet alert font-size */
-    .swal2-popup {
-        font-size: 1.6rem !important;
-    }
-
-  </style>
+</style>
 <!-- fullCalendar -->
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 
