@@ -28,7 +28,15 @@
                                 <input type="datetime-local" id="modal-abm-cal-registro-fin" required="required" name="fechafin">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3 text-right">
+                            <div class="form-group">
+                                <label><i class="fa fa-clock-o"></i> Duración</label><br>
+                                <label id="modal-abm-cal-registro-duracion"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" id="modal-abm-cal-registro-programada"> Es una tarea programada?

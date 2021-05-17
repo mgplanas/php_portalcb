@@ -17,6 +17,7 @@ var fin = new Date();
 // TODO: campo de cantidad de horas auto calculadas
 
 
+
 /***************************************************************************************
  * Renderizacion Eventos Registro Horas
  * @author MVGP
@@ -95,63 +96,105 @@ const generarEventos = (fecha_inicio, fecha_fin, es_programada, eventosActuales)
     return eventosEfectivos;
 }
 
+
+/***************************************************************************************
+ * Valida el registro de horas
+ * @param Date inicio - Fecha de inicio del registro de trabajo
+ * @param Date fin - Fecha de fin del registro de trabajo
+ * @param FullCalendatEvent[] eventosActuales - Eventos de la persona en el período
+ * @author MVGP
+ ****************************************************************************************/
+const validarRegistroDeHora = (fecha_inicio, fecha_fin, es_programada, justificacion, eventosActuales) => {
+    const resultado = {
+        ok: true,
+        errores: []
+    }
+
+    const m_inicio = moment(fecha_inicio);
+    const m_fin = moment(fecha_fin);
+
+    // Valido fechas 
+    if (m_inicio.isAfter(m_fin)) {
+        resultado.ok = false;
+        resultado.errores.push(`la fecha de inicio no puede ser menor a la fecha fin.`);
+    }
+    // Valido justificacion 
+    if (justificacion === '') {
+        resultado.ok = false;
+        resultado.errores.push(`El campo Justificación no puede estar vacío.`);
+    }
+
+    return resultado;
+}
+
 /***************************************************************************************
  * guardar Registro en DB
  * @param callback() callback fuanction
  * @author MVGP
  ****************************************************************************************/
 const submitRegistroHoras = (operacion, callback) => {
-        let id = $('#modal-abm-cal-registro-id').val();
-        let id_persona = $('#modal-abm-cal-registro-id-persona').val();
-        let justificacion = $('#modal-abm-cal-registro-justificacion').val();
-        let fecha_inicio = $('#modal-abm-cal-registro-inicio').val();
-        let fecha_fin = $('#modal-abm-cal-registro-fin').val();
-        let es_programada = 0;
-        if ($("#modal-abm-cal-registro-programada").is(':checked')) {
-            es_programada = 1;
-        }
-
-        // obtengo los eventos para analizar.
-        let eventosActuales = calendar.getEvents();
-
-        // genero los eventos efectivos a dar de alta.
-        // esto es por si el período ingresado excede un período de guardias.
-        const eventosEfectivos = generarEventos(new Date(fecha_inicio), new Date(fecha_fin), es_programada, eventosActuales);
-        // Ejecuto
-        $.ajax({
-            type: 'POST',
-            url: './calendar/activaciones/registrohoras.controller.php',
-            dataType: 'json',
-            data: {
-                operacion,
-                eventos: eventosEfectivos,
-                id_persona,
-                justificacion,
-                tipo: 4,
-                estado: 1,
-                is_all_day: 0,
-                is_background: 0,
-                is_programmed: es_programada
-            },
-            success: json => {
-                $("#modal-abm-cal-registro").modal("hide");
-                if (!json.ok) {
-                    alert(json.err);
-                }
-                callback(null);
-            },
-            error: (xhr, status, error) => {
-                alert(error);
-                callback(error);
-            }
-        });
-
+    let id = $('#modal-abm-cal-registro-id').val();
+    let id_persona = $('#modal-abm-cal-registro-id-persona').val();
+    let justificacion = $('#modal-abm-cal-registro-justificacion').val();
+    let fecha_inicio = $('#modal-abm-cal-registro-inicio').val();
+    let fecha_fin = $('#modal-abm-cal-registro-fin').val();
+    let es_programada = 0;
+    if ($("#modal-abm-cal-registro-programada").is(':checked')) {
+        es_programada = 1;
     }
-    /***************************************************************************************
-     * Eliminar Registro
-     * @param callback() callback fuanction
-     * @author MVGP
-     ****************************************************************************************/
+
+    // obtengo los eventos para analizar.
+    let eventosActuales = calendar.getEvents();
+
+    const validez = validarRegistroDeHora(new Date(fecha_inicio), new Date(fecha_fin), es_programada, justificacion, eventosActuales);
+    if (!validez.ok) {
+        Swal.fire({
+            title: 'Error en la validación',
+            html: `<div style="text-align: left;"><li>${validez.errores.join('</li><li>')}</li></div>`,
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+        });
+        return;
+    }
+    // genero los eventos efectivos a dar de alta.
+    // esto es por si el período ingresado excede un período de guardias.
+    const eventosEfectivos = generarEventos(new Date(fecha_inicio), new Date(fecha_fin), es_programada, eventosActuales);
+    // Ejecuto
+    $.ajax({
+        type: 'POST',
+        url: './calendar/activaciones/registrohoras.controller.php',
+        dataType: 'json',
+        data: {
+            operacion,
+            eventos: eventosEfectivos,
+            id_persona,
+            justificacion,
+            tipo: 4,
+            estado: 1,
+            is_all_day: 0,
+            is_background: 0,
+            is_programmed: es_programada
+        },
+        success: json => {
+            $("#modal-abm-cal-registro").modal("hide");
+            if (!json.ok) {
+                alert(json.err);
+            }
+            callback(null);
+        },
+        error: (xhr, status, error) => {
+            alert(error);
+            callback(error);
+        }
+    });
+
+}
+
+/***************************************************************************************
+ * Eliminar Registro
+ * @param callback() callback fuanction
+ * @author MVGP
+ ****************************************************************************************/
 const removeRegistroHoras = (callback) => {
     if (confirm('¿Está seguro que desea eliminar el registro de horas?')) {
         return submitRegistroHoras('REMOVE_REGISTRO_HORAS', callback);
@@ -170,6 +213,22 @@ const modalRegistroHorasLimpiarCampos = () => {
     $('#modal-abm-cal-registro-inicio').val(today.toJSON().slice(0, 16));
     $('#modal-abm-cal-registro-fin').val(today.add(1, 'hours').toJSON().slice(0, 16));
     $('#modal-abm-cal-registro-justificacion').val('');
+    actualizarDuracion();
+}
+
+const actualizarDuracion = () => {
+    let fecha_inicio = $('#modal-abm-cal-registro-inicio').val();
+    let fecha_fin = $('#modal-abm-cal-registro-fin').val();
+    const mInicio = moment(fecha_inicio);
+    const mFin = moment(fecha_fin);
+    if (mInicio.isValid() && mFin.isValid()) {
+        const duration = moment.duration(mFin.diff(mInicio));
+        const dhours = parseInt(duration.asHours());
+        const dmin = parseInt(duration.asMinutes()) - (dhours * 60);
+        $('#modal-abm-cal-registro-duracion').html(`${dhours} h ${dmin} m`);
+    } else {
+        $('#modal-abm-cal-registro-duracion').html(`Fechas inválidas`);
+    }
 }
 
 /***************************************************************************************
@@ -269,6 +328,7 @@ const eventsFromPerson = {
                     real_start: ev.fecha_inicio,
                     real_end: ev.fecha_fin,
                     id_persona: ev.id_persona,
+                    justificacion: ev.justificacion
                 },
             };
             events.push(Evento);
@@ -389,6 +449,7 @@ const init = (inicio, fin) => {
             $('#modal-abm-cal-registro-submit').on('click', () => submitRegistroHoras('ADD_REGISTRO_HS', () => calendar.refetchEvents()));
             $('#modal-abm-cal-registro-remove').on('click', () => removeRegistroHoras(() => calendar.refetchEvents()));
             $('#modal-abm-registro-btn-add').on('click', agregarRegistroHoras);
+            $('#modal-abm-cal-registro-inicio,#modal-abm-cal-registro-fin').on('change', actualizarDuracion)
         });
 }
 
