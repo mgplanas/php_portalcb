@@ -15,9 +15,9 @@
 [ ]        - Toda carga fuera del horario laboral será Horas Extras (Tarea Programada) y deberá ser aprobado por su jefe y subgerente.
         Con Esquema de guardias
 [x]        - No se puede cargar activaciones en horario laboral (L-V 9-17:30)
-[ ]        - Las cargas que se encuentren dentro de un período de guardia se considerarán activaciones.
-[ ]        - Las cargas que se encuentren fuera de un período de guardia se considerarán emergencias.
-[ ]        - Si la misma es una tarea programada, está se considerará como Tarea Programada
+[x]        - Las cargas que se encuentren dentro de un período de guardia se considerarán activaciones.
+[x]        - Las cargas que se encuentren fuera de un período de guardia se considerarán emergencias.
+[x]        - Si la misma es una tarea programada, está se considerará como Tarea Programada
 ## Licencias
 [ ]    - Toda licencia que el personal cargue deberá ser aprobada por el jefe y subgerente.
 ## Aprobaciones

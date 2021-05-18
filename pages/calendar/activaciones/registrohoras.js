@@ -17,7 +17,7 @@ var today = new Date();
 // TODO: validación sobre eventos actuales
 // TODO: generacion de eventos que pasan 
 // TODO: Aprobacion
-// TODO: Hacer valiación única
+// TODO: Hacer anánisis y que devuleva un objeto con todo lo que necesitás
 
 
 /***************************************************************************************
