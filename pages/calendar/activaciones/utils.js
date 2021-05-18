@@ -3,7 +3,54 @@
  ****************************************************************************************/
 const RULE_RANGO_LABORAL_INICIO = '09:00:00';
 const RULE_RANGO_LABORAL_FIN = '17:30:00';
+const RULE_CANTIDAD_MAX_HS_ACTIVACION_MENSUAL = 30;
+const RULE_CANTIDAD_MAX_HS_ACTIVACION_ANUAL = 200;
+const TIPO_REGISTRO_FERIADOS = '1';
+const TIPO_REGISTRO_GUARDIAS = '2';
+const TIPO_REGISTRO_LICENCIAS = '3';
+const TIPO_REGISTRO_HORAS = '4';
 
+
+/***************************************************************************************
+ * Verifica limite mensual de horas
+ * @typedef {Object} Resultado
+ * @property {boolean} excede - si excede el limite
+ * @property {number} cantidadMinActuales - cantidad de minutos de los eventos actuales
+ * @property {number} minEventoActual - cantidad de minutos del evento a validar
+ * @param Moment inicio - incio del evento a validar
+ * @param Moment fin - fin del evento a Validar
+ * @param Event[] eventos - Eventos de la persona 
+ * @returns {Resultado}
+ * @author MVGP
+ ****************************************************************************************/
+const verificarLimiteAcumuladoMensual = (inicio, fin, eventos) => {
+    const res = {
+        excede: false,
+        cantidadMinActuales: cantidadMinAcumulados(eventos),
+        minEventoActual: moment.duration(fin.diff(inicio)).asMinutes(),
+        totalMinutos: 0
+    }
+    res.totalMinutos = res.cantidadMinActuales + res.minEventoActual;
+    res.excede = (res.totalMinutos) > (30 * 60);
+
+    return res;
+}
+
+/***************************************************************************************
+ * Verifica limite mensual de horas
+ * @param Event[] eventos - Eventos de la persona 
+ * @author MVGP
+ ****************************************************************************************/
+const cantidadMinAcumulados = (eventos) => {
+    return eventos
+        .filter(event => event.extendedProps.tipo == TIPO_REGISTRO_HORAS)
+        .reduce((acumulado, evento) => {
+            const mInicio = moment(evento.start);
+            const mFin = moment(evento.end);
+            const duration = moment.duration(mFin.diff(mInicio));
+            return acumulado + parseInt(duration.asMinutes());
+        }, 0);
+}
 
 /***************************************************************************************
  * Verifica un evento está solapdado con otro
@@ -95,5 +142,6 @@ export {
     estaEnEsquemaDeGuardia,
     estanSolapados,
     solapaRangoConHorarioLaboral,
-    solapaHorarioLaboral
+    solapaHorarioLaboral,
+    verificarLimiteAcumuladoMensual
 }

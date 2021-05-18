@@ -110,12 +110,14 @@ const validarRegistroDeHora = (fecha_inicio, fecha_fin, es_programada, justifica
         return resultado;
     }
 
+    // Fecha fin > hoy
     if (m_fin.isAfter(moment())) {
         resultado.ok = false;
         resultado.errores.push(`la fecha de fin no puede ser a futuro.`);
         return resultado;
     }
 
+    // Si ña fecha inicio es < a fin
     if (m_inicio.isAfter(m_fin)) {
         resultado.ok = false;
         resultado.errores.push(`la fecha de inicio no puede ser menor a la fecha fin.`);
@@ -139,6 +141,14 @@ const validarRegistroDeHora = (fecha_inicio, fecha_fin, es_programada, justifica
     if (utils.solapaRangoConHorarioLaboral(m_inicio, m_fin, eventosActuales)) {
         resultado.ok = false;
         resultado.errores.push(`El rango ingresado se solapa con horario laboral.`);
+        return resultado;
+    }
+
+    // Límite de hs acumuladas
+    const { excede, totalMinutos } = utils.verificarLimiteAcumuladoMensual(m_inicio, m_fin, eventosActuales);
+    if (excede) {
+        resultado.ok = false;
+        resultado.errores.push(`Se está excediendo el límite de horas mensuales (30hs).`);
         return resultado;
     }
 
