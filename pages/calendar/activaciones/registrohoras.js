@@ -61,46 +61,18 @@ const eventRender = info => {
     $(info.el).css('cursor', 'pointer');
 };
 
-
-/***************************************************************************************
- * genera los eventos efectivos basados en los períodos de guardias/DNL y licencias
- * @param Date inicio - Fecha de inicio del registro de trabajo
- * @param Date fin - Fecha de fin del registro de trabajo
- * @param FullCalendatEvent[] eventosActuales - Eventos de la persona en el período
- * @author MVGP
- ****************************************************************************************/
-const generarEventos = (fecha_inicio, fecha_fin, es_programada, eventosActuales) => {
-    const eventosEfectivos = [];
-
-    fecha_inicio = moment(fecha_inicio);
-    fecha_fin = moment(fecha_fin);
-
-    let subtipo = 1;
-    eventosEfectivos.push({
-        fecha_inicio: fecha_inicio.format('YYYY-MM-DD HH:mm:ss'),
-        fecha_fin: fecha_fin.format('YYYY-MM-DD HH:mm:ss'),
-        subtipo
-    });
-
-    return eventosEfectivos;
-}
-
-
 /***************************************************************************************
  * Valida el registro de horas
- * @param Date inicio - Fecha de inicio del registro de trabajo
- * @param Date fin - Fecha de fin del registro de trabajo
+ * @param Moment m_inicio - Fecha de inicio del registro de trabajo
+ * @param Moment m_fin - Fecha de fin del registro de trabajo
  * @param FullCalendatEvent[] eventosActuales - Eventos de la persona en el período
  * @author MVGP
  ****************************************************************************************/
-const validarRegistroDeHora = (fecha_inicio, fecha_fin, es_programada, justificacion, eventosActuales) => {
+const validarRegistroDeHora = (m_inicio, m_fin, es_programada, justificacion, eventosActuales) => {
     const resultado = {
         ok: true,
         errores: []
     }
-
-    const m_inicio = moment(fecha_inicio);
-    const m_fin = moment(fecha_fin);
 
     // Validacion Campo del form
     // Valido fechas 
@@ -178,10 +150,14 @@ const submitRegistroHoras = (operacion, callback) => {
         es_programada = 1;
     }
 
+    fecha_inicio = moment(fecha_inicio);
+    fecha_fin = moment(fecha_fin);
+
     // obtengo los eventos para analizar.
     let eventosActuales = calendar.getEvents();
 
-    const validez = validarRegistroDeHora(new Date(fecha_inicio), new Date(fecha_fin), es_programada, justificacion, eventosActuales);
+    // Valido nuevo ingreso
+    const validez = validarRegistroDeHora(fecha_inicio, fecha_fin, es_programada, justificacion, eventosActuales);
     if (!validez.ok) {
         Swal.fire({
             title: 'Error en la validación',
@@ -191,9 +167,8 @@ const submitRegistroHoras = (operacion, callback) => {
         });
         return;
     }
-    // genero los eventos efectivos a dar de alta.
-    // esto es por si el período ingresado excede un período de guardias.
-    const eventosEfectivos = generarEventos(new Date(fecha_inicio), new Date(fecha_fin), es_programada, eventosActuales);
+
+    const subtipo = utils.determinarSubtipoRegistroHoras(fecha_inicio, fecha_fin, es_programada, eventosActuales);
     // Ejecuto
     $.ajax({
         type: 'POST',
@@ -201,10 +176,12 @@ const submitRegistroHoras = (operacion, callback) => {
         dataType: 'json',
         data: {
             operacion,
-            eventos: eventosEfectivos,
+            fecha_inicio: fecha_inicio.format('YYYY-MM-DD HH:mm:ss'),
+            fecha_fin: fecha_fin.format('YYYY-MM-DD HH:mm:ss'),
             id_persona,
             justificacion,
-            tipo: 4,
+            tipo: utils.RULE_CONSTANTS.TIPO_REGISTRO_HORAS,
+            subtipo,
             estado: 1,
             is_all_day: 0,
             is_background: 0,

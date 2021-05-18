@@ -1,14 +1,22 @@
 /***************************************************************************************
  * Constantes
  ****************************************************************************************/
-const RULE_RANGO_LABORAL_INICIO = '09:00:00';
-const RULE_RANGO_LABORAL_FIN = '17:30:00';
-const RULE_CANTIDAD_MAX_HS_ACTIVACION_MENSUAL = 30;
-const RULE_CANTIDAD_MAX_HS_ACTIVACION_ANUAL = 200;
-const TIPO_REGISTRO_FERIADOS = '1';
-const TIPO_REGISTRO_GUARDIAS = '2';
-const TIPO_REGISTRO_LICENCIAS = '3';
-const TIPO_REGISTRO_HORAS = '4';
+const RULE_CONSTANTS = {
+    RULE_RANGO_LABORAL_INICIO: '09:00:00',
+    RULE_RANGO_LABORAL_FIN: '17:30:00',
+    RULE_CANTIDAD_MAX_HS_ACTIVACION_MENSUAL: 30,
+    RULE_CANTIDAD_MAX_HS_ACTIVACION_ANUAL: 200,
+    TIPO_REGISTRO_FERIADOS: 1,
+    TIPO_REGISTRO_GUARDIAS: 2,
+    TIPO_REGISTRO_LICENCIAS: 3,
+    TIPO_REGISTRO_HORAS: 4,
+    SUBTIPOS_REGISTRO_HORAS: {
+        ACTIVACION: 1,
+        EMERGENCIA: 2,
+        TAREA_PROGRAMADA: 3,
+        HORAS_EXTRAS: 4,
+    },
+}
 
 
 /***************************************************************************************
@@ -31,7 +39,7 @@ const verificarLimiteAcumuladoMensual = (inicio, fin, eventos) => {
         totalMinutos: 0
     }
     res.totalMinutos = res.cantidadMinActuales + res.minEventoActual;
-    res.excede = (res.totalMinutos) > (30 * 60);
+    res.excede = (res.totalMinutos) > (RULE_CONSTANTS.RULE_CANTIDAD_MAX_HS_ACTIVACION_MENSUAL * 60);
 
     return res;
 }
@@ -43,7 +51,7 @@ const verificarLimiteAcumuladoMensual = (inicio, fin, eventos) => {
  ****************************************************************************************/
 const cantidadMinAcumulados = (eventos) => {
     return eventos
-        .filter(event => event.extendedProps.tipo == TIPO_REGISTRO_HORAS)
+        .filter(event => event.extendedProps.tipo == RULE_CONSTANTS.TIPO_REGISTRO_HORAS)
         .reduce((acumulado, evento) => {
             const mInicio = moment(evento.start);
             const mFin = moment(evento.end);
@@ -80,8 +88,8 @@ const solapaHorarioLaboral = (fecha, eventos) => {
     if (esDNL(fecha, eventos)) return false;
 
     // formo el rango inicio fin para la fecha a verificar
-    const comienzo_jornada = moment(`${fecha.format('YYYY-MM-DD')} ${RULE_RANGO_LABORAL_INICIO}`);
-    const fin_jornada = moment(`${fecha.format('YYYY-MM-DD')} ${RULE_RANGO_LABORAL_FIN}`);
+    const comienzo_jornada = moment(`${fecha.format('YYYY-MM-DD')} ${RULE_CONSTANTS.RULE_RANGO_LABORAL_INICIO}`);
+    const fin_jornada = moment(`${fecha.format('YYYY-MM-DD')} ${RULE_CONSTANTS.RULE_RANGO_LABORAL_FIN}`);
     return (fecha.isBetween(comienzo_jornada, fin_jornada, 'minutes', "()"));
 }
 
@@ -95,6 +103,8 @@ const solapaHorarioLaboral = (fecha, eventos) => {
 const solapaRangoConHorarioLaboral = (inicio, fin, eventos) => {
     return (solapaHorarioLaboral(inicio, eventos) || solapaHorarioLaboral(fin, eventos));
 }
+
+
 
 /***************************************************************************************
  * Verifica si una fecha es Feriado o Día no laborable
@@ -124,7 +134,7 @@ const esDNL = (m_fecha, eventos) => {
  ****************************************************************************************/
 const solapaConLicencia = (m_inicio, m_fin, eventos) => {
     const licenciasQueAplican = eventos
-        .filter(e => e.extendedProps.tipo == TIPO_REGISTRO_LICENCIAS) // Feriados DNL
+        .filter(e => e.extendedProps.tipo == RULE_CONSTANTS.TIPO_REGISTRO_LICENCIAS) // Feriados DNL
         .filter(e => {
             const e_inicio = moment(e.start);
             const e_fin = moment(e.end);
@@ -132,6 +142,26 @@ const solapaConLicencia = (m_inicio, m_fin, eventos) => {
         });
 
     return licenciasQueAplican.length > 0;
+
+}
+
+/***************************************************************************************
+ * Verifica si una fecha se solapa con un período de guardia
+ * @param Moment inicio - Fecha a verificar en Moment
+ * @param Moment fin - Fecha a verificar en Moment
+ * @param Event[] eventos - Eventos de la persona 
+ * @author MVGP
+ ****************************************************************************************/
+const solapaConGuardia = (m_inicio, m_fin, eventos) => {
+    const guardiasQueAplican = eventos
+        .filter(e => e.extendedProps.tipo == RULE_CONSTANTS.TIPO_REGISTRO_GUARDIAS) // Feriados DNL
+        .filter(e => {
+            const e_inicio = moment(e.extendedProps.real_start);
+            const e_fin = moment(e.extendedProps.real_end);
+            return estanSolapados(m_inicio, m_fin, e_inicio, e_fin);
+        });
+
+    return guardiasQueAplican.length > 0;
 
 }
 
@@ -150,10 +180,39 @@ const esWeekEnd = (m_fecha) => {
  * @author MVGP
  ****************************************************************************************/
 const estaEnEsquemaDeGuardia = (eventos) => {
-    return eventos.filter(ev => ev.extendedProps.tipo == 4).length > 0;
+    return eventos.filter(ev => ev.extendedProps.tipo == RULE_CONSTANTS.TIPO_REGISTRO_GUARDIAS).length > 0;
 }
 
+/***************************************************************************************
+ * Determina el subtipo de un registro de horas
+ * @param Moment inicio - Fecha a verificar en Moment
+ * @param Moment fin - Fecha a verificar en Moment
+ * @param {boolean} es_programada - flag que determina si la tarea es programada
+ * @param FullCalendarEvent[] eventos - Eventos de la persona 
+ * @returns {number} subtipo
+ * @author MVGP
+ ****************************************************************************************/
+const determinarSubtipoRegistroHoras = (m_inicio, m_fin, es_programada, eventos) => {
 
+    // verfifico si pertenece a un esquema de guardias
+    if (estaEnEsquemaDeGuardia(eventos)) {
+        // si cae dentro de una gaurdia
+        if (solapaConGuardia(m_inicio, m_fin, eventos)) {
+            if (es_programada) return RULE_CONSTANTS.SUBTIPOS_REGISTRO_HORAS.TAREA_PROGRAMADA;
+            else return RULE_CONSTANTS.SUBTIPOS_REGISTRO_HORAS.ACTIVACION;
+        } else {
+            // determino entre hs extra y tarea Programada
+            if (es_programada) return RULE_CONSTANTS.SUBTIPOS_REGISTRO_HORAS.TAREA_PROGRAMADA;
+            else return RULE_CONSTANTS.SUBTIPOS_REGISTRO_HORAS.EMERGENCIA;
+        }
+    } else {
+        // determino entre hs extra y tarea Programada
+        if (es_programada) return RULE_CONSTANTS.SUBTIPOS_REGISTRO_HORAS.TAREA_PROGRAMADA;
+        else return RULE_CONSTANTS.SUBTIPOS_REGISTRO_HORAS.HORAS_EXTRAS;
+    }
+
+    return 0;
+}
 
 
 export {
@@ -164,5 +223,8 @@ export {
     solapaRangoConHorarioLaboral,
     solapaHorarioLaboral,
     verificarLimiteAcumuladoMensual,
-    solapaConLicencia
+    solapaConLicencia,
+    solapaConGuardia,
+    determinarSubtipoRegistroHoras,
+    RULE_CONSTANTS
 }

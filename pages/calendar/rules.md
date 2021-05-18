@@ -10,10 +10,9 @@
 [x]        - No se permite la carga de activaciones a futuro.
 [x]        - No se podrá cargar más de 30hs mensuales de activaciones en el mes.
 [ ]        - No se podrán cargar más de 200  horas al año.(Aplica para horas extras y emergencias también, se suma todo para el calculo) Para esto se requiere que se vaya evando una contabilidad de cada persona. Generalmente hoy por hoy lo realiza el jefe ese seguimiento.
-[ ]        - ¿Pueden cargarse activaciones dentro de una licencia? No se puede
+[x]        - No Pueden cargarse activaciones dentro de una licencia
         Sin esquema de guardias
 [ ]        - Toda carga fuera del horario laboral será Horas Extras (Tarea Programada) y deberá ser aprobado por su jefe y subgerente.
-[ ]
         Con Esquema de guardias
 [x]        - No se puede cargar activaciones en horario laboral (L-V 9-17:30)
 [ ]        - Las cargas que se encuentren dentro de un período de guardia se considerarán activaciones.

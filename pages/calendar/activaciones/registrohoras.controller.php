@@ -25,13 +25,7 @@
         case 'ADD_REGISTRO_HS':
             $sql = "INSERT INTO adm_eventos_cal (borrado,color,descripcion,estado,fecha_fin,fecha_inicio,id_persona,is_all_day,is_background,is_programmed,justificacion,subtipo,tipo)
                     VALUES ";
-            // por cada periodo definido
-            foreach ($eventos as $evento_def) {
-                $inicio = $evento_def["fecha_inicio"];
-                $fin = $evento_def["fecha_fin"];
-                $stipo =$evento_def["subtipo"];
-                $sql .= "(0,'$color','$descripcion','$estado','$fin','$inicio','$id_persona','$is_all_day','$is_background','$is_programmed','$justificacion','$stipo','$tipo'),";
-            }
+            $sql .= "(0,'$color','$descripcion','$estado','$fecha_fin','$fecha_inicio','$id_persona','$is_all_day','$is_background','$is_programmed','$justificacion','$subtipo','$tipo'),";
             
             $sql = rtrim($sql, ",");
 
