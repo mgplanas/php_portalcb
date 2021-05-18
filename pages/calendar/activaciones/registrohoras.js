@@ -1,5 +1,6 @@
 import * as dnls from '../dnls.js';
 import * as guardias from '../guardias/guardias.js';
+import * as utils from './utils.js'
 
 // Calendar instantiation
 var calendarEl = document.getElementById('calendar');
@@ -7,15 +8,17 @@ var calendar;
 
 // Default dates range
 var today = new Date();
-var inicio = new Date();
-var fin = new Date();
 
 // ========================================================================================================================================================
 // MANEJO DE Registro de HORAS
 // ========================================================================================================================================================
 // TODO: hacer popup de ayuda 
-// TODO: campo de cantidad de horas auto calculadas
-
+// TODO: hacer edicion
+// TODO: validación sobre eventos actuales
+// TODO: generacion de eventos que pasan 
+// TODO: Aprobacion
+// TODO: Hacer valiación única
+// TODO: prohibir cargar activaciones a futuro.
 
 
 /***************************************************************************************
@@ -54,9 +57,9 @@ const eventRender = info => {
 
     // agrego estylo
     $(info.el).addClass([`ar-tipo-${info.event.extendedProps.tipo}`, `subtipo-${info.event.extendedProps.subtipo}`, `estado-${info.event.extendedProps.estado}`].join(' '))
-    $(info.el).css('cursor', 'pointer');
-    // Agrego el ícono
+        // Agrego el ícono
     $(info.el, "div.fc-content").prepend(`<i class='fa fa-${info.event.extendedProps.icon}'></i>`);
+    $(info.el).css('cursor', 'pointer');
 };
 
 
@@ -100,22 +103,40 @@ const validarRegistroDeHora = (fecha_inicio, fecha_fin, es_programada, justifica
     const m_inicio = moment(fecha_inicio);
     const m_fin = moment(fecha_fin);
 
+    // Validacion Campo del form
     // Valido fechas 
     if (!m_inicio.isValid() || !m_fin.isValid()) {
         resultado.ok = false;
         resultado.errores.push(`Las fechas ingresadas no son válidas.`);
+        return resultado;
     }
 
     if (m_inicio.isAfter(m_fin)) {
         resultado.ok = false;
         resultado.errores.push(`la fecha de inicio no puede ser menor a la fecha fin.`);
+        return resultado;
     }
     // Valido justificacion 
     if (justificacion === '') {
         resultado.ok = false;
         resultado.errores.push(`El campo Justificación no puede estar vacío.`);
+        return resultado;
     }
 
+    // límite de horas de trabajos seguido
+    if (m_fin.diff(m_inicio, 'days') >= 1) {
+        resultado.ok = false;
+        resultado.errores.push(`El campo Justificación no puede estar vacío.`);
+        return resultado;
+    }
+
+    // Valido de que no pongan un reg durante la jornada laboral
+    // BUsiness days = 1-7 17:30 a 9:00
+    if (utils.esDNL(m_inicio, eventosActuales) || utils.esWeekEnd(m_inicio)) {
+        resultado.ok = false;
+        resultado.errores.push(`Feriado o es fin de.`);
+        return resultado;
+    }
     return resultado;
 }
 
@@ -202,8 +223,9 @@ const modalRegistroHorasLimpiarCampos = () => {
     // today.setSeconds(0, 0);
     let today = moment();
     $('#modal-abm-cal-registro-id').val(0);
-    $('#modal-abm-cal-registro-inicio').val(today.toJSON().slice(0, 16));
-    $('#modal-abm-cal-registro-fin').val(today.add(1, 'hours').toJSON().slice(0, 16));
+    $('#modal-abm-cal-registro-inicio').val(today.add(-1, 'hours').local().format('YYYY-MM-DDTHH:mm'));
+    $('#modal-abm-cal-registro-fin').val(today.add(1, 'hours').local().format('YYYY-MM-DDTHH:mm'));
+    $('#modal-abm-cal-registro-fin').attr('max', today.local().format('YYYY-MM-DDTHH:mm'));
     $('#modal-abm-cal-registro-justificacion').val('');
     actualizarDuracion();
 }

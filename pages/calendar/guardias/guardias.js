@@ -28,7 +28,7 @@ const eventRender = info => {
 
     $(info.el).off('click').on('click', () => {
         $(this).popover('hide');
-        guardias.editarGuardia(info.event);
+        editarGuardia(info.event);
     })
 
     $(info.el).addClass([`ar-tipo-${info.event.extendedProps.tipo}`, `subtipo-${info.event.extendedProps.subtipo}`].join(' '))

@@ -45,13 +45,13 @@ const eventRender = info => {
 const resourceRender = info => {
     const { resource, el } = info;
 
-    el.addEventListener('click', () => {
-        console.log(resource);
-        if (confirm('Are you sure you want to delete ' + resource.title + '?')) {
-            resource.remove();
-        }
-    });
-    return;
+    // el.addEventListener('click', () => {
+    //     console.log(resource);
+    //     if (confirm('Are you sure you want to delete ' + resource.title + '?')) {
+    //         resource.remove();
+    //     }
+    // });
+    // return;
 }
 
 /***************************************************************************************
@@ -67,7 +67,7 @@ const eventsByArea = {
     method: 'POST',
     extraParams: {
         action: 'BY_AREA',
-        area: '3'
+        area: $('#per-area').val()
             // area: $('#per_id_persona').val()
     },
     error: () => {
@@ -99,10 +99,8 @@ const eventsByArea = {
                 },
 
             };
-            if (ev.id_persona && ev.id_persona > 0) {
-                Evento.resourceId = ev.id_persona;
-                // Evento.resourceId = ev.id_persona + '_' + ev.tipo;
-            }
+            if (ev.id_persona && ev.id_persona > 0) Evento.resourceId = ev.id_persona;
+
             events.push(Evento);
         });
         return events;
@@ -134,9 +132,9 @@ const getResources = (handleData, area) => {
                 res.push({
                     id: resource.id_persona,
                     title: resource.apellido + ', ' + resource.nombre,
-                    eventBackgroundColor: 'green',
-                    eventBorderColor: 'black',
-                    eventTextColor: 'white',
+                    // eventBackgroundColor: 'green',
+                    // eventBorderColor: 'black',
+                    // eventTextColor: 'white',
                     // children: [
                     //     { id: resource.id_persona + '_2', title: 'Guardias' },
                     //     { id: resource.id_persona + '_3', title: 'Activaciones' },
@@ -203,16 +201,6 @@ const initializeCalendar = async(inicio, fin) => {
         //filterResourcesWithEvents: true,
         eventClick: function(info) {
             info.jsEvent.preventDefault(); // don't let the browser navigate
-            editarLicencia({
-                id: info.event.id,
-                idPersona: info.event.extendedProps.idPersona,
-                inicio: info.event.extendedProps.inicio.split("-").reverse().join("/"),
-                fin: info.event.extendedProps.fin.split("-").reverse().join("/"),
-                color: info.event.extendedProps.color,
-                obs: info.event.extendedProps.obs,
-                status: info.event.extendedProps.idstatus
-            });
-
         },
         refetchResourcesOnNavigate: false,
         resourceLabelText: 'Personas',
@@ -222,7 +210,7 @@ const initializeCalendar = async(inicio, fin) => {
         resourceOrder: 'area,title',
         resources: (fetchInfo, successCallback, failureCallback) =>
             getResources((resources, day) =>
-                successCallback(resources), 3), //FIXME: Poner area correspondiente
+                successCallback(resources), $('#per-area').val()),
         eventSources: [
             dnls.eventSource,
             eventsByArea
@@ -232,15 +220,6 @@ const initializeCalendar = async(inicio, fin) => {
         dateClick: function(e) {
             console.log(e);
             alert(e);
-        },
-        selectable: true,
-        selectHelper: true,
-        selectAllow: selectInfo => selectInfo.resource.id.includes('_2'),
-        select: selectInfo => {
-            const id_person = selectInfo.resource._resource.parentId;
-            const resource = calendar.getTopLevelResources().find(resource => resource.id == id_person);
-            agregarGuardiaRecurso(resource, selectInfo.start, selectInfo.end);
-            //alert(`¿Está seguro de querer agregar una guardia a ${resource.title} desde ${selectInfo.startStr} hasta el ${selectInfo.endStr}?`);
         },
     });
 

@@ -22,17 +22,27 @@
 /* Activacion */
 
 .ar-tipo-4 {
-    background-color: rgba(0, 0, 255, 0.6) !important;
+    background-color: rgba(0, 0, 255, 0.8);
     border-color: blue !important;
     color: white !important;
+    cursor: pointer !important;
+    border-width: 2px;
 }
 
 
 /* Pendientes */
 
 .estado-1 {
-    border-width: 2px;
-    border-style: dashed;
+    border-style: dashed !important;
+    background-color: rgba(0, 0, 255, 0.6) !important;
+}
+
+
+/* Aprobado */
+
+.estado-2 {
+    border-style: solid !important;
+    background-color: rgba(0, 0, 255, 0.8) !important;
 }
 
 

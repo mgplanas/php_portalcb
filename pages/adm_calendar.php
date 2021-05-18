@@ -150,7 +150,8 @@ desired effect
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="row">
-
+            <input type="hidden" id="per-area" value="<?=$rowp['area'] ?>"/>
+ 
             <div class="col-md-4 ">
                 <h2>Calendario Vacaciones</h2>
             </div>
