@@ -116,6 +116,26 @@ const esDNL = (m_fecha, eventos) => {
 }
 
 /***************************************************************************************
+ * Verifica si una fecha se solapa con un evento de licencia
+ * @param Moment inicio - Fecha a verificar en Moment
+ * @param Moment fin - Fecha a verificar en Moment
+ * @param Event[] eventos - Eventos de la persona 
+ * @author MVGP
+ ****************************************************************************************/
+const solapaConLicencia = (m_inicio, m_fin, eventos) => {
+    const licenciasQueAplican = eventos
+        .filter(e => e.extendedProps.tipo == TIPO_REGISTRO_LICENCIAS) // Feriados DNL
+        .filter(e => {
+            const e_inicio = moment(e.start);
+            const e_fin = moment(e.end);
+            return estanSolapados(m_inicio, m_fin, e_inicio, e_fin);
+        });
+
+    return licenciasQueAplican.length > 0;
+
+}
+
+/***************************************************************************************
  * Verifica si una fecha es Fin de Semana
  * @param Date inicio - Fecha a verificar en Moment
  * @author MVGP
@@ -143,5 +163,6 @@ export {
     estanSolapados,
     solapaRangoConHorarioLaboral,
     solapaHorarioLaboral,
-    verificarLimiteAcumuladoMensual
+    verificarLimiteAcumuladoMensual,
+    solapaConLicencia
 }

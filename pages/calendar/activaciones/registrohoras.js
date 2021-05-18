@@ -138,6 +138,13 @@ const validarRegistroDeHora = (fecha_inicio, fecha_fin, es_programada, justifica
     }
 
     // Valido de que no se solapen con horarios laborales
+    if (utils.solapaConLicencia(m_inicio, m_fin, eventosActuales)) {
+        resultado.ok = false;
+        resultado.errores.push(`No es posible ingresar horas en un período de licencia.`);
+        return resultado;
+    }
+
+    // Valido de que no se solapen con horarios laborales
     if (utils.solapaRangoConHorarioLaboral(m_inicio, m_fin, eventosActuales)) {
         resultado.ok = false;
         resultado.errores.push(`El rango ingresado se solapa con horario laboral.`);
