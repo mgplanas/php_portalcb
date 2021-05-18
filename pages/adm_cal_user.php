@@ -144,7 +144,13 @@ desired effect
     <section class="content">
       <div class="row">
         <div class="col-md-12">
-          <div class="box box-primary">
+            <div class="btn-group">
+                <button type="button" 
+                id="modal-abm-calendar-btn-show" 
+                class="btn btn-default"
+                data-toggle="collapse" data-target="#calendar_container" aria-expanded="false" aria-controls="calendar_container"><i class="fa fa-calendar"></i> Ocultar/Mostrar</button>
+            </div>
+          <div class="box box-primary collapse in show" id="calendar_container">
             <div class="box-body no-padding">
                 <!-- THE CALENDAR -->
                 <div class="row">
@@ -161,6 +167,7 @@ desired effect
                             class="btn btn-default"
                             data-target="#modal-abm-licencia"><i class="fa fa-calendar-plus-o"></i> Registrar horas</button>
                         </div>
+
                     </div>
                     <div class="col-md-2">
                         <div class="btn-group">

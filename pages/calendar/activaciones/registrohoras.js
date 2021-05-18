@@ -18,7 +18,6 @@ var today = new Date();
 // TODO: generacion de eventos que pasan 
 // TODO: Aprobacion
 // TODO: Hacer valiación única
-// TODO: prohibir cargar activaciones a futuro.
 
 
 /***************************************************************************************
@@ -111,6 +110,12 @@ const validarRegistroDeHora = (fecha_inicio, fecha_fin, es_programada, justifica
         return resultado;
     }
 
+    if (m_fin.isAfter(moment())) {
+        resultado.ok = false;
+        resultado.errores.push(`la fecha de fin no puede ser a futuro.`);
+        return resultado;
+    }
+
     if (m_inicio.isAfter(m_fin)) {
         resultado.ok = false;
         resultado.errores.push(`la fecha de inicio no puede ser menor a la fecha fin.`);
@@ -126,17 +131,17 @@ const validarRegistroDeHora = (fecha_inicio, fecha_fin, es_programada, justifica
     // límite de horas de trabajos seguido
     if (m_fin.diff(m_inicio, 'days') >= 1) {
         resultado.ok = false;
-        resultado.errores.push(`El campo Justificación no puede estar vacío.`);
+        resultado.errores.push(`El límite de horas trabajadas supera el día.`);
         return resultado;
     }
 
-    // Valido de que no pongan un reg durante la jornada laboral
-    // BUsiness days = 1-7 17:30 a 9:00
-    if (utils.esDNL(m_inicio, eventosActuales) || utils.esWeekEnd(m_inicio)) {
+    // Valido de que no se solapen con horarios laborales
+    if (utils.solapaRangoConHorarioLaboral(m_inicio, m_fin, eventosActuales)) {
         resultado.ok = false;
-        resultado.errores.push(`Feriado o es fin de.`);
+        resultado.errores.push(`El rango ingresado se solapa con horario laboral.`);
         return resultado;
     }
+
     return resultado;
 }
 
