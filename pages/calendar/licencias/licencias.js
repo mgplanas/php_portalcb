@@ -8,6 +8,66 @@ var calendar;
 // ========================================================================================================================================================
 // MANEJO DE Registro de licencias
 // ========================================================================================================================================================
+/***************************************************************************************
+ * Subscripcion a lo actualizacion de eventos
+ * @param {Evento[]} eventos - todos los eventos del calendario
+ * @author MVGP
+ ****************************************************************************************/
+const eventsUpdated = eventos => {
+    const eventosLicencias = eventos.filter(e => e.tipo == utils.RULE_CONSTANTS.TIPO_REGISTRO_LICENCIAS);
+    createTableLicencias('tbLicencia', eventosLicencias);
+}
+
+const createTableLicencias = (id, eventos) => {
+
+    let tbLicencia = $(`#${id}`);
+    tbLicencia.DataTable().clear().destroy();
+    tbLicencia.DataTable({
+        "paging": false,
+        "deferRender": true,
+        "data": eventos,
+        "columns": [
+            { data: "id" },
+            { data: "icon", render: (data, type, row) => `<i title="${row.subtipo_desc}" class="fa fa-${data}"></i>` },
+            { data: "fecha_inicio", render: data => moment(data).format('DD/MM/YYYY HH:mm') },
+            { data: "fecha_fin", render: data => moment(data).format('DD/MM/YYYY HH:mm') },
+            {
+                data: "",
+                render: (data, type, row) => {
+                    const mInicio = moment(row.fecha_inicio);
+                    const mFin = moment(row.fecha_fin);
+                    const duration = moment.duration(mFin.diff(mInicio));
+                    const dias = parseInt(duration.asDays());
+                    return `${dias}d`;
+                }
+            },
+            { data: "estado" },
+            { data: "estado" },
+        ],
+        'order': [
+            [2, 'desc']
+        ],
+        'columnDefs': [{
+                'targets': [0],
+                'visible': false
+            },
+            {
+                'targets': [0, 1, 4, 5, 6],
+                orderable: false
+            },
+            {
+                'targets': [-1],
+                'render': function(data, type, row, meta) {
+                    let btns = '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="papa" title="eliminar" class="modal-abm-costodet-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                    return btns;
+                }
+            }
+        ],
+        'dom': 'rtpB',
+
+    });
+
+}
 
 /***************************************************************************************
  * Renderizacion Eventos Registro Horas
@@ -227,4 +287,4 @@ const init = (cal) => {
     $('#modal-abm-cal-lic-inicio,#modal-abm-cal-lic-fin').on('change', actualizarDuracion)
 }
 
-export { init, eventRender }
+export { init, eventRender, eventsUpdated }

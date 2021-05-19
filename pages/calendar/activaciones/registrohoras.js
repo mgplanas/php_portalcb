@@ -319,4 +319,4 @@ const init = (cal) => {
     $('#modal-abm-cal-registro-inicio,#modal-abm-cal-registro-fin').on('change', actualizarDuracion)
 }
 
-export { init, eventRender, createTableRegistroHs, eventsUpdated }
+export { init, eventRender, eventsUpdated }

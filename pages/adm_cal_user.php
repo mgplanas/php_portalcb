@@ -174,7 +174,7 @@ desired effect
                 <div class="box">
                     <div class="box-header with-border">
                         <div class="col-md-8">
-                            <h3 class="box-title">Mis tareas registradas</h3>
+                            <h3 class="box-title">Tareas registradas</h3>
                         </div>
                         <div class="col-md-4 text-right">
                             <button type="button" 
@@ -206,7 +206,7 @@ desired effect
                 <div class="box">
                     <div class="box-header with-border">
                         <div class="col-md-8">
-                            <h3 class="box-title">Mis tareas registradas</h3>
+                            <h3 class="box-title">Licencias</h3>
                         </div>
                         <div class="col-md-4">
                             <div class="btn-group">
@@ -225,11 +225,11 @@ desired effect
                         </div>
                     </div>
                     <div class="box-body">
-                        <table id="tbLicencias" class="table table-hover" width="100%">
+                        <table id="tbLicencia" class="table table-hover" width="100%">
                             <thead>
                             <tr>
                                 <th></th>
-                                <th>Tipo</th>
+                                <th></th>
                                 <th>Inicio</th>
                                 <th>Fin</th>
                                 <th><i class="fa fa-clock-o" title="Duración"></i></th>

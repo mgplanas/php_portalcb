@@ -221,3 +221,4 @@ registroHoras.init(user_calendar);
 licencias.init(user_calendar);
 
 subscribeToEventUpdate(registroHoras.eventsUpdated);
+subscribeToEventUpdate(licencias.eventsUpdated);
