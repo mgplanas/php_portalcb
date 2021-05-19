@@ -33,7 +33,7 @@
                 LEFT JOIN persona as per ON ev.id_persona = per.id_persona AND per.area = ${area}
                 LEFT JOIN subgerencia as sub ON per.subgerencia = sub.id_subgerencia
                 LEFT JOIN area as ar ON per.area = ar.id_area
-                LEFT JOIN adm_eventos_subtipos as subtipo ON ev.subtipo = subtipo.id
+                LEFT JOIN adm_eventos_subtipos as subtipo ON ev.tipo = subtipo.idtipo AND ev.subtipo = subtipo.subtipo
                 WHERE NOT (ev.fecha_inicio > '$fin' OR ev.fecha_fin < '$inicio')
                 AND ev.borrado = 0
                 ORDER BY ev.tipo, ev.subtipo;";

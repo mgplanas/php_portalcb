@@ -1,17 +1,14 @@
-import * as dnls from '../calendar/dnls.js';
-import * as guardias from '../calendar/guardias/guardias.js';
-import * as registroHoras from '../calendar/activaciones/registrohoras.js';
+import * as dnls from './dnls.js';
+import * as guardias from './guardias/guardias.js';
+import * as registroHoras from './activaciones/registrohoras.js';
+import * as licencias from './licencias/licencias.js';
 
 
 // Calendar instantiation
 var calendarEl = document.getElementById('calendar');
-var calendar;
-var calResources = [];
 
 // Default dates range
 var today = new Date();
-var inicio = new Date();
-var fin = new Date();
 
 // ========================================================================================================================================================
 // MANEJO DE EVENTOS DEL CALENDARIO
@@ -29,9 +26,13 @@ const eventRender = info => {
         case "2": // GUARDIAS
             return guardias.eventRender(info);
             break;
-        case "4": // Registro de horas
+        case "3": // LICENCIAS
+            return licencias.eventRender(info);
+            break;
+        case "4": // REGISTRO HORAS
             return registroHoras.eventRender(info);
             break;
+
         default:
             break;
     }
@@ -62,7 +63,7 @@ const resourceRender = info => {
  * @author MVGP
  * @returns {Events[]} - Eventos
  ****************************************************************************************/
-const eventsByArea = {
+const eventSourceByArea = {
     url: './calendar/eventController.php',
     method: 'POST',
     extraParams: {
@@ -213,7 +214,7 @@ const initializeCalendar = async(inicio, fin) => {
                 successCallback(resources), $('#per-area').val()),
         eventSources: [
             dnls.eventSource,
-            eventsByArea
+            eventSourceByArea,
         ],
         eventRender: (eventInfo) => eventRender(eventInfo),
 
@@ -227,8 +228,7 @@ const initializeCalendar = async(inicio, fin) => {
     return calendar;
 }
 
-initializeCalendar(inicio, fin)
-    .then((cal) => {
-        calendar = cal;
-        guardias.init(calendar);
-    });
+const adm_calendar = await initializeCalendar(today, today);
+guardias.init(adm_calendar);
+registroHoras.init(adm_calendar);
+licencias.init(adm_calendar);

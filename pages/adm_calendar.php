@@ -218,12 +218,6 @@ desired effect
 <script src="../plugins/input-mask/jquery.inputmask.js"></script>
 <script src="../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="../plugins/input-mask/jquery.inputmask.extensions.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../dist/js/demo.js"></script>
-<!-- fullCalendar
-<script src="../bower_components/moment/moment.js"></script>
-<script src="../bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
-<script src="../bower_components/fullcalendar/dist/locale-all.js"></script> -->
 <!-- bootstrap time picker -->
 <script src="../plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <!-- date-range-picker -->
@@ -236,6 +230,6 @@ desired effect
 <!-- <script src="../js/bootstrap-select.min.js"></script> -->
 <!-- custom scripts --> 
 <!-- <script type="text/javascript" src="../js/script.js"></script>  -->
-<script type="module" src="./helpers/adm_calendar.js"></script>
+<script type="module" src="./calendar/adm_calendar.js"></script>
 </body>
 </html>
