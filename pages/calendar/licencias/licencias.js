@@ -59,7 +59,8 @@ const eventRender = info => {
 const validar = (m_inicio, m_fin, eventosActuales) => {
     const resultado = {
         ok: true,
-        errores: []
+        errores: [],
+        warnings: []
     }
 
     // Validacion Campo del form
@@ -87,14 +88,14 @@ const validar = (m_inicio, m_fin, eventosActuales) => {
     // Valido de que no se solapen con horarios laborales
     if (utils.solapaConLicencia(m_inicio, m_fin, eventosActuales)) {
         resultado.ok = false;
-        resultado.errores.push(`Existen licencias registradas en dicho rango.`);
+        resultado.errores.push(`Existen licencias registradas en dicho rango de fechas.`);
         return resultado;
     }
 
     // Valido de que no se solapen con horarios laborales
     if (utils.solapaConGuardia(m_inicio, m_fin, eventosActuales)) {
         resultado.ok = false;
-        resultado.warnings.push(`Existe un período de guardia definido para dicho rango. Deberá informar a su superior para que lo elimine.`);
+        resultado.warnings.push(`Existe un período de guardia definido para dicho rango de fechas. Deberá informar a su superior para que lo elimine.`);
         return resultado;
     }
 
@@ -122,9 +123,9 @@ const submit = (operacion, callback) => {
     // Valido nuevo ingreso
     const validez = validar(fecha_inicio, fecha_fin, eventosActuales);
     if (!validez.ok) {
-        const { tipo, elementos } = (validez.errores.length > 0 ? { tipo: 'error', elementos: validez.errores } : { tipo: 'warning', elementos: validez.warnings });
+        const { tipo, elementos, title } = (validez.errores.length > 0 ? { tipo: 'error', elementos: validez.errores, title: 'Error en la validación' } : { tipo: 'warning', elementos: validez.warnings, title: 'Advertencia' });
         Swal.fire({
-            title: 'Error en la validación',
+            title,
             html: `<div style="text-align: left;"><li>${elementos.join('</li><li>')}</li></div>`,
             icon: tipo,
             confirmButtonText: 'Aceptar',

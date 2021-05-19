@@ -142,62 +142,108 @@ desired effect
      | Your Page Content Here |
      -------------------------->
     <section class="content">
-      <div class="row">
-        <div class="col-md-12">
-            <div class="btn-group">
-                <button type="button" 
-                id="modal-abm-calendar-btn-show" 
-                class="btn btn-default"
-                data-toggle="collapse" data-target="#calendar_container" aria-expanded="false" aria-controls="calendar_container"><i class="fa fa-calendar"></i> Ocultar/Mostrar</button>
-            </div>
-          <div class="box box-primary collapse in show" id="calendar_container">
-            <div class="box-body no-padding">
-                <!-- THE CALENDAR -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="calendar"></div>
-
-                    </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-group">
+                    <button type="button" 
+                    id="modal-abm-calendar-btn-show" 
+                    class="btn btn-default"
+                    data-toggle="collapse" data-target="#calendar_container" aria-expanded="false" aria-controls="calendar_container"><i class="fa fa-calendar"></i> Ocultar/Mostrar</button>
                 </div>
-                <div class="row">
-                    <div class="col-md-10 text-right " >
-                        <div class="btn-group">
-                            <button type="button" 
-                            id="modal-abm-registro-btn-add" 
-                            class="btn btn-default"
-                            data-target="#modal-abm-licencia"><i class="fa fa-calendar-plus-o"></i> Registrar horas</button>
+                <!-- CALENDAR -->
+                <div class="box box-primary collapse show" id="calendar_container" >
+                    <div class="box-body no-padding">
+                        <!-- THE CALENDAR -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="calendar"></div>
+                            </div>
                         </div>
+                        <!-- BOTONES -->
                     </div>
-                    <div class="col-md-2">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default">Licencias</button>
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                            <li><a id="modal-abm-cal-lic-btn-add-vacaciones"><i class="fa fa-plane"></i> Vacaciones</a></li>
-                            <li><a><i class="fa fa-bed"></i>Enfermedad</a></li>
-                            <li class="divider"></li>
-                            <li><a>Otros</a></li>
-                            </ul>
-                        </div>
-        
-                    </div>
+                    <!-- /.box-body -->
                 </div>
-
+                <!-- /. CALENDAR -->
             </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /. box -->
+            <!-- /.col -->
         </div>
-        <!-- /.col -->
-        <!-- Modal to Event Details -->
-        <?php
-            // include_once('./modals/abmlicencia.php');
-        ?>  
-      </div>
-      <!-- /.row -->
+        <!-- /.row -->
+        <div class="row">
+            <!-- TABLA REGISTROS -->
+            <div class="col-md-6">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <div class="col-md-8">
+                            <h3 class="box-title">Mis tareas registradas</h3>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <button type="button" 
+                                id="modal-abm-registro-btn-add" 
+                                class="btn btn-default"
+                                data-target="#modal-abm-licencia"><i class="fa fa-calendar-plus-o"></i> Agregar</button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table id="tbRegistroHs" class="table table-hover" width="100%">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th>Inicio</th>
+                                <th>Fin</th>
+                                <th><i class="fa fa-clock-o" title="Duración"></i></th>
+                                <th>Estado</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /. TABLA REGISTROS -->
+            <!-- TABLA LICENCIAS -->
+            <div class="col-md-6">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <div class="col-md-8">
+                            <h3 class="box-title">Mis tareas registradas</h3>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="btn-group">
+                                    <button type="button" class="btn btn-default">Licencias</button>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                    <li><a id="modal-abm-cal-lic-btn-add-vacaciones"><i class="fa fa-plane"></i> Vacaciones</a></li>
+                                    <li><a><i class="fa fa-bed"></i>Enfermedad</a></li>
+                                    <li class="divider"></li>
+                                    <li><a>Otros</a></li>
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table id="tbLicencias" class="table table-hover" width="100%">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Tipo</th>
+                                <th>Inicio</th>
+                                <th>Fin</th>
+                                <th><i class="fa fa-clock-o" title="Duración"></i></th>
+                                <th>Estado</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /. TABLA LICENCIAS -->
+        </div>
+
     </section>  
     <?php include_once('./calendar/activaciones/activacion.modal.php'); ?>
     <?php include_once('./calendar/licencias/licencia.modal.php'); ?>

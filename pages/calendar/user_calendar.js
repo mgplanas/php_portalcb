@@ -8,10 +8,14 @@ import * as dnls from './dnls.js';
 // ========================================================================================================================================================
 // Calendar instantiation
 var calendarEl = document.getElementById('calendar');
-var calendar;
-
 // Default dates range
 var today = new Date();
+
+
+var eventUpdatedSubscribers = [];
+const subscribeToEventUpdate = f => eventUpdatedSubscribers.push(f);
+const eventsUpdated = events => eventUpdatedSubscribers.forEach(f => f(events));
+
 
 /***************************************************************************************
  * Obtener los eventos del la persona
@@ -60,6 +64,7 @@ const eventSourceFromPerson = {
             };
             events.push(Evento);
         });
+        eventsUpdated(data);
         return events;
     },
 };
@@ -209,6 +214,10 @@ const initializeCalendar = async(inicio, fin) => {
 }
 
 
+
+
 const user_calendar = await initializeCalendar(today, today);
 registroHoras.init(user_calendar);
 licencias.init(user_calendar);
+
+subscribeToEventUpdate(registroHoras.eventsUpdated);

@@ -1,22 +1,77 @@
 import * as utils from '../utils.js'
 
 // Calendar instantiation
-var calendarEl = document.getElementById('calendar');
 var calendar;
-
-// Default dates range
-var today = new Date();
 
 // ========================================================================================================================================================
 // MANEJO DE Registro de HORAS
 // ========================================================================================================================================================
 // TODO: hacer popup de ayuda 
 // TODO: hacer edicion
-// TODO: validación sobre eventos actuales
-// TODO: generacion de eventos que pasan 
 // TODO: Aprobacion
 // TODO: Hacer anánisis y que devuleva un objeto con todo lo que necesitás
 
+/***************************************************************************************
+ * Subscripcion a lo actualizacion de eventos
+ * @param {Evento[]} eventos - todos los eventos del calendario
+ * @author MVGP
+ ****************************************************************************************/
+const eventsUpdated = eventos => {
+    const eventosRegistrosHs = eventos.filter(e => e.tipo == utils.RULE_CONSTANTS.TIPO_REGISTRO_HORAS);
+    createTableRegistroHs('tbRegistroHs', eventosRegistrosHs);
+}
+
+const createTableRegistroHs = (id, eventos) => {
+
+    let tbRegistro = $(`#${id}`);
+    tbRegistro.DataTable().clear().destroy();
+    tbRegistro.DataTable({
+        "paging": false,
+        "deferRender": true,
+        "data": eventos,
+        "columns": [
+            { data: "id" },
+            { data: "icon", render: (data, type, row) => `<i title="${row.subtipo_desc}" class="fa fa-${data}"></i>` },
+            { data: "fecha_inicio", render: data => moment(data).format('DD/MM/YYYY HH:mm') },
+            { data: "fecha_fin", render: data => moment(data).format('DD/MM/YYYY HH:mm') },
+            {
+                data: "",
+                render: (data, type, row) => {
+                    const mInicio = moment(row.fecha_inicio);
+                    const mFin = moment(row.fecha_fin);
+                    const duration = moment.duration(mFin.diff(mInicio));
+                    const dhours = parseInt(duration.asHours());
+                    const dmin = parseInt(duration.asMinutes()) - (dhours * 60);
+                    return `${dhours}h ${dmin}m`;
+                }
+            },
+            { data: "estado" },
+            { data: "estado" },
+        ],
+        'order': [
+            [2, 'desc']
+        ],
+        'columnDefs': [{
+                'targets': [0],
+                'visible': false
+            },
+            {
+                'targets': [0, 1, 4, 5, 6],
+                orderable: false
+            },
+            {
+                'targets': [-1],
+                'render': function(data, type, row, meta) {
+                    let btns = '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="papa" title="eliminar" class="modal-abm-costodet-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                    return btns;
+                }
+            }
+        ],
+        'dom': 'rtpB',
+
+    });
+
+}
 
 /***************************************************************************************
  * Renderizacion Eventos Registro Horas
@@ -264,4 +319,4 @@ const init = (cal) => {
     $('#modal-abm-cal-registro-inicio,#modal-abm-cal-registro-fin').on('change', actualizarDuracion)
 }
 
-export { init, eventRender }
+export { init, eventRender, createTableRegistroHs, eventsUpdated }

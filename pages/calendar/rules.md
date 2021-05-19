@@ -19,7 +19,7 @@
 [x]        - Las cargas que se encuentren fuera de un período de guardia se considerarán emergencias.
 [x]        - Si la misma es una tarea programada, está se considerará como Tarea Programada
 ## Licencias
-[ ]    - Toda licencia que el personal cargue deberá ser aprobada por el jefe y subgerente.
+[x]    - Toda licencia que el personal cargue deberá ser aprobada por el jefe y subgerente.
 ## Aprobaciones
 [ ]    - El jefe aprueba una por una las activaciones
 [ ]    - El Subgerente aprueba el período entero de su sector
