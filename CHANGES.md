@@ -1,5 +1,13 @@
 # CHANGES
 
+## FEAT-GTI-CAL-LICENCIAS
+ABM de Licencias por parte de los empleados
+*Fecha* 2021-05-13
+*Requerimiento*
+-   Registro Licencias
+    - Período de vacaciones
+    - Enfermedad
+
 ## FEAT-GTI-CAL-ACTIVACION
 ABM de registro de horas por parte de los empleados
 *Fecha* 2021-05-13

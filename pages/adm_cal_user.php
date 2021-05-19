@@ -167,7 +167,6 @@ desired effect
                             class="btn btn-default"
                             data-target="#modal-abm-licencia"><i class="fa fa-calendar-plus-o"></i> Registrar horas</button>
                         </div>
-
                     </div>
                     <div class="col-md-2">
                         <div class="btn-group">
@@ -177,10 +176,10 @@ desired effect
                             <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
-                            <li><a >Vacaciones</a></li>
-                            <li><a >Enfermedad</a></li>
+                            <li><a id="modal-abm-cal-lic-btn-add-vacaciones"><i class="fa fa-plane"></i> Vacaciones</a></li>
+                            <li><a><i class="fa fa-bed"></i>Enfermedad</a></li>
                             <li class="divider"></li>
-                            <li><a >Otros</a></li>
+                            <li><a>Otros</a></li>
                             </ul>
                         </div>
         
@@ -201,6 +200,7 @@ desired effect
       <!-- /.row -->
     </section>  
     <?php include_once('./calendar/activaciones/activacion.modal.php'); ?>
+    <?php include_once('./calendar/licencias/licencia.modal.php'); ?>
     <!-- /.End content -->
   </div>
   <!-- Main Footer -->

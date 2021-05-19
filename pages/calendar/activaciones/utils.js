@@ -16,6 +16,10 @@ const RULE_CONSTANTS = {
         TAREA_PROGRAMADA: 3,
         HORAS_EXTRAS: 4,
     },
+    SUBTIPOS_LICENCIA: {
+        VACACIONES: 1,
+        ENFERMEDAD: 2,
+    },
 }
 
 
