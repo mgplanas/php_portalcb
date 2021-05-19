@@ -18,6 +18,14 @@
 
 /* Licencias */
 
+.ar-tipo-3 {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-color: black !important;
+    color: white !important;
+    cursor: pointer !important;
+    border-width: 2px;
+}
+
 
 /* Activacion */
 
@@ -34,7 +42,7 @@
 
 .estado-1 {
     border-style: dashed !important;
-    background-color: rgba(0, 0, 255, 0.6) !important;
+    opacity: 0.6 !important;
 }
 
 
@@ -42,7 +50,7 @@
 
 .estado-2 {
     border-style: solid !important;
-    background-color: rgba(0, 0, 255, 0.8) !important;
+    opacity: 0.8 !important;
 }
 
 

@@ -20,7 +20,7 @@
                 FROM adm_eventos_cal as ev
                 INNER JOIN persona as per ON ev.id_persona = per.id_persona AND per.id_persona = '$id_persona'
                 INNER JOIN adm_eventos_tipos as tipo ON ev.tipo = tipo.id
-                LEFT JOIN adm_eventos_subtipos as subtipo ON ev.subtipo = subtipo.id
+                LEFT JOIN adm_eventos_subtipos as subtipo ON ev.tipo = subtipo.idtipo AND ev.subtipo = subtipo.subtipo
                 WHERE NOT (ev.fecha_inicio > '$fin' OR ev.fecha_fin < '$inicio')
                 AND ev.borrado = 0
                 ORDER BY ev.tipo, ev.subtipo;";

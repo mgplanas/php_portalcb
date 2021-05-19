@@ -1,6 +1,6 @@
 // import * as dnls from '../dnls.js';
 // import * as guardias from '../guardias/guardias.js';
-import * as utils from '../activaciones/utils.js'
+import * as utils from '../utils.js'
 
 // Calendar instantiation
 var calendar;
@@ -44,7 +44,8 @@ const eventRender = info => {
     // agrego estylo
     $(info.el).addClass([`ar-tipo-${info.event.extendedProps.tipo}`, `subtipo-${info.event.extendedProps.subtipo}`, `estado-${info.event.extendedProps.estado}`].join(' '))
         // Agrego el ícono
-    $(info.el, "div.fc-content").prepend(`<i class='fa fa-${info.event.extendedProps.icon}'></i>`);
+    $(info.el, "div.fc-content").prepend(`<i class='fa fa-${info.event.extendedProps.icon}'></i><span style="padding-left:10px;">Vacaciones</span>`);
+
     $(info.el).css('cursor', 'pointer');
 };
 
@@ -119,7 +120,7 @@ const submit = (operacion, callback) => {
     let eventosActuales = calendar.getEvents();
 
     // Valido nuevo ingreso
-    const validez = validar(fecha_inicio, fecha_fin, es_programada, observaciones, eventosActuales);
+    const validez = validar(fecha_inicio, fecha_fin, eventosActuales);
     if (!validez.ok) {
         const { tipo, elementos } = (validez.errores.length > 0 ? { tipo: 'error', elementos: validez.errores } : { tipo: 'warning', elementos: validez.warnings });
         Swal.fire({
@@ -140,13 +141,14 @@ const submit = (operacion, callback) => {
         data: {
             operacion,
             fecha_inicio: fecha_inicio.format('YYYY-MM-DD 00:00:00'),
-            fecha_fin: fecha_fin.format('YYYY-MM-DD 23:59:59'),
+            fecha_fin: fecha_fin.format('YYYY-MM-DD 00:00:00'),
             id_persona,
+            descripcion: '',
             observaciones,
             tipo: utils.RULE_CONSTANTS.TIPO_REGISTRO_LICENCIAS,
             subtipo,
             estado: 1,
-            is_all_day: 0,
+            is_all_day: 1,
         },
         success: json => {
             $("#modal-abm-cal-lic").modal("hide");
@@ -216,7 +218,7 @@ const agregarVacaciones = () => {
 
 
 
-const init = (inicio, fin, cal) => {
+const init = (cal) => {
     calendar = cal;
     $('#modal-abm-cal-lic-submit').on('click', () => submit('ADD_LICENCIA', () => calendar.refetchEvents()));
     $('#modal-abm-cal-lic-remove').on('click', () => remove(() => calendar.refetchEvents()));
