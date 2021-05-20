@@ -1,7 +1,57 @@
+import * as utils from '../utils.js';
+
 // ========================================================================================================================================================
 // MANEJO DE GUARDIAS
 // ========================================================================================================================================================
 var calendar;
+
+
+const eventsUpdated = eventos => {
+    const eventosGuardias = eventos.filter(e => e.tipo == utils.RULE_CONSTANTS.TIPO_REGISTRO_GUARDIAS);
+    createTableGuardias('tbGuardias', eventosGuardias);
+}
+
+const createTableGuardias = (id, eventos) => {
+
+    let tbLicencia = $(`#${id}`);
+    tbLicencia.DataTable().clear().destroy();
+    tbLicencia.DataTable({
+        "paging": false,
+        "deferRender": true,
+        "data": eventos,
+        "columns": [
+            { data: "id" },
+            { data: "icon", render: (data, type, row) => `<i title="${row.subtipo_desc}" class="fa fa-${data}"></i>` },
+            { data: "fecha_inicio", render: data => moment(data).format('DD/MM/YYYY') },
+            { data: "fecha_fin", render: data => moment(data).format('DD/MM/YYYY') },
+            {
+                data: "",
+                render: (data, type, row) => {
+                    const mInicio = moment(row.fecha_inicio);
+                    const mFin = moment(row.fecha_fin);
+                    const duration = moment.duration(mFin.diff(mInicio));
+                    const dias = parseInt(duration.asDays()) + 1;
+                    return `${dias}d`;
+                }
+            },
+        ],
+        'order': [
+            [2, 'desc']
+        ],
+        'columnDefs': [{
+                'targets': [0],
+                'visible': false
+            },
+            {
+                'targets': [0, 1, 4],
+                orderable: false
+            },
+        ],
+        'dom': 'rtpB',
+
+    });
+
+}
 
 /***************************************************************************************
  * Renderizacion Eventos Guardias
@@ -413,4 +463,4 @@ const init = (cal) => {
     $('#modal-abm-guardias-btn-def').on('click', agregarGuardiaMultiple);
 }
 
-export { editarGuardia, init, eventRender };
+export { editarGuardia, init, eventRender, eventsUpdated };

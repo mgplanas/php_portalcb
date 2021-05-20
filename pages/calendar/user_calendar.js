@@ -222,3 +222,4 @@ licencias.init(user_calendar);
 
 subscribeToEventUpdate(registroHoras.eventsUpdated);
 subscribeToEventUpdate(licencias.eventsUpdated);
+subscribeToEventUpdate(guardias.eventsUpdated);

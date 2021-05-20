@@ -201,8 +201,8 @@ desired effect
                 </div>
             </div>
             <!-- /. TABLA REGISTROS -->
-            <!-- TABLA LICENCIAS -->
             <div class="col-md-6">
+                <!-- TABLA LICENCIAS -->
                 <div class="box">
                     <div class="box-header with-border">
                         <div class="col-md-8">
@@ -240,8 +240,32 @@ desired effect
                         </table>
                     </div>
                 </div>
+                <!-- /. TABLA LICENCIAS -->
+                <!-- TABLA GUARDIAS -->
+                <div class="box">
+                    <div class="box-header with-border">
+                        <div class="col-md-8">
+                            <h3 class="box-title">Guardias</h3>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table id="tbGuardias" class="table table-hover" width="100%">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th>Inicio</th>
+                                <th>Fin</th>
+                                <th><i class="fa fa-clock-o" title="Duración"></i></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <!-- /. TABLA GUARDIAS -->
             </div>
-            <!-- /. TABLA LICENCIAS -->
         </div>
 
     </section>  

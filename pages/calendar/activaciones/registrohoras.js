@@ -45,7 +45,7 @@ const createTableRegistroHs = (id, eventos) => {
                     return `${dhours}h ${dmin}m`;
                 }
             },
-            { data: "estado" },
+            { data: "estado", render: estado => `<span class="label label-${estado == 1 ? 'warning' : 'success'}">${estado == 1 ? 'pendiente' : 'aprobado'}</span>` },
             { data: "estado" },
         ],
         'order': [

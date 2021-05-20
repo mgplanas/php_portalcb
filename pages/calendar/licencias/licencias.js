@@ -29,8 +29,8 @@ const createTableLicencias = (id, eventos) => {
         "columns": [
             { data: "id" },
             { data: "icon", render: (data, type, row) => `<i title="${row.subtipo_desc}" class="fa fa-${data}"></i>` },
-            { data: "fecha_inicio", render: data => moment(data).format('DD/MM/YYYY HH:mm') },
-            { data: "fecha_fin", render: data => moment(data).format('DD/MM/YYYY HH:mm') },
+            { data: "fecha_inicio", render: data => moment(data).format('DD/MM/YYYY') },
+            { data: "fecha_fin", render: data => moment(data).format('DD/MM/YYYY') },
             {
                 data: "",
                 render: (data, type, row) => {
@@ -41,7 +41,7 @@ const createTableLicencias = (id, eventos) => {
                     return `${dias}d`;
                 }
             },
-            { data: "estado" },
+            { data: "estado", render: estado => `<span class="label label-${estado == 1 ? 'warning' : 'success'}">${estado == 1 ? 'pendiente' : 'aprobado'}</span>` },
             { data: "estado" },
         ],
         'order': [
