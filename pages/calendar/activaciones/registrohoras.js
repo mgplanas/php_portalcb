@@ -45,7 +45,7 @@ const createTableRegistroHs = (id, eventos) => {
                     return `${dhours}h ${dmin}m`;
                 }
             },
-            { data: "estado", render: estado => `<span class="label label-${estado == 1 ? 'warning' : 'success'}">${estado == 1 ? 'pendiente' : 'aprobado'}</span>` },
+            { data: "estado", render: (data, type, row) => `<span class="label label-${row.estado_class}">${row.estado_desc}</span>` },
             { data: "estado" },
         ],
         'order': [
@@ -74,32 +74,216 @@ const createTableRegistroHs = (id, eventos) => {
 }
 
 /***************************************************************************************
- * Renderizacion Eventos Registro Horas
+ * Aprobar un evento de hs
+ * @param {FullcalendarEvent} evento - Informacion del evento
  * @author MVGP
  ****************************************************************************************/
-const eventRender = info => {
+const cambiarEstado = (evento, observaciones, estado) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'POST',
+            url: './calendar/activaciones/registrohoras.controller.php',
+            dataType: 'json',
+            data: {
+                id: evento.id,
+                estado,
+                observaciones,
+                operacion: 'CAMBIAR_ESTADO'
+            },
+            success: json => {
+                if (!json.ok) {
+                    reject(error);
+                }
+                resolve(json);
+            },
+            error: (xhr, status, error) => {
+                reject(error);
+            }
+        });
+    })
+
+
+}
+
+/***************************************************************************************
+ * Renderizacion del Formulario de aprobación
+ * @param {EventInformation} info - Informacion del evento (DOM element, event)
+ * @returns {String} html in string template
+ * @author MVGP
+ ****************************************************************************************/
+const popoverEventObs = info => {
+
+    return `<div class="col-md-12">
+                <div class="row">
+                    <hr style="margin: 5px;">
+                    <div class="form-group">
+                        <label for="observaciones">Observaciones/Motivo</label><br>
+                        ${info.event.extendedProps.observaciones}
+                    </div>   
+                </div>
+                <br>
+            </div> `;
+}
+
+/***************************************************************************************
+ * Renderizacion del Formulario de aprobación
+ * @param {EventInformation} info - Informacion del evento (DOM element, event)
+ * @returns {String} html in string template
+ * @author MVGP
+ ****************************************************************************************/
+const popoverEventApprovalForm = info => {
+
+    return `<div class="col-md-12">
+                <div class="row">
+                    <hr style="margin: 5px;">
+                    <div class="form-group">
+                        <label for="observaciones">Observaciones/Motivo</label>
+                        <textarea class=form-control name="observaciones"></textarea>
+                    </div>   
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn btn-xs btn-success aprobar">Aprobar</button>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button class="btn btn-xs btn-danger rechazar" >Rechazar</button>
+                    </div>
+                </div>
+                <br>
+            </div> `;
+}
+
+/***************************************************************************************
+ * Renderizacion de la parte del detalle comun a todos los eventos de este tipo
+ * @param {EventInformation} info - Informacion del evento (DOM element, event)
+ * @returns {String} html in string template
+ * @author MVGP
+ ****************************************************************************************/
+const popoverEventDetailContent = info => {
     const mInicio = moment(info.event.extendedProps.real_start);
     const mFin = moment(info.event.extendedProps.real_end);
     const resource = info.event.getResources()[0];
     const duration = moment.duration(mFin.diff(mInicio));
     const dhours = parseInt(duration.asHours());
     const dmin = parseInt(duration.asMinutes()) - (dhours * 60);
-
-    $(info.el).popover({
-        title: `<i class='fa fa-${info.event.extendedProps.icon}'></i> ${info.event.extendedProps.subtipo_desc} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
-        placement: 'top',
-        html: true,
-        trigger: 'hover',
-        content: `<strong>${resource.title}:</strong><br>
+    return `<div class="text-left"><strong>Estado:</strong> <span class="label label-${info.event.extendedProps.estado_class}">${info.event.extendedProps.estado_desc}</span></div>
         <strong>Comienzo:</strong>${mInicio.format('DD/MM/YYYY HH:mm')}<br>
         <strong>Fin:</strong>${mFin.format('DD/MM/YYYY HH:mm')}<br>
         <i class="fa fa-clock-o"></i> Duracion: ${dhours} h ${dmin} m
-        <hr>
-        <div class="text-right"><strong>Estado:</strong> <span class="label label-warning">pendiente aprobación</span></div>`,
-        container: 'body'
-    }).popover('show');
+    
+        <div class="col-md-12">
+            <div class="row">
+                <strong>Justificación:</strong><br>${info.event.extendedProps.justificacion}
+            </div>
+        </div> `;
+}
 
-    $(document).on("click", ".popover .close", () => {
+/***************************************************************************************
+ * Renderizacion Eventos Registro Horas con formulario de aprobacion
+ * @param {EventInformation} info - Informacion del evento (DOM element, event)
+ * @author MVGP
+ ****************************************************************************************/
+const eventRenderConAprobacion = info => {
+
+
+    $(info.el).popover({
+            title: `<i class='fa fa-${info.event.extendedProps.icon}'></i> ${info.event.extendedProps.subtipo_desc} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
+            placement: 'top',
+            html: true,
+            trigger: 'hover',
+            content: `${popoverEventDetailContent(info)}
+                      ${(info.event.extendedProps.estado == utils.RULE_CONSTANTS.ESTADOS_REGISTRO_HORAS.PENDIENTE ? popoverEventApprovalForm(info) : '')}
+                      ${(info.event.extendedProps.observaciones ? popoverEventObs(info) : '' )}
+                `,
+            container: 'body',
+            trigger: "manual",
+            animation: false
+        })
+        .on("mouseenter", function() {
+            var _this = this;
+            $(this).popover("show");
+            $(".popover").on("mouseleave", function() {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function() {
+            var _this = this;
+            setTimeout(function() {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide");
+                }
+            }, 0);
+        })
+        .on('shown.bs.popover', (eventShown) => {
+            let $popup = $('#' + $(eventShown.target).attr('aria-describedby'));
+            let $observaciones = $popup.find('textarea');
+            $popup.find('button.rechazar').on('click', (e) => {
+                cambiarEstado(info.event, $observaciones.val(), utils.RULE_CONSTANTS.ESTADOS_REGISTRO_HORAS.RECHAZADO)
+                    .then(res => {
+                        $popup.popover('hide');
+                        calendar.refetchEvents();
+                    })
+                    .catch(err => alert(err))
+            });
+            $popup.find('button.aprobar').on('click', (e) => {
+                cambiarEstado(info.event, $observaciones.val(), utils.RULE_CONSTANTS.ESTADOS_REGISTRO_HORAS.APROBADO)
+                    .then(res => {
+                        $popup.popover('hide');
+                        calendar.refetchEvents();
+                    })
+                    .catch(err => alert(err))
+            });
+        });
+
+    $(document).off('click').on("click", ".popover .close", () => {
+        $(".popover").popover('hide');
+    });
+    $(info.el).off('click').on('click', () => {
+        $(this).popover('hide');
+
+    })
+
+    // agrego estylo
+    $(info.el).addClass([`ar-tipo-${info.event.extendedProps.tipo}`, `subtipo-${info.event.extendedProps.subtipo}`, `estado-${info.event.extendedProps.estado}`].join(' '))
+        // Agrego el ícono
+    $(info.el, "div.fc-content").prepend(`<i class='fa fa-${info.event.extendedProps.icon}'></i>`);
+    $(info.el).css('cursor', 'pointer');
+};
+
+/***************************************************************************************
+ * Renderizacion Eventos Registro Horas
+ * @param {EventInformation} info - Informacion del evento (DOM element, event)
+ * @author MVGP
+ ****************************************************************************************/
+const eventRender = info => {
+
+    $(info.el).popover({
+            title: `<i class='fa fa-${info.event.extendedProps.icon}'></i> ${info.event.extendedProps.subtipo_desc} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
+            placement: 'top',
+            html: true,
+            trigger: 'hover',
+            content: `${popoverEventDetailContent(info)}
+                      ${(info.event.extendedProps.observaciones ? popoverEventObs(info) : '' )}
+                `,
+            container: 'body',
+            trigger: "manual",
+            animation: false
+        })
+        .on("mouseenter", function() {
+            var _this = this;
+            $(this).popover("show");
+            $(".popover").on("mouseleave", function() {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function() {
+            var _this = this;
+            setTimeout(function() {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide");
+                }
+            }, 0);
+        });
+
+    $(document).off('click').on("click", ".popover .close", () => {
         $(".popover").popover('hide');
     });
     $(info.el).off('click').on('click', () => {
@@ -121,7 +305,7 @@ const eventRender = info => {
  * @param FullCalendatEvent[] eventosActuales - Eventos de la persona en el período
  * @author MVGP
  ****************************************************************************************/
-const validarRegistroDeHora = (m_inicio, m_fin, es_programada, justificacion, eventosActuales) => {
+const validar = (m_inicio, m_fin, es_programada, justificacion, eventosActuales) => {
     const resultado = {
         ok: true,
         errores: []
@@ -197,7 +381,7 @@ const validarRegistroDeHora = (m_inicio, m_fin, es_programada, justificacion, ev
  * @param callback() callback fuanction
  * @author MVGP
  ****************************************************************************************/
-const submitRegistroHoras = (operacion, callback) => {
+const submit = (operacion, callback) => {
     let id = $('#modal-abm-cal-registro-id').val();
     let id_persona = $('#modal-abm-cal-registro-id-persona').val();
     let justificacion = $('#modal-abm-cal-registro-justificacion').val();
@@ -215,7 +399,7 @@ const submitRegistroHoras = (operacion, callback) => {
     let eventosActuales = calendar.getEvents();
 
     // Valido nuevo ingreso
-    const validez = validarRegistroDeHora(fecha_inicio, fecha_fin, es_programada, justificacion, eventosActuales);
+    const validez = validar(fecha_inicio, fecha_fin, es_programada, justificacion, eventosActuales);
     if (!validez.ok) {
         Swal.fire({
             title: 'Error en la validación',
@@ -265,9 +449,9 @@ const submitRegistroHoras = (operacion, callback) => {
  * @param callback() callback fuanction
  * @author MVGP
  ****************************************************************************************/
-const removeRegistroHoras = (callback) => {
+const remove = (callback) => {
     if (confirm('¿Está seguro que desea eliminar el registro de horas?')) {
-        return submitRegistroHoras('REMOVE_REGISTRO_HORAS', callback);
+        return submit('REMOVE_REGISTRO_HORAS', callback);
     }
 }
 
@@ -275,7 +459,7 @@ const removeRegistroHoras = (callback) => {
  * limpiar los campos del modal
  * @author MVGP
  ****************************************************************************************/
-const modalRegistroHorasLimpiarCampos = () => {
+const reset = () => {
     // let today = new Date();
     // today.setSeconds(0, 0);
     let today = moment();
@@ -310,7 +494,7 @@ const actualizarDuracion = () => {
  ****************************************************************************************/
 const agregarRegistroHoras = () => {
     $('#modal-abm-cal-registro-title').html(`Agregar Registro de horas trabajadas`);
-    modalRegistroHorasLimpiarCampos();
+    reset();
     $('#modal-abm-cal-registro-submit').attr('name', 'ADD_REGISTRO_HORAS');
     $("#modal-abm-cal-registro").modal("show");
 }
@@ -318,10 +502,10 @@ const agregarRegistroHoras = () => {
 
 const init = (cal) => {
     calendar = cal;
-    $('#modal-abm-cal-registro-submit').on('click', () => submitRegistroHoras('ADD_REGISTRO_HS', () => calendar.refetchEvents()));
-    $('#modal-abm-cal-registro-remove').on('click', () => removeRegistroHoras(() => calendar.refetchEvents()));
+    $('#modal-abm-cal-registro-submit').on('click', () => submit('ADD_REGISTRO_HS', () => calendar.refetchEvents()));
+    $('#modal-abm-cal-registro-remove').on('click', () => remove(() => calendar.refetchEvents()));
     $('#modal-abm-registro-btn-add').on('click', agregarRegistroHoras);
     $('#modal-abm-cal-registro-inicio,#modal-abm-cal-registro-fin').on('change', actualizarDuracion)
 }
 
-export { init, eventRender, eventsUpdated }
+export { init, eventRender, eventRenderConAprobacion, eventsUpdated }

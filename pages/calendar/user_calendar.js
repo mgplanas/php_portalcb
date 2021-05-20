@@ -49,7 +49,7 @@ const eventSourceFromPerson = {
                 rendering: (ev.is_background == 1 ? 'background' : 'auto'),
                 resourceId: ev.tipo,
                 extendedProps: {
-                    obs: ev.observaciones,
+                    observaciones: ev.observaciones,
                     tipo: ev.tipo,
                     tipo_desc: ev.tipo_desc,
                     subtipo: ev.subtipo,
@@ -59,7 +59,10 @@ const eventSourceFromPerson = {
                     real_end: ev.fecha_fin,
                     id_persona: ev.id_persona,
                     justificacion: ev.justificacion,
-                    estado: ev.estado
+                    estado: ev.estado,
+                    estado_desc: ev.estado_desc,
+                    estado_icon: ev.estado_icon,
+                    estado_class: ev.estado_class,
                 },
             };
             events.push(Evento);

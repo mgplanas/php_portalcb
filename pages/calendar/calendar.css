@@ -40,7 +40,7 @@
 
 /* Pendientes */
 
-.estado-1 {
+.ar-tipo-4.estado-1 {
     border-style: dashed !important;
     opacity: 0.6 !important;
 }
@@ -48,9 +48,19 @@
 
 /* Aprobado */
 
-.estado-2 {
+.ar-tipo-4.estado-2 {
     border-style: solid !important;
-    opacity: 0.8 !important;
+    opacity: 0.9 !important;
+}
+
+
+/* Rechazado */
+
+.ar-tipo-4.estado-3 {
+    border-style: solid !important;
+    background-color: #dd4b39;
+    border-color: red !important;
+    opacity: 0.9 !important;
 }
 
 

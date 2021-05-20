@@ -21,6 +21,11 @@ const RULE_CONSTANTS = {
         VACACIONES: 1,
         ENFERMEDAD: 2,
     },
+    ESTADOS_REGISTRO_HORAS: {
+        PENDIENTE: 1,
+        APROBADO: 2,
+        RECHAZADO: 3,
+    }
 }
 
 

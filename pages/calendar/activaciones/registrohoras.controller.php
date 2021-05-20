@@ -33,16 +33,12 @@
             $insert_evento = mysqli_query($con, $sql) or die(mysqli_error());	
             break;
     
-        case 'UPDATE_GUARDIA':
+        case 'CAMBIAR_ESTADO':
             //UPDATE
-            $update_guadia = mysqli_query($con, "UPDATE adm_eventos_cal SET color= '$color', descripcion= '$descripcion', estado= '$estado', fecha_fin= '$fecha_fin', fecha_inicio= '$fecha_inicio', id= '$id', id_persona= '$id_persona', is_all_day= '$is_all_day', is_background= '$is_background', is_programmed= '$is_programmed', observaciones= '$observaciones', subtipo= '$subtipo', tipo= '$tipo' 
-                                                    WHERE id='$id'") or die(mysqli_error());	
-            break;
-    
-        case 'REMOVE_GUARDIA':
-            //UPDATE
-            $update_area = mysqli_query($con, "UPDATE adm_eventos_cal SET borrado='1' WHERE id='$id'") or die(mysqli_error());	
+            $updaprobar = mysqli_query($con, "UPDATE adm_eventos_cal SET estado='$estado', observaciones='$observaciones' WHERE id='$id'") or die(mysqli_error());	
             break;            
+
+
         
         default:
             break;

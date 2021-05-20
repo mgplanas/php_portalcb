@@ -30,7 +30,7 @@ const eventRender = info => {
             return licencias.eventRender(info);
             break;
         case "4": // REGISTRO HORAS
-            return registroHoras.eventRender(info);
+            return registroHoras.eventRenderConAprobacion(info);
             break;
 
         default:
@@ -86,7 +86,7 @@ const eventSourceByArea = {
                 textEscape: false,
                 rendering: (ev.is_background == 1 ? 'background' : 'auto'),
                 extendedProps: {
-                    obs: ev.observaciones,
+                    observaciones: ev.observaciones,
                     tipo: ev.tipo,
                     tipo_desc: ev.tipo_desc,
                     subtipo: ev.subtipo,
@@ -96,7 +96,10 @@ const eventSourceByArea = {
                     real_end: ev.fecha_fin,
                     id_persona: ev.id_persona,
                     justificacion: ev.justificacion,
-                    estado: ev.estado
+                    estado: ev.estado,
+                    estado_desc: ev.estado_desc,
+                    estado_icon: ev.estado_icon,
+                    estado_class: ev.estado_class,
                 },
 
             };

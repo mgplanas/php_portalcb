@@ -1,5 +1,25 @@
 # CHANGES
 
+## FEAT-GTI-CAL-APPROBACION-JEFE
+Aprobacion/rechazo de registro de horas
+*Fecha* 2021-05-20
+*Requerimiento*
+    habilitar al jefe que apruebe o rechaze un resgitro de horas
+
+[db]
+CREATE TABLE `adm_eventos_estados` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idtipo` int(11) NOT NULL,
+  `estado` int(11) NOT NULL DEFAULT '1',
+  `descripcion` varchar(50) NOT NULL,
+  `icon` varchar(20) DEFAULT NULL,
+  `class` varchar(20) DEFAULT NULL,
+  `borrado` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+
+
 ## FEAT-GTI-CAL-LICENCIAS
 ABM de Licencias por parte de los empleados
 *Fecha* 2021-05-13
