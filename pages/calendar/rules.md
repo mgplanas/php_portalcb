@@ -21,6 +21,6 @@
 ## Licencias
 [x]    - Toda licencia que el personal cargue deberá ser aprobada por el jefe y subgerente.
 ## Aprobaciones
-[ ]    - El jefe aprueba una por una las activaciones
+[x]    - El jefe aprueba una por una las activaciones
 [ ]    - El Subgerente aprueba el período entero de su sector
 [ ]    - El Gerente aprueba el período entero de su gerencia
