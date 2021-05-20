@@ -177,7 +177,12 @@ const validarRegistroDeHora = (m_inicio, m_fin, es_programada, justificacion, ev
     }
 
     // Límite de hs acumuladas
-    const { excede, totalMinutos } = utils.verificarLimiteAcumuladoMensual(m_inicio, m_fin, eventosActuales);
+    const { excede, totalMinutos } = utils.verificarLimiteAcumuladoMensual(
+        m_inicio,
+        m_fin,
+        eventosActuales,
+        utils.RULE_CONSTANTS.TIPO_REGISTRO_HORAS,
+        utils.RULE_CONSTANTS.RULE_CANTIDAD_MAX_HS_ACTIVACION_MENSUAL);
     if (excede) {
         resultado.ok = false;
         resultado.errores.push(`Se está excediendo el límite de horas mensuales (30hs).`);

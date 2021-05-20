@@ -104,7 +104,7 @@ const eventRender = info => {
  * @returns {Resultado}: resultado
  * @author MVGP
  ****************************************************************************************/
-const validarNuevaDefinicionDeGuardias = (empleadosIDsAsignados, nuevosPeriodos) => {
+const validar = (empleadosIDsAsignados, nuevosPeriodos) => {
 
     const resultado = {
         ok: true,
@@ -121,8 +121,10 @@ const validarNuevaDefinicionDeGuardias = (empleadosIDsAsignados, nuevosPeriodos)
         let flag_acum = false;
 
         // Filtro los eventos por tipo de guardias
-        const guardias = calendar.getEvents()
-            .filter(evento => evento.extendedProps.tipo == '2' && evento.extendedProps.id_persona == id); // Tipo guardias
+        const eventosDeLaPersona = calendar.getEvents()
+            .filter(evento => evento.extendedProps.id_persona == id);
+        const guardias = eventosDeLaPersona
+            .filter(evento => evento.extendedProps.tipo == utils.RULE_CONSTANTS.TIPO_REGISTRO_GUARDIAS); // Tipo guardias
 
         // Corroboro que los períodos de descanso entre los períodos ingresados vs los existentes se cumplan
         // constato inicio del nuevo contra fin del existente y
@@ -135,6 +137,13 @@ const validarNuevaDefinicionDeGuardias = (empleadosIDsAsignados, nuevosPeriodos)
             nuevosPeriodos.forEach(periodo => {
                 const p_inicio = moment(periodo[0]);
                 const p_fin = moment(periodo[1]);
+
+                // verifico que no se solape con un evento de Vacaciones
+                if (utils.solapaConLicencia(p_inicio, p_fin, eventosDeLaPersona, utils.RULE_CONSTANTS.SUBTIPOS_LICENCIA.VACACIONES)) {
+                    resultado.ok = false;
+                    resultado.errores.push(`El período del ${p_inicio.format('DD/MM/YYYY')} al ${p_fin.format('DD/MM/YYYY')} se solapa con un período de vacaciones de ${nombre}.`);
+                    return false;
+                }
 
                 let periodoDescanzoInicio = (p_inicio.diff(m_fin, 'days'));
                 let periodoDescanzoFin = (p_fin.diff(m_inicio, 'days'));
@@ -155,9 +164,9 @@ const validarNuevaDefinicionDeGuardias = (empleadosIDsAsignados, nuevosPeriodos)
             flag_acum = true;
         });
 
-        if (diasDeGuardiaAcumulados > 17) {
+        if (diasDeGuardiaAcumulados > utils.RULE_CONSTANTS.RULE_CANTIDAD_MAX_DIAS_GUARDIAS) {
             resultado.ok = false;
-            resultado.errores.push(`La cantidad de días de guardia asignados a (${diasDeGuardiaAcumulados}) para ${nombre} exeden el máximo permitido (17).`);
+            resultado.errores.push(`La cantidad de días de guardia asignados a (${diasDeGuardiaAcumulados}) para ${nombre} exeden el máximo permitido (${utils.RULE_CONSTANTS.RULE_CANTIDAD_MAX_DIAS_GUARDIAS}).`);
         }
 
     });
@@ -170,7 +179,7 @@ const validarNuevaDefinicionDeGuardias = (empleadosIDsAsignados, nuevosPeriodos)
  * Guardar guardias multiples
  * @author MVGP
  ****************************************************************************************/
-const submitGuardiaMultiple = (callback) => {
+const submit = (callback) => {
     let operacion = 'ADD_GUARDIAS_MULTIPLES';
     let id_personas = $('#modal-abm-cal-guardias-mul-personas').val();
     let periodos = $('#modal-abm-cal-guardias-mul-tabla').DataTable().rows().data().toArray();
@@ -179,7 +188,7 @@ const submitGuardiaMultiple = (callback) => {
     let descripcion = $('#modal-abm-cal-guardias-mul-tipo option:selected').text();
     let observaciones = $('#modal-abm-cal-guardias-mul-observaciones').val();
 
-    const validez = validarNuevaDefinicionDeGuardias(id_personas, periodos)
+    const validez = validar(id_personas, periodos)
     if (!validez.ok) {
         Swal.fire({
             title: 'Error en la validación',
@@ -457,7 +466,7 @@ const submitGuardia = (operacion, callback) => {
  ****************************************************************************************/
 const init = (cal) => {
     calendar = cal;
-    $('#modal-abm-cal-guardias-mul-submit').on('click', () => submitGuardiaMultiple(() => calendar.refetchEvents()));
+    $('#modal-abm-cal-guardias-mul-submit').on('click', () => submit(() => calendar.refetchEvents()));
     $('#modal-abm-cal-guardias-remove').on('click', () => removeGuardia(() => calendar.refetchEvents()));
     $('#modal-abm-cal-guardias-submit').on('click', () => actualizarGuardia(() => calendar.refetchEvents()));
     $('#modal-abm-guardias-btn-def').on('click', agregarGuardiaMultiple);

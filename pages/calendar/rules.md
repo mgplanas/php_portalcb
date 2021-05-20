@@ -2,8 +2,8 @@
 ## Guardias:
 [x]    - No cargar más de 7 días corridos de guardia pasiva (7 de guardia y 7 de descanso).
 [x]    - No cargar más de 17 días en el mes de guardia pasiva.
-[ ]    - Las guardias no tienen que superponerse con Vacaciones o Francos compensatorios.
-[ ]    - Las guardias que caigan en fines de semana o días no laborables aplican para la totalidad del día.
+[x]    - Las guardias no tienen que superponerse con Vacaciones o Francos compensatorios.
+[x]    - Las guardias que caigan en fines de semana o días no laborables aplican para la totalidad del día.
 ## Activaciones
         Generales 
 [x]        - No se puede cargar activaciones en horario laboral (L-V 9-17:30) ( aplica para horas extras y emergencias tambien)

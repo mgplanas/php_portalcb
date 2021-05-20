@@ -4,6 +4,7 @@
 const RULE_CONSTANTS = {
     RULE_RANGO_LABORAL_INICIO: '09:00:00',
     RULE_RANGO_LABORAL_FIN: '17:30:00',
+    RULE_CANTIDAD_MAX_DIAS_GUARDIAS: 17,
     RULE_CANTIDAD_MAX_HS_ACTIVACION_MENSUAL: 30,
     RULE_CANTIDAD_MAX_HS_ACTIVACION_ANUAL: 200,
     TIPO_REGISTRO_FERIADOS: 1,
@@ -35,15 +36,15 @@ const RULE_CONSTANTS = {
  * @returns {Resultado}
  * @author MVGP
  ****************************************************************************************/
-const verificarLimiteAcumuladoMensual = (inicio, fin, eventos) => {
+const verificarLimiteAcumuladoMensual = (inicio, fin, eventos, tipoEvento, limite) => {
     const res = {
         excede: false,
-        cantidadMinActuales: cantidadMinAcumulados(eventos),
+        cantidadMinActuales: cantidadMinAcumulados(eventos, tipoEvento),
         minEventoActual: moment.duration(fin.diff(inicio)).asMinutes(),
         totalMinutos: 0
     }
     res.totalMinutos = res.cantidadMinActuales + res.minEventoActual;
-    res.excede = (res.totalMinutos) > (RULE_CONSTANTS.RULE_CANTIDAD_MAX_HS_ACTIVACION_MENSUAL * 60);
+    res.excede = (res.totalMinutos) > (limite * 60);
 
     return res;
 }
@@ -53,9 +54,9 @@ const verificarLimiteAcumuladoMensual = (inicio, fin, eventos) => {
  * @param Event[] eventos - Eventos de la persona 
  * @author MVGP
  ****************************************************************************************/
-const cantidadMinAcumulados = (eventos) => {
+const cantidadMinAcumulados = (eventos, tipoEvento) => {
     return eventos
-        .filter(event => event.extendedProps.tipo == RULE_CONSTANTS.TIPO_REGISTRO_HORAS)
+        .filter(event => event.extendedProps.tipo == tipoEvento)
         .reduce((acumulado, evento) => {
             const mInicio = moment(evento.start);
             const mFin = moment(evento.end);
@@ -136,9 +137,11 @@ const esDNL = (m_fecha, eventos) => {
  * @param Event[] eventos - Eventos de la persona 
  * @author MVGP
  ****************************************************************************************/
-const solapaConLicencia = (m_inicio, m_fin, eventos) => {
+const solapaConLicencia = (m_inicio, m_fin, eventos, subtipo) => {
     const licenciasQueAplican = eventos
-        .filter(e => e.extendedProps.tipo == RULE_CONSTANTS.TIPO_REGISTRO_LICENCIAS) // Feriados DNL
+        .filter(e => e.extendedProps.tipo == RULE_CONSTANTS.TIPO_REGISTRO_LICENCIAS &&
+            (!subtipo || e.extendedProps.subtipo == subtipo)
+        )
         .filter(e => {
             const e_inicio = moment(e.start);
             const e_fin = moment(e.end);
@@ -230,5 +233,6 @@ export {
     solapaConLicencia,
     solapaConGuardia,
     determinarSubtipoRegistroHoras,
-    RULE_CONSTANTS
+    cantidadMinAcumulados,
+    RULE_CONSTANTS,
 }
