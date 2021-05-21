@@ -2,6 +2,7 @@ import * as registroHoras from './activaciones/registrohoras.js';
 import * as guardias from './guardias/guardias.js';
 import * as licencias from './licencias/licencias.js';
 import * as dnls from './dnls.js';
+import * as nav from './components/nav/nav-buttons.js';
 
 // ========================================================================================================================================================
 // MANEJO DE EVENTOS DEL CALENDARIO
@@ -154,16 +155,11 @@ const getResources = (handleData, area) => {
  ****************************************************************************************/
 const initializeCalendar = async(inicio, fin) => {
 
-    inicio.setDate(today.getDate() - 15);
-    fin.setDate(today.getDate() + 15);
     var calendar = new FullCalendar.Calendar(calendarEl, {
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source', // Licencia Free
         plugins: ['interaction', 'resourceTimeline'], // pluggins
         themeSystem: 'bootstrap',
         now: today, // fecha de hoy
-        buttonText: { // traducción de texto
-            'today': 'Mes actual'
-        },
         eventOverlap: true,
         editable: false, // No permito drag
         aspectRatio: 1, // aspecto
@@ -172,11 +168,7 @@ const initializeCalendar = async(inicio, fin) => {
         defaultView: 'monthview',
         displayEventTime: false, // sólo días sin hora
         displayEventEnd: false, // sólo días sin hora
-        header: { // Configuro los botones del header
-            left: 'title',
-            right: 'today prev next'
-        },
-        duration: { months: 1 }, // configuro el tamaño de los pasos prev y next
+        header: false,
         views: {
             monthview: {
                 type: 'resourceTimeline',
@@ -184,12 +176,42 @@ const initializeCalendar = async(inicio, fin) => {
                     start: inicio, // start,
                     end: fin // end,
                 },
+                duration: { months: 1 },
+                slotLabelFormat: [
+                    { month: 'long', year: 'numeric' }, // top level of text
+                    { day: 'numeric' } // lower level of text
+                ],
+            },
+            byPeriod: {
+                type: 'resourceTimeline',
+                buttonText: 'Por Período',
+                visibleRange: (currentDay) => {
+                    let mcur = moment(currentDay);
+                    if (mcur.date() >= 11) {
+                        let start = moment(mcur.format('YYYY-MM-11')).toDate();
+                        mcur.add(1, 'months');
+                        let end = moment(mcur.format('YYYY-MM-11')).toDate();
+                        return {
+                            start,
+                            end
+                        }
+                    } else {
+                        mcur.add(-1, 'months');
+                        let start = moment(mcur.format('YYYY-MM-11')).toDate();
+                        mcur.add(1, 'months');
+                        let end = moment(mcur.format('YYYY-MM-11')).toDate();
+                        return {
+                            start,
+                            end
+                        }
+                    }
+                },
                 slotLabelFormat: [
                     { month: 'long', year: 'numeric' }, // top level of text
                     { day: 'numeric' } // lower level of text
                 ],
 
-            }
+            },
         },
         // customButtons: customButtons,
         //filterResourcesWithEvents: true,
@@ -222,6 +244,7 @@ const initializeCalendar = async(inicio, fin) => {
 const user_calendar = await initializeCalendar(today, today);
 registroHoras.init(user_calendar);
 licencias.init(user_calendar);
+nav.init(user_calendar);
 
 subscribeToEventUpdate(registroHoras.eventsUpdated);
 subscribeToEventUpdate(licencias.eventsUpdated);

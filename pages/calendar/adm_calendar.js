@@ -162,11 +162,6 @@ const getResources = (handleData, area) => {
  ****************************************************************************************/
 const initializeCalendar = async(inicio, fin) => {
 
-    // Busco los feriado
-    // const dnls = await getDNLs();
-    // today = new Date(2021, 4, 10);
-    inicio = new Date(2021, 3, 11);
-    fin = new Date(2021, 4, 11);
     var calendar = new FullCalendar.Calendar(calendarEl, {
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source', // Licencia Free
         plugins: ['interaction', 'resourceTimeline'], // pluggins

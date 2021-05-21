@@ -134,7 +134,7 @@ desired effect
         <div class="row">
             <input type="hidden" id="per_id_persona" value="<?=$rowp['id_persona'] ?>"/>
             <input type="hidden" id="per_nombre" value="<?=$rowp['apellido'] . ', ' . $rowp['nombre']?>"/>
- 
+            <?php include_once('./calendar/components/nav/nav-buttons.php'); ?>
         </div>
     </section>
     <!-- Main content -->
@@ -144,14 +144,8 @@ desired effect
     <section class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="btn-group">
-                    <button type="button" 
-                    id="modal-abm-calendar-btn-show" 
-                    class="btn btn-default"
-                    data-toggle="collapse" data-target="#calendar_container" aria-expanded="false" aria-controls="calendar_container"><i class="fa fa-calendar"></i> Ocultar/Mostrar</button>
-                </div>
                 <!-- CALENDAR -->
-                <div class="box box-primary collapse show" id="calendar_container" >
+                <div class="box collapse in" id="calendar_container" >
                     <div class="box-body no-padding">
                         <!-- THE CALENDAR -->
                         <div class="row">

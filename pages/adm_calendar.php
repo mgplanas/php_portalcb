@@ -151,20 +151,7 @@ desired effect
     <section class="content-header">
         <div class="row">
             <input type="hidden" id="per-area" value="<?=$rowp['area'] ?>"/>
-            <div class="col-md-4 align-bottom">
-                <?php include_once('./calendar/components/nav/nav-buttons.php'); ?>
-            </div>
-            <div class="col-md-4 ">
-                <h2 style="margin: 0px;">Calendario Vacaciones</h2>
-            </div>
-            <div class="col-md-4 text-right ">
-                <div class="btn-group">
-                    <button type="button" 
-                            id="modal-abm-guardias-btn-def" 
-                            class="btn btn-default"
-                            data-target="#modal-abm-licencia"><i class="fa fa-calendar-plus-o"></i> Agregar guardias</button>
-                </div>
-            </div>
+            <?php include_once('./calendar/components/nav/nav-buttons.php'); ?>
         </div>
     </section>
     <!-- Main content -->
@@ -174,7 +161,7 @@ desired effect
     <section class="content">
       <div class="row">
         <div class="col-md-12">
-          <div class="box box-primary">
+          <div class="box collapse in" id="calendar_container">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
               <div id="calendar"></div>
