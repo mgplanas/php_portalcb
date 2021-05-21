@@ -152,6 +152,14 @@ desired effect
         <div class="row">
             <input type="hidden" id="per-area" value="<?=$rowp['area'] ?>"/>
             <?php include_once('./calendar/components/nav/nav-buttons.php'); ?>
+            <div class="col-md-12 text-right ">
+                <div class="btn-group">
+                    <button type="button" 
+                            id="modal-abm-guardias-btn-def" 
+                            class="btn btn-default"
+                            data-target="#modal-abm-licencia"><i class="fa fa-calendar-plus-o"></i> Agregar guardias</button>
+                </div>
+            </div>
         </div>
     </section>
     <!-- Main content -->

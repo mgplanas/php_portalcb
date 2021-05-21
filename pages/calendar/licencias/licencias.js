@@ -4,6 +4,7 @@ import * as utils from '../utils.js'
 
 // Calendar instantiation
 var calendar;
+// TODO: Hacer formulario de autorización en popover como con registros
 
 // ========================================================================================================================================================
 // MANEJO DE Registro de licencias

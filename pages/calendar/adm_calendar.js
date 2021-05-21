@@ -254,7 +254,6 @@ const initializeCalendar = async(inicio, fin) => {
 
         dateClick: function(e) {
             console.log(e);
-            alert(e);
         },
     });
 

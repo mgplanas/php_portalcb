@@ -4,7 +4,8 @@ import * as utils from '../utils.js';
 // MANEJO DE GUARDIAS
 // ========================================================================================================================================================
 var calendar;
-
+// TODO: Hacer boton de eliminar en el popover solo para jefes
+// TODO: recomponer boton de agregar guardias
 
 const eventsUpdated = eventos => {
     const eventosGuardias = eventos.filter(e => e.tipo == utils.RULE_CONSTANTS.TIPO_REGISTRO_GUARDIAS);
@@ -75,7 +76,7 @@ const eventRender = info => {
             <div class="col-md-4"><strong>Fin:</strong></div>
             <div class="col-md-8 text-right">${mFin.format('DD/MM/YYYY HH:mm')}</div>
         </div>
-        <div class="row"><div class="col-md-12 text-right"><i class="fa fa-clock-o"></i> Duracion: ${mFin.diff(mInicio, 'days')+1} días</div></div>`,      
+        <div class="row"><div class="col-md-12 text-right"><i class="fa fa-clock-o"></i> Duracion: ${mFin.diff(mInicio, 'days')+1} días</div></div>`,
         container: 'body'
     }).popover('show');
     $(document).on("click", ".popover .close", () => {
@@ -220,7 +221,7 @@ const submit = (callback) => {
             tipo: 2,
             estado: 1,
             is_all_day: 1,
-            is_background: 0,
+            is_background: 1,
             is_programmed: 0,
         },
         success: json => {
