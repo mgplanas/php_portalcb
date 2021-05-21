@@ -27,6 +27,22 @@
 }
 
 
+/* Pendientes */
+
+.ar-tipo-3.estado-1 {
+    border-style: dashed !important;
+    opacity: 0.6 !important;
+}
+
+
+/* Aprobado */
+
+.ar-tipo-3.estado-2 {
+    border-style: solid !important;
+    opacity: 0.9 !important;
+}
+
+
 /* Activacion */
 
 .ar-tipo-4 {

@@ -171,10 +171,7 @@ desired effect
                             <h3 class="box-title">Tareas registradas</h3>
                         </div>
                         <div class="col-md-4 text-right">
-                            <button type="button" 
-                                id="modal-abm-registro-btn-add" 
-                                class="btn btn-default"
-                                data-target="#modal-abm-licencia"><i class="fa fa-calendar-plus-o"></i> Agregar</button>
+                            <button type="button" id="modal-abm-registro-btn-add" class="btn btn-default"><i class="fa fa-calendar-plus-o"></i> Agregar</button>
                         </div>
                     </div>
                     <div class="box-body">
@@ -203,19 +200,7 @@ desired effect
                             <h3 class="box-title">Licencias</h3>
                         </div>
                         <div class="col-md-4">
-                            <div class="btn-group">
-                                    <button type="button" class="btn btn-default">Licencias</button>
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                    <li><a id="modal-abm-cal-lic-btn-add-vacaciones"><i class="fa fa-plane"></i> Vacaciones</a></li>
-                                    <li><a><i class="fa fa-bed"></i>Enfermedad</a></li>
-                                    <li class="divider"></li>
-                                    <li><a>Otros</a></li>
-                                    </ul>
-                                </div>
+                            <button type="button" id="modal-abm-cal-lic-btn-add-vacaciones" class="btn btn-default"><i class="fa fa-plane"></i> Registrar Vacaciones</button>
                         </div>
                     </div>
                     <div class="box-body">
