@@ -1,3 +1,7 @@
+/***************************************************************************************
+ * Muestra u Oculta el contenedor del calendario
+ * @author MVGP
+ ****************************************************************************************/
 const toggleCalendar = () => {
     let calContainer = $('#calendar_container');
     if (calContainer.hasClass('in')) {
@@ -7,6 +11,12 @@ const toggleCalendar = () => {
     }
 }
 
+/***************************************************************************************
+ * Cambia la vista del calendario entre por período de 11 al 10 o por mes
+ * @param {Fullcalendar} cal - Instancia del calendario
+ * @param {string} viewname - Nombre de la vista
+ * @author MVGP
+ ****************************************************************************************/
 const toogleView = (cal, viewName) => {
     cal.changeView(viewName);
     if (viewName === 'monthview') {
@@ -17,6 +27,7 @@ const toogleView = (cal, viewName) => {
         $('#cal-nav-btn-next').attr('title', 'período siguiente');
     }
     updateNavTitle(cal.view.title);
+
 }
 
 
@@ -36,7 +47,11 @@ const init = (cal) => {
     $('#cal-nav-btn-next').on('click', () => incrementDate(cal, 1));
     $('#cal-nav-btn-toggle').on('click', toggleCalendar);
 
+    $('#calendar_container').on('shown.bs.collapse', () => cal.render());
+
     toogleView(cal, 'monthview');
+
+
 }
 
 export { init }
