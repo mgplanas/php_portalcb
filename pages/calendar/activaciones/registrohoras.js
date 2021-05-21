@@ -166,16 +166,27 @@ const popoverEventDetailContent = info => {
     const duration = moment.duration(mFin.diff(mInicio));
     const dhours = parseInt(duration.asHours());
     const dmin = parseInt(duration.asMinutes()) - (dhours * 60);
-    return `<div class="text-left"><strong>Estado:</strong> <span class="label label-${info.event.extendedProps.estado_class}">${info.event.extendedProps.estado_desc}</span></div>
-        <strong>Comienzo:</strong>${mInicio.format('DD/MM/YYYY HH:mm')}<br>
-        <strong>Fin:</strong>${mFin.format('DD/MM/YYYY HH:mm')}<br>
-        <i class="fa fa-clock-o"></i> Duracion: ${dhours} h ${dmin} m
-    
+    return `
+        <div class="row">
+            <div class="col-md-4"><strong>Estado:</strong></div>
+            <div class="col-md-8 text-right"><span class="label label-${info.event.extendedProps.estado_class}">${info.event.extendedProps.estado_desc}</span></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><strong>Comienzo:</strong></div>
+            <div class="col-md-8 text-right">${mInicio.format('DD/MM/YYYY HH:mm')}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><strong>Fin:</strong></div>
+            <div class="col-md-8 text-right">${mFin.format('DD/MM/YYYY HH:mm')}</div>
+        </div>
+        <div class="row"><div class="col-md-12 text-right"><i class="fa fa-clock-o"></i> Duracion: ${dhours} h ${dmin} m</div></div>    
         <div class="col-md-12">
             <div class="row">
                 <strong>Justificación:</strong><br>${info.event.extendedProps.justificacion}
             </div>
         </div> `;
+
+
 }
 
 /***************************************************************************************

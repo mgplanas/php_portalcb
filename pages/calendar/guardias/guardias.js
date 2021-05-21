@@ -66,10 +66,16 @@ const eventRender = info => {
         placement: 'top',
         html: true,
         trigger: 'hover',
-        content: `<strong>${resource.title}:</strong><br>
-        <strong>Comienzo:</strong>${mInicio.format('DD/MM/YYYY HH:mm')}<br>
-        <strong>Fin:</strong>${mFin.format('DD/MM/YYYY HH:mm')}<br>
-        Cantidad de días: ${mFin.diff(mInicio, 'days')+1}`,
+        content: `
+        <div class="row">
+            <div class="col-md-4"><strong>Comienzo:</strong></div>
+            <div class="col-md-8 text-right">${mInicio.format('DD/MM/YYYY HH:mm')}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"><strong>Fin:</strong></div>
+            <div class="col-md-8 text-right">${mFin.format('DD/MM/YYYY HH:mm')}</div>
+        </div>
+        <div class="row"><div class="col-md-12 text-right"><i class="fa fa-clock-o"></i> Duracion: ${mFin.diff(mInicio, 'days')+1} días</div></div>`,      
         container: 'body'
     }).popover('show');
     $(document).on("click", ".popover .close", () => {
