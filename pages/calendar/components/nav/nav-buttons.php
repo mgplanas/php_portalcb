@@ -1,5 +1,5 @@
 <div class="col-md-4">
-    <button type="button" id="cal-nav-btn-toggle" class="btn btn-default"><i class="fa fa-calendar"></i> Ocultar/Mostrar</button>
+    <!-- <button type="button" id="cal-nav-btn-toggle" class="btn btn-default"><i class="fa fa-calendar"></i> Ocultar/Mostrar</button> -->
 </div>
 <div class="col-md-4">
     <h3 style="margin: 0px;" id="cal-nav-title"></h3>
