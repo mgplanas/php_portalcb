@@ -2,7 +2,7 @@ import * as dnls from './dnls.js';
 import * as guardias from './guardias/guardias.js';
 import * as registroHoras from './activaciones/registrohoras.js';
 import * as licencias from './licencias/licencias.js';
-
+import * as nav from './components/nav/nav-buttons.js';
 
 // Calendar instantiation
 var calendarEl = document.getElementById('calendar');
@@ -164,9 +164,9 @@ const initializeCalendar = async(inicio, fin) => {
 
     // Busco los feriado
     // const dnls = await getDNLs();
-
-    inicio.setDate(today.getDate() - 15);
-    fin.setDate(today.getDate() + 15);
+    // today = new Date(2021, 4, 10);
+    inicio = new Date(2021, 3, 11);
+    fin = new Date(2021, 4, 11);
     var calendar = new FullCalendar.Calendar(calendarEl, {
         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source', // Licencia Free
         plugins: ['interaction', 'resourceTimeline'], // pluggins
@@ -183,16 +183,51 @@ const initializeCalendar = async(inicio, fin) => {
         defaultView: 'monthview',
         displayEventTime: false, // sólo días sin hora
         displayEventEnd: false, // sólo días sin hora
-        header: { // Configuro los botones del header
-            right: 'today prev next'
-        },
-        duration: { months: 1 }, // configuro el tamaño de los pasos prev y next
+        header: false,
+        // header: { // Configuro los botones del header
+        //     center: 'byPeriod monthview',
+        //     right: 'today prev next'
+        // },
+
+        // duration: { months: 1 }, // configuro el tamaño de los pasos prev y next
         views: {
             monthview: {
                 type: 'resourceTimeline',
+                buttonText: 'Por Mes',
                 visibleRange: {
                     start: inicio, // start,
                     end: fin // end,
+                },
+                duration: { months: 1 }, // configuro el tamaño de los pasos prev y next
+                slotLabelFormat: [
+                    { month: 'long', year: 'numeric' }, // top level of text
+                    { day: 'numeric' } // lower level of text
+                ],
+
+            },
+            byPeriod: {
+                type: 'resourceTimeline',
+                buttonText: 'Por Período',
+                visibleRange: (currentDay) => {
+                    let mcur = moment(currentDay);
+                    if (mcur.date() >= 11) {
+                        let start = moment(mcur.format('YYYY-MM-11')).toDate();
+                        mcur.add(1, 'months');
+                        let end = moment(mcur.format('YYYY-MM-11')).toDate();
+                        return {
+                            start,
+                            end
+                        }
+                    } else {
+                        mcur.add(-1, 'months');
+                        let start = moment(mcur.format('YYYY-MM-11')).toDate();
+                        mcur.add(1, 'months');
+                        let end = moment(mcur.format('YYYY-MM-11')).toDate();
+                        return {
+                            start,
+                            end
+                        }
+                    }
                 },
                 slotLabelFormat: [
                     { month: 'long', year: 'numeric' }, // top level of text
@@ -201,6 +236,7 @@ const initializeCalendar = async(inicio, fin) => {
 
             }
         },
+
         // customButtons: customButtons,
         //filterResourcesWithEvents: true,
         eventClick: function(info) {
@@ -235,3 +271,4 @@ const adm_calendar = await initializeCalendar(today, today);
 guardias.init(adm_calendar);
 registroHoras.init(adm_calendar);
 licencias.init(adm_calendar);
+nav.init(adm_calendar);

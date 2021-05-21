@@ -151,11 +151,13 @@ desired effect
     <section class="content-header">
         <div class="row">
             <input type="hidden" id="per-area" value="<?=$rowp['area'] ?>"/>
- 
-            <div class="col-md-4 ">
-                <h2>Calendario Vacaciones</h2>
+            <div class="col-md-4 align-bottom">
+                <?php include_once('./calendar/components/nav/nav-buttons.php'); ?>
             </div>
-            <div class="col-md-8 text-right " style="margin-top: 20px;" >
+            <div class="col-md-4 ">
+                <h2 style="margin: 0px;">Calendario Vacaciones</h2>
+            </div>
+            <div class="col-md-4 text-right ">
                 <div class="btn-group">
                     <button type="button" 
                             id="modal-abm-guardias-btn-def" 
