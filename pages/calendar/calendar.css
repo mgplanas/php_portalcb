@@ -9,9 +9,9 @@
 /* Guardias - DC */
 
 .ar-tipo-2.subtipo-1 {
-    background-color: rgba(0, 255, 0, 0.7) !important;
-    border-color: green !important;
-    color: green !important;
+    background-color: rgba(0, 0, 255, 0.6) !important;
+    border-color: blue !important;
+    color: white !important;
     /* opacity: 0.5; */
 }
 
@@ -46,9 +46,7 @@
 /* Activacion */
 
 .ar-tipo-4 {
-    background-color: rgba(0, 0, 255, 0.8);
-    border-color: blue !important;
-    color: white !important;
+    color: black !important;
     cursor: pointer !important;
     border-width: 2px;
 }
@@ -57,14 +55,18 @@
 /* Pendientes */
 
 .ar-tipo-4.estado-1 {
+    background-color: rgba(243, 156, 18, 0.8);
+    border-color: #f39c12 !important;
     border-style: dashed !important;
-    opacity: 0.6 !important;
 }
 
 
 /* Aprobado */
 
 .ar-tipo-4.estado-2 {
+    background-color: rgba(0, 166, 90, 0.8);
+    border-color: #00a65a !important;
+    color: white !important;
     border-style: solid !important;
     opacity: 0.9 !important;
 }
@@ -74,8 +76,9 @@
 
 .ar-tipo-4.estado-3 {
     border-style: solid !important;
-    background-color: #dd4b39;
-    border-color: red !important;
+    background-color: rgba(221, 75, 57, 0.8);
+    border-color: #dd4b39 !important;
+    color: white !important;
     opacity: 0.9 !important;
 }
 
