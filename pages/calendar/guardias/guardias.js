@@ -54,31 +54,53 @@ const createTableGuardias = (id, eventos) => {
 
 }
 
+
+/***************************************************************************************
+ * Renderizacion de la parte del detalle comun a todos los eventos de este tipo
+ * @param {EventInformation} info - Informacion del evento (DOM element, event)
+ * @returns {String} html in string template
+ * @author MVGP
+ ****************************************************************************************/
+const popoverEventDetailContent = info => {
+    const mInicio = moment(info.event.extendedProps.real_start);
+    const mFin = moment(info.event.extendedProps.real_end);
+    return `
+    <div class="row">
+        <div class="col-md-4"><strong>Comienzo:</strong></div>
+        <div class="col-md-8 text-right">${mInicio.format('DD/MM/YYYY HH:mm')}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"><strong>Fin:</strong></div>
+        <div class="col-md-8 text-right">${mFin.format('DD/MM/YYYY HH:mm')}</div>
+    </div>
+    <div class="row"><div class="col-md-12 text-right"><i class="fa fa-clock-o"></i> Duracion: ${mFin.diff(mInicio, 'days')+1} días</div></div> `;
+}
+
 /***************************************************************************************
  * Renderizacion Eventos Guardias
  * @author MVGP
  ****************************************************************************************/
 const eventRender = info => {
-    const mInicio = moment(info.event.extendedProps.real_start);
-    const mFin = moment(info.event.extendedProps.real_end);
-    const resource = info.event.getResources()[0];
+    // const resource = info.event.getResources()[0];
     $(info.el).popover({
-        title: `${info.event.title} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
-        placement: 'top',
-        html: true,
-        trigger: 'hover',
-        content: `
-        <div class="row">
-            <div class="col-md-4"><strong>Comienzo:</strong></div>
-            <div class="col-md-8 text-right">${mInicio.format('DD/MM/YYYY HH:mm')}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-4"><strong>Fin:</strong></div>
-            <div class="col-md-8 text-right">${mFin.format('DD/MM/YYYY HH:mm')}</div>
-        </div>
-        <div class="row"><div class="col-md-12 text-right"><i class="fa fa-clock-o"></i> Duracion: ${mFin.diff(mInicio, 'days')+1} días</div></div>`,
-        container: 'body'
-    }).popover('show');
+            title: `${info.event.title} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
+            placement: 'top',
+            html: true,
+            trigger: 'hover',
+            content: `${popoverEventDetailContent(info)}`,
+            container: 'body',
+            trigger: "manual",
+            animation: false
+        })
+        .on("mouseenter", function() {
+            var _this = this;
+            $(this).popover("show");
+            $(".popover").on("mouseleave", function() {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function() {
+            if (!$(".popover:hover").length) $(this).popover("hide");
+        });
     $(document).on("click", ".popover .close", () => {
         $(".popover").popover('hide');
     });
