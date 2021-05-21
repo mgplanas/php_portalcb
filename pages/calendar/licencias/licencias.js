@@ -81,15 +81,23 @@ const eventRender = info => {
 
     $(info.el).popover({
         title: `<i class='fa fa-${info.event.extendedProps.icon}'></i> ${info.event.extendedProps.subtipo_desc} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
-        placement: 'top',
+        placement: 'auto',
         html: true,
         trigger: 'hover',
-        content: `<strong>${resource.title}:</strong><br>
-        <strong>Comienzo:</strong>${mInicio.format('DD/MM/YYYY HH:mm')}<br>
-        <strong>Fin:</strong>${mFin.format('DD/MM/YYYY HH:mm')}<br>
-        <i class="fa fa-clock-o"></i> Duracion: ${duration} días
-        <hr>
-        <div class="text-right"><strong>Estado:</strong> <span class="label label-warning">pendiente aprobación</span></div>`,
+        content: `
+        <div class="row">
+            <div class="col-md-4"><strong>Estado:</strong></div>
+            <div class="col-md-8 text-right"><span class="label label-${info.event.extendedProps.estado_class}">${info.event.extendedProps.estado_desc}</span></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><strong>Comienzo:</strong></div>
+            <div class="col-md-6">${mInicio.format('DD/MM/YYYY')}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><strong>Fin:</strong></div>
+            <div class="col-md-6">${mFin.format('DD/MM/YYYY')}</div>
+        </div>
+        <div class="row"><div class="col-md-12 text-right"><i class="fa fa-clock-o"></i> Duracion: ${duration} días</div></div>`,
         container: 'body'
     }).popover('show');
 
@@ -145,14 +153,14 @@ const validar = (m_inicio, m_fin, eventosActuales) => {
         return resultado;
     }
 
-    // Valido de que no se solapen con horarios laborales
+    // Valido de que no se solapen con otras licencias
     if (utils.solapaConLicencia(m_inicio, m_fin, eventosActuales)) {
         resultado.ok = false;
         resultado.errores.push(`Existen licencias registradas en dicho rango de fechas.`);
         return resultado;
     }
 
-    // Valido de que no se solapen con horarios laborales
+    // Valido de que no se solapen con guardias
     if (utils.solapaConGuardia(m_inicio, m_fin, eventosActuales)) {
         resultado.ok = false;
         resultado.warnings.push(`Existe un período de guardia definido para dicho rango de fechas. Deberá informar a su superior para que lo elimine.`);
