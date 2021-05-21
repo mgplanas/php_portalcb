@@ -188,7 +188,7 @@ const eventRenderConAprobacion = info => {
 
     $(info.el).popover({
             title: `<i class='fa fa-${info.event.extendedProps.icon}'></i> ${info.event.extendedProps.subtipo_desc} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
-            placement: 'top',
+            placement: 'auto',
             html: true,
             trigger: 'hover',
             content: `${popoverEventDetailContent(info)}
@@ -258,7 +258,7 @@ const eventRender = info => {
 
     $(info.el).popover({
             title: `<i class='fa fa-${info.event.extendedProps.icon}'></i> ${info.event.extendedProps.subtipo_desc} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
-            placement: 'top',
+            placement: 'auto',
             html: true,
             trigger: 'hover',
             content: `${popoverEventDetailContent(info)}
