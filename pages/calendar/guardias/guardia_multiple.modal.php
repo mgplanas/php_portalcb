@@ -85,8 +85,7 @@
                                 <label>Aplicar esquema de guardia a:</label> 
                                 <select style="height:250px"  name="personas[]" class="form-control custom-select selectpicker show-tick" multiple id="modal-abm-cal-guardias-mul-personas">
                                     <?php
-                                        //FIXME: Poner area correspondiente
-                                        $empleados = mysqli_query($con, "SELECT * FROM persona WHERE area = 3 and borrado = 0 ORDER BY apellido,nombre DESC;"); 
+                                        $empleados = mysqli_query($con, "SELECT * FROM persona WHERE area = " . $rowp['area'] ." and borrado = 0 ORDER BY apellido,nombre DESC;"); 
                                         while($row = mysqli_fetch_assoc($empleados)){
                                             echo "<option value=". $row['id_persona'] . ">" . $row['apellido'] . ', '. $row['nombre']  . "</option>";
                                         }

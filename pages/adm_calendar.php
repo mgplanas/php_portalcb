@@ -151,7 +151,6 @@ desired effect
     <section class="content-header">
         <div class="row">
             <input type="hidden" id="per-area" value="<?=$rowp['area'] ?>"/>
-            <?php include_once('./calendar/components/nav/nav-buttons.php'); ?>
             <div class="col-md-12 text-right ">
                 <div class="btn-group">
                     <button type="button" 
@@ -160,6 +159,7 @@ desired effect
                             data-target="#modal-abm-licencia"><i class="fa fa-calendar-plus-o"></i> Agregar guardias</button>
                 </div>
             </div>
+            <?php include_once('./calendar/components/nav/nav-buttons.php'); ?>
         </div>
     </section>
     <!-- Main content -->
