@@ -21,6 +21,21 @@
                         GROUP BY YEAR(ev.fecha_inicio), MONTH(ev.fecha_inicio)
                         ORDER BY YEAR(ev.fecha_inicio) DESC, MONTH(ev.fecha_inicio) DESC";
             break;
+        case 'TOP_10_BY_AREA':
+            $area = $_POST['area'];
+            $tipo = $_POST['tipo'];
+            $query = "SELECT result.* FROM (
+                SELECT CONCAT(apellido, ', ', nombre) as fullname, SUM(TIMESTAMPDIFF(MINUTE,ev.fecha_inicio, ev.fecha_fin )) as suma
+                  FROM adm_eventos_cal AS ev 
+                  INNER JOIN persona as per ON ev.id_persona = per.id_persona
+                  WHERE NOT (ev.fecha_inicio > '$fin' OR ev.fecha_fin < '$inicio')
+                      AND ev.tipo = '$tipo'
+                      AND per.area = '$area'
+                      AND ev.estado <> 3
+                      AND ev.borrado = 0
+                  GROUP BY CONCAT(apellido, ', ', nombre)
+                  ) as result ORDER BY result.suma DESC LIMIT 10;";
+            break;
         default:
             # code...
             break;

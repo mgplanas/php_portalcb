@@ -4,6 +4,7 @@ import * as registroHoras from './activaciones/registrohoras.js';
 import * as licencias from './licencias/licencias.js';
 import * as nav from './components/nav/nav-buttons.js';
 import * as personStats from './stats/person/personStats.modal.js'
+import * as jefaturaStats from './stats/area/stats.js'
 
 // Calendar instantiation
 var calendarEl = document.getElementById('calendar');
@@ -268,3 +269,4 @@ licencias.init(adm_calendar);
 nav.init(adm_calendar);
 
 subscribeToEventUpdate(registroHoras.tbRegistrosJefaturaUpdate);
+//subscribeToEventUpdate(jefaturaStats.gxTopTenHsByEventsUpdate);

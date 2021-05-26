@@ -276,5 +276,5 @@ export {
     determinarSubtipoRegistroHoras,
     cantidadMinAcumulados,
     RULE_CONSTANTS,
-    cantidadMinAcumuladosPeriodoByPerson
+    cantidadMinAcumuladosPeriodoByPerson,
 }

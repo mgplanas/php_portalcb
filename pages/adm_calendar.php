@@ -211,7 +211,22 @@ desired effect
                     </table>
                 </div>
             </div>
-        </div>          
+        </div>    
+        <!-- <div class="col-md-6">
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                <h3 class="box-title">Top 10 - registro hs</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+                </div>
+                <div class="box-body">
+                    <canvas id="gx_top_10_hs" height="212" style="display: block;"></canvas>
+                </div>
+            </div>
+        </div>                                          -->
+
       </div>
       <!-- /.row -->
     </section>  
