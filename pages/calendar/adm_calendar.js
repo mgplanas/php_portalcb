@@ -3,6 +3,7 @@ import * as guardias from './guardias/guardias.js';
 import * as registroHoras from './activaciones/registrohoras.js';
 import * as licencias from './licencias/licencias.js';
 import * as nav from './components/nav/nav-buttons.js';
+import * as personStats from './stats/person/personStats.modal.js'
 
 // Calendar instantiation
 var calendarEl = document.getElementById('calendar');
@@ -46,13 +47,8 @@ const eventRender = info => {
 const resourceRender = info => {
     const { resource, el } = info;
 
-    // el.addEventListener('click', () => {
-    //     console.log(resource);
-    //     if (confirm('Are you sure you want to delete ' + resource.title + '?')) {
-    //         resource.remove();
-    //     }
-    // });
-    // return;
+    $(el).on('click', () => personStats.showStatsForPerson(resource, info));
+
 }
 
 /***************************************************************************************

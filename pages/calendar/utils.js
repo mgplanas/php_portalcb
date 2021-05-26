@@ -42,9 +42,10 @@ const RULE_CONSTANTS = {
  * @author MVGP
  ****************************************************************************************/
 const verificarLimiteAcumuladoMensual = (inicio, fin, eventos, tipoEvento, limite) => {
+    const eventosNORechazados = eventos.filter(event => event.extendedProps.estado != RULE_CONSTANTS.ESTADOS_REGISTRO_HORAS.RECHAZADO);
     const res = {
         excede: false,
-        cantidadMinActuales: cantidadMinAcumulados(eventos, tipoEvento),
+        cantidadMinActuales: cantidadMinAcumulados(eventosNORechazados, tipoEvento),
         minEventoActual: moment.duration(fin.diff(inicio)).asMinutes(),
         totalMinutos: 0
     }
@@ -52,6 +53,35 @@ const verificarLimiteAcumuladoMensual = (inicio, fin, eventos, tipoEvento, limit
     res.excede = (res.totalMinutos) > (limite * 60);
 
     return res;
+}
+
+/***************************************************************************************
+ * Minutoa acumulados en un periodo por persona y tipo
+ * @param {number} id_persona - ID de persona 
+ * @param {Moment} inicio - Inicio del periodo 
+ * @param {Moment} fin - fin del periodo 
+ * @param {number} tipo - tipo de evento
+ * @author MVGP
+ ****************************************************************************************/
+const cantidadMinAcumuladosPeriodoByPerson = (id_persona, start, end, tipo) => {
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'POST',
+            url: './calendar/stats/stats.controller.php',
+            data: {
+                action: 'MIN_ACUM_BY_PERSON',
+                id_persona,
+                start,
+                end,
+                tipo
+            },
+            dataType: 'json',
+            success: (json) => resolve(json.data[0]),
+            error: (xhr, status, error) => reject(error)
+        });
+
+    });
 }
 
 /***************************************************************************************
@@ -240,4 +270,5 @@ export {
     determinarSubtipoRegistroHoras,
     cantidadMinAcumulados,
     RULE_CONSTANTS,
+    cantidadMinAcumuladosPeriodoByPerson
 }

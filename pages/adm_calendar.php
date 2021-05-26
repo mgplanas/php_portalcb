@@ -188,6 +188,7 @@ desired effect
     </section>  
     <?php include_once('./calendar/guardias/guardia_simple.modal.php'); ?>
     <?php include_once('./calendar/guardias/guardia_multiple.modal.php'); ?>
+    <?php include_once('./calendar/stats/person/personStats.modal.php'); ?>
     <!-- /.End content -->
   </div>
   <!-- Main Footer -->
