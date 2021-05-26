@@ -16,7 +16,7 @@
             break;
         case 'BY_PERSON_ID':
             $id_persona = $_POST['id'];
-            $query = "SELECT ev.*, per.nombre, per.apellido, per.cargo, tipo.descripcion as tipo_desc, subtipo.descripcion as subtipo_desc, subtipo.icon as icon,
+            $query = "SELECT ev.*, per.nombre, per.apellido, per.cargo, CONCAT(per.apellido, ', ', per.nombre) as fullname, tipo.descripcion as tipo_desc, subtipo.descripcion as subtipo_desc, subtipo.icon as icon,
                     estados.descripcion as estado_desc, estados.icon as estado_icon, estados.class as estado_class
                 FROM adm_eventos_cal as ev
                 INNER JOIN persona as per ON ev.id_persona = per.id_persona AND per.id_persona = '$id_persona'
@@ -29,7 +29,7 @@
             break;        
         case 'BY_AREA':
             $area = $_POST['area'];
-            $query = "SELECT ev.*, per.nombre, per.apellido, per.cargo, 
+            $query = "SELECT ev.*, per.nombre, per.apellido, per.cargo, CONCAT(per.apellido, ', ', per.nombre) as fullname, 
                     tipo.descripcion as tipo_desc, subtipo.descripcion as subtipo_desc, subtipo.icon as icon,
                     estados.descripcion as estado_desc, estados.icon as estado_icon, estados.class as estado_class
                 FROM adm_eventos_cal as ev

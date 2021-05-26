@@ -12,11 +12,79 @@ var calendar;
 // TODO: Hacer anánisis y que devuleva un objeto con todo lo que necesitás
 
 /***************************************************************************************
- * Subscripcion a lo actualizacion de eventos
+ * Subscripcion a lo actualizacion de eventos para tabla eventos de jefe Aprobación de horas
  * @param {Evento[]} eventos - todos los eventos del calendario
  * @author MVGP
  ****************************************************************************************/
-const eventsUpdated = eventos => {
+const tbRegistrosJefaturaUpdate = eventos => {
+    const eventosRegistrosHs = eventos.filter(e => e.tipo == utils.RULE_CONSTANTS.TIPO_REGISTRO_HORAS);
+    createTableRegistrHsJefatura('tbRegistroHs', eventosRegistrosHs);
+}
+
+const createTableRegistrHsJefatura = (id, eventos) => {
+
+    let tbRegistro = $(`#${id}`);
+    tbRegistro.DataTable().clear().destroy();
+    tbRegistro.DataTable({
+        "paging": false,
+        "deferRender": true,
+        "data": eventos,
+        "columns": [
+            { data: "id_persona" },
+            { data: "fullname" },
+            { data: "id" },
+            { data: "icon", render: (data, type, row) => `<i title="${row.subtipo_desc}" class="fa fa-${data}"></i>` },
+            { data: "fecha_inicio", render: data => moment(data).format('DD/MM/YYYY HH:mm') },
+            { data: "fecha_fin", render: data => moment(data).format('DD/MM/YYYY HH:mm') },
+            {
+                data: "",
+                render: (data, type, row) => {
+                    const mInicio = moment(row.fecha_inicio);
+                    const mFin = moment(row.fecha_fin);
+                    const duration = moment.duration(mFin.diff(mInicio));
+                    const dhours = parseInt(duration.asHours());
+                    const dmin = parseInt(duration.asMinutes()) - (dhours * 60);
+                    return `${dhours}h ${dmin}m`;
+                }
+            },
+            { data: "estado", render: (data, type, row) => `<span class="label label-${row.estado_class}">${row.estado_desc}</span>` },
+            { data: "estado" },
+        ],
+        'rowGroup': {
+            'dataSrc': ['fullname']
+        },
+        'order': [
+            [4, 'desc']
+        ],
+        'columnDefs': [{
+                'targets': [0, 1, 2],
+                'visible': false
+            },
+            {
+                'targets': [0, 1, 4, 5, 6],
+                orderable: false
+            },
+            {
+                'targets': [-1],
+                'render': function(data, type, row, meta) {
+                    if (row.estado != utils.RULE_CONSTANTS.ESTADOS_REGISTRO_HORAS.PENDIENTE) return '';
+                    let btns = '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="papa" title="eliminar" class="modal-abm-costodet-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                    return btns;
+                }
+            }
+        ],
+        'dom': 'frtpB',
+
+    });
+
+}
+
+/***************************************************************************************
+ * Subscripcion a lo actualizacion de eventos para tabla eventos de usuario
+ * @param {Evento[]} eventos - todos los eventos del calendario
+ * @author MVGP
+ ****************************************************************************************/
+const tbHsUpdate = eventos => {
     const eventosRegistrosHs = eventos.filter(e => e.tipo == utils.RULE_CONSTANTS.TIPO_REGISTRO_HORAS);
     createTableRegistroHs('tbRegistroHs', eventosRegistrosHs);
 }
@@ -520,4 +588,4 @@ const init = (cal) => {
     $('#modal-abm-cal-registro-inicio,#modal-abm-cal-registro-fin').on('change', actualizarDuracion)
 }
 
-export { init, eventRender, eventRenderConAprobacion, eventsUpdated }
+export { init, eventRender, eventRenderConAprobacion, tbHsUpdate, tbRegistrosJefaturaUpdate }

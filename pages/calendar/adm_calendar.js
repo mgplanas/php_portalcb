@@ -11,6 +11,9 @@ var calendarEl = document.getElementById('calendar');
 // Default dates range
 var today = new Date();
 
+var eventUpdatedSubscribers = [];
+const subscribeToEventUpdate = f => eventUpdatedSubscribers.push(f);
+const eventsUpdated = events => eventUpdatedSubscribers.forEach(f => f(events));
 // ========================================================================================================================================================
 // MANEJO DE EVENTOS DEL CALENDARIO
 // ========================================================================================================================================================
@@ -103,6 +106,7 @@ const eventSourceByArea = {
 
             events.push(Evento);
         });
+        eventsUpdated(data);
         return events;
     },
 };
@@ -262,3 +266,5 @@ guardias.init(adm_calendar);
 registroHoras.init(adm_calendar);
 licencias.init(adm_calendar);
 nav.init(adm_calendar);
+
+subscribeToEventUpdate(registroHoras.tbRegistrosJefaturaUpdate);

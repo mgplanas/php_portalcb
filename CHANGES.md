@@ -1,5 +1,10 @@
 # CHANGES
 
+## FEAT-GTI-CAL-TB-PEND
+Tabla de pendientes para el jefe / aprobación masiva / boton de stats en recursos
+*Fecha* 2021-05-26
+*Requerimiento*
+
 ## FEAT-GTI-CAL-APPROBACION-JEFE
 Aprobacion/rechazo de registro de horas
 *Fecha* 2021-05-20

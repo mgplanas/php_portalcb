@@ -81,6 +81,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link href='../bower_components/fullcalendar/dist/packages-premium/timeline/main.css' rel='stylesheet' />
   <link href='../bower_components/fullcalendar/dist/packages-premium/resource-timeline/main.css' rel='stylesheet' />
   <link rel="stylesheet" href="../bower_components/datatables.net/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="../bower_components/datatables.net/css/rowGroup.dataTables.min.css">
   <link rel="stylesheet" href="./calendar/calendar.css">
   <!-- <link rel="stylesheet" href="../css/bootstrap-select.min.css"> -->
 
@@ -184,6 +185,34 @@ desired effect
             // include_once('./modals/abmlicencia.php');
         ?>  
       </div>
+      <div class="row">
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <div class="col-md-8">
+                        <h3 class="box-title">Registro pendientes de aprobación</h3>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="tbRegistroHs" class="table table-hover" width="100%">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th>Inicio</th>
+                            <th>Fin</th>
+                            <th><i class="fa fa-clock-o" title="Duración"></i></th>
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>          
+      </div>
       <!-- /.row -->
     </section>  
     <?php include_once('./calendar/guardias/guardia_simple.modal.php'); ?>
@@ -206,6 +235,7 @@ desired effect
 <!-- DataTables -->
 <script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="../bower_components/datatables.net/js/dataTables.rowGroup.min.js"></script>
 <!-- SlimScroll -->
 <script src="../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->

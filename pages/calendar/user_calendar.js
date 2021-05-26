@@ -246,6 +246,6 @@ registroHoras.init(user_calendar);
 licencias.init(user_calendar);
 nav.init(user_calendar);
 
-subscribeToEventUpdate(registroHoras.eventsUpdated);
+subscribeToEventUpdate(registroHoras.tbHsUpdate);
 subscribeToEventUpdate(licencias.eventsUpdated);
 subscribeToEventUpdate(guardias.eventsUpdated);

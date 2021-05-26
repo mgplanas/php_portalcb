@@ -180,6 +180,7 @@ desired effect
                             <tr>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                                 <th>Inicio</th>
                                 <th>Fin</th>
                                 <th><i class="fa fa-clock-o" title="Duración"></i></th>
