@@ -57,8 +57,8 @@
 
                     <div class="form-group">
                         <div class="col-sm-10"></div>
-                        <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Salir</button>
+                        <div class="col-sm-2 pull-right">
+                            <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Aceptar</button>
                         </div>
                     </div>
                 </div>

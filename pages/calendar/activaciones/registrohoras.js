@@ -62,6 +62,7 @@ const createTableRegistroHs = (id, eventos) => {
             {
                 'targets': [-1],
                 'render': function(data, type, row, meta) {
+                    if (row.estado != utils.RULE_CONSTANTS.ESTADOS_REGISTRO_HORAS.PENDIENTE) return '';
                     let btns = '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="papa" title="eliminar" class="modal-abm-costodet-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
                     return btns;
                 }
