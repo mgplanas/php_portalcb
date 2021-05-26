@@ -48,6 +48,13 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- CantidadAM Abiertos/Cerrados-->
+                                <canvas id="gx_acumulado_mensual" height="212" style="display: block; height:250px"></canvas>
+                        </div>                          
+
+                    </div>
                     <div class="form-group">
                         <div class="col-sm-10"></div>
                         <div class="col-sm-2">

@@ -77,7 +77,7 @@ const cantidadMinAcumuladosPeriodoByPerson = (id_persona, start, end, tipo) => {
                 tipo
             },
             dataType: 'json',
-            success: (json) => resolve(json.data[0]),
+            success: (json) => resolve(json.data),
             error: (xhr, status, error) => reject(error)
         });
 

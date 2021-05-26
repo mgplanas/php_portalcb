@@ -228,6 +228,8 @@ desired effect
 <!-- <script src="../js/bootstrap-select.min.js"></script> -->
 <!-- custom scripts --> 
 <!-- <script type="text/javascript" src="../js/script.js"></script>  -->
+<script src="../js/chart.js"></script>
+<script src="../js/chart.min.js"></script>
 <script type="module" src="./calendar/adm_calendar.js"></script>
 </body>
 </html>
