@@ -90,13 +90,13 @@ const showStatsForPerson = (resource, cal, events) => {
     const eventosHsNORechazados = eventos
         .filter(event => event.extendedProps.tipo == utils.RULE_CONSTANTS.TIPO_REGISTRO_HORAS)
         .filter(event => event.extendedProps.estado != utils.RULE_CONSTANTS.ESTADOS_REGISTRO_HORAS.RECHAZADO);
-    const hs = utils.cantidadMinAcumulados(eventosHsNORechazados, utils.RULE_CONSTANTS.TIPO_REGISTRO_HORAS) / 60;
-    $('#modal-cal-per-stat-hs-per').html(hs);
+    const hs = utils.cantidadMinAcumulados(eventosHsNORechazados, utils.RULE_CONSTANTS.TIPO_REGISTRO_HORAS, m_inicio, m_fin) / 60;
+    $('#modal-cal-per-stat-hs-per').html(hs.toFixed(2));
 
     // Acumulado horas año corriente
     $('#modal-cal-per-stat-hs-anual').html('N/D');
     utils.cantidadMinAcumuladosPeriodoByPerson(resource.id, m_inicio.format('YYYY-01-01'), m_inicio.format('YYYY-12-31'), utils.RULE_CONSTANTS.TIPO_REGISTRO_HORAS)
-        .then(res => $('#modal-cal-per-stat-hs-anual').html(res[0].suma / 60))
+        .then(res => $('#modal-cal-per-stat-hs-anual').html(res.reduce((current, ev) => current + (ev.suma / 60), 0).toFixed(2)))
         .catch(err => console.log(err));
 
     // Grafico Barras mes a mes 1-y

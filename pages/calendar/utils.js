@@ -45,7 +45,7 @@ const verificarLimiteAcumuladoMensual = (inicio, fin, eventos, tipoEvento, limit
     const eventosNORechazados = eventos.filter(event => event.extendedProps.estado != RULE_CONSTANTS.ESTADOS_REGISTRO_HORAS.RECHAZADO);
     const res = {
         excede: false,
-        cantidadMinActuales: cantidadMinAcumulados(eventosNORechazados, tipoEvento),
+        cantidadMinActuales: cantidadMinAcumulados(eventosNORechazados, tipoEvento, inicio, fin),
         minEventoActual: moment.duration(fin.diff(inicio)).asMinutes(),
         totalMinutos: 0
     }
@@ -86,15 +86,21 @@ const cantidadMinAcumuladosPeriodoByPerson = (id_persona, start, end, tipo) => {
 
 /***************************************************************************************
  * Verifica limite mensual de horas
- * @param Event[] eventos - Eventos de la persona 
+ * @param {Event[]} eventos - Eventos de la persona 
+ * @param {Moment} p_inicio - Inicio del periodo 
+ * @param {Moment} p_fin - fin del periodo 
  * @author MVGP
  ****************************************************************************************/
-const cantidadMinAcumulados = (eventos, tipoEvento) => {
+const cantidadMinAcumulados = (eventos, tipoEvento, p_inicio, p_fin) => {
     return eventos
         .filter(event => event.extendedProps.tipo == tipoEvento)
         .reduce((acumulado, evento) => {
-            const mInicio = moment(evento.start);
-            const mFin = moment(evento.end);
+            let mInicio = moment(evento.start);
+            let mFin = moment(evento.end);
+
+            if (p_inicio.isBetween(mInicio, mFin, 'minutes', '()')) mInicio = p_inicio;
+            if (p_fin.isBetween(mInicio, mFin, 'minutes', '()')) mFin = p_fin;
+
             const duration = moment.duration(mFin.diff(mInicio));
             return acumulado + parseInt(duration.asMinutes());
         }, 0);
