@@ -8,13 +8,13 @@ import * as jefaturaStats from './stats/area/stats.js'
 
 // Calendar instantiation
 var calendarEl = document.getElementById('calendar');
-
+var adm_calendar;
 // Default dates range
 var today = new Date();
 
 var eventUpdatedSubscribers = [];
 const subscribeToEventUpdate = f => eventUpdatedSubscribers.push(f);
-const eventsUpdated = events => eventUpdatedSubscribers.forEach(f => f(events));
+const eventsUpdated = (events) => eventUpdatedSubscribers.forEach(f => f(events, adm_calendar.view.currentStart, adm_calendar.view.currentEnd));
 // ========================================================================================================================================================
 // MANEJO DE EVENTOS DEL CALENDARIO
 // ========================================================================================================================================================
@@ -262,11 +262,11 @@ const initializeCalendar = async(inicio, fin) => {
     return calendar;
 }
 
-const adm_calendar = await initializeCalendar(today, today);
+adm_calendar = await initializeCalendar(today, today);
 guardias.init(adm_calendar);
 registroHoras.init(adm_calendar);
 licencias.init(adm_calendar);
 nav.init(adm_calendar);
 
 subscribeToEventUpdate(registroHoras.tbRegistrosJefaturaUpdate);
-//subscribeToEventUpdate(jefaturaStats.gxTopTenHsByEventsUpdate);
+subscribeToEventUpdate(jefaturaStats.gxTopTenHsByEventsUpdate);

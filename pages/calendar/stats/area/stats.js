@@ -2,22 +2,27 @@ import * as utils from '../../utils.js'
 
 let gx_top_10 = null;
 
-const gxTopTenHsByEventsUpdate = events => {
-        const eventosRegistrosHs = events.filter(e => e.tipo == utils.RULE_CONSTANTS.TIPO_REGISTRO_HORAS &&
-            e.estado != utils.RULE_CONSTANTS.ESTADOS_REGISTRO_HORAS.RECHAZADO);
-        gxTopTenHsByEvents(eventosRegistrosHs);
-    }
-    // AM Por Responsables
-const gxTopTenHsByEvents = eventos => {
+const gxTopTenHsByEventsUpdate = (events, p_inicio, p_fin) => {
+
+    // Eventos de Hs no rechazados
+    const eventosRegistrosHs = events.filter(e => e.tipo == utils.RULE_CONSTANTS.TIPO_REGISTRO_HORAS &&
+        e.estado != utils.RULE_CONSTANTS.ESTADOS_REGISTRO_HORAS.RECHAZADO);
+    gxTopTenHsByEvents(eventosRegistrosHs, moment(p_inicio), moment(p_fin));
+}
+
+const gxTopTenHsByEvents = (eventos, p_inicio, p_fin) => {
 
     if (gx_top_10 != null) {
         gx_top_10.destroy();
     }
 
     let res = {};
-    res = eventos.forEach(e => {
-        const mInicio = moment(e.fecha_inicio);
-        const mFin = moment(e.fecha_fin);
+    eventos.forEach(e => {
+        let mInicio = moment(e.fecha_inicio);
+        let mFin = moment(e.fecha_fin);
+        if (p_inicio.isBetween(mInicio, mFin, 'minutes', '()')) mInicio = p_inicio;
+        if (p_fin.isBetween(mInicio, mFin, 'minutes', '()')) mFin = p_fin;
+
         if (res.hasOwnProperty(e.fullname)) {
             res[e.fullname] += moment.duration(mFin.diff(mInicio)).asMinutes() / 60;
         } else {
@@ -25,38 +30,34 @@ const gxTopTenHsByEvents = eventos => {
         }
     });
     //.sort((a, b) => a.suma - b.suma);
+
     let data = [];
     let name = [];
     let suma = [];
     for (let total in res) {
         data.push([total, res[total]]);
     }
-    data.sort((a, b) => a[1] - b[1]);
+    data.sort((a, b) => b[1] - a[1]);
     data.forEach(a => {
         name.push(a[0]);
-        suma.push(a[1]);
+        suma.push(a[1].toFixed(2));
     })
-
-
+    console.log(res);
+    console.log(data);
+    console.log(name);
+    console.log(suma);
 
 
     let chartdata = {
         labels: name,
         datasets: [{
-            label: 'Acumulado',
+            label: 'Acumulado [Hs]',
             data: suma,
             backgroundColor: 'rgb(243, 156, 18)'
         }]
     };
     let options = {
         responsive: true,
-        title: {
-            display: true,
-            position: "top",
-            text: "Acum. mensual [hs]",
-            fontSize: 18,
-            fontColor: "#111"
-        },
         legend: {
             display: false,
             position: "top",

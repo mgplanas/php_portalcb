@@ -186,7 +186,7 @@ desired effect
         ?>  
       </div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
             <div class="box">
                 <div class="box-header with-border">
                     <div class="col-md-8">
@@ -212,10 +212,10 @@ desired effect
                 </div>
             </div>
         </div>    
-        <!-- <div class="col-md-6">
+        <div class="col-md-5">
             <div class="box box-danger">
                 <div class="box-header with-border">
-                <h3 class="box-title">Top 10 - registro hs</h3>
+                <h3 class="box-title">Top 10 - Registro horas - Período actual</h3>
 
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -225,7 +225,7 @@ desired effect
                     <canvas id="gx_top_10_hs" height="212" style="display: block;"></canvas>
                 </div>
             </div>
-        </div>                                          -->
+        </div>                                         
 
       </div>
       <!-- /.row -->
