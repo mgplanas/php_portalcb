@@ -1,5 +1,10 @@
 # CHANGES
 
+## FEAT-GTI-CAL-LIC-APB
+Aprobación por parte de los jefes de licencias (solo a modo de control)
+*Fecha* 2021-05-27
+*Requerimiento*
+
 ## FEAT-GTI-CAL-TB-PEND
 Tabla de pendientes para el jefe / aprobación masiva / boton de stats en recursos
 *Fecha* 2021-05-26

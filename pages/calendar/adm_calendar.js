@@ -32,7 +32,7 @@ const eventRender = info => {
             return guardias.eventRender(info);
             break;
         case "3": // LICENCIAS
-            return licencias.eventRender(info);
+            return licencias.eventRenderConAprobacion(info);
             break;
         case "4": // REGISTRO HORAS
             return registroHoras.eventRenderConAprobacion(info);

@@ -71,36 +71,221 @@ const createTableLicencias = (id, eventos) => {
 }
 
 /***************************************************************************************
- * Renderizacion Eventos Registro Horas
+ * Aprobar un evento de hs
+ * @param {FullcalendarEvent} evento - Informacion del evento
  * @author MVGP
  ****************************************************************************************/
-const eventRender = info => {
+const cambiarEstado = (evento, observaciones, estado) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'POST',
+            url: './calendar/licencias/licencias.controller.php',
+            dataType: 'json',
+            data: {
+                id: evento.id,
+                estado,
+                observaciones,
+                operacion: 'CAMBIAR_ESTADO'
+            },
+            success: json => {
+                if (!json.ok) {
+                    reject(error);
+                }
+                resolve(json);
+            },
+            error: (xhr, status, error) => {
+                reject(error);
+            }
+        });
+    })
+
+
+}
+
+/***************************************************************************************
+ * Renderizacion del Formulario de aprobación
+ * @param {EventInformation} info - Informacion del evento (DOM element, event)
+ * @returns {String} html in string template
+ * @author MVGP
+ ****************************************************************************************/
+const popoverEventObs = info => {
+
+    return `<div class="col-md-12">
+                <div class="row">
+                    <hr style="margin: 5px;">
+                    <div class="form-group">
+                        <label for="observaciones">Obs. Autorizante</label><br>
+                        ${info.event.extendedProps.observaciones}
+                    </div>   
+                </div>
+                <br>
+            </div> `;
+}
+
+/***************************************************************************************
+ * Renderizacion del Formulario de aprobación
+ * @param {EventInformation} info - Informacion del evento (DOM element, event)
+ * @returns {String} html in string template
+ * @author MVGP
+ ****************************************************************************************/
+const popoverEventApprovalForm = info => {
+
+    return `<div class="col-md-12">
+                <div class="row">
+                    <hr style="margin: 5px;">
+                    <div class="form-group">
+                        <label for="observaciones">Observaciones/Motivo</label>
+                        <textarea class=form-control name="observaciones"></textarea>
+                    </div>   
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn btn-xs btn-success aprobar">Autorizar</button>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button class="btn btn-xs btn-danger rechazar" >Rechazar</button>
+                    </div>
+                </div>
+                <br>
+            </div> `;
+}
+
+/***************************************************************************************
+ * Renderizacion de la parte del detalle comun a todos los eventos de este tipo
+ * @param {EventInformation} info - Informacion del evento (DOM element, event)
+ * @returns {String} html in string template
+ * @author MVGP
+ ****************************************************************************************/
+const popoverEventDetailContent = info => {
     const mInicio = moment(info.event.extendedProps.real_start);
     const mFin = moment(info.event.extendedProps.real_end);
-    const resource = info.event.getResources()[0];
     const duration = moment.duration(mFin.diff(mInicio)).asDays();
-
-    $(info.el).popover({
-        title: `<i class='fa fa-${info.event.extendedProps.icon}'></i> ${info.event.extendedProps.subtipo_desc} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
-        placement: 'auto',
-        html: true,
-        trigger: 'hover',
-        content: `
+    return `
         <div class="row">
             <div class="col-md-4"><strong>Estado:</strong></div>
             <div class="col-md-8 text-right"><span class="label label-${info.event.extendedProps.estado_class}">${info.event.extendedProps.estado_desc}</span></div>
         </div>
         <div class="row">
-            <div class="col-md-6"><strong>Comienzo:</strong></div>
-            <div class="col-md-6">${mInicio.format('DD/MM/YYYY')}</div>
+            <div class="col-md-4"><strong>Comienzo:</strong></div>
+            <div class="col-md-8 text-right">${mInicio.format('DD/MM/YYYY')}</div>
         </div>
         <div class="row">
-            <div class="col-md-6"><strong>Fin:</strong></div>
-            <div class="col-md-6">${mFin.format('DD/MM/YYYY')}</div>
+            <div class="col-md-4"><strong>Fin:</strong></div>
+            <div class="col-md-8 text-right">${mFin.format('DD/MM/YYYY')}</div>
         </div>
-        <div class="row"><div class="col-md-12 text-right"><i class="fa fa-clock-o"></i> Duracion: ${duration} días</div></div>`,
-        container: 'body'
-    }).popover('show');
+        <div class="row"><div class="col-md-12 text-right"><i class="fa fa-clock-o"></i> Duracion: ${duration} d</div></div>    
+        <div class="col-md-12">
+            <div class="row">
+                <strong>Observaciones:</strong><br>${info.event.extendedProps.justificacion}
+            </div>
+        </div> `;
+
+
+}
+
+/***************************************************************************************
+ * Renderizacion Eventos Licencias con formulario de aprobacion
+ * @param {EventInformation} info - Informacion del evento (DOM element, event)
+ * @author MVGP
+ ****************************************************************************************/
+const eventRenderConAprobacion = info => {
+
+
+    $(info.el).popover({
+            title: `<i class='fa fa-${info.event.extendedProps.icon}'></i> ${info.event.extendedProps.subtipo_desc} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
+            placement: 'auto',
+            html: true,
+            trigger: 'hover',
+            content: `${popoverEventDetailContent(info)}
+                      ${(info.event.extendedProps.estado == utils.RULE_CONSTANTS.ESTADOS_LICENCIAS.PENDIENTE ? popoverEventApprovalForm(info) : '')}
+                      ${(info.event.extendedProps.observaciones ? popoverEventObs(info) : '' )}
+                `,
+            container: 'body',
+            trigger: "manual",
+            animation: false
+        })
+        .on("mouseenter", function() {
+            var _this = this;
+            $(this).popover("show");
+            $(".popover").on("mouseleave", function() {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function() {
+            var _this = this;
+            setTimeout(function() {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide");
+                }
+            }, 0);
+        })
+        .on('shown.bs.popover', (eventShown) => {
+            let $popup = $('#' + $(eventShown.target).attr('aria-describedby'));
+            let $observaciones = $popup.find('textarea');
+            $popup.find('button.rechazar').on('click', (e) => {
+                cambiarEstado(info.event, $observaciones.val(), utils.RULE_CONSTANTS.ESTADOS_LICENCIAS.RECHAZADO)
+                    .then(res => {
+                        $popup.popover('hide');
+                        calendar.refetchEvents();
+                    })
+                    .catch(err => alert(err))
+            });
+            $popup.find('button.aprobar').on('click', (e) => {
+                cambiarEstado(info.event, $observaciones.val(), utils.RULE_CONSTANTS.ESTADOS_LICENCIAS.APROBADO)
+                    .then(res => {
+                        $popup.popover('hide');
+                        calendar.refetchEvents();
+                    })
+                    .catch(err => alert(err))
+            });
+        });
+
+    $(document).off('click').on("click", ".popover .close", () => {
+        $(".popover").popover('hide');
+    });
+    $(info.el).off('click').on('click', () => {
+        $(this).popover('hide');
+
+    })
+
+    // agrego estylo
+    $(info.el).addClass([`ar-tipo-${info.event.extendedProps.tipo}`, `subtipo-${info.event.extendedProps.subtipo}`, `estado-${info.event.extendedProps.estado}`].join(' '))
+        // Agrego el ícono
+    $(info.el, "div.fc-content").prepend(`<i class='fa fa-${info.event.extendedProps.icon}'></i>`);
+    $(info.el).css('cursor', 'pointer');
+};
+
+/***************************************************************************************
+ * Renderizacion Eventos Licencias
+ * @author MVGP
+ ****************************************************************************************/
+const eventRender = info => {
+
+    $(info.el).popover({
+            title: `<i class='fa fa-${info.event.extendedProps.icon}'></i> ${info.event.extendedProps.subtipo_desc} <a href="#" class="close" data-dismiss="alert">&times;</a>`,
+            placement: 'auto',
+            html: true,
+            trigger: 'hover',
+            content: `${popoverEventDetailContent(info)}
+            ${(info.event.extendedProps.observaciones ? popoverEventObs(info) : '' )}
+            `,
+            container: 'body',
+            trigger: "manual",
+            animation: false
+        })
+        .on("mouseenter", function() {
+            var _this = this;
+            $(this).popover("show");
+            $(".popover").on("mouseleave", function() {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function() {
+            var _this = this;
+            setTimeout(function() {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide");
+                }
+            }, 0);
+        });
 
     $(document).on("click", ".popover .close", () => {
         $(".popover").popover('hide');
@@ -296,4 +481,4 @@ const init = (cal) => {
     $('#modal-abm-cal-lic-inicio,#modal-abm-cal-lic-fin').on('change', actualizarDuracion)
 }
 
-export { init, eventRender, eventsUpdated }
+export { init, eventRender, eventRenderConAprobacion, eventsUpdated }

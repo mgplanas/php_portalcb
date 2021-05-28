@@ -25,6 +25,11 @@ const RULE_CONSTANTS = {
         PENDIENTE: 1,
         APROBADO: 2,
         RECHAZADO: 3,
+    },
+    ESTADOS_LICENCIAS: {
+        PENDIENTE: 1,
+        APROBADO: 2,
+        RECHAZADO: 3,
     }
 }
 
