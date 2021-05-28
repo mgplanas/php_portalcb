@@ -43,6 +43,16 @@
 }
 
 
+/* Rechazado */
+
+.ar-tipo-3.estado-3 {
+    background-color: rgba(221, 75, 57, 0.8);
+    border-color: #dd4b39 !important;
+    border-style: solid !important;
+    opacity: 0.9 !important;
+}
+
+
 /* Activacion */
 
 .ar-tipo-4 {

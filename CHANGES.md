@@ -940,7 +940,6 @@ M [pages/riesgos.php]
   - N[helpers/*.php]
   - N[modals/*.php]
 - Agrego los campos id_subgerencia, id_area a tabla de Persona. Modifico ABM
-- TODO BAJA Estructura (Ver si posee personas asociadas)
   - Poner cantidad de subelementos en la grilla
   - Poner boton de baja en grillas
   - Mostar aviso de resultado de operación al cerrar el modal
@@ -1702,7 +1701,6 @@ En vez de por área por responsable
   N[cal_controles.php]
 - Agrego el link en controles.php
   M[controles.php]
-  TODO: LIMPIAR FORMULARIO DEL MODAL ANTES DE MOSTRAR DATA
 
 ## FIX-PROD
 
@@ -1793,7 +1791,6 @@ En vez de por área por responsable
   - M[met_controles.php]
 - Filtro gerencia en matrices de riesgo
   - M[met_riesgos.php]
-- TODO - Ver controles.php por diferencia en indicador de contrloes
 
 ## FEAT-SITE-MENU
 
@@ -1823,7 +1820,6 @@ En vez de por área por responsable
   - N[met_iso27k.php]
   - N[met_riesgos.php]
   - N[met_controles.php]
-- TODO - SAcar el header
 
 ## FEAT-REL-REORGANIZ
 
