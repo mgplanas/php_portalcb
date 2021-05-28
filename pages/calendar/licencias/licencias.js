@@ -249,7 +249,7 @@ const eventRenderConAprobacion = info => {
     // agrego estylo
     $(info.el).addClass([`ar-tipo-${info.event.extendedProps.tipo}`, `subtipo-${info.event.extendedProps.subtipo}`, `estado-${info.event.extendedProps.estado}`].join(' '))
         // Agrego el ícono
-    $(info.el, "div.fc-content").prepend(`<i class='fa fa-${info.event.extendedProps.icon}'></i>`);
+    $(info.el, "div.fc-content").prepend(`<i class='fa fa-${info.event.extendedProps.icon}'></i><span style="padding-left:10px;">${info.event.extendedProps.subtipo_desc}</span>`);
     $(info.el).css('cursor', 'pointer');
 };
 
@@ -297,7 +297,7 @@ const eventRender = info => {
     // agrego estylo
     $(info.el).addClass([`ar-tipo-${info.event.extendedProps.tipo}`, `subtipo-${info.event.extendedProps.subtipo}`, `estado-${info.event.extendedProps.estado}`].join(' '))
         // Agrego el ícono
-    $(info.el, "div.fc-content").prepend(`<i class='fa fa-${info.event.extendedProps.icon}'></i><span style="padding-left:10px;">Vacaciones</span>`);
+    $(info.el, "div.fc-content").prepend(`<i class='fa fa-${info.event.extendedProps.icon}'></i><span style="padding-left:10px;">${info.event.extendedProps.subtipo_desc}</span>`);
 
     $(info.el).css('cursor', 'pointer');
 };
