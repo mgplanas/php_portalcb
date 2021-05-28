@@ -7,8 +7,6 @@ var calendar;
 // MANEJO DE Registro de HORAS
 // ========================================================================================================================================================
 // TODO: hacer popup de ayuda 
-// TODO: hacer edicion
-// TODO: Aprobacion
 // TODO: Hacer anánisis y que devuleva un objeto con todo lo que necesitás
 
 /***************************************************************************************
