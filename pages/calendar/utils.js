@@ -219,6 +219,26 @@ const solapaConGuardia = (m_inicio, m_fin, eventos) => {
 }
 
 /***************************************************************************************
+ * Verifica si una fecha se solapa con un registro de horas activo
+ * @param Moment inicio - Fecha a verificar en Moment
+ * @param Moment fin - Fecha a verificar en Moment
+ * @param Event[] eventos - Eventos de la persona 
+ * @author MVGP
+ ****************************************************************************************/
+const solapaConRegistrosActivos = (m_inicio, m_fin, eventos) => {
+    const guardiasQueAplican = eventos
+        .filter(e => e.extendedProps.tipo == RULE_CONSTANTS.TIPO_REGISTRO_HORAS && e.extendedProps.estado != RULE_CONSTANTS.ESTADOS_REGISTRO_HORAS.RECHAZADO) // Feriados DNL
+        .filter(e => {
+            const e_inicio = moment(e.extendedProps.real_start);
+            const e_fin = moment(e.extendedProps.real_end);
+            return estanSolapados(m_inicio, m_fin, e_inicio, e_fin);
+        });
+
+    return guardiasQueAplican.length > 0;
+
+}
+
+/***************************************************************************************
  * Verifica si una fecha es Fin de Semana
  * @param Date inicio - Fecha a verificar en Moment
  * @author MVGP
@@ -282,4 +302,5 @@ export {
     cantidadMinAcumulados,
     RULE_CONSTANTS,
     cantidadMinAcumuladosPeriodoByPerson,
+    solapaConRegistrosActivos,
 }

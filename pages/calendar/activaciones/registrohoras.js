@@ -453,6 +453,13 @@ const validar = (m_inicio, m_fin, es_programada, justificacion, eventosActuales)
     }
 
     // Valido de que no se solapen con horarios laborales
+    if (utils.solapaConRegistrosActivos(m_inicio, m_fin, eventosActuales)) {
+        resultado.ok = false;
+        resultado.errores.push(`Existen registradas horas en dicho período.`);
+        return resultado;
+    }
+
+    // Valido de que no se solapen con horarios laborales
     if (utils.solapaRangoConHorarioLaboral(m_inicio, m_fin, eventosActuales)) {
         resultado.ok = false;
         resultado.errores.push(`El rango ingresado se solapa con horario laboral.`);

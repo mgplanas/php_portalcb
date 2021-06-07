@@ -5,12 +5,12 @@ Correscción de errores luego de reunión con E Tissera
 *Fecha* 2021-06-03
 *Requerimiento*
 OK     - Guardias Pasivas en título.
-    - Solo regitrar horas duplicadas si están rechazadas las anteriores. No puede haber 2 registraciones pendientes/aprobadas en el mismo tiempo
+OK    - Solo regitrar horas duplicadas si están rechazadas las anteriores. No puede haber 2 registraciones pendientes/aprobadas en el mismo tiempo
     - Corregir definición de guardias
       - Generación de guardas se duplkican al poner diferentes períodos. Ej. 1/6 -6 14/6 -7
       - Cambiar el orden de chequeos de los loop en las guardias. Loopear primero por los nuevos periodos.
 OK    - Chequear por qué no se booran las tareas registradas
-    - Condionar el ingreso de tareas >= 60 antes
+OK    - Condionar el ingreso de tareas >= 60 antes
     - Pensar Rol Admin
 
 ## FEAT-GTI-CAL-LIC-APB
