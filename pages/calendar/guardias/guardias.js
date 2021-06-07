@@ -270,7 +270,7 @@ const agregarGuardiaMultiple = () => {
     const inicio = new Date();
     const fin = new Date();
     fin.setDate(fin.getDate() + 7);
-    $('#modal-abm-cal-guardias-mul-title').html(`Agregar períodos de guardias`);
+    $('#modal-abm-cal-guardias-mul-title').html(`Agregar períodos de guardias pasivas`);
     modalGuardiaMultipleLimpiarCampos();
 
     $('#modal-abm-cal-guardias-mul-inicio').datepicker({
@@ -387,7 +387,7 @@ const editarGuardia = (evento) => {
     const resource = evento.getResources()[0];
     const inicio = evento.start;
     const fin = evento.end;
-    $('#modal-abm-cal-guardias-title').html(`${resource.title} <small style="margin-left: 40px;"> Editar registro de guardia</small>`);
+    $('#modal-abm-cal-guardias-title').html(`${resource.title} <small style="margin-left: 40px;"> Editar registro de guardia pasiva</small>`);
     modalGuardiaSimpleLimpiarCampos();
     $('#modal-abm-cal-guardias-id').val(evento.id);
     $('#modal-abm-cal-guardias-id-persona').val(resource.id);
