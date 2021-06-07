@@ -52,6 +52,7 @@ const createTableRegistrHsJefatura = (id, eventos) => {
             'dataSrc': ['fullname']
         },
         'order': [
+            [0, 'asc'],
             [4, 'desc']
         ],
         'columnDefs': [{
