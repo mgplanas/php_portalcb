@@ -9,7 +9,7 @@ OK     - Guardias Pasivas en título.
     - Corregir definición de guardias
       - Generación de guardas se duplkican al poner diferentes períodos. Ej. 1/6 -6 14/6 -7
       - Cambiar el orden de chequeos de los loop en las guardias. Loopear primero por los nuevos periodos.
-    - Chequear por qué no se booran las tareas registradas
+OK    - Chequear por qué no se booran las tareas registradas
     - Condionar el ingreso de tareas >= 60 antes
     - Pensar Rol Admin
 

@@ -424,6 +424,13 @@ const validar = (m_inicio, m_fin, es_programada, justificacion, eventosActuales)
         return resultado;
     }
 
+    // duracion > 0
+    if (m_fin.diff(m_inicio, 'minutes') <= 0) {
+        resultado.ok = false;
+        resultado.errores.push(`La duración debe ser mayor a 0.`);
+        return resultado;
+    }
+
     // límite de horas de trabajos seguido
     if (m_fin.diff(m_inicio, 'days') >= 1) {
         resultado.ok = false;
