@@ -431,6 +431,13 @@ const validar = (m_inicio, m_fin, es_programada, justificacion, eventosActuales)
         return resultado;
     }
 
+    // Pasado > 60 días
+    if (moment().diff(m_inicio, 'days') > 60) {
+        resultado.ok = false;
+        resultado.errores.push(`No se pueden registrar horas en fechas anteriores a 60 días.`);
+        return resultado;
+    }
+
     // límite de horas de trabajos seguido
     if (m_fin.diff(m_inicio, 'days') >= 1) {
         resultado.ok = false;
