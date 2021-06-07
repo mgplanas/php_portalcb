@@ -129,12 +129,18 @@ const createTableRegistroHs = (id, eventos) => {
                 'targets': [-1],
                 'render': function(data, type, row, meta) {
                     if (row.estado != utils.RULE_CONSTANTS.ESTADOS_REGISTRO_HORAS.PENDIENTE) return '';
-                    let btns = '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="papa" title="eliminar" class="modal-abm-costodet-btn-baja btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
+                    let btns = '<a data-row="' + meta.row + '" data-id="' + row.id + '" data-descripcion="papa" title="eliminar" class="registro-remove-btn btn" style="padding: 2px;"><i class="glyphicon glyphicon-trash" style="color: red;"></i></a>';
                     return btns;
                 }
             }
         ],
         'dom': 'rtpB',
+        'drawCallback': function(settings) {
+            $('.registro-remove-btn').off('click').on('click', function() {
+                let id = $(this).data('id');
+                return remove(id, () => calendar.refetchEvents());
+            });
+        },
 
     });
 
@@ -527,11 +533,48 @@ const submit = (operacion, callback) => {
  * @param callback() callback fuanction
  * @author MVGP
  ****************************************************************************************/
-const remove = (callback) => {
-    if (confirm('¿Está seguro que desea eliminar el registro de horas?')) {
-        return submit('REMOVE_REGISTRO_HORAS', callback);
-    }
+const remove = (id, callback) => {
+    if (!confirm('¿Está seguro que desea eliminar el registro de horas?')) return;
+
+    // Ejecuto
+    $.ajax({
+        type: 'POST',
+        url: './calendar/activaciones/registrohoras.controller.php',
+        dataType: 'json',
+        data: {
+            operacion: 'REMOVE_REGISTRO_HORAS',
+            id
+            // fecha_inicio: fecha_inicio.format('YYYY-MM-DD HH:mm:ss'),
+            // fecha_fin: fecha_fin.format('YYYY-MM-DD HH:mm:ss'),
+            // id_persona,
+            // justificacion,
+            // tipo: utils.RULE_CONSTANTS.TIPO_REGISTRO_HORAS,
+            // subtipo,
+            // estado: 1,
+            // is_all_day: 0,
+            // is_background: 0,
+            // is_programmed: es_programada
+        },
+        success: json => {
+            if (!json.ok) {
+                alert(json.err);
+            }
+            callback(null);
+        },
+        error: (xhr, status, error) => {
+            alert(error);
+            callback(error);
+        }
+    });
+
 }
+
+// const remove = (id, callback) => {
+//     if (confirm('¿Está seguro que desea eliminar el registro de horas?')) {
+//         $('#modal-abm-cal-registro-id').val(id);
+//         return submit('REMOVE_REGISTRO_HORAS', callback);
+//     }
+// }
 
 /***************************************************************************************
  * limpiar los campos del modal

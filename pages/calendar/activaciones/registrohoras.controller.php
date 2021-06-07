@@ -38,7 +38,10 @@
             $updaprobar = mysqli_query($con, "UPDATE adm_eventos_cal SET estado='$estado', observaciones='$observaciones' WHERE id='$id'") or die(mysqli_error());	
             break;            
 
-
+        case 'REMOVE_REGISTRO_HORAS':
+            //UPDATE
+            $updaprobar = mysqli_query($con, "UPDATE adm_eventos_cal SET borrado=1 WHERE id='$id'") or die(mysqli_error());	
+            break;  
         
         default:
             break;
