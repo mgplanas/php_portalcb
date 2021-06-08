@@ -112,6 +112,23 @@ const cantidadMinAcumulados = (eventos, tipoEvento, p_inicio, p_fin) => {
 }
 
 /***************************************************************************************
+ * cantidad de dias acumulados
+ * @param {Event[]} eventos - Eventos de la persona 
+ * @author MVGP
+ ****************************************************************************************/
+const cantidadDiasAcumulados = (eventos) => {
+    return eventos
+        .filter(event => event.extendedProps.tipo == tipoEvento)
+        .reduce((acumulado, evento) => {
+            let mInicio = moment(evento.start);
+            let mFin = moment(evento.end);
+
+            const duration = moment.duration(mFin.diff(mInicio));
+            return acumulado + parseInt(duration.asDays());
+        }, 0);
+}
+
+/***************************************************************************************
  * Verifica un evento está solapdado con otro
  * @param Moment a_inicio - incio del primer evento
  * @param Moment a_fin - fin del primer evento
@@ -303,4 +320,5 @@ export {
     RULE_CONSTANTS,
     cantidadMinAcumuladosPeriodoByPerson,
     solapaConRegistrosActivos,
+    cantidadDiasAcumulados,
 }

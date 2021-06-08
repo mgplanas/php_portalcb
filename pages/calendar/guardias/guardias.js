@@ -147,7 +147,6 @@ const validar = (empleadosIDsAsignados, nuevosPeriodos) => {
         const { title: nombre } = calendar.getResourceById(id);
 
         let diasDeGuardiaAcumulados = 0;
-        let flag_acum = false;
 
         // Filtro los eventos por tipo de guardias
         const eventosDeLaPersona = calendar.getEvents()
@@ -158,21 +157,28 @@ const validar = (empleadosIDsAsignados, nuevosPeriodos) => {
         // Corroboro que los períodos de descanso entre los períodos ingresados vs los existentes se cumplan
         // constato inicio del nuevo contra fin del existente y
         // fin del nuevo contra inicio del existente
-        guardias.forEach(guardia => {
-            const m_inicio = moment(guardia.start);
-            const m_fin = moment(guardia.end);
-            diasDeGuardiaAcumulados += (m_fin.diff(m_inicio, 'days'));
+        nuevosPeriodos.forEach(periodo => {
+            const p_inicio = moment(periodo[0]);
+            const p_fin = moment(periodo[1]);
+            let flag_acum = false;
+            diasDeGuardiaAcumulados += (p_fin.diff(p_inicio, 'days') || 1);
 
-            nuevosPeriodos.forEach(periodo => {
-                const p_inicio = moment(periodo[0]);
-                const p_fin = moment(periodo[1]);
+            // verifico que no se solape con un evento de Vacaciones
+            if (utils.solapaConLicencia(p_inicio, p_fin, eventosDeLaPersona, utils.RULE_CONSTANTS.SUBTIPOS_LICENCIA.VACACIONES)) {
+                resultado.ok = false;
+                resultado.errores.push(`El período del ${p_inicio.format('DD/MM/YYYY')} al ${p_fin.format('DD/MM/YYYY')} se solapa con un período de vacaciones de ${nombre}.`);
+                return false;
+            }
 
-                // verifico que no se solape con un evento de Vacaciones
-                if (utils.solapaConLicencia(p_inicio, p_fin, eventosDeLaPersona, utils.RULE_CONSTANTS.SUBTIPOS_LICENCIA.VACACIONES)) {
-                    resultado.ok = false;
-                    resultado.errores.push(`El período del ${p_inicio.format('DD/MM/YYYY')} al ${p_fin.format('DD/MM/YYYY')} se solapa con un período de vacaciones de ${nombre}.`);
-                    return false;
-                }
+            if (utils.solapaConGuardia(p_inicio, p_fin, eventosDeLaPersona)) {
+                resultado.ok = false;
+                resultado.errores.push(`El período del ${p_inicio.format('DD/MM/YYYY')} al ${p_fin.format('DD/MM/YYYY')} se solapa con un período de guardias existente de ${nombre}.`);
+                return false;
+            }
+
+            guardias.forEach(guardia => {
+                const m_inicio = moment(guardia.start);
+                const m_fin = moment(guardia.end);
 
                 let periodoDescanzoInicio = (p_inicio.diff(m_fin, 'days'));
                 let periodoDescanzoFin = (p_fin.diff(m_inicio, 'days'));
@@ -180,7 +186,7 @@ const validar = (empleadosIDsAsignados, nuevosPeriodos) => {
                 periodoDescanzoFin = (periodoDescanzoFin < 0 ? periodoDescanzoFin - 1 : periodoDescanzoFin);
 
                 // Contabilizo la cantidad de días sólo la primera vez
-                if (!flag_acum) diasDeGuardiaAcumulados += (p_fin.diff(p_inicio, 'days')) + 1;
+                if (!flag_acum) diasDeGuardiaAcumulados += (m_fin.diff(m_inicio, 'days') || 1);
 
                 if (Math.abs(periodoDescanzoInicio) < 7 || Math.abs(periodoDescanzoFin) < 7) {
                     resultado.ok = false;
