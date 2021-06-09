@@ -1,6 +1,6 @@
 # CHANGES
 
-## FIX-VARIOS-TISSERA
+## FIX-VARIOS-TISSERAS
 Correscción de errores luego de reunión con E Tissera
 *Fecha* 2021-06-03
 *Requerimiento*
