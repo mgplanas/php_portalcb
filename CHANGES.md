@@ -1,4 +1,11 @@
 # CHANGES
+
+## FIX-DOCUMENTOS
+No se pueden ver los detalles de un documento.
+*Fecha* 2021-06-14
+[cod]
+- pages/doc_documentos.php
+- pages/modals/abmdoc.php
 ## FEAT-CTO-OBS
 Observaciones en vencimiento de contratos
 *Fecha* 2021-04-19

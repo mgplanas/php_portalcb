@@ -126,7 +126,9 @@
                     <div class="form-group">
                         <div class="col-sm-8"></div>
                         <div class="col-sm-2">
-                            <input type="button" name="AddCliente" class="btn  btn-raised btn-success" value="Guardar" id='modal-abm-doc-submit'>
+                            <?php if ($rq_sec['admin_doc'] == '1') { ?>
+                                <input type="button" name="AddCliente" class="btn  btn-raised btn-success" value="Guardar" id='modal-abm-doc-submit'>
+                            <?php } ?>
                         </div>
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
